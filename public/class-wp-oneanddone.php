@@ -3,7 +3,7 @@
 /**
  * WP-OneAndDone.
  *
- * @package   Wp-Oneanddone
+ * @package   Wp_Oneanddone
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -17,10 +17,10 @@
  * If you're interested in introducing administrative or dashboard
  * functionality, then refer to `class-wp-oneanddone-admin.php`
  *
- * @package Wp-Oneanddone
+ * @package Wp_Oneanddone
  * @author  Mte90 <mte90net@gmail.com>
  */
-class Wp-Oneanddone {
+class Wp_Oneanddone {
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.

@@ -3,7 +3,7 @@
 /**
  * WP-OneAndDone.
  *
- * @package   Wp-Oneanddone_Admin
+ * @package   Wp_Oneanddone_Admin
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -17,10 +17,10 @@
  * If you're interested in introducing public-facing
  * functionality, then refer to `class-wp-oneanddone.php`
  *
- * @package Wp-Oneanddone_Admin
+ * @package Wp_Oneanddone_Admin
  * @author  Mte90 <mte90net@gmail.com>
  */
-class Wp-Oneanddone_Admin {
+class Wp_Oneanddone_Admin {
 
 	/**
 	 * Instance of this class.
@@ -62,10 +62,10 @@ class Wp-Oneanddone_Admin {
 		 *
 		 * @TODO:
 		 *
-		 * - Rename "Wp-Oneanddone" to the name of your initial plugin class
+		 * - Rename "Wp_Oneanddone" to the name of your initial plugin class
 		 *
 		 */
-		$plugin = Wp-Oneanddone::get_instance();
+		$plugin = Wp_Oneanddone::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->plugin_name = $plugin->get_plugin_name();
 		$this->version = $plugin->get_plugin_version();
@@ -112,6 +112,10 @@ class Wp-Oneanddone_Admin {
 		add_action( 'admin_init', array( $this, 'settings_export' ) );
 		//Add the import settings method
 		add_action( 'admin_init', array( $this, 'settings_import' ) );
+		
+		/*
+		 * Load CPT_Columns
+		 * 
 		 * Check the file for example
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CPT_Columns.php' );
@@ -167,7 +171,7 @@ class Wp-Oneanddone_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), Wp-Oneanddone::VERSION );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), Wp_Oneanddone::VERSION );
 		}
 	}
 
@@ -312,3 +316,4 @@ class Wp-Oneanddone_Admin {
 			'type' => 'text_small'
 		) );
 	}
+}
