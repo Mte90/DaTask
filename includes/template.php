@@ -15,7 +15,7 @@
 function wo_get_template_part( $slug, $name = '', $include = true ) {
 	$template = '';
 	$path = plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . 'templates/';
-	$plugin = Wp-Oneanddone::get_instance();
+	$plugin = Wp_Oneanddone::get_instance();
 	$plugin_slug = $plugin->get_plugin_slug().'/';
 	
 	// Look in yourtheme/slug-name.php and yourtheme/wp-oneanddone/slug-name.php

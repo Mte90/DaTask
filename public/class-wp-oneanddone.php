@@ -48,7 +48,6 @@ class Wp_Oneanddone {
 	protected static $plugin_slug = 'wp-oneanddone';
 
 	/**
-	 
 	 *
 	 * Unique identifier for your plugin.
 	 *
@@ -75,7 +74,7 @@ class Wp_Oneanddone {
 	 *
 	 * @var      object
 	 */
-	protected $cpts = array( 'demo' );
+	protected $cpts = array( 'task', 'task-done' );
 
 	/**
 	 * Array of capabilities by roles
@@ -86,16 +85,16 @@ class Wp_Oneanddone {
 	 */
 	protected static $plugin_roles = array(
 		'editor' => array(
-			'edit_demo' => true,
-			'edit_others_demo' => true,
+			'edit_tasks' => true,
+			'edit_others_tasks' => true,
 		),
 		'author' => array(
-			'edit_demo' => true,
-			'edit_others_demo' => false,
+			'edit_tasks' => true,
+			'edit_others_tasks' => false,
 		),
 		'subscriber' => array(
-			'edit_demo' => false,
-			'edit_others_demo' => false,
+			'edit_tasks' => false,
+			'edit_others_tasks' => false,
 		),
 	);
 
@@ -112,13 +111,23 @@ class Wp_Oneanddone {
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
-		// Create Custom Post Type https://github.com/jtsternberg/CPT_Core/blob/master/README.md
 		register_via_cpt_core(
-				array( __( 'Demo', $this->get_plugin_slug() ), __( 'Demos', $this->get_plugin_slug() ), 'demo' ), array(
-			'taxonomies' => array( 'demo-section' ),
+				array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
+			'taxonomies' => array( 'task-projects' ),
 			'capabilities' => array(
-				'edit_post' => 'edit_demo',
-				'edit_others_posts' => 'edit_other_demo',
+				'edit_post' => 'edit_tasks',
+				'edit_others_posts' => 'edit_other_tasks',
+			),
+			'map_meta_cap' => true
+				)
+		);
+		
+		register_via_cpt_core(
+				array( __( 'Task Done', $this->get_plugin_slug() ), __( 'Tasks Done', $this->get_plugin_slug() ), 'task-done' ), array(
+			'taxonomies' => array( 'task-done-projects' ),
+			'capabilities' => array(
+				'edit_post' => 'edit_tasks',
+				'edit_others_posts' => 'edit_other_tasks',
 			),
 			'map_meta_cap' => true
 				)
@@ -126,25 +135,59 @@ class Wp_Oneanddone {
 
 		add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
 
-		// Create Custom Taxonomy https://github.com/jtsternberg/Taxonomy_Core/blob/master/README.md
 		register_via_taxonomy_core(
-				array( __( 'Demo Section', $this->get_plugin_slug() ), __( 'Demo Sections', $this->get_plugin_slug() ), 'demo-section' ), array(
+				array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
 			'public' => true,
 			'capabilities' => array(
 				'assign_terms' => 'edit_posts',
 			)
-				), array( 'demo' )
+				), array( 'task' )
+		);
+		
+		register_via_taxonomy_core(
+				array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
+			'public' => true,
+			'capabilities' => array(
+				'assign_terms' => 'edit_posts',
+			)
+				), array( 'task' )
+		);
+		
+		register_via_taxonomy_core(
+				array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
+			'public' => true,
+			'capabilities' => array(
+				'assign_terms' => 'edit_posts',
+			)
+				), array( 'task' )
+		);
+		
+		register_via_taxonomy_core(
+				array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
+			'public' => true,
+			'capabilities' => array(
+				'assign_terms' => 'edit_posts',
+			)
+				), array( 'task' )
+		);
+		
+		register_via_taxonomy_core(
+				array( __( 'Project Done', $this->get_plugin_slug() ), __( 'Projects Done', $this->get_plugin_slug() ), 'task-done-projects' ), array(
+			'public' => true,
+			'capabilities' => array(
+				'assign_terms' => 'edit_posts',
+			)
+				), array( 'task-done' )
 		);
 
 		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
 
 		//Override the template hierarchy for load /templates/content-demo.php
-		add_filter( 'template_include', array( $this, 'load_content_demo' ) );
+		add_filter( 'template_include', array( $this, 'load_content_task' ) );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
 
 		/*
 		 * Define custom functionality.
@@ -152,7 +195,7 @@ class Wp_Oneanddone {
 		 */
 		add_action( '@TODO', array( $this, 'action_method_name' ) );
 		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
-		add_shortcode( '@TODO', array( $this, 'shortcode_method_name' ) );
+		add_shortcode( 'oneanddone-todo', array( $this, 'oneanddone_todo' ) );
 	}
 
 	/**
@@ -301,7 +344,7 @@ class Wp_Oneanddone {
 		self::single_activate();
 		restore_current_blog();
 	}
-	
+
 	/**
 	 * Add support for custom CPT on the search box
 	 *
@@ -312,7 +355,7 @@ class Wp_Oneanddone {
 	public function filter_search( $query ) {
 		if ( $query->is_search ) {
 			//Mantain support for post
-			$this->cpts[] = 'post';
+			$this->cpts[] = 'task';
 			$query->set( 'post_type', $this->cpts );
 		}
 		return $query;
@@ -349,20 +392,21 @@ class Wp_Oneanddone {
 		//Requirements Detection System - read the doc/example in the library file
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/requirements.php' );
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
-			'WP' => new WordPress_Requirement( '4.1.0' )
+			'WP' => new WordPress_Requirement( '4.1.0' ),
+			'Plugin' => new Plugin_Requirement( array(
+				array( 'Theme My Login', 'theme-my-login/theme-my-login.php' ),
+				array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' ),
+				array( 'Search & Filter via AJAX', 'q-ajax-filter/q-ajax-filter.php' )
+					) )
 				) );
-
-		// @TODO: Define activation functionality here
-
+		
 		global $wp_roles;
 		if ( !isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles;
 		}
-
 		foreach ( $wp_roles->role_names as $role => $label ) {
 			//if the role is a standard role, map the default caps, otherwise, map as a subscriber
 			$caps = ( array_key_exists( $role, self::$plugin_roles ) ) ? self::$plugin_roles[ $role ] : self::$plugin_roles[ 'subscriber' ];
-
 			//loop and assign
 			foreach ( $caps as $cap => $grant ) {
 				//check to see if the user already has this capability, if so, don't re-add as that would override grant
@@ -381,7 +425,6 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	private static function single_deactivate() {
-		// @TODO: Define deactivation functionality here
 		//Clear the permalinks
 		flush_rewrite_rules();
 	}
@@ -418,18 +461,6 @@ class Wp_Oneanddone {
 	}
 
 	/**
-	 * Print the PHP var in the HTML of the frontend for access by JavaScript
-	 *
-	 * @since    1.0.0
-	 */
-	public function enqueue_js_vars() {
-		wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'wo_js_vars', array(
-			'alert' => __( 'Hey! You have clicked the button!', $this->get_plugin_slug() )
-				)
-		);
-	}
-
-	/**
 	 * Add class in the body on the frontend
 	 *
 	 * @since    1.0.0
@@ -444,9 +475,9 @@ class Wp_Oneanddone {
 	 *
 	 * @since    1.0.0
 	 */
-	public function load_content_demo( $original_template ) {
-		if ( is_singular( 'demo' ) && in_the_loop() ) {
-			return wo_get_template_part( 'content', 'demo', false );
+	public function load_content_task( $original_template ) {
+		if ( is_singular( 'task' ) && in_the_loop() ) {
+			return wo_get_template_part( 'content', 'task', false );
 		} else {
 			return $original_template;
 		}
@@ -479,17 +510,10 @@ class Wp_Oneanddone {
 	}
 
 	/**
-	 * NOTE:  Shortcode simple set of functions for creating macro codes for use
-	 * 		  in post content.
-	 *
-	 *        Reference:  http://codex.wordpress.org/Shortcode_API
-	 *
 	 * @since    1.0.0
 	 */
-	public function shortcode_method_name() {
-		// @TODO: Define your shortcode here
-		// Check for the CMB2 Shortcode Button
-		// In bundle with the boilerplate https://github.com/jtsternberg/Shortcode_Button
+	public function oneanddone_todo() {
+		
 	}
 
 }

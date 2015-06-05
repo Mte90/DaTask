@@ -1,11 +1,6 @@
 <?php
 
 /**
- * The WordPress Plugin Boilerplate.
- *
- * A foundation off of which to build well-documented WordPress plugins that
- * also follow WordPress Coding Standards and PHP best practices.
- *
  * @package   Wp_Oneanddone
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
@@ -13,7 +8,7 @@
  * @copyright 2014 GPL
  *
  * @wordpress-plugin
- * WP-OneAndDone:       @TODO
+ * Plugin Name:       WP-OneAndDone
  * Plugin URI:        @TODO
  * Description:       @TODO
  * Version:           1.0.0
@@ -49,15 +44,15 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/template.php' );
 /*
  * Load Fake Page class
  */
-require_once( plugin_dir_path( __FILE__ ) . 'includes/fake-page.php' );
-
-new Fake_Page(
-		array(
-	'slug' => 'fake_slug',
-	'post_title' => 'Fake Page Title',
-	'post content' => 'This is the fake page content'
-		)
-);
+//require_once( plugin_dir_path( __FILE__ ) . 'includes/fake-page.php' );
+//
+//new Fake_Page(
+//		array(
+//	'slug' => 'fake_slug',
+//	'post_title' => 'Fake Page Title',
+//	'post content' => 'This is the fake page content'
+//		)
+//);
 
 /*
  * Load Language wrapper function for WPML/Ceceppa Multilingua/Polylang

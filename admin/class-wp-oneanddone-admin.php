@@ -71,11 +71,8 @@ class Wp_Oneanddone_Admin {
 		$this->version = $plugin->get_plugin_version();
 		$this->cpts = $plugin->get_cpts();
 
-		// Load admin style sheet and JavaScript.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+		// Load admin JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
-		// Load admin style in dashboard for the At glance widget
-		add_action( 'admin_head-index.php', array( $this, 'enqueue_admin_styles' ) );
 
 		// At Glance Dashboard widget for your cpts
 		add_filter( 'dashboard_glance_items', array( $this, 'cpt_dashboard_support' ), 10, 1 );
@@ -92,12 +89,11 @@ class Wp_Oneanddone_Admin {
 		 * https://github.com/jtsternberg/Shortcode_Button
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2/init.php' );
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2-Shortcode/shortcode-button.php' );
 
 		/*
 		 * Add metabox
 		 */
-		add_action( 'cmb2_init', array( $this, 'cmb_demo_metaboxes' ) );
+		add_action( 'cmb2_init', array( $this, 'cmb_task_metaboxes' ) );
 
 		/*
 		 * Define custom functionality.
@@ -107,11 +103,6 @@ class Wp_Oneanddone_Admin {
 		 */
 		add_action( '@TODO', array( $this, 'action_method_name' ) );
 		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
-
-		//Add the export settings method
-		add_action( 'admin_init', array( $this, 'settings_export' ) );
-		//Add the import settings method
-		add_action( 'admin_init', array( $this, 'settings_import' ) );
 		
 		/*
 		 * Load CPT_Columns
@@ -119,7 +110,7 @@ class Wp_Oneanddone_Admin {
 		 * Check the file for example
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CPT_Columns.php' );
-		$post_columns = new CPT_columns( 'demo' );
+		$post_columns = new CPT_columns( 'task' );
 		$post_columns->add_column( 'cmb2_field', array(
 			'label' => __( 'CMB2 Field' ),
 			'type' => 'post_meta',
@@ -289,21 +280,21 @@ class Wp_Oneanddone_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function cmb_demo_metaboxes() {
+	public function cmb_task_metaboxes() {
 		// Start with an underscore to hide fields from custom fields list
-		$prefix = '_demo_';
+		$prefix = '_task_';
 
 		$cmb_demo = new_cmb2_box( array(
 			'id' => $prefix . 'metabox',
-			'title' => __( 'Demo Metabox', $this->plugin_slug ),
-			'object_types' => array( 'demo', ), // Post type
+			'title' => __( 'Task Info', $this->plugin_slug ),
+			'object_types' => array( 'task', ), // Post type
 			'context' => 'normal',
 			'priority' => 'high',
 			'show_names' => true, // Show field names on the left
 				) );
 
 		$cmb_demo->add_field( array(
-			'name' => __( 'Text', $this->plugin_slug ),
+			'name' => __( 'Prerequisites', $this->plugin_slug ),
 			'desc' => __( 'field description (optional)', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_text',
 			'type' => 'text'
