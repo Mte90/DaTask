@@ -95,15 +95,6 @@ class Wp_Oneanddone_Admin {
 		 * Add metabox
 		 */
 		add_action( 'cmb2_init', array( $this, 'cmb_task_metaboxes' ) );
-
-		/*
-		 * Define custom functionality.
-		 *
-		 * Read more about actions and filters:
-		 * http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
-		 */
-		add_action( '@TODO', array( $this, 'action_method_name' ) );
-		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
 		
 		/*
 		 * Load CPT_Columns
@@ -222,32 +213,6 @@ class Wp_Oneanddone_Admin {
 	}
 
 	/**
-	 * NOTE:     Actions are points in the execution of a page or process
-	 *           lifecycle that WordPress fires.
-	 *
-	 *           Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *           Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function action_method_name() {
-		// @TODO: Define your action hook callback here
-	}
-
-	/**
-	 * NOTE:     Filters are points of execution in which WordPress modifies data
-	 *           before saving it or sending it to the browser.
-	 *
-	 *           Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *           Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
-	 *
-	 * @since    1.0.0
-	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
-	}
-
-	/**
 	 * Add the counter of your CPTs in At Glance widget in the dashboard<br>
 	 * NOTE: add in $post_types your cpts, remember to edit the css style (admin/assets/css/admin.css) for change the dashicon<br>
 	 *
@@ -276,6 +241,7 @@ class Wp_Oneanddone_Admin {
 		}
 		return $items;
 	}
+	
 	/**
 	 * NOTE:     Your metabox on Demo CPT
 	 *
@@ -304,19 +270,22 @@ class Wp_Oneanddone_Admin {
 		$cmb_demo->add_field( array(
 			'name' => __( 'Prerequisites', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_prerequisites',
-			'type' => 'wysiwyg'
+			'type' => 'wysiwyg',
+			'options' => array('textarea_rows' => '5')
 		) );
 		
 		$cmb_demo->add_field( array(
 			'name' => __( 'Steps', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_steps',
-			'type' => 'wysiwyg'
+			'type' => 'wysiwyg',
+			'options' => array('textarea_rows' => '10')
 		) );
 		
 		$cmb_demo->add_field( array(
 			'name' => __( 'Completion', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_completion',
-			'type' => 'wysiwyg'
+			'type' => 'wysiwyg',
+			'options' => array('textarea_rows' => '5')
 		) );
 		
 		$cmb_demo->add_field( array(

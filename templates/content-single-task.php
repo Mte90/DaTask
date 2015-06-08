@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) {
 		<?php	
 		do_action('wo-task-info');
 		the_content();	
-		get_started_button();
+		task_buttons();
 		?>
 	</div>
 </article>

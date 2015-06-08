@@ -188,6 +188,8 @@ class Wp_Oneanddone {
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		//Ajax frontend
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/ajax.php' );
 
 		/*
 		 * Custom Action/Shortcode
