@@ -571,6 +571,12 @@ class Wp_Oneanddone {
 				$content .= $next_task;
 			}
 			$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
+			$users = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users' );
+			foreach ( $users as $user ) {
+				$user = array_keys($user);
+				$content .= '<a href="' . get_author_posts_url($user) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
+			}
+			$content .= '<br><br>';
 		}
 		return $content;
 	}
