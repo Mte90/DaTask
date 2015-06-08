@@ -181,6 +181,9 @@ class Wp_Oneanddone {
 		);
 
 		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
+		
+		//Function of plugin
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
 
 		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );

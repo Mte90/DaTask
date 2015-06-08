@@ -89,13 +89,13 @@ class Wp_Oneanddone_Admin {
 		 * https://github.com/jtsternberg/Shortcode_Button
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2/init.php' );
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );		
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );
 
 		/*
 		 * Add metabox
 		 */
 		add_action( 'cmb2_init', array( $this, 'cmb_task_metaboxes' ) );
-		
+
 		/*
 		 * Load CPT_Columns
 		 * 
@@ -106,7 +106,7 @@ class Wp_Oneanddone_Admin {
 		$post_columns->add_column( 'cmb2_field', array(
 			'label' => __( 'CMB2 Field' ),
 			'type' => 'post_meta',
-			'meta_key' => '_demo_' . $this->plugin_slug . '_text', 
+			'meta_key' => '_demo_' . $this->plugin_slug . '_text',
 			'orderby' => 'meta_value',
 			'sortable' => true,
 			'prefix' => "<b>",
@@ -241,7 +241,7 @@ class Wp_Oneanddone_Admin {
 		}
 		return $items;
 	}
-	
+
 	/**
 	 * NOTE:     Your metabox on Demo CPT
 	 *
@@ -251,7 +251,7 @@ class Wp_Oneanddone_Admin {
 		// Start with an underscore to hide fields from custom fields list
 		$prefix = '_task_';
 
-		$cmb_demo = new_cmb2_box( array(
+		$cmb_task = new_cmb2_box( array(
 			'id' => $prefix . 'metabox',
 			'title' => __( 'Task Info', $this->plugin_slug ),
 			'object_types' => array( 'task', ), // Post type
@@ -260,44 +260,64 @@ class Wp_Oneanddone_Admin {
 			'show_names' => true, // Show field names on the left
 				) );
 
-		$cmb_demo->add_field( array(
+		$cmb_task->add_field( array(
 			'name' => __( 'Subtitle', $this->plugin_slug ),
 			'desc' => __( 'Description in a row', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_subtitle',
 			'type' => 'text'
 		) );
 
-		$cmb_demo->add_field( array(
+		$cmb_task->add_field( array(
 			'name' => __( 'Prerequisites', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_prerequisites',
 			'type' => 'wysiwyg',
-			'options' => array('textarea_rows' => '5')
+			'options' => array( 'textarea_rows' => '5' )
 		) );
-		
-		$cmb_demo->add_field( array(
+
+		$cmb_task->add_field( array(
 			'name' => __( 'Steps', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_steps',
 			'type' => 'wysiwyg',
-			'options' => array('textarea_rows' => '10')
+			'options' => array( 'textarea_rows' => '10' )
 		) );
-		
-		$cmb_demo->add_field( array(
+
+		$cmb_task->add_field( array(
 			'name' => __( 'Completion', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_completion',
 			'type' => 'wysiwyg',
-			'options' => array('textarea_rows' => '5')
+			'options' => array( 'textarea_rows' => '5' )
 		) );
-		
-		$cmb_demo->add_field( array(
+
+		$cmb_task->add_field( array(
 			'name' => __( 'Mentor(s)', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_mentor',
 			'type' => 'text'
 		) );
-		
-		$cmb_demo->add_field( array(
+
+		$cmb_task->add_field( array(
 			'name' => __( 'Good next tasks (IDs)', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_next',
 			'type' => 'post_search_text'
 		) );
+
+		$cmb_task->add_field( array(
+			'id' => $prefix . $this->plugin_slug . '_users',
+			'type' => 'hidden'
+		) );
+
+		$cmb_user_task = new_cmb2_box( array(
+			'id' => $prefix . 'user_metabox',
+			'title' => __( 'Task Completed', $this->plugin_slug ),
+			'object_types' => array( 'user' ), // Post type
+			'context' => 'normal',
+			'priority' => 'high',
+			'show_names' => true, // Show field names on the left
+		) );
+		
+		$cmb_user_task->add_field( array(
+			'id' => $prefix . $this->plugin_slug . '_tasks',
+			'type' => 'hidden'
+		) );
 	}
+
 }

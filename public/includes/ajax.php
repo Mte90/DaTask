@@ -12,7 +12,7 @@ function wo_complete_task() {
 	if ( isset( $_GET[ '_wpnonce' ] ) ) {
 		$nonce = $_GET[ '_wpnonce' ];
 	}
-	
+
 	$result = wp_verify_nonce( $nonce, 'wo-task-action' );
 
 	if ( false === $result ) {
@@ -22,8 +22,10 @@ function wo_complete_task() {
 			die( '-1' );
 		}
 	}
-
-	echo $_GET[ 'ID' ];
+	if ( is_user_logged_in() ) {
+		set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
+		echo $_GET[ 'ID' ];
+	}
 	wp_die();
 }
 
