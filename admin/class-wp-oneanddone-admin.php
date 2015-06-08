@@ -302,7 +302,7 @@ class Wp_Oneanddone_Admin {
 
 		$cmb_task->add_field( array(
 			'id' => $prefix . $this->plugin_slug . '_users',
-			'type' => 'text'
+			'type' => 'hidden'
 		) );
 
 		$cmb_user_task = new_cmb2_box( array(

@@ -181,12 +181,16 @@ class Wp_Oneanddone {
 		);
 
 		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
-		
+
 		//Function of plugin
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
 
 		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
+		//Member page
+		add_filter( 'query_vars', array( $this, 'add_member_permalink' ) );
+		add_filter( 'init', array( $this, 'rewrite_rule' ) );
+		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
@@ -255,7 +259,6 @@ class Wp_Oneanddone {
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -340,7 +343,6 @@ class Wp_Oneanddone {
 	 * @param    int    $blog_id    ID of the new blog.
 	 */
 	public function activate_new_site( $blog_id ) {
-
 		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
 			return;
 		}
@@ -505,6 +507,46 @@ class Wp_Oneanddone {
 	}
 
 	/**
+	 * Add the rewrite permalink for member
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_member_permalink( $vars ) {
+		$vars[] = 'member';
+		return $vars;
+	}
+
+	/**
+	 * Add the rewrite permalink for member
+	 *
+	 * @since    1.0.0
+	 */
+	public function rewrite_rule() {
+		add_rewrite_tag( '%member%', '([^&]+)' );
+		add_rewrite_rule(
+				'^member/([^/]*)/?', 'index.php?member=$matches[1]', 'top'
+		);
+	}
+
+	/**
+	 * Include the template for the profile page
+	 *
+	 * @since    1.0.0
+	 */
+	public function userprofile_template() {
+		global $wp_query;
+
+		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+			if ( username_exists( $wp_query->query[ 'member' ] ) ) {
+				wo_get_template_part( 'user', 'profile', true );
+				exit;
+			} else {
+				$wp_query->set_404();
+			}
+		}
+	}
+
+	/**
 	 * Echo the data about the task
 	 *
 	 * @since    1.0.0
@@ -572,9 +614,11 @@ class Wp_Oneanddone {
 			}
 			$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
 			$users = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users' );
-			foreach ( $users as $user ) {
-				$user = array_keys($user);
-				$content .= '<a href="' . get_author_posts_url($user) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
+			if ( is_array( $users ) ) {
+				foreach ( $users as $user ) {
+					$user = array_keys( $user );
+					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
+				}
 			}
 			$content .= '<br><br>';
 		}
