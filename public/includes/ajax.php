@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   Wp-Oneanddone
  * @author    Mte90 <mte90net@gmail.com>
@@ -6,13 +7,26 @@
  * @link      http://mte90.net
  * @copyright 2014 GPL
  */
-
-function complete_task() {
-	check_ajax_referer( 'wo-task-nonce', $_GET['nonce'] );
+function wo_complete_task() {
+	//Based on check_ajax_referer
+	if ( isset( $_GET[ '_wpnonce' ] ) ) {
+		$nonce = $_GET[ '_wpnonce' ];
+	}
 	
-	wp_die();
-} 
-add_action( 'wp_ajax_nopriv_complete_task', 'complete_task' );
+	$result = wp_verify_nonce( $nonce, 'wo-task-action' );
 
+	if ( false === $result ) {
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			wp_die( -1 );
+		} else {
+			die( '-1' );
+		}
+	}
+
+	echo $_GET[ 'ID' ];
+	wp_die();
+}
+
+add_action( 'wp_ajax_wo_complete_task', 'wo_complete_task' );
 ?>
 

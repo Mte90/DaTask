@@ -188,6 +188,7 @@ class Wp_Oneanddone {
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
 		//Ajax frontend
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/ajax.php' );
 
@@ -458,7 +459,23 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+		if ( is_singular( 'task' ) ) {
+			wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+		}
+	}
+
+	/**
+	 * Print the PHP var in the HTML of the frontend for access by JavaScript
+	 *
+	 * @since    1.0.0
+	 */
+	public function enqueue_js_vars() {
+		if ( is_singular( 'task' ) ) {
+			wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'wo_js_vars', array(
+				'ajaxurl' => admin_url( 'admin-ajax.php' )
+					)
+			);
+		}
 	}
 
 	/**
@@ -521,17 +538,17 @@ class Wp_Oneanddone {
 		if ( is_singular( 'task' ) ) {
 			$prerequisites = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_prerequisites', true );
 			if ( !empty( $prerequisites ) ) {
-				$content .= '<h2>' . __( 'Prerequisites', $this->get_plugin_slug() ).'</h2>';
+				$content .= '<h2>' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $prerequisites;
 			}
 			$steps = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_steps', true );
 			if ( !empty( $steps ) ) {
-				$content .= '<h2>' . __( 'Steps', $this->get_plugin_slug() ).'</h2>';
+				$content .= '<h2>' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $steps;
 			}
 			$completion = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_completion', true );
 			if ( !empty( $completion ) ) {
-				$content .= '<h2>' . __( 'Completion', $this->get_plugin_slug() ).'</h2>';
+				$content .= '<h2>' . __( 'Completion', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $completion;
 			}
 			$mentor = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_mentor', true );
@@ -546,11 +563,11 @@ class Wp_Oneanddone {
 				$nexts_split = explode( ',', $nexts );
 				foreach ( $nexts_split as $post ) {
 					$post_data = get_post( ( int ) $post );
-					$next_task .= '<a href="' . get_permalink($post_data->ID) . '">' . $post_data->post_title . '</a>, ';
+					$next_task .= '<a href="' . get_permalink( $post_data->ID ) . '">' . $post_data->post_title . '</a>, ';
 				}
 				$content .= $next_task;
 			}
-			$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ).'</h2>';
+			$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
 		}
 		return $content;
 	}

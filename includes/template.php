@@ -60,14 +60,14 @@ function the_task_subtitle() {
  * @since    1.0.0
  */
 
-function get_started_button() {
+function task_buttons() {
 	if ( is_user_logged_in() ) {
 		?>
-		<form method="post" action="/en-US/tasks/3/start/">
-		<?php wp_nonce_field( 'name_of_my_action', 'name_of_nonce_field' ); ?>
-			<button type="submit" class="button" id="get-started"><?php _e( 'Complete task' ); ?></button>
-			<button type="submit" class="button" id="save-for-later"><?php _e( 'Save for later' ); ?></button>
-		</form>
+		<div class="wo-button">
+			<?php wp_nonce_field( 'wo-task-action', 'wo-task-nonce' ); ?>
+			<button type="submit" class="button complete" id="complete-task" data-complete="<?php the_ID(); ?>"><?php _e( 'Complete task' ); ?></button>
+			<button type="submit" class="button save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><?php _e( 'Save for later' ); ?></button>
+		</div>
 		<?php
 	}
 }
