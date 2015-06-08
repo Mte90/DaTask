@@ -1,7 +1,5 @@
 <?php
 
-// NOTE: change the prefix of the function
-
 /**
  * Load template files of the plugin also include a filter wo_get_template_part<br>
  * Based on WooCommerce function<br>

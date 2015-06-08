@@ -476,8 +476,8 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function load_content_task( $original_template ) {
-		if ( is_singular( 'task' ) && in_the_loop() ) {
-			return wo_get_template_part( 'content', 'task', false );
+		if ( is_singular( 'task' ) ) {
+			return wo_get_template_part( 'single', 'task', false );
 		} else {
 			return $original_template;
 		}
