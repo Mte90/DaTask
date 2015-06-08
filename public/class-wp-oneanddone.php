@@ -121,7 +121,7 @@ class Wp_Oneanddone {
 			'map_meta_cap' => true
 				)
 		);
-		
+
 		register_via_cpt_core(
 				array( __( 'Task Done', $this->get_plugin_slug() ), __( 'Tasks Done', $this->get_plugin_slug() ), 'task-done' ), array(
 			'taxonomies' => array( 'task-done-projects' ),
@@ -143,7 +143,7 @@ class Wp_Oneanddone {
 			)
 				), array( 'task' )
 		);
-		
+
 		register_via_taxonomy_core(
 				array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
 			'public' => true,
@@ -152,7 +152,7 @@ class Wp_Oneanddone {
 			)
 				), array( 'task' )
 		);
-		
+
 		register_via_taxonomy_core(
 				array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
 			'public' => true,
@@ -161,7 +161,7 @@ class Wp_Oneanddone {
 			)
 				), array( 'task' )
 		);
-		
+
 		register_via_taxonomy_core(
 				array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
 			'public' => true,
@@ -170,7 +170,7 @@ class Wp_Oneanddone {
 			)
 				), array( 'task' )
 		);
-		
+
 		register_via_taxonomy_core(
 				array( __( 'Project Done', $this->get_plugin_slug() ), __( 'Projects Done', $this->get_plugin_slug() ), 'task-done-projects' ), array(
 			'public' => true,
@@ -182,7 +182,7 @@ class Wp_Oneanddone {
 
 		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
 
-		//Override the template hierarchy for load /templates/content-demo.php
+		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
 
 		// Load public-facing style sheet and JavaScript.
@@ -190,11 +190,10 @@ class Wp_Oneanddone {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		/*
-		 * Define custom functionality.
-		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
+		 * Custom Action/Shortcode
 		 */
-		add_action( '@TODO', array( $this, 'action_method_name' ) );
-		add_filter( '@TODO', array( $this, 'filter_method_name' ) );
+		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
+		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
 		add_shortcode( 'oneanddone-todo', array( $this, 'oneanddone_todo' ) );
 	}
 
@@ -399,7 +398,7 @@ class Wp_Oneanddone {
 				array( 'Search & Filter via AJAX', 'q-ajax-filter/q-ajax-filter.php' )
 					) )
 				) );
-		
+
 		global $wp_roles;
 		if ( !isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles;
@@ -484,29 +483,74 @@ class Wp_Oneanddone {
 	}
 
 	/**
-	 * NOTE:  Actions are points in the execution of a page or process
-	 *        lifecycle that WordPress fires.
-	 *
-	 *        Actions:    http://codex.wordpress.org/Plugin_API#Actions
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Action_Reference
+	 * Echo the data about the task
 	 *
 	 * @since    1.0.0
 	 */
-	public function action_method_name() {
-		// @TODO: Define your action hook callback here
+	public function wo_task_info() {
+		echo '<ul><li>';
+		_e( 'Team: ', 'oneanddone' );
+		$team = get_the_terms( get_the_ID(), 'task-team' );
+		foreach ( $team as $term ) {
+			echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
+		}
+		echo '</li><li>';
+		_e( 'Project: ', 'oneanddone' );
+		$project = get_the_terms( get_the_ID(), 'task-area' );
+		foreach ( $project as $term ) {
+			echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
+		}
+		echo '</li><li>';
+		_e( 'Estimated time: ', 'oneanddone' );
+		$minute = get_the_terms( get_the_ID(), 'task-minute' );
+		foreach ( $minute as $term ) {
+			echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
+		}
+		echo '</li>';
+		echo '</ul>';
 	}
 
 	/**
-	 * NOTE:  Filters are points of execution in which WordPress modifies data
-	 *        before saving it or sending it to the browser.
-	 *
-	 *        Filters: http://codex.wordpress.org/Plugin_API#Filters
-	 *        Reference:  http://codex.wordpress.org/Plugin_API/Filter_Reference
+	 * Echo the content of the task
 	 *
 	 * @since    1.0.0
 	 */
-	public function filter_method_name() {
-		// @TODO: Define your filter hook callback here
+	public function wo_task_content( $content ) {
+		if ( is_singular( 'task' ) ) {
+			$prerequisites = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_prerequisites', true );
+			if ( !empty( $prerequisites ) ) {
+				$content .= '<h2>' . __( 'Prerequisites', $this->get_plugin_slug() ).'</h2>';
+				$content .= $prerequisites;
+			}
+			$steps = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_steps', true );
+			if ( !empty( $steps ) ) {
+				$content .= '<h2>' . __( 'Steps', $this->get_plugin_slug() ).'</h2>';
+				$content .= $steps;
+			}
+			$completion = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_completion', true );
+			if ( !empty( $completion ) ) {
+				$content .= '<h2>' . __( 'Completion', $this->get_plugin_slug() ).'</h2>';
+				$content .= $completion;
+			}
+			$mentor = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_mentor', true );
+			if ( !empty( $mentor ) ) {
+				$content .= '<br><br>' . __( 'Mentor(s): ', $this->get_plugin_slug() );
+				$content .= $mentor;
+			}
+			$nexts = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_next', true );
+			if ( !empty( $nexts ) ) {
+				$content .= '<br><br>' . __( 'Good next tasks: ', $this->get_plugin_slug() );
+				$next_task = '';
+				$nexts_split = explode( ',', $nexts );
+				foreach ( $nexts_split as $post ) {
+					$post_data = get_post( ( int ) $post );
+					$next_task .= '<a href="' . get_permalink($post_data->ID) . '">' . $post_data->post_title . '</a>, ';
+				}
+				$content .= $next_task;
+			}
+			$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ).'</h2>';
+		}
+		return $content;
 	}
 
 	/**

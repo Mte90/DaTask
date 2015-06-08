@@ -7,8 +7,13 @@ if ( !defined( 'ABSPATH' ) ) {
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header">
 		<h1 class="entry-title"><?php the_title(); ?></h1>
+		<h2><?php the_task_subtitle(); ?></h2>
 	</header>
 	<div class="entry-content">
-		<?php	the_content();	?>
+		<?php	
+		do_action('wo-task-info');
+		the_content();	
+		get_started_button();
+		?>
 	</div>
 </article>

@@ -89,6 +89,7 @@ class Wp_Oneanddone_Admin {
 		 * https://github.com/jtsternberg/Shortcode_Button
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2/init.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );		
 
 		/*
 		 * Add metabox
@@ -294,17 +295,40 @@ class Wp_Oneanddone_Admin {
 				) );
 
 		$cmb_demo->add_field( array(
-			'name' => __( 'Prerequisites', $this->plugin_slug ),
-			'desc' => __( 'field description (optional)', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_text',
+			'name' => __( 'Subtitle', $this->plugin_slug ),
+			'desc' => __( 'Description in a row', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_subtitle',
 			'type' => 'text'
 		) );
 
 		$cmb_demo->add_field( array(
-			'name' => __( 'Text Small', $this->plugin_slug ),
-			'desc' => __( 'field description (optional)', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_textsmall',
-			'type' => 'text_small'
+			'name' => __( 'Prerequisites', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_prerequisites',
+			'type' => 'wysiwyg'
+		) );
+		
+		$cmb_demo->add_field( array(
+			'name' => __( 'Steps', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_steps',
+			'type' => 'wysiwyg'
+		) );
+		
+		$cmb_demo->add_field( array(
+			'name' => __( 'Completion', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_completion',
+			'type' => 'wysiwyg'
+		) );
+		
+		$cmb_demo->add_field( array(
+			'name' => __( 'Mentor(s)', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_mentor',
+			'type' => 'text'
+		) );
+		
+		$cmb_demo->add_field( array(
+			'name' => __( 'Good next tasks (IDs)', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_next',
+			'type' => 'post_search_text'
 		) );
 	}
 }
