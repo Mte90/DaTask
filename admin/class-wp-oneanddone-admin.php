@@ -103,11 +103,10 @@ class Wp_Oneanddone_Admin {
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CPT_Columns.php' );
 		$post_columns = new CPT_columns( 'task' );
-		$post_columns->add_column( 'cmb2_field', array(
-			'label' => __( 'CMB2 Field' ),
-			'type' => 'post_meta',
-			'meta_key' => '_demo_' . $this->plugin_slug . '_text',
-			'orderby' => 'meta_value',
+		$post_columns->add_column( 'Done', array(
+			'label' => __( 'Done', $this->plugin_slug ),
+			'type' => 'custom_value',
+			'callback' => array($this, 'number_of_done'),
 			'sortable' => true,
 			'prefix' => "<b>",
 			'suffix' => "</b>",
@@ -318,6 +317,12 @@ class Wp_Oneanddone_Admin {
 			'id' => $prefix . $this->plugin_slug . '_tasks',
 			'type' => 'hidden'
 		) );
+	}
+	
+	public function number_of_done($task_id) {
+		//the number of user is the number of done
+		$users_of_task = get_users_by_task( $task_id );
+		return count($users_of_task);
 	}
 
 }
