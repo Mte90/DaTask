@@ -9,6 +9,7 @@ get_header();
     <h1><?php printf( __( "%s's Profile", $plugin->get_plugin_slug() ), get_user_of_profile() ); ?></h1>
     <h2><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h2>
     <?php
+    get_tasks_later();
     get_tasks_completed();
     ?>
 </div>

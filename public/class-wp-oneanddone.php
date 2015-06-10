@@ -114,6 +114,7 @@ class Wp_Oneanddone {
 		register_via_cpt_core(
 			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
 		    'taxonomies' => array( 'task-projects' ),
+		    'supports' => array( 'title', 'excerpt' ),
 		    'capabilities' => array(
 			'edit_post' => 'edit_tasks',
 			'edit_others_posts' => 'edit_other_tasks',
@@ -204,7 +205,6 @@ class Wp_Oneanddone {
 		 */
 		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
 		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
-		add_shortcode( 'oneanddone-todo', array( $this, 'oneanddone_todo' ) );
 	}
 
 	/**
@@ -582,7 +582,7 @@ class Wp_Oneanddone {
 		if ( is_singular( 'task' ) ) {
 			$prerequisites = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_prerequisites', true );
 			if ( !empty( $prerequisites ) ) {
-				$content .= '<h2>' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
+				$content = '<h2>' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $prerequisites;
 			}
 			$steps = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_steps', true );
@@ -624,13 +624,6 @@ class Wp_Oneanddone {
 			$content .= '<br><br>';
 		}
 		return $content;
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function oneanddone_todo() {
-		
 	}
 
 }

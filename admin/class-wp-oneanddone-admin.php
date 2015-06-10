@@ -317,8 +317,18 @@ class Wp_Oneanddone_Admin {
 			'id' => $prefix . $this->plugin_slug . '_tasks',
 			'type' => 'hidden'
 		) );
+		
+		$cmb_user_task->add_field( array(
+			'id' => $prefix . $this->plugin_slug . '_tasks_done',
+			'type' => 'hidden'
+		) );
 	}
 	
+	/**
+	 * Return the total of done of the task
+	 *
+	 * @since    1.0.0
+	 */
 	public function number_of_done($task_id) {
 		//the number of user is the number of done
 		$users_of_task = get_users_by_task( $task_id );
