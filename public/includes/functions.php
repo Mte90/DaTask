@@ -48,12 +48,15 @@ function get_tasks_completed() {
 	}
 }
 
-function get_tasks_later() {
-	if ( username_exists( get_user_of_profile() ) ) {
+function get_tasks_later($user = NULL) {
+	if($user === NULL) {
+		$user = get_user_of_profile();
+	}
+	if ( username_exists( $user ) ) {
 		$current_user = wp_get_current_user();
-		if ( $current_user->user_login === get_user_of_profile() ) {
+		if ( $current_user->user_login === $user ) {
 			$plugin = Wp_Oneanddone::get_instance();
-			$user_id = get_user_by( 'login', get_user_of_profile() );
+			$user_id = get_user_by( 'login', $user );
 			$user_id = $user_id->data->ID;
 			$tasks_later_user = get_tasks_later_by_user( $user_id );
 			if ( !empty( $tasks_later_user ) ) {

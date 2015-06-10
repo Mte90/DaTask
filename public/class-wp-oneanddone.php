@@ -205,6 +205,7 @@ class Wp_Oneanddone {
 		 */
 		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
 		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
+		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
 	}
 
 	/**
@@ -624,6 +625,14 @@ class Wp_Oneanddone {
 			$content .= '<br><br>';
 		}
 		return $content;
+	}
+
+	/**
+	 * @since    1.0.0
+	 */
+	public function oneanddone_progress() {
+		$current_user = wp_get_current_user();
+		get_tasks_later($current_user->user_login);
 	}
 
 }
