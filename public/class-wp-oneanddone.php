@@ -84,18 +84,18 @@ class Wp_Oneanddone {
 	 * @var array
 	 */
 	protected static $plugin_roles = array(
-		'editor' => array(
-			'edit_tasks' => true,
-			'edit_others_tasks' => true,
-		),
-		'author' => array(
-			'edit_tasks' => true,
-			'edit_others_tasks' => false,
-		),
-		'subscriber' => array(
-			'edit_tasks' => false,
-			'edit_others_tasks' => false,
-		),
+	    'editor' => array(
+		'edit_tasks' => true,
+		'edit_others_tasks' => true,
+	    ),
+	    'author' => array(
+		'edit_tasks' => true,
+		'edit_others_tasks' => false,
+	    ),
+	    'subscriber' => array(
+		'edit_tasks' => false,
+		'edit_others_tasks' => false,
+	    ),
 	);
 
 	/**
@@ -112,72 +112,72 @@ class Wp_Oneanddone {
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
 		register_via_cpt_core(
-				array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
-			'taxonomies' => array( 'task-projects' ),
-			'capabilities' => array(
-				'edit_post' => 'edit_tasks',
-				'edit_others_posts' => 'edit_other_tasks',
-			),
-			'map_meta_cap' => true
-				)
+			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
+		    'taxonomies' => array( 'task-projects' ),
+		    'capabilities' => array(
+			'edit_post' => 'edit_tasks',
+			'edit_others_posts' => 'edit_other_tasks',
+		    ),
+		    'map_meta_cap' => true
+			)
 		);
 
 		register_via_cpt_core(
-				array( __( 'Task Done', $this->get_plugin_slug() ), __( 'Tasks Done', $this->get_plugin_slug() ), 'task-done' ), array(
-			'taxonomies' => array( 'task-done-projects' ),
-			'capabilities' => array(
-				'edit_post' => 'edit_tasks',
-				'edit_others_posts' => 'edit_other_tasks',
-			),
-			'map_meta_cap' => true
-				)
+			array( __( 'Task Done', $this->get_plugin_slug() ), __( 'Tasks Done', $this->get_plugin_slug() ), 'task-done' ), array(
+		    'taxonomies' => array( 'task-done-projects' ),
+		    'capabilities' => array(
+			'edit_post' => 'edit_tasks',
+			'edit_others_posts' => 'edit_other_tasks',
+		    ),
+		    'map_meta_cap' => true
+			)
 		);
 
 		add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
 
 		register_via_taxonomy_core(
-				array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
-			'public' => true,
-			'capabilities' => array(
-				'assign_terms' => 'edit_posts',
-			)
-				), array( 'task' )
+			array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
 		);
 
 		register_via_taxonomy_core(
-				array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
-			'public' => true,
-			'capabilities' => array(
-				'assign_terms' => 'edit_posts',
-			)
-				), array( 'task' )
+			array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
 		);
 
 		register_via_taxonomy_core(
-				array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
-			'public' => true,
-			'capabilities' => array(
-				'assign_terms' => 'edit_posts',
-			)
-				), array( 'task' )
+			array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
 		);
 
 		register_via_taxonomy_core(
-				array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
-			'public' => true,
-			'capabilities' => array(
-				'assign_terms' => 'edit_posts',
-			)
-				), array( 'task' )
+			array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
 		);
 
 		register_via_taxonomy_core(
-				array( __( 'Project Done', $this->get_plugin_slug() ), __( 'Projects Done', $this->get_plugin_slug() ), 'task-done-projects' ), array(
-			'public' => true,
-			'capabilities' => array(
-				'assign_terms' => 'edit_posts',
-			)
-				), array( 'task-done' )
+			array( __( 'Project Done', $this->get_plugin_slug() ), __( 'Projects Done', $this->get_plugin_slug() ), 'task-done-projects' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task-done' )
 		);
 
 		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
@@ -399,13 +399,13 @@ class Wp_Oneanddone {
 		//Requirements Detection System - read the doc/example in the library file
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/requirements.php' );
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
-			'WP' => new WordPress_Requirement( '4.1.0' ),
-			'Plugin' => new Plugin_Requirement( array(
-				array( 'Theme My Login', 'theme-my-login/theme-my-login.php' ),
-				array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' ),
-				array( 'Search & Filter via AJAX', 'q-ajax-filter/q-ajax-filter.php' )
-					) )
-				) );
+		    'WP' => new WordPress_Requirement( '4.1.0' ),
+		    'Plugin' => new Plugin_Requirement( array(
+			array( 'Theme My Login', 'theme-my-login/theme-my-login.php' ),
+			array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' ),
+			array( 'Search & Filter via AJAX', 'q-ajax-filter/q-ajax-filter.php' )
+			    ) )
+			) );
 
 		global $wp_roles;
 		if ( !isset( $wp_roles ) ) {
@@ -477,8 +477,8 @@ class Wp_Oneanddone {
 	public function enqueue_js_vars() {
 		if ( is_singular( 'task' ) ) {
 			wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'wo_js_vars', array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' )
-					)
+			    'ajaxurl' => admin_url( 'admin-ajax.php' )
+				)
 			);
 		}
 	}
@@ -524,7 +524,7 @@ class Wp_Oneanddone {
 	public function rewrite_rule() {
 		add_rewrite_tag( '%member%', '([^&]+)' );
 		add_rewrite_rule(
-				'^member/([^/]*)/?', 'index.php?member=$matches[1]', 'top'
+			'^member/([^/]*)/?', 'index.php?member=$matches[1]', 'top'
 		);
 	}
 
@@ -612,11 +612,10 @@ class Wp_Oneanddone {
 				}
 				$content .= $next_task;
 			}
-			$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
-			$users = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users' );
+			$users = unserialize( get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users', true ) );
 			if ( is_array( $users ) ) {
-				foreach ( $users as $user ) {
-					$user = array_keys( $user );
+				$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
+				foreach ( $users as $user => $value ) {
 					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
 				}
 			}

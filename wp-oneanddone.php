@@ -42,19 +42,6 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/CPT_Core/CPT_Core.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/template.php' );
 
 /*
- * Load Fake Page class
- */
-//require_once( plugin_dir_path( __FILE__ ) . 'includes/fake-page.php' );
-//
-//new Fake_Page(
-//		array(
-//	'slug' => 'fake_slug',
-//	'post_title' => 'Fake Page Title',
-//	'post content' => 'This is the fake page content'
-//		)
-//);
-
-/*
  * Load Language wrapper function for WPML/Ceceppa Multilingua/Polylang
  */
 require_once( plugin_dir_path( __FILE__ ) . 'includes/language.php' );
