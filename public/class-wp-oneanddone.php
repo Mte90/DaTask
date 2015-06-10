@@ -401,7 +401,7 @@ class Wp_Oneanddone {
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
 		    'WP' => new WordPress_Requirement( '4.1.0' ),
 		    'Plugin' => new Plugin_Requirement( array(
-			array( 'Theme My Login', 'theme-my-login/theme-my-login.php' ),
+			//array( 'Theme My Login', 'theme-my-login/theme-my-login.php' ),
 			array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' ),
 			array( 'Search & Filter via AJAX', 'q-ajax-filter/q-ajax-filter.php' )
 			    ) )
@@ -535,9 +535,8 @@ class Wp_Oneanddone {
 	 */
 	public function userprofile_template() {
 		global $wp_query;
-
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
-			if ( username_exists( $wp_query->query[ 'member' ] ) ) {
+			if ( get_user_of_profile() !== NULL ) {
 				wo_get_template_part( 'user', 'profile', true );
 				exit;
 			} else {
@@ -605,11 +604,14 @@ class Wp_Oneanddone {
 			if ( !empty( $nexts ) ) {
 				$content .= '<br><br>' . __( 'Good next tasks: ', $this->get_plugin_slug() );
 				$next_task = '';
-				$nexts_split = explode( ',', $nexts );
-				foreach ( $nexts_split as $post ) {
-					$post_data = get_post( ( int ) $post );
-					$next_task .= '<a href="' . get_permalink( $post_data->ID ) . '">' . $post_data->post_title . '</a>, ';
+				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
+				$nexts_ids = new WP_Query( array(
+				    'post_type' => 'task',
+				    'post__in' => $nexts_split ) );
+				foreach ( $nexts_ids->posts as $post ) {
+					$next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
 				}
+				wp_reset_postdata();
 				$content .= $next_task;
 			}
 			$users = unserialize( get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users', true ) );
