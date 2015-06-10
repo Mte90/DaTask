@@ -20,8 +20,10 @@ function get_tasks_completed() {
 		$plugin = Wp_Oneanddone::get_instance();
 		$user_id = get_user_by( 'login', get_user_of_profile() );
 		$user_id = $user_id->data->ID;
-		echo '<h3>' . __( '%d Tasks Completed', $plugin->get_plugin_slug() ) . '</h3>';
 		$tasks_user = get_tasks_by_user( $user_id );
+		echo '<h3>';
+		printf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
+		echo '</h3>';
 		$task_implode = array_keys( $tasks_user );
 		$tasks = new WP_Query( array(
 		    'post_type' => 'task',
