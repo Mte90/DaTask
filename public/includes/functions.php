@@ -31,9 +31,11 @@ function get_tasks_completed() {
 		$user_id = $user_id->data->ID;
 		$tasks_user = get_tasks_by_user( $user_id );
 		if ( !empty( $tasks_user ) ) {
-			echo '<h3>';
+			echo '<div class="panel panel-success">';
+			echo '<div class="panel-heading">';
 			printf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
-			echo '</h3>';
+			echo '</div>';
+			echo '<div class="panel-content">';
 			$task_implode = array_keys( $tasks_user );
 			$tasks = new WP_Query( array(
 			    'post_type' => 'task',
@@ -43,13 +45,15 @@ function get_tasks_completed() {
 				echo '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
 			}
 			echo '</ul>';
+			echo '</div>';
+			echo '</div>';
 			wp_reset_postdata();
 		}
 	}
 }
 
-function get_tasks_later($user = NULL) {
-	if($user === NULL) {
+function get_tasks_later( $user = NULL ) {
+	if ( $user === NULL ) {
 		$user = get_user_of_profile();
 	}
 	if ( username_exists( $user ) ) {
@@ -60,9 +64,11 @@ function get_tasks_later($user = NULL) {
 			$user_id = $user_id->data->ID;
 			$tasks_later_user = get_tasks_later_by_user( $user_id );
 			if ( !empty( $tasks_later_user ) ) {
-				echo '<h3>';
+				echo '<div class="panel panel-danger">';
+				echo '<div class="panel-heading">';
 				_e( 'Tasks in progress', $plugin->get_plugin_slug() );
-				echo '</h3>';
+				echo '</div>';
+				echo '<div class="panel-content">';
 				$task_implode = array_keys( $tasks_later_user );
 				$tasks = new WP_Query( array(
 				    'post_type' => 'task',
@@ -72,6 +78,8 @@ function get_tasks_later($user = NULL) {
 					echo '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
 				}
 				echo '</ul>';
+				echo '</div>';
+				echo '</div>';
 				wp_reset_postdata();
 			}
 		}

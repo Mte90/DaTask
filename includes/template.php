@@ -69,8 +69,8 @@ function task_buttons() {
 		?>
 		<div class="wo-button">
 		    <?php wp_nonce_field( 'wo-task-action', 'wo-task-nonce' ); ?>
-		    <button type="submit" class="button complete" id="complete-task" data-complete="<?php the_ID(); ?>"><?php _e( 'Complete task' ); ?></button>
-		    <button type="submit" class="button save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><?php _e( 'Save for later' ); ?></button>
+		    <button type="submit" class="button btn btn-primary complete" id="complete-task" data-complete="<?php the_ID(); ?>"><?php _e( 'Complete task' ); ?></button>
+		    <button type="submit" class="button btn btn-secondary save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><?php _e( 'Save for later' ); ?></button>
 		</div>
 		<?php
 	}

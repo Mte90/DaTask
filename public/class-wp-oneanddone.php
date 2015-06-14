@@ -553,20 +553,24 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function wo_task_info() {
-		echo '<ul><li>';
+		echo '<ul class="list list-inset">';
+		echo '<li><b>';
 		_e( 'Team: ', 'oneanddone' );
+		echo '</b>';
 		$team = get_the_terms( get_the_ID(), 'task-team' );
 		foreach ( $team as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
 		}
-		echo '</li><li>';
+		echo '</li><li><b>';
 		_e( 'Project: ', 'oneanddone' );
+		echo '</b>';
 		$project = get_the_terms( get_the_ID(), 'task-area' );
 		foreach ( $project as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
 		}
-		echo '</li><li>';
+		echo '</li><li><b>';
 		_e( 'Estimated time: ', 'oneanddone' );
+		echo '</b>';
 		$minute = get_the_terms( get_the_ID(), 'task-minute' );
 		foreach ( $minute as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
@@ -584,27 +588,38 @@ class Wp_Oneanddone {
 		if ( is_singular( 'task' ) ) {
 			$prerequisites = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_prerequisites', true );
 			if ( !empty( $prerequisites ) ) {
-				$content = '<h2>' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
+				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $prerequisites;
 			}
 			$steps = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_steps', true );
 			if ( !empty( $steps ) ) {
-				$content .= '<h2>' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
+				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $steps;
 			}
 			$completion = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_completion', true );
 			if ( !empty( $completion ) ) {
-				$content .= '<h2>' . __( 'Completion', $this->get_plugin_slug() ) . '</h2>';
+				$content .= '<h2 class="alert alert-success">' . __( 'Completion', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $completion;
+				$content .= '<br><br>';
 			}
 			$mentor = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_mentor', true );
 			if ( !empty( $mentor ) ) {
-				$content .= '<br><br>' . __( 'Mentor(s): ', $this->get_plugin_slug() );
+				$content .= '<div class="panel panel-warning">';
+				$content .= '<div class="panel-heading">';
+				$content .= __( 'Mentor(s): ', $this->get_plugin_slug() );
+				$content .= '</div>';
+				$content .= '<div class="panel-content">';
 				$content .= $mentor;
+				$content .= '</div>';
+				$content .= '</div>';
 			}
 			$nexts = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_next', true );
 			if ( !empty( $nexts ) ) {
-				$content .= '<br><br>' . __( 'Good next tasks: ', $this->get_plugin_slug() );
+				$content .= '<div class="panel panel-danger">';
+				$content .= '<div class="panel-heading">';
+				$content .=  __( 'Good next tasks: ', $this->get_plugin_slug() );
+				$content .= '</div>';
+				$content .= '<div class="panel-content">';
 				$next_task = '';
 				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
 				$nexts_ids = new WP_Query( array(
@@ -615,19 +630,25 @@ class Wp_Oneanddone {
 				}
 				wp_reset_postdata();
 				$content .= $next_task;
+				$content .= '</div>';
+				$content .= '</div>';
 			}
 			$users = unserialize( get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users', true ) );
 			if ( is_array( $users ) ) {
 				$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
+				$content .= '<div class="panel panel-default">';
+				$content .= '<div class="panel-content">';
 				foreach ( $users as $user => $value ) {
 					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
 				}
+				$content .= '</div>';
+				$content .= '</div>';
 			}
 			$content .= '<br><br>';
 		}
 		return $content;
 	}
-	
+
 	/**
 	 * Echo the excerpt of the task
 	 *
@@ -635,8 +656,8 @@ class Wp_Oneanddone {
 	 */
 	public function wo_task_excerpt( $content ) {
 		global $post;
-		if ( get_post_type($post->ID) ) {
-			$content = the_task_subtitle(false);
+		if ( get_post_type( $post->ID ) ) {
+			$content = the_task_subtitle( false );
 		}
 		return $content;
 	}
@@ -646,7 +667,7 @@ class Wp_Oneanddone {
 	 */
 	public function oneanddone_progress() {
 		$current_user = wp_get_current_user();
-		get_tasks_later($current_user->user_login);
+		get_tasks_later( $current_user->user_login );
 	}
 
 }
