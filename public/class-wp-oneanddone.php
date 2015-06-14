@@ -205,6 +205,7 @@ class Wp_Oneanddone {
 		 */
 		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
 		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
+		add_filter( 'the_excerpt', array( $this, 'wo_task_excerpt' ) );
 		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
 	}
 
@@ -623,6 +624,19 @@ class Wp_Oneanddone {
 				}
 			}
 			$content .= '<br><br>';
+		}
+		return $content;
+	}
+	
+	/**
+	 * Echo the excerpt of the task
+	 *
+	 * @since    1.0.0
+	 */
+	public function wo_task_excerpt( $content ) {
+		global $post;
+		if ( get_post_type($post->ID) ) {
+			$content = the_task_subtitle(false);
 		}
 		return $content;
 	}

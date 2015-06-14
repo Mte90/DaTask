@@ -32,7 +32,7 @@ function wo_get_template_part( $slug, $name = '', $include = true ) {
 	if ( !$template ) {
 		$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
 	}
-	
+
 	// Allow 3rd party plugin filter template file from their plugin
 	$template = apply_filters( 'wo_get_template_part', $template, $slug, $name );
 
@@ -49,9 +49,13 @@ function wo_get_template_part( $slug, $name = '', $include = true ) {
  * @since    1.0.0
  */
 
-function the_task_subtitle() {
+function the_task_subtitle( $echo = true ) {
 	$plugin = Wp_Oneanddone::get_instance();
-	echo get_post_meta( get_the_ID(), '_task_' . $plugin->get_plugin_slug() . '_subtitle', true );
+	if ( $echo ) {
+		echo get_post_meta( get_the_ID(), '_task_' . $plugin->get_plugin_slug() . '_subtitle', true );
+	} else {
+		return get_post_meta( get_the_ID(), '_task_' . $plugin->get_plugin_slug() . '_subtitle', true );
+	}
 }
 
 /*
@@ -64,9 +68,9 @@ function task_buttons() {
 	if ( is_user_logged_in() ) {
 		?>
 		<div class="wo-button">
-			<?php wp_nonce_field( 'wo-task-action', 'wo-task-nonce' ); ?>
-			<button type="submit" class="button complete" id="complete-task" data-complete="<?php the_ID(); ?>"><?php _e( 'Complete task' ); ?></button>
-			<button type="submit" class="button save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><?php _e( 'Save for later' ); ?></button>
+		    <?php wp_nonce_field( 'wo-task-action', 'wo-task-nonce' ); ?>
+		    <button type="submit" class="button complete" id="complete-task" data-complete="<?php the_ID(); ?>"><?php _e( 'Complete task' ); ?></button>
+		    <button type="submit" class="button save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><?php _e( 'Save for later' ); ?></button>
 		</div>
 		<?php
 	}
