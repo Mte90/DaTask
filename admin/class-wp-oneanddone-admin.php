@@ -259,6 +259,13 @@ class Wp_Oneanddone_Admin {
 			'type' => 'wysiwyg',
 			'options' => array( 'textarea_rows' => '10' )
 		) );
+		
+		$cmb_task->add_field( array(
+			'name' => __( 'Need Help?', $this->plugin_slug ),
+			'id' => $prefix . $this->plugin_slug . '_help',
+			'type' => 'wysiwyg',
+			'options' => array( 'textarea_rows' => '5' )
+		) );
 
 		$cmb_task->add_field( array(
 			'name' => __( 'Completion', $this->plugin_slug ),

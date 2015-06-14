@@ -585,6 +585,10 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function wo_task_content( $content ) {
+		global $post;
+		if ( get_post_type( $post->ID ) === 'task' ) {
+			$content = the_task_subtitle( false );
+		}
 		if ( is_singular( 'task' ) ) {
 			$prerequisites = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_prerequisites', true );
 			if ( !empty( $prerequisites ) ) {
@@ -595,6 +599,12 @@ class Wp_Oneanddone {
 			if ( !empty( $steps ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $steps;
+			}
+			$help = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_help', true );
+			if ( !empty( $help ) ) {
+				$content .= '<h2 class="alert alert-success">' . __( 'Need Help?', $this->get_plugin_slug() ) . '</h2>';
+				$content .= $help;
+				$content .= '<br><br>';
 			}
 			$completion = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_completion', true );
 			if ( !empty( $completion ) ) {
@@ -656,7 +666,7 @@ class Wp_Oneanddone {
 	 */
 	public function wo_task_excerpt( $content ) {
 		global $post;
-		if ( get_post_type( $post->ID ) ) {
+		if ( get_post_type( $post->ID ) === 'task' ) {
 			$content = the_task_subtitle( false );
 		}
 		return $content;
