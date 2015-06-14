@@ -114,7 +114,7 @@ class Wp_Oneanddone {
 		register_via_cpt_core(
 			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
 		    'taxonomies' => array( 'task-projects' ),
-		    'supports' => array( 'title', 'excerpt' ),
+		    'supports' => array( 'title' ),
 		    'capabilities' => array(
 			'edit_post' => 'edit_tasks',
 			'edit_others_posts' => 'edit_other_tasks',

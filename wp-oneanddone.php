@@ -58,20 +58,11 @@ add_action( 'plugins_loaded', array( 'Wp_Oneanddone', 'get_instance' ) );
 /* ----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
  * ---------------------------------------------------------------------------- */
-
-/*
- *
- * If you want to include Ajax within the dashboard, change the following
- * conditional to:
- *
- * if ( is_admin() ) {
- *   ...
- * }
- *
- * The code below is intended to to give the lightest footprint possible.
- */
-if ( is_admin() && (!defined( 'DOING_AJAX' ) || !DOING_AJAX ) ) {
-
-	require_once( plugin_dir_path( __FILE__ ) . 'admin/class-wp-oneanddone-admin.php' );
-	add_action( 'plugins_loaded', array( 'Wp_Oneanddone_Admin', 'get_instance' ) );
+if ( is_admin() ) {
+	if ( (!defined( 'DOING_AJAX' ) || !DOING_AJAX ) ) {
+		require_once( plugin_dir_path( __FILE__ ) . 'admin/class-wp-oneanddone-admin.php' );
+		add_action( 'plugins_loaded', array( 'Wp_Oneanddone_Admin', 'get_instance' ) );
+	} else {
+		require_once( plugin_dir_path( __FILE__ ) . '/admin/includes/cmb2_post_search_field.php' );
+	}
 }

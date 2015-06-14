@@ -48,23 +48,6 @@ class Wp_Oneanddone_Admin {
 	 */
 	private function __construct() {
 
-		/*
-		 * @TODO :
-		 *
-		 * - Uncomment following lines if the admin class should only be available for super admins
-		 */
-		/* if( ! is_super_admin() ) {
-		  return;
-		  } */
-
-		/*
-		 * Call $plugin_slug from public plugin class.
-		 *
-		 * @TODO:
-		 *
-		 * - Rename "Wp_Oneanddone" to the name of your initial plugin class
-		 *
-		 */
 		$plugin = Wp_Oneanddone::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->plugin_name = $plugin->get_plugin_name();
@@ -84,9 +67,6 @@ class Wp_Oneanddone_Admin {
 		/*
 		 * CMB 2 for metabox and many other cool things!
 		 * https://github.com/WebDevStudios/CMB2
-		 * Also CMB2 Shortcode support 
-		 * Check on the repo for the example and documentation 
-		 * https://github.com/jtsternberg/Shortcode_Button
 		 */
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2/init.php' );
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );
@@ -296,7 +276,8 @@ class Wp_Oneanddone_Admin {
 		$cmb_task->add_field( array(
 			'name' => __( 'Good next tasks (IDs)', $this->plugin_slug ),
 			'id' => $prefix . $this->plugin_slug . '_next',
-			'type' => 'post_search_text'
+			'type' => 'post_search_text',
+			'post_type' => 'task'
 		) );
 
 		$cmb_task->add_field( array(
