@@ -192,6 +192,7 @@ class Wp_Oneanddone {
 		add_filter( 'query_vars', array( $this, 'add_member_permalink' ) );
 		add_filter( 'init', array( $this, 'rewrite_rule' ) );
 		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
+		add_filter( 'wp_title', array( $this, 'member_title' ), 10, 3 );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
@@ -548,6 +549,24 @@ class Wp_Oneanddone {
 	}
 
 	/**
+	 * Add the title for the memeber page
+	 *
+	 * @since    1.0.0
+	 */
+	public function member_title( $title, $sep, $seplocation ) {
+		global $wp_query;
+		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+			if ( get_user_of_profile() !== NULL ) {
+				$page_type = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
+
+				return $page_type . ' ' . $sep . $title;
+			}
+		} else {
+			return $title;
+		}
+	}
+
+	/**
 	 * Echo the data about the task
 	 *
 	 * @since    1.0.0
@@ -632,7 +651,7 @@ class Wp_Oneanddone {
 			if ( !empty( $nexts ) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
-				$content .=  __( 'Good next tasks: ', $this->get_plugin_slug() );
+				$content .= __( 'Good next tasks: ', $this->get_plugin_slug() );
 				$content .= '</div>';
 				$content .= '<div class="panel-content">';
 				$next_task = '';
