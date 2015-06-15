@@ -595,6 +595,11 @@ class Wp_Oneanddone {
 				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $prerequisites;
 			}
+			$matters = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_matters', true );
+			if ( !empty( $matters ) ) {
+				$content = '<h2 class="alert alert-success">' . __( 'Why this matters', $this->get_plugin_slug() ) . '</h2>';
+				$content .= $matters;
+			}
 			$steps = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_steps', true );
 			if ( !empty( $steps ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
