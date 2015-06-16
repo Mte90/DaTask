@@ -14,6 +14,7 @@ if ( !defined( 'ABSPATH' ) ) {
 		do_action('wo-task-info');
 		the_content();	
 		task_buttons();
+		comments_template();
 		?>
 	</div>
 </article>

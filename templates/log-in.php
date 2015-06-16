@@ -70,7 +70,7 @@ $plugin = Wp_Oneanddone::get_instance();
 				    <input type="password" name="pwd" class="form-control" value="" size="20" />
 				</div>
 				<div class="form-group">
-				    <input type="submit" name="wp-submit" class="button btn btn-primary" value="<?php _e( 'Register' ); ?>" />
+				    <input type="submit" name="wp-submit" class="button btn btn-primary" value="<?php _e( 'Login' ); ?>" />
 				</div>
 				<?php
 				do_action( 'login_form' );

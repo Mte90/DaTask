@@ -114,7 +114,7 @@ class Wp_Oneanddone {
 		register_via_cpt_core(
 			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
 		    'taxonomies' => array( 'task-projects' ),
-		    'supports' => array( 'title' ),
+		    'supports' => array( 'title', 'comments' ),
 		    'capabilities' => array(
 			'edit_post' => 'edit_tasks',
 			'edit_others_posts' => 'edit_other_tasks',
@@ -170,15 +170,6 @@ class Wp_Oneanddone {
 			'assign_terms' => 'edit_posts',
 		    )
 			), array( 'task' )
-		);
-
-		register_via_taxonomy_core(
-			array( __( 'Project Done', $this->get_plugin_slug() ), __( 'Projects Done', $this->get_plugin_slug() ), 'task-done-projects' ), array(
-		    'public' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task-done' )
 		);
 
 		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
