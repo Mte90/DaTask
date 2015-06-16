@@ -11,3 +11,11 @@
 		padding: 10px 15px;
 	}
 }
+.form-group {
+	min-height:34px;
+	select.form-control {
+		width:32%;
+		float:left;
+		margin-right:1%;
+	}
+}

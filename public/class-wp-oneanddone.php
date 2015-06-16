@@ -213,6 +213,13 @@ class Wp_Oneanddone {
 		    'post_content' => 'content'
 			)
 		);
+		new Fake_Page(
+			array(
+		    'slug' => 'logout',
+		    'post_title' => __( 'Logout', $this->get_plugin_slug() ),
+		    'post_content' => 'content'
+			)
+		);
 		add_action( 'login_init', array( $this, 'frontend_login' ) );
 		add_action( 'template_redirect', array( $this, 'frontend_login_redirect' ) );
 		add_action( 'admin_init', array( $this, 'prevent_access_backend' ) );
@@ -575,8 +582,12 @@ class Wp_Oneanddone {
 				$wp_query->set_404();
 			}
 		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
-			wo_get_template_part( 'user', 'profile', true );
-			exit;
+			if ( is_user_logged_in() ) {
+				wo_get_template_part( 'user', 'profile', true );
+				exit;
+			} else {
+				wp_redirect( home_url( '/login/' ) );
+			}
 		}
 	}
 
@@ -662,6 +673,10 @@ class Wp_Oneanddone {
 	public function frontend_login_redirect() {
 		if ( is_page( 'login' ) && is_user_logged_in() ) {
 			wp_redirect( home_url( '/member/' ) );
+			exit();
+		} elseif ( is_page( 'logout' ) && is_user_logged_in() ) {
+			wp_logout();
+			wp_redirect( home_url() );
 			exit();
 		}
 		global $wp_query;
