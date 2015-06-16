@@ -607,13 +607,7 @@ class Wp_Oneanddone {
 	 */
 	public function member_title( $title, $id ) {
 		global $wp_query;
-		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
-			if ( get_user_of_profile() !== NULL ) {
-				$page = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
-
-				return $page . ' ' . $sep . $title;
-			}
-		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+		if ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
 			return __( 'Your profile', $this->get_plugin_slug() );
 		} else {
 			return $title;

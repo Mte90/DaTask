@@ -1,1 +1,13 @@
-.entry-header.jumbotron{padding:20px !important}.entry-header h1{margin-top:10px}.panel .panel-content{padding:10px 15px}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-oneanddone\/public\/assets\/sass\/public\.scss}line{font-family:\000032}}
+.entry-header.jumbotron {
+  padding: 20px !important;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-oneanddone\/public\/assets\/sass\/public\.scss}line{font-family:\000035}}
+.entry-header h1, .entry-header h2 {
+  margin: 0px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-oneanddone\/public\/assets\/sass\/public\.scss}line{font-family:\0000310}}
+.panel .panel-content {
+  padding: 10px 15px;
+}
