@@ -90,6 +90,9 @@ function get_user_of_profile() {
 	global $wp_query;
 	if ( array_key_exists( 'member', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member' ] ) ) {
 		return $wp_query->query[ 'member' ];
+	} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+		$current_user = wp_get_current_user();
+		return $current_user->user_login;
 	} else {
 		return NULL;
 	}

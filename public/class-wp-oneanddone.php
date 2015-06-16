@@ -185,19 +185,27 @@ class Wp_Oneanddone {
 
 		//Function of plugin
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'includes/fake-page.php' );
 
 		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
 		//Member page
+		new Fake_Page(
+			array(
+		    'slug' => 'member',
+		    'post_title' => __( 'Your profile', $this->get_plugin_slug() ),
+		    'post_content' => 'content'
+			)
+		);
 		add_filter( 'query_vars', array( $this, 'add_member_permalink' ) );
 		add_filter( 'init', array( $this, 'rewrite_rule' ) );
 		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
-		add_filter( 'wp_title', array( $this, 'member_title' ), 10, 3 );
+		add_filter( 'wp_title', array( $this, 'member_wp_title' ), 10, 3 );
+		add_filter( 'the_title', array( $this, 'member_title' ), 10, 2 );
 		//Frontend login system
 		/*
 		 * Load Fake Page class
 		 */
-		require_once( plugin_dir_path( __FILE__ ) . 'includes/fake-page.php' );
 		new Fake_Page(
 			array(
 		    'slug' => 'login',
@@ -566,22 +574,47 @@ class Wp_Oneanddone {
 			} else {
 				$wp_query->set_404();
 			}
+		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+			wo_get_template_part( 'user', 'profile', true );
+			exit;
 		}
 	}
 
 	/**
-	 * Add the title for the memeber page
+	 * Add the head title for the member page
 	 *
 	 * @since    1.0.0
 	 */
-	public function member_title( $title, $sep, $seplocation ) {
+	public function member_wp_title( $title, $sep, $seplocation ) {
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
-				$page_type = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
+				$page = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
 
-				return $page_type . ' ' . $sep . $title;
+				return $page . ' ' . $sep . $title;
 			}
+		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+			return __( 'Your profile', $this->get_plugin_slug() ) . ' ' . $sep;
+		} else {
+			return $title;
+		}
+	}
+
+	/**
+	 * Add the title for the member page
+	 *
+	 * @since    1.0.0
+	 */
+	public function member_title( $title, $id ) {
+		global $wp_query;
+		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+			if ( get_user_of_profile() !== NULL ) {
+				$page = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
+
+				return $page . ' ' . $sep . $title;
+			}
+		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+			return __( 'Your profile', $this->get_plugin_slug() );
 		} else {
 			return $title;
 		}
