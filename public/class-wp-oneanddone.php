@@ -1,5 +1,4 @@
 <?php
-
 /**
  * WP-OneAndDone.
  *
@@ -123,17 +122,6 @@ class Wp_Oneanddone {
 			)
 		);
 
-		register_via_cpt_core(
-			array( __( 'Task Done', $this->get_plugin_slug() ), __( 'Tasks Done', $this->get_plugin_slug() ), 'task-done' ), array(
-		    'taxonomies' => array( 'task-done-projects' ),
-		    'capabilities' => array(
-			'edit_post' => 'edit_tasks',
-			'edit_others_posts' => 'edit_other_tasks',
-		    ),
-		    'map_meta_cap' => true
-			)
-		);
-
 		add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
 
 		register_via_taxonomy_core(
@@ -234,6 +222,11 @@ class Wp_Oneanddone {
 		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
 		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
 		add_filter( 'the_excerpt', array( $this, 'wo_task_excerpt' ) );
+		add_action( 'comment_form_logged_in_after', array( $this, 'task_comment_fields' ) );
+		add_action( 'comment_form_after_fields', array( $this, 'task_comment_fields' ) );
+		add_action( 'comment_post', array( $this, 'task_comment_save_data' ) );
+		add_filter( 'comment_text', array( $this, 'task_comment_show_data_frontend' ), 99, 2 );
+		add_action( 'add_meta_boxes_comment', array( $this, 'task_comment_show_metabox_data_backend' ) );
 		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
 	}
 
@@ -926,6 +919,70 @@ class Wp_Oneanddone {
 			$content = the_task_subtitle( false );
 		}
 		return $content;
+	}
+
+	/**
+	 * @since    1.0.0
+	 */
+	public function task_comment_fields() {
+		global $post;
+		if ( get_post_type( $post->ID ) === 'task' ) {
+			?>
+			<div class="form-group comment-form-tweet">
+			    <label for="tweet_url"><?php _e( 'Insert URL of the Tweet', $this->get_plugin_slug() ); ?></label>
+			    <input type="text" name="tweet_url" id="tweet_url" class="form-control" />
+			    <a href="https://twitter.com/share" class="twitter-share-button" data-via="Mte90net" data-hashtags="oneanddone">Tweet</a>
+			    <script>!function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https'; if (!d.getElementById(id)){js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }}(document, 'script', 'twitter-wjs');</script>
+			</div>
+			<?php
+		}
+	}
+
+	/**
+	 * @since    1.0.0
+	 */
+	public function task_comment_save_data( $comment_id ) {
+		global $post;
+		if ( get_post_type( $post->ID ) === 'task' ) {
+			add_comment_meta( $comment_id, 'tweet_url', esc_html( $_POST[ 'tweet_url' ] ) );
+		}
+	}
+
+	/**
+	 * @since    1.0.0
+	 */
+	public function task_comment_show_data_frontend( $text, $comment ) {
+		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
+			$title = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
+			if ( $title ) {
+				$title = '<a href="' . esc_attr( $title ) . '">' . esc_attr( $title ) . '</a>';
+				$text = $title . $text;
+			}
+		}
+		return $text;
+	}
+
+	/**
+	 * @since    1.0.0
+	 */
+	public function task_comment_show_metabox_data_backend() {
+		add_meta_box( 'task-comment', __( 'Task Feedback Data' ), array( $this, 'task_comment_show_field_data_backend' ), 'comment', 'normal', 'high' );
+	}
+
+	/**
+	 * @since    1.0.0
+	 */
+	public function task_comment_show_field_data_backend( $comment ) {
+		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
+			$title = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
+			wp_nonce_field( 'task_comment_nonce ', 'task_comment_nonce ', false );
+			?>
+			<p>
+			    <label for="tweet_url"><?php _e( 'URL of the Tweet', $this->get_plugin_slug() ); ?></label>
+			    <input type="text" name="tweet_url" value="<?php echo esc_attr( $title ); ?>" class="widefat" />
+			</p>
+			<?php
+		}
 	}
 
 	/**
