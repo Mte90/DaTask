@@ -953,10 +953,10 @@ class Wp_Oneanddone {
 	 */
 	public function task_comment_show_data_frontend( $text, $comment ) {
 		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
-			$title = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
-			if ( $title ) {
-				$title = '<a href="' . esc_attr( $title ) . '">' . esc_attr( $title ) . '</a>';
-				$text = $title . $text;
+			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
+			if ( $tweet ) {
+				$tweet = __( 'URL of the Tweet', $this->get_plugin_slug() ).'<a href="' . esc_attr( $title ) . '">' . esc_attr( $title ) . '</a>';
+				$text = $tweet . $text;
 			}
 		}
 		return $text;
@@ -974,12 +974,12 @@ class Wp_Oneanddone {
 	 */
 	public function task_comment_show_field_data_backend( $comment ) {
 		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
-			$title = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
+			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
 			wp_nonce_field( 'task_comment_nonce ', 'task_comment_nonce ', false );
 			?>
 			<p>
 			    <label for="tweet_url"><?php _e( 'URL of the Tweet', $this->get_plugin_slug() ); ?></label>
-			    <input type="text" name="tweet_url" value="<?php echo esc_attr( $title ); ?>" class="widefat" />
+			    <input type="text" name="tweet_url" value="<?php echo esc_attr( $tweet ); ?>" class="widefat" />
 			</p>
 			<?php
 		}
