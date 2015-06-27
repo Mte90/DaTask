@@ -228,6 +228,12 @@ class Wp_Oneanddone {
 		add_filter( 'comment_text', array( $this, 'task_comment_show_data_frontend' ), 99, 2 );
 		add_action( 'add_meta_boxes_comment', array( $this, 'task_comment_show_metabox_data_backend' ) );
 		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
+
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/Q_AJAX_Filter_Core.php' );
+		$filter_core = new Q_AJAX_Filter_Core();
+		add_action( 'wp_ajax_wpoad-ajax-search', array( $filter_core, 'create_filtered_section' ) );
+		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $filter_core, 'create_filtered_section' ) );
+		add_shortcode( 'ajaxFilter', array( $this, 'ajax_filter' ) );
 	}
 
 	/**
@@ -487,6 +493,7 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+		wp_enqueue_script( $this->get_plugin_slug() . '-filter-plugin-script', plugins_url( 'assets/js/q-ajax-filter.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		if ( is_singular( 'task' ) ) {
 			wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		}
@@ -498,12 +505,16 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function enqueue_js_vars() {
-		if ( is_singular( 'task' ) ) {
-			wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'wo_js_vars', array(
-			    'ajaxurl' => admin_url( 'admin-ajax.php' )
-				)
-			);
-		}
+		//if ( is_singular( 'task' ) ) {
+		wp_localize_script( $this->get_plugin_slug() . '-filter-plugin-script', 'wo_js_vars', array(
+		    'ajaxurl' => admin_url( 'admin-ajax.php' ),
+		    'site_name' => get_bloginfo( "sitename" ),
+		    'search' => __( 'Search', $this->get_plugin_slug() ),
+		    'search_results_for' => __( 'Search Results For', $this->get_plugin_slug() ),
+		    'on_load_text' => __( 'Search & filter to see results', $this->get_plugin_slug() ),
+			)
+		);
+		//}
 	}
 
 	/**
@@ -955,7 +966,7 @@ class Wp_Oneanddone {
 		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
 			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
 			if ( $tweet ) {
-				$tweet = __( 'URL of the Tweet', $this->get_plugin_slug() ).'<a href="' . esc_attr( $title ) . '">' . esc_attr( $title ) . '</a>';
+				$tweet = __( 'URL of the Tweet', $this->get_plugin_slug() ) . '<a href="' . esc_attr( $title ) . '">' . esc_attr( $title ) . '</a>';
 				$text = $tweet . $text;
 			}
 		}
@@ -991,6 +1002,64 @@ class Wp_Oneanddone {
 	public function oneanddone_progress() {
 		$current_user = wp_get_current_user();
 		get_tasks_later( $current_user->user_login );
+	}
+
+	/**
+	 * The is the method that is used by the shortcode
+	 * 
+	 * @param       array   $atts
+	 * @since       1.5
+	 * @return      HTML
+	 */
+	function ajax_filter( $atts ) {
+		// taxonomies ##
+		$taxonomies = isset( $atts[ 'taxonomies' ] ) ? preg_split( '/\s*,\s*/', trim( $atts[ 'taxonomies' ] ) ) : array( 'category' );
+
+		// show post count ##
+		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;
+
+		// show filter titles ##
+		$hide_titles = isset( $atts[ 'hide_titles' ] ) && $atts[ 'hide_titles' ] == 1 ? 1 : 0;
+
+		// pagination ##
+		$hide_pagination = isset( $atts[ 'hide_pagination' ] ) && $atts[ 'hide_pagination' ] == 1 ? 1 : 0;
+
+		// posts per page ##
+		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
+
+		// filters ##
+		$filters = isset( $atts[ 'filters' ] ) ? preg_split( '/\s*,\s*/', trim( $atts[ 'filters' ] ) ) : array();
+
+		// order ##
+		$order = isset( $atts[ 'order' ] ) && !empty( $atts[ 'order' ] ) ? $atts[ 'order' ] : 'DESC';
+
+		// order by ##
+		$order_by = isset( $atts[ 'order_by' ] ) && !empty( $atts[ 'order_by' ] ) ? $atts[ 'order_by' ] : 'date';
+
+		// filter position ##
+		$filter_position = isset( $atts[ 'filter_position' ] ) && !empty( $atts[ 'filter_position' ] ) ? $atts[ 'filter_position' ] : 'top';
+
+		// filter type ##
+		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
+
+		$filter_core = new Q_AJAX_Filter_Core();
+
+		$filter_core->add_inline_javascript( $order, $order_by, $filter_type, $filter_position );
+		// build filter navigation ##
+		$filter_core->create_filter_nav( $taxonomies, $filter_position, $filter_type, $show_count, $hide_titles );
+
+		// position the content correctly ##
+		$position = $filter_position == 'vertical' ? 'vertical' : 'horizontal';
+		?>  
+		<div id="ajax-content" class="r-content-wide <?php echo $position; ?>">
+		    <section id="ajax-filtered-section">
+			<?php
+			// add content ##
+			$filter_core->create_filtered_section( $filters, $posts_per_page, $hide_pagination, $order, $order_by, $filter_position );
+			?>
+		    </section>
+		</div>
+		<?php
 	}
 
 }
