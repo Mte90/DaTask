@@ -16,7 +16,7 @@ class Q_AJAX_Filter_Core {
 	 * @param       string  $order
 	 * @param       string  $order_by
 	 */
-	public function add_inline_javascript( $order = 'DESC', $order_by = 'date', $filter_type = 'select', $filter_position = 'top' ) {
+	public function add_inline_javascript( $order = 'DESC', $order_by = 'date', $filter_type = 'select' ) {
 
 		// grab the queried object ##
 		$queried_object = get_queried_object();
@@ -36,7 +36,6 @@ class Q_AJAX_Filter_Core {
 		          order: '<?php echo $order; ?>',
 		          order_by: '<?php echo $order_by; ?>',
 		          filter_type: '<?php echo $filter_type; ?>',
-		          filter_position: '<?php echo $filter_position; ?>',
 		          queried_object: '<?php echo $queried_object_string; ?>',
 		          thisPage: 1,
 		          nonce: '<?php echo esc_js( wp_create_nonce( 'filternonce' ) ); ?>'
@@ -60,7 +59,7 @@ class Q_AJAX_Filter_Core {
 	 * 
 	 * @return      string      HTML for results
 	 */
-	public function create_filtered_section( $filters = array(), $posts_per_page = 10, $hide_pagination = false, $order = 'DESC', $order_by = 'date', $use_queried_object = true, $filter_position = 'top' ) {
+	public function create_filtered_section( $filters = array(), $posts_per_page = 10 ) {
 
 		// post data passed, so update values ##
 		if ( $_GET ) {
@@ -68,8 +67,6 @@ class Q_AJAX_Filter_Core {
 			check_ajax_referer( 'filternonce' );
 
 			// grab post data ##
-			$order = isset( $_GET[ 'order' ] ) ? $_GET[ 'order' ] : $order;
-			$order_by = isset( $_GET[ 'order_by' ] ) ? $_GET[ 'order_by' ] : $order_by;
 			$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
 		}
 
@@ -100,14 +97,14 @@ class Q_AJAX_Filter_Core {
 
 		// build args list ##
 		$args = array(
-		    "post_type" => array('task')
+		    "post_type" => array( 'task' )
 		    , "posts_per_page" => ( int ) $posts_per_page
 		    , "tax_query" => array()
-		    , "orderby" => $order_by
-		    , "order" => $order
+		    , "orderby" => 'title'
+		    , "order" => 'DESC'
 		    , "post_status" => "publish"
 		);
-		
+
 		// check if paging value passed, if so add to the query ##
 		if ( isset( $_GET[ 'paged' ] ) ) {
 			$args[ 'paged' ] = $_GET[ 'paged' ];
@@ -115,22 +112,23 @@ class Q_AJAX_Filter_Core {
 			$args[ 'paged' ] = 1;
 		}
 
-		if ( isset( $filters ) ) {
+		if ( isset( $filters ) && !empty( $filters ) ) {
 			// add all the filters to tax_query ##
 			foreach ( $filters as $taxonomy => $ids ) {
-				foreach ( $ids as $id ) {
-					array_push( $args[ 'tax_query' ], array(
-					    'taxonomy' => $taxonomy,
-					    'field' => 'id',
-					    'terms' => $id
-						)
-					);
+				if ( $taxonomy !== 'search' ) {
+					foreach ( $ids as $id ) {
+						array_push( $args[ 'tax_query' ], array(
+						    'taxonomy' => $taxonomy,
+						    'field' => 'id',
+						    'terms' => $id
+							)
+						);
+					}
+				} else {
+					$args[ 's' ] = array();
+					array_push( $args[ 's' ], implode( ',', $ids ) );
 				}
 			}
-		}
-
-		// inserts a "AND" relation if more than one array in the tax_query ##
-		if ( count( $args[ 'tax_query' ] ) > 1 ) {
 			$args[ 'tax_query' ][ 'relation' ] = 'AND';
 		}
 
@@ -142,7 +140,7 @@ class Q_AJAX_Filter_Core {
 
 		// parse args ##
 		$q_ajax_filter_wp_query->query( $args );
-print_r($q_ajax_filter_wp_query);
+
 //chiarire perchè while non và
 		if ( $q_ajax_filter_wp_query->have_posts() ) {
 			while ( $q_ajax_filter_wp_query->have_posts() ) {
@@ -163,11 +161,6 @@ print_r($q_ajax_filter_wp_query);
 			echo "<p class='no-results'>";
 			_e( "No Results found :(" );
 			echo "</p>";
-		}
-
-		if ( $hide_pagination === false ) {
-			$this->pageination( $q_ajax_filter_wp_query->found_posts, $posts_per_page );
-			#echo "<p class="total">Total Results: {$q_ajax_filter_wp_query->found_posts}</p>";
 		}
 
 		// reset global post object ##
@@ -207,10 +200,7 @@ print_r($q_ajax_filter_wp_query);
 
 			// $max is equal to number of links shown
 			$max = 7;
-			if ( isset( $q_device ) && $q_device[ "width" ] < 640 ) {
-				$max = 3;
-			}
-
+			
 			// check things out ##
 			if ( $paging_info[ 'page_number' ] < $max ) {
 				$sp = 1;
@@ -302,7 +292,6 @@ print_r($q_ajax_filter_wp_query);
 	 */
 	public function create_filter_nav(
 	$taxonomies = array( 'category' )
-	, $filter_position = 'top'
 	, $filter_type = 'select'
 	, $show_count = 0
 	, $hide_titles = 0
@@ -325,17 +314,14 @@ print_r($q_ajax_filter_wp_query);
 		}
 		$searcher = isset( $_GET[ "s" ] ) ? $_GET[ "s" ] : "";
 
-		// position the filters correctly ##
-		$position = $filter_position == 'vertical' ? 'vertical' : 'horizontal';
 		?>
-		<div id="ajax-filters" class="ajax-filters <?php echo $position; ?>">
+		<div id="ajax-filters" class="ajax-filters">
 
 		    <div class="form-group">
-			<input type="text" value="<?php $searcher; ?>" name="searcher" id="searcher" placeholder="<?php _e( "Search" ); ?>" class="filter-selected form-control" />
+			<input type="text" value="<?php echo $searcher; ?>" name="searcher" id="searcher" placeholder="<?php _e( "Search" ); ?>" class="filter-selected form-control" />
 		    </div>
 		    <div class="form-group">
 			<?php
-			$queried_object = get_queried_object();
 
 			if ( $taxonomies && isset( $taxonomies[ 0 ] ) && $taxonomies[ 0 ] > '' ) {
 
@@ -361,13 +347,12 @@ print_r($q_ajax_filter_wp_query);
 
 					// nothing cooking in this taxonomy ##
 					if ( !$terms[ $first_key ] ) {
-
 						continue;
 					}
 
 					// get tax name ##
 					$the_tax = get_taxonomy( $terms[ $first_key ]->taxonomy );
-					#pr( $the_tax->labels->singular_name );
+
 					$the_tax_name = $the_tax->labels->singular_name;
 
 					if ( $filter_type == 'list' && $hide_titles == 0 ) {
@@ -388,7 +373,7 @@ print_r($q_ajax_filter_wp_query);
 							#wp_die(pr($terms));
 							foreach ( $terms as $term ) {
 
-								echo "<option value=\"$taxonomy={$term->term_id}\" data-tax=\"$taxonomy={$term->term_id}\" data-slug=\"{$term->slug}\" class=\"filter-selected\">";
+								echo "<option value=\"$taxonomy={$term->term_id}\" data-tax=\"$taxonomy={$term->term_id}\" class=\"filter-selected\">";
 
 								echo "{$term->name}";
 
@@ -410,9 +395,9 @@ print_r($q_ajax_filter_wp_query);
 
 							foreach ( $terms as $term ) {
 
-								echo "<div class=\"ajaxFilterItem form-control filter-selected";
+								echo "<div class=\"ajaxFilterItem form-control filter-selected\">";
 
-								echo "\" data-tax=\"$taxonomy={$term->term_id}\" data-slug=\"{$term->slug}\"><a href=\"#\" class=\"ajax-filter-label\"><span class=\"checkbox\"></span>{$term->name}</a></label>";
+								echo "<input type=\"checkbox\" data-tax=\"$taxonomy={$term->term_id}\" /><label>{$term->name}</a></label>";
 								if ( $show_count == 1 ) {
 									echo " ({$term->count})";
 								}

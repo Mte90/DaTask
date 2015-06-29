@@ -1021,41 +1021,26 @@ class Wp_Oneanddone {
 		// show filter titles ##
 		$hide_titles = isset( $atts[ 'hide_titles' ] ) && $atts[ 'hide_titles' ] == 1 ? 1 : 0;
 
-		// pagination ##
-		$hide_pagination = isset( $atts[ 'hide_pagination' ] ) && $atts[ 'hide_pagination' ] == 1 ? 1 : 0;
-
 		// posts per page ##
 		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
 
 		// filters ##
 		$filters = isset( $atts[ 'filters' ] ) ? preg_split( '/\s*,\s*/', trim( $atts[ 'filters' ] ) ) : array();
-
-		// order ##
-		$order = isset( $atts[ 'order' ] ) && !empty( $atts[ 'order' ] ) ? $atts[ 'order' ] : 'DESC';
-
-		// order by ##
-		$order_by = isset( $atts[ 'order_by' ] ) && !empty( $atts[ 'order_by' ] ) ? $atts[ 'order_by' ] : 'date';
-
-		// filter position ##
-		$filter_position = isset( $atts[ 'filter_position' ] ) && !empty( $atts[ 'filter_position' ] ) ? $atts[ 'filter_position' ] : 'top';
-
+		
 		// filter type ##
 		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
 
 		$filter_core = new Q_AJAX_Filter_Core();
 
-		$filter_core->add_inline_javascript( $order, $order_by, $filter_type, $filter_position );
+		$filter_core->add_inline_javascript( $filter_type);
 		// build filter navigation ##
-		$filter_core->create_filter_nav( $taxonomies, $filter_position, $filter_type, $show_count, $hide_titles );
-
-		// position the content correctly ##
-		$position = $filter_position == 'vertical' ? 'vertical' : 'horizontal';
+		$filter_core->create_filter_nav( $taxonomies, $filter_type, $show_count, $hide_titles );
 		?>  
-		<div id="ajax-content" class="r-content-wide <?php echo $position; ?>">
+		<div id="ajax-content" class="r-content-wide">
 		    <section id="ajax-filtered-section">
 			<?php
 			// add content ##
-			$filter_core->create_filtered_section( $filters, $posts_per_page, $hide_pagination, $order, $order_by, $filter_position );
+			$filter_core->create_filtered_section( $filters, $posts_per_page );
 			?>
 		    </section>
 		</div>

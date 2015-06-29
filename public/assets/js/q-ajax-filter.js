@@ -8,7 +8,7 @@ jQuery(document).ready(function() {
         selected: function () {
 
             var self = this,
-            arr = this.loop( jQuery('.' + self.selected_filters), 'tax' );
+            arr = this.loop( jQuery('.' + self.selected_filters + ':selected, .' + self.selected_filters + ' input:checked'), 'tax' );
             
             // Join the array with an "&" so we can break it later.
             return arr.join('&');
@@ -42,9 +42,7 @@ jQuery(document).ready(function() {
                 data: {
                     'action': 		'wpoad-ajax-search',
                     'filters': 		arr,
-                    'order':            AF_CONFIG['order'],
-                    'order_by':         AF_CONFIG['order_by'],
-                    'paged': 		AF_CONFIG['thisPage'],
+                    'paged': 		    AF_CONFIG['thisPage'],
                     '_ajax_nonce':      AF_CONFIG['nonce']
                 },
 
@@ -84,15 +82,6 @@ jQuery(document).ready(function() {
 
             var self = this;
             
-            // first load ##
-            if ( self.first === true ) {
-                
-                //console.log( "first time.." );
-                //self.reset();
-                //self.first = false; // load normally from now ##
-                
-            }
-
             jQuery('body').on('click', this.links, function (e) {
 
                 if (self.running === false) {
@@ -101,9 +90,6 @@ jQuery(document).ready(function() {
 
                     // Set to true to stop function chaining.
                     self.running = true;
-
-                    // The following line resets the queried_object var so that in an ajax request it page's queried object is ignored.
-                    AF_CONFIG['queried_object'] = 'af_null';
 
                     // Cache some of the DOM elements for re-use later in the method.
                     var link = jQuery(this),
@@ -139,16 +125,11 @@ jQuery(document).ready(function() {
                     // Set to true to stop function chaining.
                     self.running = true;
 
-                    // The following line resets the queried_object var so that in an ajax request it page's queried object is ignored.
-                    AF_CONFIG['queried_object'] = 'af_null';
-
                     // Cache some of the DOM elements for re-use later in the method.
                     var link = jQuery(this),
                         parent = link.parent('select'),
                         relation = link.attr('rel');
 
-
-                    jQuery(this).find(':selected').toggleClass(self.selected_filters);
                     AF_CONFIG['thisPage'] = 1;
 
                     if (relation === 'next') {
@@ -232,7 +213,6 @@ jQuery(document).ready(function() {
         search_passed = false;
 
         // empty search ##
-        //jQuery("input#searcher").removeClass("filter-selected");
         jQuery("input#searcher").val("");
 
         // reset all forms ##
@@ -245,9 +225,6 @@ jQuery(document).ready(function() {
         // back to basics ##
         af_filter.reset();
         
-        // reload search ##
-        //jQuery('#go')[0].click()
-
     });
     
     jQuery("input#searcher").keypress(function(event) {
