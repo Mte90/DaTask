@@ -114,6 +114,7 @@ class Q_AJAX_Filter_Core {
 			_e( "No Results found :(" );
 			echo "</p>";
 		}
+		$this->pagination( $q_ajax_filter_wp_query->found_posts, $posts_per_page );
 
 		// reset global post object 
 		wp_reset_query();
@@ -130,54 +131,58 @@ class Q_AJAX_Filter_Core {
 	 * @since       1.4.0
 	 * @return      String      HTML for pagination
 	 */
-	public function pageination( $total_posts, $posts_per_page ) {
+	public function pagination( $total_posts, $posts_per_page ) {
 		?>
 		<nav class="pagination">
 		    <?php
-		    if ( $_GET && isset( $_GET[ 'paged' ] ) && $_GET[ 'paged' ] > 1 ) {
-
-			    $page_number = $_GET[ 'paged' ];
+		    if ( $_GET ) {
 			    ?>
 			    <div class="prevPage"><a class="paginationNav" rel="prev" href="#">&lsaquo; <?php _e( "Back" ); ?></a></div>
 			    <?php
+			    if ( isset( $_GET[ 'paged' ] ) && $_GET[ 'paged' ] > 1 ) {
+				    $page_number = $_GET[ 'paged' ];
+			    } else {
+				    $page_number = 1;
+			    }
+			    if ( isset( $_GET[ 'postsperpage' ] ) ) {
+				    $posts_per_page = $_GET[ 'postsperpage' ];
+			    } else {
+				    $posts_per_page = 10;
+			    }
 		    } else {
-
 			    $page_number = 1;
 		    }
 		    ?>
 		    <div class="af-pages">
 			<?php
-			// get paging info 
-			$paging_info = $this->get_paging_info( $total_posts, $posts_per_page, $page_number );
-
-			// $max is equal to number of links shown
-			$max = 7;
-
+			//$offset = ( $page_number * $posts_per_page ) - $posts_per_page; // what row to start
+			echo $total_posts . '/' . $posts_per_page;
+			$pages = ceil( $total_posts / $posts_per_page ); // add the pages
 			// check things out 
-			if ( $paging_info[ 'page_number' ] < $max ) {
+			if ( $page_number < $posts_per_page ) {
 				$sp = 1;
-			} elseif ( $paging_info[ 'page_number' ] >= ($paging_info[ 'pages' ] - floor( $max / 2 )) ) {
-				$sp = $paging_info[ 'pages' ] - $max + 1;
-			} elseif ( $paging_info[ 'page_number' ] >= $max ) {
-				$sp = $paging_info[ 'page_number' ] - floor( $max / 2 );
+			} elseif ( $page_number >= ($pages - floor( $posts_per_page / 2 )) ) {
+				$sp = $pages - $posts_per_page + 1;
+			} elseif ( $page_number >= $posts_per_page ) {
+				$sp = $page_number - floor( $posts_per_page / 2 );
 			}
 
-			// If the current page >= $max then show link to 1st page
-			if ( $paging_info[ 'page_number' ] >= $max ) {
+			// If the current page >= $posts_per_page then show link to 1st page
+			if ( $page_number >= $posts_per_page ) {
 				?>
 				<a href='#' class='pagelink-1 pagelink' rel="1">1</a>..
 				<?php
 			}
 
-			//Loop though max number of pages shown and show links either side equal to $max / 2 -->
-			for ( $i = $sp; $i <= ($sp + $max - 1); $i++ ) {
+			//Loop though max number of pages shown and show links either side equal to $posts_per_page / 2 -->
+			for ( $i = $sp; $i <= ($sp + $posts_per_page - 1); $i++ ) {
 
-				if ( $i > $paging_info[ 'pages' ] ) {
+				if ( $i > $pages ) {
 					continue;
 				}
 
 				// current 
-				if ( $paging_info[ 'page_number' ] == $i ) {
+				if ( $page_number == $i ) {
 					?>
 					<a href="#" class="pagelink-<?php echo $i; ?> pagelink current" rel="<?php echo $i; ?>"><?php echo $i; ?></a>
 
@@ -192,10 +197,10 @@ class Q_AJAX_Filter_Core {
 				}
 			}
 
-			// If the current page is less than the last page minus $max pages divided by 2 
-			if ( $paging_info[ 'page_number' ] < ( $paging_info[ 'pages' ] - floor( $max / 2 ) ) ) {
+			// If the current page is less than the last page minus $posts_per_page pages divided by 2 
+			if ( $page_number < ( $pages - floor( $posts_per_page / 2 ) ) ) {
 				?>
-				..<a href='#' class="pagelink-<?php echo $paging_info[ 'pages' ]; ?> pagelink" rel="<?php echo $paging_info[ 'pages' ]; ?>"><?php echo $paging_info[ 'pages' ]; ?></a>
+				..<a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a>
 				<?php
 			}
 			?>
@@ -210,25 +215,6 @@ class Q_AJAX_Filter_Core {
 		    ?>
 		</nav>
 		<?php
-	}
-
-	/**
-	 * Paging Info
-	 * 
-	 * @since   1.7.0
-	 * @link    http://stackoverflow.com/questions/8361808/limit-pagination-page-number
-	 * @return  array   data for paging
-	 */
-	public function get_paging_info( $total_posts, $posts_per_page, $page_number ) {
-
-		$pages = ceil( $total_posts / $posts_per_page ); // calc pages
-
-		$data = array(); // start out array
-		$data[ 'offset' ] = ( $page_number * $posts_per_page ) - $posts_per_page; // what row to start at -- was ["si"]
-		$data[ 'pages' ] = $pages;     // add the pages
-		$data[ 'page_number' ] = $page_number; // Whats the current page
-
-		return $data; // return the paging data
 	}
 
 	/**

@@ -512,6 +512,8 @@ class Wp_Oneanddone {
 		    'search' => __( 'Search', $this->get_plugin_slug() ),
 		    'search_results_for' => __( 'Search Results For', $this->get_plugin_slug() ),
 		    'on_load_text' => __( 'Search & filter to see results', $this->get_plugin_slug() ),
+		    'thisPage' => 1,
+		    'nonce'=> esc_js( wp_create_nonce( 'filternonce' ) )
 			)
 		);
 		//}
@@ -1016,19 +1018,10 @@ class Wp_Oneanddone {
 		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
 		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
 		$filter_core = new Q_AJAX_Filter_Core();
-		?>
-		<script type="text/javascript">
-		        var AF_CONFIG = {
-		          ajaxurl: '<?php echo home_url( 'wp-admin/admin-ajax.php' ) ?>',
-		          thisPage: 1,
-		          nonce: '<?php echo esc_js( wp_create_nonce( 'filternonce' ) ); ?>'
-		        };
-		</script>
-		<?php
 		$filter_core->create_filter_nav( $filter_type, $show_count );
 		?>  
 		<div id="ajax-content" class="r-content-wide">
-		    <section id="ajax-filtered-section">
+		    <section id="ajax-filtered-section" data-postsperpage="<?php echo $posts_per_page ?>">
 			<?php
 			$filter_core->create_filtered_section( $posts_per_page );
 			?>
