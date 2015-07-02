@@ -233,7 +233,7 @@ class Wp_Oneanddone {
 		$wo_ajax_filter = new WO_AJAX_Filter();
 		add_action( 'wp_ajax_wpoad-ajax-search', array( $wo_ajax_filter, 'create_filtered_section' ) );
 		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $wo_ajax_filter, 'create_filtered_section' ) );
-		add_shortcode( 'ajaxFilter', array( $this, 'ajax_filter' ) );
+		add_shortcode( 'wo-search', array( $this, 'ajax_filter' ) );
 	}
 
 	/**
