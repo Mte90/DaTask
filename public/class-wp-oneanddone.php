@@ -511,7 +511,7 @@ class Wp_Oneanddone {
 		    'search_results_for' => __( 'Search Results For', $this->get_plugin_slug() ),
 		    'on_load_text' => __( 'Search & filter to see results', $this->get_plugin_slug() ),
 		    'thisPage' => 1,
-		    'nonce'=> esc_js( wp_create_nonce( 'filternonce' ) )
+		    'nonce' => esc_js( wp_create_nonce( 'filternonce' ) )
 			)
 		);
 		//}
@@ -576,9 +576,10 @@ class Wp_Oneanddone {
 			} else {
 				$wp_query->set_404();
 			}
-		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 			if ( is_user_logged_in() ) {
-				wo_get_template_part( 'user', 'profile', true );
+				$current_user = wp_get_current_user();
+				wp_redirect( home_url( '/member/' . $current_user->user_login ) );
 				exit;
 			} else {
 				wp_redirect( home_url( '/login/' ) );
@@ -599,7 +600,7 @@ class Wp_Oneanddone {
 
 				return $page . ' ' . $sep . $title;
 			}
-		} elseif ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 			return __( 'Your profile', $this->get_plugin_slug() ) . ' ' . $sep;
 		} else {
 			return $title;
@@ -613,7 +614,7 @@ class Wp_Oneanddone {
 	 */
 	public function member_title( $title, $id ) {
 		global $wp_query;
-		if ( isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member' ) {
+		if ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 			return __( 'Your profile', $this->get_plugin_slug() );
 		} else {
 			return $title;
@@ -667,7 +668,8 @@ class Wp_Oneanddone {
 	 */
 	public function frontend_login_redirect() {
 		if ( is_page( 'login' ) && is_user_logged_in() ) {
-			wp_redirect( home_url( '/member/' ) );
+			$current_user = wp_get_current_user();
+			wp_redirect( home_url( '/member/' . $current_user->user_login ) );
 			exit();
 		} elseif ( is_page( 'logout' ) && is_user_logged_in() ) {
 			wp_logout();
@@ -688,7 +690,7 @@ class Wp_Oneanddone {
 	 */
 	public function prevent_access_backend() {
 		if ( current_user_can( 'subscriber' ) && !defined( 'DOING_AJAX' ) ) {
-			wp_redirect( home_url( '/member/' ) );
+			wp_redirect( home_url( '/member/' . $current_user->user_login ) );
 			exit;
 		}
 	}
