@@ -229,10 +229,10 @@ class Wp_Oneanddone {
 		add_action( 'add_meta_boxes_comment', array( $this, 'task_comment_show_metabox_data_backend' ) );
 		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
 
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/Q_AJAX_Filter_Core.php' );
-		$filter_core = new Q_AJAX_Filter_Core();
-		add_action( 'wp_ajax_wpoad-ajax-search', array( $filter_core, 'create_filtered_section' ) );
-		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $filter_core, 'create_filtered_section' ) );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
+		$wo_ajax_filter = new WO_AJAX_Filter();
+		add_action( 'wp_ajax_wpoad-ajax-search', array( $wo_ajax_filter, 'create_filtered_section' ) );
+		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $wo_ajax_filter, 'create_filtered_section' ) );
 		add_shortcode( 'ajaxFilter', array( $this, 'ajax_filter' ) );
 	}
 
@@ -430,9 +430,7 @@ class Wp_Oneanddone {
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
 		    'WP' => new WordPress_Requirement( '4.1.0' ),
 		    'Plugin' => new Plugin_Requirement( array(
-			//array( 'Theme My Login', 'theme-my-login/theme-my-login.php' ),
-			array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' ),
-			array( 'Search & Filter via AJAX', 'q-ajax-filter/q-ajax-filter.php' )
+			array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' )
 			    ) )
 			) );
 
@@ -493,7 +491,7 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->get_plugin_slug() . '-filter-plugin-script', plugins_url( 'assets/js/q-ajax-filter.js', __FILE__ ), array( 'jquery' ), self::VERSION );
+		wp_enqueue_script( $this->get_plugin_slug() . '-filter-plugin-script', plugins_url( 'assets/js/ajax-filter.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		if ( is_singular( 'task' ) ) {
 			wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		}
@@ -1017,13 +1015,13 @@ class Wp_Oneanddone {
 		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;
 		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
 		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
-		$filter_core = new Q_AJAX_Filter_Core();
-		$filter_core->create_filter_nav( $filter_type, $show_count );
+		$wo_ajax_filter = new WO_AJAX_Filter();
+		$wo_ajax_filter->create_filter_nav( $filter_type, $show_count );
 		?>  
 		<div id="ajax-content" class="r-content-wide">
 		    <section id="ajax-filtered-section" data-postsperpage="<?php echo $posts_per_page ?>">
 			<?php
-			$filter_core->create_filtered_section( $posts_per_page );
+			$wo_ajax_filter->create_filtered_section( $posts_per_page );
 			?>
 		    </section>
 		</div>

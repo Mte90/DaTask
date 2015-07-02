@@ -1,13 +1,10 @@
 <?php
 
 /**
- *
- * the core class of the plugin
- * @author James Irving-Swift
- *
+ * Based on Simple Search Ajax of James Irving-Swift
  *
  */
-class Q_AJAX_Filter_Core {
+class WO_AJAX_Filter {
 
 	/**
 	 * Build the filtered element on the search results page
@@ -26,6 +23,7 @@ class Q_AJAX_Filter_Core {
 
 			// grab post data 
 			$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
+			
 			if ( isset( $_GET[ 'postsperpage' ] ) ) {
 				$posts_per_page = $_GET[ 'postsperpage' ];
 			}
@@ -44,7 +42,6 @@ class Q_AJAX_Filter_Core {
 				if ( !isset( $filters[ $string[ 0 ] ] ) || !is_array( $filters[ $string[ 0 ] ] ) ) {
 					$filters[ $string[ 0 ] ] = array();
 				}
-
 				// add items to array 
 				array_push( $filters[ $string[ 0 ] ], $string[ 1 ] );
 
@@ -81,8 +78,7 @@ class Q_AJAX_Filter_Core {
 						);
 					}
 				} else {
-					$args[ 's' ] = array();
-					array_push( $args[ 's' ], implode( ',', $ids ) );
+					$args[ 's' ] = $ids[0];
 				}
 			}
 			$args[ 'tax_query' ][ 'relation' ] = 'AND';
@@ -92,15 +88,15 @@ class Q_AJAX_Filter_Core {
 		$i = 0;
 
 		// new WP_Query 
-		$q_ajax_filter_wp_query = new WP_Query();
+		$wo_ajax_filter_wp_query = new WP_Query();
 
 		// parse args 
-		$q_ajax_filter_wp_query->query( $args );
+		$wo_ajax_filter_wp_query->query( $args );
 
 //chiarire perchè while non và
-		if ( $q_ajax_filter_wp_query->have_posts() ) {
-			while ( $q_ajax_filter_wp_query->have_posts() ) {
-				$q_ajax_filter_wp_query->the_post();
+		if ( $wo_ajax_filter_wp_query->have_posts() ) {
+			while ( $wo_ajax_filter_wp_query->have_posts() ) {
+				$wo_ajax_filter_wp_query->the_post();
 				?>
 				<article class="ajax-loaded">
 				    <h3><?php the_title(); ?></h3>
@@ -117,7 +113,7 @@ class Q_AJAX_Filter_Core {
 			_e( "No Results found :(" );
 			echo "</p>";
 		}
-		$this->pagination( $q_ajax_filter_wp_query->found_posts, $posts_per_page );
+		$this->pagination( $wo_ajax_filter_wp_query->found_posts, $posts_per_page );
 
 		// reset global post object 
 		wp_reset_query();
@@ -141,59 +137,54 @@ class Q_AJAX_Filter_Core {
 			<?php
 			if ( $_GET ) {
 				?>
-				<li>
-				    <a href="#" aria-label="Previous" class="paginationNav" rel="prev">
-					<span aria-hidden="true">&laquo;</span>
-				    </a>
-				</li>
 				<?php
 				if ( isset( $_GET[ 'paged' ] ) && $_GET[ 'paged' ] > 1 ) {
-					$page_number = $_GET[ 'paged' ];
+					$page_number = ( int ) $_GET[ 'paged' ];
 				} else {
 					$page_number = 1;
 				}
 				if ( isset( $_GET[ 'postsperpage' ] ) ) {
-					$posts_per_page = $_GET[ 'postsperpage' ];
+					$posts_per_page = ( int ) $_GET[ 'postsperpage' ];
 				} else {
 					$posts_per_page = 10;
 				}
 			} else {
 				$page_number = 1;
 			}
-
-			//$offset = ( $page_number * $posts_per_page ) - $posts_per_page; // what row to start
-			$pages = ceil( $total_posts / $posts_per_page ); // add the pages
-			// check things out 
-			if ( $page_number < $posts_per_page ) {
-				$sp = 1;
-			} elseif ( $page_number >= ($pages - floor( $posts_per_page / 2 )) ) {
-				$sp = $pages - $posts_per_page + 1;
-			} elseif ( $page_number >= $posts_per_page ) {
-				$sp = $page_number - floor( $posts_per_page / 2 );
+			$pages = ( int ) ceil( $total_posts / $posts_per_page ); // add the pages
+			//Print position 1
+			if ( $page_number >= 1 ) {
+				if ( 1 === $page_number ) {
+					$active = ' class="active"';
+				} else {
+					$active = '';
+				}
+				if ( $page_number !== 2 ) {
+					?>
+					<li<?php echo $active ?>><a href='#' class='pagelink-1 pagelink' rel="1">1</a></li>
+					<?php
+				}
+				if ( $page_number > 3 ) {
+					?>
+					<li><a>...</a></li>
+					<?php
+				}
 			}
-
-			// If the current page >= $posts_per_page then show link to 1st page
-			if ( $page_number >= $posts_per_page ) {
+			//print 3 page
+			if ( $page_number - 1 !== 0 ) {
 				?>
-				<li><a href='#' class='pagelink-1 pagelink' rel="1">1</a></li>
-				<li><a>...</a></li>
+				<li class="minus"><a href="#" class="pagelink-<?php echo ($page_number - 1); ?> pagelink" rel="<?php echo ($page_number - 1); ?>"><?php echo ($page_number - 1); ?></a></li>
 				<?php
 			}
-
-			//Loop though max number of pages shown and show links either side equal to $posts_per_page / 2 -->
-			for ( $i = $sp; $i <= ($sp + $posts_per_page - 1); $i++ ) {
-				if ( $i > $pages ) {
-					continue;
-				}
-				if ( $page_number !== $posts_per_page ) {
-					?>
-				<li><a href="#" class="pagelink-<?php echo $i; ?> pagelink current" rel="<?php echo $i; ?>"><?php echo $i; ?></a></li>
-					<?php
-				} else {
-					?>
-					<li><a href='#' class="pagelink-<?php echo $i; ?> pagelink" rel="<?php echo $i + 1; ?>"><?php echo $i + 1; ?></a></li>
-					<?php
-				}
+			if ( $page_number !== 1 ) {
+				?>
+				<li class="active"><a href="#" class="pagelink-<?php echo $page_number; ?> pagelink" rel="<?php echo $page_number; ?>"><?php echo $page_number; ?></a></li>
+				<?php
+			}
+			if ( $page_number !== $pages ) {
+				?>
+				<li class="plus"><a href="#" class="pagelink-<?php echo ($page_number + 1); ?> pagelink" rel="<?php echo ($page_number + 1); ?>"><?php echo ($page_number + 1); ?></a></li>
+				<?php
 			}
 
 			// If the current page is less than the last page minus $posts_per_page pages divided by 2 
@@ -203,13 +194,6 @@ class Q_AJAX_Filter_Core {
 				<li><a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a></li>
 				<?php
 			}
-
-			// check if we need to print pagination 
-			if ( ( $posts_per_page * $page_number ) < $total_posts && $posts_per_page < $total_posts ) {
-				?>
-				<li><a href="#" aria-label="Next" class="paginationNav" rel="next"><span aria-hidden="true">&raquo;</span></a></li>
-				<?php
-			} // pagination check  
 			?>
 		    </ul>
 		</nav>
@@ -250,7 +234,6 @@ class Q_AJAX_Filter_Core {
 					);
 
 					if ( !isset( $terms ) || empty( $terms ) || is_wp_error( $terms ) ) {
-
 						continue;
 					}
 
@@ -264,56 +247,43 @@ class Q_AJAX_Filter_Core {
 
 					// get tax name 
 					$the_tax = get_taxonomy( $terms[ $first_key ]->taxonomy );
-
 					$the_tax_name = $the_tax->labels->singular_name;
 
 					// select or list items ? 
 					switch ( $filter_type ) {
-
 						// build selects for changing values 
 						case "select";
-
-							echo "<select class=\"filter-$taxonomy ajax-select form-control\">";
+							echo '<select class="filter-' . $taxonomy . ' ajax-select form-control">';
 							echo "<option value=\"\" class=\"default\">-- " . $the_tax_name . " --</option>";
-
-							#wp_die(pr($terms));
 							foreach ( $terms as $term ) {
-
-								echo "<option value=\"$taxonomy={$term->term_id}\" data-tax=\"$taxonomy={$term->term_id}\" class=\"filter-selected\">";
-
-								echo "{$term->name}";
-
+								echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="'.$taxonomy.'">';
+								echo $term->name;
 								if ( $show_count == 1 ) {
-									echo " ({$term->count})";
+									echo ' (' . $term->count . ')';
 								}
-
-								echo "</option>";
+								echo '</option>';
 							}
-
-							echo "</select>";
-
+							echo '</select>';
 							break;
 
 						// build list items for changing values 
 						case "list";
-
 						default;
-
+							echo '<div class="filter-' . $taxonomy . ' filter-selected">';
+							echo '<h3>' . $the_tax_name . '</h3>';
+							echo '<ul class="list-group">';
 							foreach ( $terms as $term ) {
-
-								echo "<div class=\"ajaxFilterItem form-control filter-selected\">";
-
-								echo "<input type=\"checkbox\" data-tax=\"$taxonomy={$term->term_id}\" /><label>{$term->name}</a></label>";
+								echo '<li class="list-group-item"><input class="ajax-list" type="checkbox" data-tax="' . $term->term_id . '" data-slug="'.$taxonomy.'" /> <label>' . $term->name . '</a></label>';
 								if ( $show_count == 1 ) {
-									echo " ({$term->count})";
+									echo '<span class="badge">' . $term->count . '</span>';
 								}
-								echo "</div>";
+								echo '</li>';
 							}
-
+							echo '</ul></div>';
 							break;
-					} // switch 
-				} // loop  
-			} // taxs set 
+					} 
+				} 
+			} 
 			?> 
 		    </div> 
 		    <div class="form-group">
@@ -322,32 +292,6 @@ class Q_AJAX_Filter_Core {
 		    </div>		    
 		</div>
 		<?php
-	}
-
-	/**
-	 * Caste Array to Object
-	 * 
-	 * @param type $array
-	 * @return \stdClass|boolean
-	 */
-	public function array_to_object( $array ) {
-
-		if ( !is_array( $array ) ) {
-			return $array;
-		}
-
-		$object = new stdClass();
-		if ( is_array( $array ) && count( $array ) > 0 ) {
-			foreach ( $array as $name => $value ) {
-				$name = strtolower( trim( $name ) );
-				if ( !empty( $name ) ) {
-					$object->$name = $this->array_to_object( $value );
-				}
-			}
-			return $object;
-		} else {
-			return false;
-		}
 	}
 
 }

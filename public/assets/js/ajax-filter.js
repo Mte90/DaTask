@@ -1,30 +1,23 @@
 jQuery(document).ready(function () {
-  var AF_Filter = function (opts) {
+  var WO_Ajax_Filter = function (opts) {
     this.init(opts);
   };
 
-  AF_Filter.prototype = {
+  WO_Ajax_Filter.prototype = {
     selected: function () {
 
-      var self = this,
-              arr = this.loop(jQuery('.' + self.selected_filters + ':selected, .' + self.selected_filters + ' input:checked'), 'tax');
-
+      arr = this.loop(jQuery('.' + this.selected_filters + ':selected, .' + this.selected_filters + ' input:checked'));
       // Join the array with an "&" so we can break it later.
       return arr.join('&');
 
     },
-    loop: function (node, tax) {
+    loop: function (node) {
 
       // Return an array of selected navigation classes.
       var arr = [];
+      arr.push("search=" + jQuery("#searcher").val());
       node.each(function () {
-        if (jQuery(this).attr("id") === 'searcher') {
-          var id = "search=" + jQuery("#searcher").val();
-        } else {
-          var id = jQuery(this).data(tax);
-        }
-        if (id)
-          arr.push(id);
+        arr.push(jQuery(this).data('slug') + '=' + jQuery(this).data('tax'));
       });
       return arr;
 
@@ -44,19 +37,16 @@ jQuery(document).ready(function () {
           '_ajax_nonce': wo_js_vars.nonce
         },
         beforeSend: function () {
-          self.loader.fadeIn();
           self.section.animate({
             'opacity': .0
           }, 'slow');
-          jQuery("body.ajax-filter .pagination").hide("slow"); // show pagination 
+          jQuery(".ajax-filter .pagination").hide("slow"); // show pagination 
         },
         success: function (html) {
           self.section.empty();
           self.section.append(html);
         },
         complete: function () {
-          //console.log("ID: "+self.section.attr("id"));
-          jQuery(".ajax-loaded").fadeIn();
           jQuery('html, body').animate({
             scrollTop: jQuery(self.section).offset().top - 120
           }, 500);
@@ -64,7 +54,6 @@ jQuery(document).ready(function () {
             'opacity': 1
           }, 'slow');
           jQuery(".pagination").show("slow"); // show pagination 
-          self.loader.fadeOut();
           self.running = false;
         },
         error: function () {
@@ -80,26 +69,15 @@ jQuery(document).ready(function () {
 
         if (self.running === false) {
 
-          self.first = false; // load normally from now 
-
           // Set to true to stop function chaining.
           self.running = true;
 
           // Cache some of the DOM elements for re-use later in the method.
           var link = jQuery(this),
-                  parent = link.parent('li'),
-                  relation = link.attr('rel');
+                  parent = link.parent('li');
 
           if (parent.length > 0) {
             wo_js_vars.thisPage = 1;
-          }
-
-          if (relation === 'next') {
-            wo_js_vars.thisPage++;
-          } else if (relation === 'prev') {
-            wo_js_vars.thisPage--;
-          } else if (link.hasClass('pagelink')) {
-            wo_js_vars.thisPage = relation;
           }
 
           self.filter(self.selected());
@@ -114,24 +92,10 @@ jQuery(document).ready(function () {
 
         if (self.running === false) {
 
-          self.first = false; // load normally from now 
-
           // Set to true to stop function chaining.
           self.running = true;
 
-          // Cache some of the DOM elements for re-use later in the method.
-          var link = jQuery(this),
-                  relation = link.attr('rel');
-
           wo_js_vars.thisPage = 1;
-
-          if (relation === 'next') {
-            wo_js_vars.thisPage++;
-          } else if (relation === 'prev') {
-            wo_js_vars.thisPage--;
-          } else if (link.hasClass('pagelink')) {
-            wo_js_vars.thisPage = relation;
-          }
 
           self.filter(self.selected());
 
@@ -149,7 +113,7 @@ jQuery(document).ready(function () {
 
       jQuery("body.ajax-filter #ajax-filtered-section").append("<p class='no-results'></p>"); // add msg 
       jQuery(".no-results").html(wo_js_vars.on_load_text).fadeIn();
-      jQuery("body.ajax-filter .ajax-loaded").hide(); // hide all results 
+      //jQuery("body.ajax-filter .ajax-loaded").hide(); // hide all results 
       jQuery("body.ajax-filter .pagination").hide(); // hide pagination 
 
       jQuery('html, body').animate({
@@ -162,11 +126,8 @@ jQuery(document).ready(function () {
       // Set up the properties
       this.opts = opts;
       this.running = false;
-      this.first = true; // load differently the first time 
-      this.loader = jQuery(this.opts['loader']);
       this.section = jQuery(this.opts['section']);
       this.links = this.opts['links'];
-      this.select = this.opts['select'];
       this.selected_filters = this.opts['selected_filters'];
 
       // Run the methods.
@@ -176,12 +137,9 @@ jQuery(document).ready(function () {
 
   };
 
-  var af_filter = new AF_Filter({
-    'loader': '#ajax-loader',
+  var af_filter = new WO_Ajax_Filter({
     'section': '#ajax-filtered-section',
-    'links': '.ajax-filter-label, .paginationNav, .pagelink, #go',
-    'select': '.ajax-select',
-    'progbar': '#progbar',
+    'links': '.pagelink, #go',
     'selected_filters': 'filter-selected'
   });
 
