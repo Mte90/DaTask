@@ -136,28 +136,31 @@ class Q_AJAX_Filter_Core {
 	 */
 	public function pagination( $total_posts, $posts_per_page ) {
 		?>
-		<nav class="pagination">
-		    <?php
-		    if ( $_GET ) {
-			    ?>
-			    <div class="prevPage"><a class="paginationNav" rel="prev" href="#">&lsaquo; <?php _e( "Back" ); ?></a></div>
-			    <?php
-			    if ( isset( $_GET[ 'paged' ] ) && $_GET[ 'paged' ] > 1 ) {
-				    $page_number = $_GET[ 'paged' ];
-			    } else {
-				    $page_number = 1;
-			    }
-			    if ( isset( $_GET[ 'postsperpage' ] ) ) {
-				    $posts_per_page = $_GET[ 'postsperpage' ];
-			    } else {
-				    $posts_per_page = 10;
-			    }
-		    } else {
-			    $page_number = 1;
-		    }
-		    ?>
-		    <div class="af-pages">
+		<nav class="ajax-pagination">
+		    <ul class="pagination">
 			<?php
+			if ( $_GET ) {
+				?>
+				<li>
+				    <a href="#" aria-label="Previous" class="paginationNav" rel="prev">
+					<span aria-hidden="true">&laquo;</span>
+				    </a>
+				</li>
+				<?php
+				if ( isset( $_GET[ 'paged' ] ) && $_GET[ 'paged' ] > 1 ) {
+					$page_number = $_GET[ 'paged' ];
+				} else {
+					$page_number = 1;
+				}
+				if ( isset( $_GET[ 'postsperpage' ] ) ) {
+					$posts_per_page = $_GET[ 'postsperpage' ];
+				} else {
+					$posts_per_page = 10;
+				}
+			} else {
+				$page_number = 1;
+			}
+
 			//$offset = ( $page_number * $posts_per_page ) - $posts_per_page; // what row to start
 			$pages = ceil( $total_posts / $posts_per_page ); // add the pages
 			// check things out 
@@ -172,7 +175,8 @@ class Q_AJAX_Filter_Core {
 			// If the current page >= $posts_per_page then show link to 1st page
 			if ( $page_number >= $posts_per_page ) {
 				?>
-				<a href='#' class='pagelink-1 pagelink' rel="1">1</a> ..
+				<li><a href='#' class='pagelink-1 pagelink' rel="1">1</a></li>
+				<li><a>...</a></li>
 				<?php
 			}
 
@@ -183,11 +187,11 @@ class Q_AJAX_Filter_Core {
 				}
 				if ( $page_number !== $posts_per_page ) {
 					?>
-					<a href="#" class="pagelink-<?php echo $i; ?> pagelink current" rel="<?php echo $i; ?>"><?php echo $i; ?></a>
+				<li><a href="#" class="pagelink-<?php echo $i; ?> pagelink current" rel="<?php echo $i; ?>"><?php echo $i; ?></a></li>
 					<?php
 				} else {
 					?>
-					<a href='#' class="pagelink-<?php echo $i; ?> pagelink" rel="<?php echo $i+1; ?>"><?php echo $i+1; ?></a>
+					<li><a href='#' class="pagelink-<?php echo $i; ?> pagelink" rel="<?php echo $i + 1; ?>"><?php echo $i + 1; ?></a></li>
 					<?php
 				}
 			}
@@ -195,19 +199,19 @@ class Q_AJAX_Filter_Core {
 			// If the current page is less than the last page minus $posts_per_page pages divided by 2 
 			if ( $page_number < ( $pages - floor( $posts_per_page / 2 ) ) ) {
 				?>
-				.. <a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a>
+				<li><a>...</a></li>
+				<li><a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a></li>
 				<?php
 			}
+
+			// check if we need to print pagination 
+			if ( ( $posts_per_page * $page_number ) < $total_posts && $posts_per_page < $total_posts ) {
+				?>
+				<li><a href="#" aria-label="Next" class="paginationNav" rel="next"><span aria-hidden="true">&raquo;</span></a></li>
+				<?php
+			} // pagination check  
 			?>
-		    </div>
-		    <?php
-		    // check if we need to print pagination 
-		    if ( ( $posts_per_page * $page_number ) < $total_posts && $posts_per_page < $total_posts ) {
-			    ?>
-			    <div class="nextPage"><a class="paginationNav" rel="next" href="#"><?php _e( "Next" ); ?> &rsaquo;</a></div>
-			    <?php
-		    } // pagination check  
-		    ?>
+		    </ul>
 		</nav>
 		<?php
 	}
