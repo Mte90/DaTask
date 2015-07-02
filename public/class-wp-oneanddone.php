@@ -968,7 +968,7 @@ class Wp_Oneanddone {
 		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
 			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
 			if ( $tweet ) {
-				$tweet = __( 'URL of the Tweet', $this->get_plugin_slug() ) . '<a href="' . esc_attr( $title ) . '">' . esc_attr( $title ) . '</a>';
+				$tweet = __( 'URL of the Tweet', $this->get_plugin_slug() ) . ': <a href="' . esc_attr( $tweet ) . '">' . esc_attr( $tweet ) . '</a>';
 				$text = $tweet . $text;
 			}
 		}
