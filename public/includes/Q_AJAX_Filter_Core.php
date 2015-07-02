@@ -26,6 +26,9 @@ class Q_AJAX_Filter_Core {
 
 			// grab post data 
 			$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
+			if ( isset( $_GET[ 'postsperpage' ] ) ) {
+				$posts_per_page = $_GET[ 'postsperpage' ];
+			}
 		}
 
 		// counter 
@@ -156,7 +159,6 @@ class Q_AJAX_Filter_Core {
 		    <div class="af-pages">
 			<?php
 			//$offset = ( $page_number * $posts_per_page ) - $posts_per_page; // what row to start
-			echo $total_posts . '/' . $posts_per_page;
 			$pages = ceil( $total_posts / $posts_per_page ); // add the pages
 			// check things out 
 			if ( $page_number < $posts_per_page ) {
@@ -170,29 +172,22 @@ class Q_AJAX_Filter_Core {
 			// If the current page >= $posts_per_page then show link to 1st page
 			if ( $page_number >= $posts_per_page ) {
 				?>
-				<a href='#' class='pagelink-1 pagelink' rel="1">1</a>..
+				<a href='#' class='pagelink-1 pagelink' rel="1">1</a> ..
 				<?php
 			}
 
 			//Loop though max number of pages shown and show links either side equal to $posts_per_page / 2 -->
 			for ( $i = $sp; $i <= ($sp + $posts_per_page - 1); $i++ ) {
-
 				if ( $i > $pages ) {
 					continue;
 				}
-
-				// current 
-				if ( $page_number == $i ) {
+				if ( $page_number !== $posts_per_page ) {
 					?>
 					<a href="#" class="pagelink-<?php echo $i; ?> pagelink current" rel="<?php echo $i; ?>"><?php echo $i; ?></a>
-
 					<?php
-					// normal 
 				} else {
 					?>
-
-					<a href='#' class="pagelink-<?php echo $i; ?> pagelink" rel="<?php echo $i; ?>"><?php echo $i; ?></a>
-
+					<a href='#' class="pagelink-<?php echo $i; ?> pagelink" rel="<?php echo $i+1; ?>"><?php echo $i+1; ?></a>
 					<?php
 				}
 			}
@@ -200,7 +195,7 @@ class Q_AJAX_Filter_Core {
 			// If the current page is less than the last page minus $posts_per_page pages divided by 2 
 			if ( $page_number < ( $pages - floor( $posts_per_page / 2 ) ) ) {
 				?>
-				..<a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a>
+				.. <a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a>
 				<?php
 			}
 			?>
