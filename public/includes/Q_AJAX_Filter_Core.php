@@ -10,102 +10,55 @@
 class Q_AJAX_Filter_Core {
 
 	/**
-	 * Add inline JS to search page
-	 * 
-	 * @since       1.7.0
-	 * @param       string  $order
-	 * @param       string  $order_by
-	 */
-	public function add_inline_javascript( $order = 'DESC', $order_by = 'date', $filter_type = 'select' ) {
-
-		// grab the queried object ##
-		$queried_object = get_queried_object();
-
-		// get the page's current taxonomy to filter
-		if ( isset( $queried_object->term_id ) ) {
-			$queried_object_string = $queried_object->taxonomy . "##" . $queried_object->term_id;
-		} else {
-			$queried_object_string = "af_null";
-		}
-		?>
-		<script type="text/javascript">
-
-		        // configure AF - Q AJAX Filters ##
-		        var AF_CONFIG = {
-		          ajaxurl: '<?php echo home_url( 'wp-admin/admin-ajax.php' ) ?>',
-		          order: '<?php echo $order; ?>',
-		          order_by: '<?php echo $order_by; ?>',
-		          filter_type: '<?php echo $filter_type; ?>',
-		          queried_object: '<?php echo $queried_object_string; ?>',
-		          thisPage: 1,
-		          nonce: '<?php echo esc_js( wp_create_nonce( 'filternonce' ) ); ?>'
-		        };
-
-		</script>
-		<?php
-	}
-
-	/**
 	 * Build the filtered element on the search results page
 	 * 
 	 * @since       1.7.0
-	 * @param       array       $filters
 	 * @param       int         $posts_per_page
-	 * @param       string      $hide_pagination
-	 * @param       string      $order
-	 * @param       string      $order_by
-	 * @param       boolean     $use_queried_object
-	 * @param       string      $filter_position
 	 * 
 	 * @return      string      HTML for results
 	 */
-	public function create_filtered_section( $filters = array(), $posts_per_page = 10 ) {
-
-		// post data passed, so update values ##
+	public function create_filtered_section( $posts_per_page = 10 ) {
+		$filters = array();
+		// post data passed, so update values 
 		if ( $_GET ) {
-			// secure with a nonce ##
+			// secure with a nonce 
 			check_ajax_referer( 'filternonce' );
 
-			// grab post data ##
+			// grab post data 
 			$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
 		}
 
-		// counter ##
+		// counter 
 		$c = 0;
 
 		if ( isset( $_GET_filters ) && $_GET_filters[ 0 ] != "" ) { //check that the array isn't blank
-			// this while loop puts the filters in a usable array ##
+			// this while loop puts the filters in a usable array 
 			while ( $c < count( $_GET_filters ) ) {
-				// explode string to array ##
+				// explode string to array 
 				$string = explode( '=', $_GET_filters[ $c ] );
 
-				// check if each item is an array - or caste ##
+				// check if each item is an array - or caste 
 				if ( !isset( $filters[ $string[ 0 ] ] ) || !is_array( $filters[ $string[ 0 ] ] ) ) {
 					$filters[ $string[ 0 ] ] = array();
 				}
 
-				// add items to array ##
+				// add items to array 
 				array_push( $filters[ $string[ 0 ] ], $string[ 1 ] );
 
-				// clean up empty items ##
+				// clean up empty items 
 				array_filter( $filters );
 
-				// iterate ##
+				// iterate 
 				$c++;
 			}
 		}
 
-		// build args list ##
+		// build args list 
 		$args = array(
-		    "post_type" => array( 'task' )
-		    , "posts_per_page" => ( int ) $posts_per_page
-		    , "tax_query" => array()
-		    , "orderby" => 'title'
-		    , "order" => 'DESC'
-		    , "post_status" => "publish"
+		    "post_type" => array( 'task' ), "posts_per_page" => ( int ) $posts_per_page, "tax_query" => array(), "orderby" => 'title', "order" => 'DESC', "post_status" => "publish"
 		);
 
-		// check if paging value passed, if so add to the query ##
+		// check if paging value passed, if so add to the query 
 		if ( isset( $_GET[ 'paged' ] ) ) {
 			$args[ 'paged' ] = $_GET[ 'paged' ];
 		} else {
@@ -113,7 +66,7 @@ class Q_AJAX_Filter_Core {
 		}
 
 		if ( isset( $filters ) && !empty( $filters ) ) {
-			// add all the filters to tax_query ##
+			// add all the filters to tax_query 
 			foreach ( $filters as $taxonomy => $ids ) {
 				if ( $taxonomy !== 'search' ) {
 					foreach ( $ids as $id ) {
@@ -132,19 +85,18 @@ class Q_AJAX_Filter_Core {
 			$args[ 'tax_query' ][ 'relation' ] = 'AND';
 		}
 
-		// counter ##
+		// counter 
 		$i = 0;
 
-		// new WP_Query ##
+		// new WP_Query 
 		$q_ajax_filter_wp_query = new WP_Query();
 
-		// parse args ##
+		// parse args 
 		$q_ajax_filter_wp_query->query( $args );
 
 //chiarire perchè while non và
 		if ( $q_ajax_filter_wp_query->have_posts() ) {
 			while ( $q_ajax_filter_wp_query->have_posts() ) {
-
 				$q_ajax_filter_wp_query->the_post();
 				?>
 				<article class="ajax-loaded">
@@ -154,19 +106,19 @@ class Q_AJAX_Filter_Core {
 				    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( "Read More" ); ?></a>
 				</article>
 				<?php
-				// iterate ##
+				// iterate 
 				$i++;
-			} // while loop ##
+			} // while loop 
 		} else {
 			echo "<p class='no-results'>";
 			_e( "No Results found :(" );
 			echo "</p>";
 		}
 
-		// reset global post object ##
+		// reset global post object 
 		wp_reset_query();
 
-		// called from ajax - so needs to die ##
+		// called from ajax - so needs to die 
 		if ( $_GET ) {
 			die();
 		}
@@ -195,13 +147,13 @@ class Q_AJAX_Filter_Core {
 		    ?>
 		    <div class="af-pages">
 			<?php
-			// get paging info ##
+			// get paging info 
 			$paging_info = $this->get_paging_info( $total_posts, $posts_per_page, $page_number );
 
 			// $max is equal to number of links shown
 			$max = 7;
-			
-			// check things out ##
+
+			// check things out 
 			if ( $paging_info[ 'page_number' ] < $max ) {
 				$sp = 1;
 			} elseif ( $paging_info[ 'page_number' ] >= ($paging_info[ 'pages' ] - floor( $max / 2 )) ) {
@@ -224,13 +176,13 @@ class Q_AJAX_Filter_Core {
 					continue;
 				}
 
-				// current ##
+				// current 
 				if ( $paging_info[ 'page_number' ] == $i ) {
 					?>
 					<a href="#" class="pagelink-<?php echo $i; ?> pagelink current" rel="<?php echo $i; ?>"><?php echo $i; ?></a>
 
 					<?php
-					// normal ##
+					// normal 
 				} else {
 					?>
 
@@ -240,7 +192,7 @@ class Q_AJAX_Filter_Core {
 				}
 			}
 
-			// If the current page is less than the last page minus $max pages divided by 2 ##
+			// If the current page is less than the last page minus $max pages divided by 2 
 			if ( $paging_info[ 'page_number' ] < ( $paging_info[ 'pages' ] - floor( $max / 2 ) ) ) {
 				?>
 				..<a href='#' class="pagelink-<?php echo $paging_info[ 'pages' ]; ?> pagelink" rel="<?php echo $paging_info[ 'pages' ]; ?>"><?php echo $paging_info[ 'pages' ]; ?></a>
@@ -249,12 +201,12 @@ class Q_AJAX_Filter_Core {
 			?>
 		    </div>
 		    <?php
-		    // check if we need to print pagination ##
+		    // check if we need to print pagination 
 		    if ( ( $posts_per_page * $page_number ) < $total_posts && $posts_per_page < $total_posts ) {
 			    ?>
 			    <div class="nextPage"><a class="paginationNav" rel="next" href="#"><?php _e( "Next" ); ?> &rsaquo;</a></div>
 			    <?php
-		    } // pagination check ## 
+		    } // pagination check  
 		    ?>
 		</nav>
 		<?php
@@ -286,34 +238,14 @@ class Q_AJAX_Filter_Core {
 	 * @param       array   $taxonomies
 	 * @param       string  
 	 * @param       int     $show_count
-	 * @param       int     $hide_titles
 	 * 
 	 * @return      string      HTML for filter nav
 	 */
-	public function create_filter_nav(
-	$taxonomies = array( 'category' )
-	, $filter_type = 'select'
-	, $show_count = 0
-	, $hide_titles = 0
-	) {
+	public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
 
-		// checked for past values and knock on search ##
-		$category = isset( $_GET[ "category" ] ) ? $_GET[ "category" ] : '';
-		if ( isset( $category ) ) {
-			$category_term = get_term_by( 'slug', $category, 'category' );
-			if ( $category ) {
-				$category = $category_term->term_id;
-			}
-		}
-		$tag = isset( $_GET[ "tag" ] ) ? $_GET[ "tag" ] : '';
-		if ( isset( $tag ) ) {
-			$tag_term = get_term_by( 'slug', $tag, 'post_tag' );
-			if ( $tag ) {
-				$tag = $tag_term->term_id;
-			}
-		}
+		$taxonomies = array( 'task-area', 'task-difficulty', 'task-minute' );
+
 		$searcher = isset( $_GET[ "s" ] ) ? $_GET[ "s" ] : "";
-
 		?>
 		<div id="ajax-filters" class="ajax-filters">
 
@@ -322,15 +254,10 @@ class Q_AJAX_Filter_Core {
 		    </div>
 		    <div class="form-group">
 			<?php
-
 			if ( $taxonomies && isset( $taxonomies[ 0 ] ) && $taxonomies[ 0 ] > '' ) {
 
 				foreach ( $taxonomies as $taxonomy ) {
 
-					if ( !taxonomy_exists( $taxonomy ) ) {
-						echo "skipping {$taxonomy}";
-						continue;
-					}
 					$terms = get_terms( $taxonomy, array(
 					    'orderby' => 'name',
 					    'hide_empty' => 1
@@ -345,26 +272,20 @@ class Q_AJAX_Filter_Core {
 					reset( $terms );
 					$first_key = key( $terms );
 
-					// nothing cooking in this taxonomy ##
+					// nothing cooking in this taxonomy 
 					if ( !$terms[ $first_key ] ) {
 						continue;
 					}
 
-					// get tax name ##
+					// get tax name 
 					$the_tax = get_taxonomy( $terms[ $first_key ]->taxonomy );
 
 					$the_tax_name = $the_tax->labels->singular_name;
 
-					if ( $filter_type == 'list' && $hide_titles == 0 ) {
-
-						#pr($the_tax);
-						echo "<h4>{$the_tax_name}</h4>";
-					}
-
-					// select or list items ? ##
+					// select or list items ? 
 					switch ( $filter_type ) {
 
-						// build selects for changing values ##
+						// build selects for changing values 
 						case "select";
 
 							echo "<select class=\"filter-$taxonomy ajax-select form-control\">";
@@ -388,7 +309,7 @@ class Q_AJAX_Filter_Core {
 
 							break;
 
-						// build list items for changing values ##
+						// build list items for changing values 
 						case "list";
 
 						default;
@@ -405,9 +326,9 @@ class Q_AJAX_Filter_Core {
 							}
 
 							break;
-					} // switch ##
-				} // loop ## 
-			} // taxs set ##
+					} // switch 
+				} // loop  
+			} // taxs set 
 			?> 
 		    </div> 
 		    <div class="form-group">

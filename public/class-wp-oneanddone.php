@@ -1012,35 +1012,25 @@ class Wp_Oneanddone {
 	 * @return      HTML
 	 */
 	function ajax_filter( $atts ) {
-		// taxonomies ##
-		$taxonomies = isset( $atts[ 'taxonomies' ] ) ? preg_split( '/\s*,\s*/', trim( $atts[ 'taxonomies' ] ) ) : array( 'category' );
-
-		// show post count ##
 		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;
-
-		// show filter titles ##
-		$hide_titles = isset( $atts[ 'hide_titles' ] ) && $atts[ 'hide_titles' ] == 1 ? 1 : 0;
-
-		// posts per page ##
 		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
-
-		// filters ##
-		$filters = isset( $atts[ 'filters' ] ) ? preg_split( '/\s*,\s*/', trim( $atts[ 'filters' ] ) ) : array();
-		
-		// filter type ##
 		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
-
 		$filter_core = new Q_AJAX_Filter_Core();
-
-		$filter_core->add_inline_javascript( $filter_type);
-		// build filter navigation ##
-		$filter_core->create_filter_nav( $taxonomies, $filter_type, $show_count, $hide_titles );
+		?>
+		<script type="text/javascript">
+		        var AF_CONFIG = {
+		          ajaxurl: '<?php echo home_url( 'wp-admin/admin-ajax.php' ) ?>',
+		          thisPage: 1,
+		          nonce: '<?php echo esc_js( wp_create_nonce( 'filternonce' ) ); ?>'
+		        };
+		</script>
+		<?php
+		$filter_core->create_filter_nav( $filter_type, $show_count );
 		?>  
 		<div id="ajax-content" class="r-content-wide">
 		    <section id="ajax-filtered-section">
 			<?php
-			// add content ##
-			$filter_core->create_filtered_section( $filters, $posts_per_page );
+			$filter_core->create_filtered_section( $posts_per_page );
 			?>
 		    </section>
 		</div>
