@@ -12,8 +12,8 @@ get_header();
 	</header>
 	<h2 class="alert alert-warning"><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h2>
 	<?php
-	get_tasks_later();
-	get_tasks_completed();
+	wo_tasks_later();
+	wo_tasks_completed();
 	?>
     </div>
     <?php get_sidebar(); ?>

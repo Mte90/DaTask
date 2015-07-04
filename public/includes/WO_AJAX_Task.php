@@ -51,7 +51,7 @@ class WO_AJAX_Task {
 			}
 		}
 		if ( is_user_logged_in() ) {
-			set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
+			wo_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			echo 'done!';
 		} else {
 			echo 'error!';
@@ -82,7 +82,7 @@ class WO_AJAX_Task {
 			}
 		}
 		if ( is_user_logged_in() ) {
-			set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
+			wo_set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			echo 'done!';
 		} else {
 			echo 'error!';

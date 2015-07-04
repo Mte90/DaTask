@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WP-OneAndDone.
  *
@@ -9,8 +10,14 @@
  * @copyright 2015 GPL
  */
 
-//Add the user id on the task post types and the task post types in the user meta
-function set_completed_task_for_user_id( $user_id, $task_id ) {
+/**
+ * Add the user id on the task post types and the task post types in the user meta
+ *
+ * @since     1.0.0
+ *
+ * @return    @bool true
+ */
+function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
 	$users_of_task = get_users_by_task( $task_id );
 	if ( !isset( $users_of_task[ $user_id ] ) ) {
@@ -22,46 +29,89 @@ function set_completed_task_for_user_id( $user_id, $task_id ) {
 		$tasks_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks', serialize( $tasks_of_user ) );
 	}
+	//Add the action for create plugins
+	do_action( 'wo-set-completed-task' );
+	return true;
 }
 
-function set_task_later_for_user_id( $user_id, $task_id ) {
+/**
+ * Add in the profile the ids of the task for later
+ *
+ * @since     1.0.0
+ *
+ * @return    @bool true
+ */
+function wo_set_task_later_for_user_id( $user_id, $task_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
 	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
 	if ( !isset( $tasks_later_of_user[ $task_id ] ) ) {
 		$tasks_later_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks_done', serialize( $tasks_later_of_user ) );
 	}
+	//Add the action for create plugins
+	do_action( 'wo-set-task-later' );
+	return true;
 }
 
-function get_tasks_completed() {
+/**
+ * Get the task done from the user with html
+ *
+ * @since     1.0.0
+ *
+ * @return    @string html
+ */
+function wo_get_tasks_completed() {
 	if ( username_exists( get_user_of_profile() ) ) {
 		$plugin = Wp_Oneanddone::get_instance();
 		$user_id = get_user_by( 'login', get_user_of_profile() );
 		$user_id = $user_id->data->ID;
 		$tasks_user = get_tasks_by_user( $user_id );
 		if ( !empty( $tasks_user ) ) {
-			echo '<div class="panel panel-success">';
-			echo '<div class="panel-heading">';
-			printf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
-			echo '</div>';
-			echo '<div class="panel-content">';
+			$print = '<div class="panel panel-success">';
+			$print .= '<div class="panel-heading">';
+			$print .= sprintf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
+			$print .= '</div>';
+			$print .= '<div class="panel-content">';
 			$task_implode = array_keys( $tasks_user );
 			$tasks = new WP_Query( array(
 			    'post_type' => 'task',
 			    'post__in' => $task_implode ) );
-			echo '<ul>';
+			$print .= '<ul>';
 			foreach ( $tasks->posts as $task ) {
-				echo '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
+				$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
 			}
-			echo '</ul>';
-			echo '</div>';
-			echo '</div>';
+			$print .= '</ul>';
+			$print .= '</div>';
+			$print .= '</div>';
 			wp_reset_postdata();
+			//Add the filter for improve this output
+			$print = apply_filters( 'wo-get-completed-task', $print );
 		}
+	} else {
+		$print = __( "This profile not exist!", $plugin->get_plugin_slug() );
 	}
+	return $print;
 }
 
-function get_tasks_later( $user = NULL ) {
+/**
+ * Print the task done from the user with html
+ *
+ * @since     1.0.0
+ *
+ * @return    @string html
+ */
+function wo_tasks_completed() {
+	echo wo_get_tasks_completed();
+}
+
+/**
+ * Get the task later from the user with html
+ *
+ * @since     1.0.0
+ *
+ * @return    @string html
+ */
+function wo_get_tasks_later( $user = NULL ) {
 	if ( $user === NULL ) {
 		$user = get_user_of_profile();
 	}
@@ -73,26 +123,42 @@ function get_tasks_later( $user = NULL ) {
 			$user_id = $user_id->data->ID;
 			$tasks_later_user = get_tasks_later_by_user( $user_id );
 			if ( !empty( $tasks_later_user ) ) {
-				echo '<div class="panel panel-danger">';
-				echo '<div class="panel-heading">';
-				_e( 'Tasks in progress', $plugin->get_plugin_slug() );
-				echo '</div>';
-				echo '<div class="panel-content">';
+				$print = '<div class="panel panel-danger">';
+				$print .= '<div class="panel-heading">';
+				$print .= __( 'Tasks in progress', $plugin->get_plugin_slug() );
+				$print .= '</div>';
+				$print .= '<div class="panel-content">';
 				$task_implode = array_keys( $tasks_later_user );
 				$tasks = new WP_Query( array(
 				    'post_type' => 'task',
 				    'post__in' => $task_implode ) );
-				echo '<ul>';
+				$print .= '<ul>';
 				foreach ( $tasks->posts as $task ) {
-					echo '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
+					$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
 				}
-				echo '</ul>';
-				echo '</div>';
-				echo '</div>';
+				$print .= '</ul>';
+				$print .= '</div>';
+				$print .= '</div>';
 				wp_reset_postdata();
+				//Add the filter for improve this output
+				$print = apply_filters( 'wo-get-task-later', $print );
 			}
 		}
+	} else {
+		$print = __( "This profile not exist!", $plugin->get_plugin_slug() );
 	}
+	return $print;
+}
+
+/**
+ * Print the task later from the user with html
+ *
+ * @since     1.0.0
+ *
+ * @return    @string html
+ */
+function wo_tasks_later( $user = NULL ) {
+	echo wo_get_tasks_later( $user );
 }
 
 function get_user_of_profile() {

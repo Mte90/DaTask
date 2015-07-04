@@ -1000,7 +1000,7 @@ class Wp_Oneanddone {
 	 */
 	public function oneanddone_progress() {
 		$current_user = wp_get_current_user();
-		get_tasks_later( $current_user->user_login );
+		wo_tasks_later( $current_user->user_login );
 	}
 
 }
