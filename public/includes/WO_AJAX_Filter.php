@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WO_AJAX_Filter
  * Based on Simple Search Ajax of James Irving-Swift
@@ -10,6 +11,17 @@
  * @copyright 2015 GPL
  */
 class WO_AJAX_Filter {
+
+	/**
+	 * Initialize the class with allo the hooks
+	 *
+	 * @since     1.0.0
+	 */
+	private function __construct() {
+		add_action( 'wp_ajax_wpoad-ajax-search', array( $this, 'create_filtered_section' ) );
+		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $this, 'create_filtered_section' ) );
+		add_shortcode( 'oneanddone-search', array( $this, 'ajax_filter' ) );
+	}
 
 	/**
 	 * Build the filtered element on the search results page
@@ -28,7 +40,7 @@ class WO_AJAX_Filter {
 
 			// grab post data 
 			$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
-			
+
 			if ( isset( $_GET[ 'postsperpage' ] ) ) {
 				$posts_per_page = $_GET[ 'postsperpage' ];
 			}
@@ -83,7 +95,7 @@ class WO_AJAX_Filter {
 						);
 					}
 				} else {
-					$args[ 's' ] = $ids[0];
+					$args[ 's' ] = $ids[ 0 ];
 				}
 			}
 			$args[ 'tax_query' ][ 'relation' ] = 'AND';
@@ -104,7 +116,7 @@ class WO_AJAX_Filter {
 				?>
 				<article class="ajax-loaded">
 				    <h3><?php the_title(); ?></h3>
-				    <?php the_post_thumbnail( array( 150, 150 ) ); ?>
+				<?php the_post_thumbnail( array( 150, 150 ) ); ?>
 				    <p><?php the_excerpt(); ?></p>
 				    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( "Read More" ); ?></a>
 				</article>
@@ -259,7 +271,7 @@ class WO_AJAX_Filter {
 							echo '<select class="filter-' . $taxonomy . ' ajax-select form-control">';
 							echo "<option value=\"\" class=\"default\">-- " . $the_tax_name . " --</option>";
 							foreach ( $terms as $term ) {
-								echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="'.$taxonomy.'">';
+								echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '">';
 								echo $term->name;
 								if ( $show_count == 1 ) {
 									echo ' (' . $term->count . ')';
@@ -276,7 +288,7 @@ class WO_AJAX_Filter {
 							echo '<h3>' . $the_tax_name . '</h3>';
 							echo '<ul class="list-group">';
 							foreach ( $terms as $term ) {
-								echo '<li class="list-group-item"><input class="ajax-list" type="checkbox" data-tax="' . $term->term_id . '" data-slug="'.$taxonomy.'" /> <label>' . $term->name . '</a></label>';
+								echo '<li class="list-group-item"><input class="ajax-list" type="checkbox" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '" /> <label>' . $term->name . '</a></label>';
 								if ( $show_count == 1 ) {
 									echo '<span class="badge">' . $term->count . '</span>';
 								}
@@ -284,9 +296,9 @@ class WO_AJAX_Filter {
 							}
 							echo '</ul></div>';
 							break;
-					} 
-				} 
-			} 
+					}
+				}
+			}
 			?> 
 		    </div> 
 		    <div class="form-group">
@@ -297,4 +309,29 @@ class WO_AJAX_Filter {
 		<?php
 	}
 
+	/**
+	 * Write the shortcode
+	 * 
+	 * @param       array   $atts
+	 * @since       1.5
+	 * @return      HTML
+	 */
+	function ajax_filter( $atts ) {
+		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;
+		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
+		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
+		$this->create_filter_nav( $filter_type, $show_count );
+		?>  
+		<div id="ajax-content" class="r-content-wide">
+		    <section id="ajax-filtered-section" data-postsperpage="<?php echo $posts_per_page ?>">
+			<?php
+			$this->create_filtered_section( $posts_per_page );
+			?>
+		    </section>
+		</div>
+		<?php
+	}
+
 }
+
+new WO_AJAX_Filter();

@@ -215,6 +215,8 @@ class Wp_Oneanddone {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
 		//Ajax frontend
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Task.php' );
+		//Search Shortcode
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
 
 		/*
 		 * Custom Action/Shortcode
@@ -229,11 +231,6 @@ class Wp_Oneanddone {
 		add_action( 'add_meta_boxes_comment', array( $this, 'task_comment_show_metabox_data_backend' ) );
 		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
 
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
-		$wo_ajax_filter = new WO_AJAX_Filter();
-		add_action( 'wp_ajax_wpoad-ajax-search', array( $wo_ajax_filter, 'create_filtered_section' ) );
-		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $wo_ajax_filter, 'create_filtered_section' ) );
-		add_shortcode( 'wo-search', array( $this, 'ajax_filter' ) );
 	}
 
 	/**
@@ -1004,30 +1001,6 @@ class Wp_Oneanddone {
 	public function oneanddone_progress() {
 		$current_user = wp_get_current_user();
 		get_tasks_later( $current_user->user_login );
-	}
-
-	/**
-	 * The is the method that is used by the shortcode
-	 * 
-	 * @param       array   $atts
-	 * @since       1.5
-	 * @return      HTML
-	 */
-	function ajax_filter( $atts ) {
-		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;
-		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
-		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
-		$wo_ajax_filter = new WO_AJAX_Filter();
-		$wo_ajax_filter->create_filter_nav( $filter_type, $show_count );
-		?>  
-		<div id="ajax-content" class="r-content-wide">
-		    <section id="ajax-filtered-section" data-postsperpage="<?php echo $posts_per_page ?>">
-			<?php
-			$wo_ajax_filter->create_filtered_section( $posts_per_page );
-			?>
-		    </section>
-		</div>
-		<?php
 	}
 
 }
