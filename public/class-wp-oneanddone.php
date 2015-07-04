@@ -6,7 +6,7 @@
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
- * @copyright 2014 GPL
+ * @copyright 2015 GPL
  */
 
 /**
@@ -214,7 +214,7 @@ class Wp_Oneanddone {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
 		//Ajax frontend
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/ajax.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Task.php' );
 
 		/*
 		 * Custom Action/Shortcode

@@ -1,8 +1,13 @@
 <?php
-
 /**
+ * WO_AJAX_Filter
  * Based on Simple Search Ajax of James Irving-Swift
  *
+ * @package   Wp_Oneanddone
+ * @author    Mte90 <mte90net@gmail.com>
+ * @license   GPL-2.0+
+ * @link      http://mte90.net
+ * @copyright 2015 GPL
  */
 class WO_AJAX_Filter {
 
@@ -93,7 +98,6 @@ class WO_AJAX_Filter {
 		// parse args 
 		$wo_ajax_filter_wp_query->query( $args );
 
-//chiarire perchè while non và
 		if ( $wo_ajax_filter_wp_query->have_posts() ) {
 			while ( $wo_ajax_filter_wp_query->have_posts() ) {
 				$wo_ajax_filter_wp_query->the_post();
@@ -211,7 +215,6 @@ class WO_AJAX_Filter {
 	 * @return      string      HTML for filter nav
 	 */
 	public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
-
 		$taxonomies = array( 'task-area', 'task-difficulty', 'task-minute' );
 
 		$searcher = isset( $_GET[ "s" ] ) ? $_GET[ "s" ] : "";
