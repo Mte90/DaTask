@@ -20,7 +20,7 @@ Insert the shortcode for search box:
 
 Parameter filter_type can have two values for show the select or the list for choose the taxonomy: filter_type="select" or filter_type="list"
 
-[wo-search  posts_per_page="10" show_count=1]
+[oneanddone-search posts_per_page="10" show_count=1]
 
 == Installation ==
 

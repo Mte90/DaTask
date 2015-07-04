@@ -19,11 +19,11 @@
 class WO_AJAX_Task {
 
 	/**
-	 * Initialize the class with allo the hooks
+	 * Initialize the class with all the hooks
 	 *
 	 * @since     1.0.0
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_wo_complete_task', array( $this, 'wo_complete_task' ) );
 		add_action( 'wp_ajax_wo_task_later', array( $this, 'wo_task_later' ) );
 	}

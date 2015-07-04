@@ -1,4 +1,13 @@
 <?php
+/**
+ * WP-OneAndDone.
+ *
+ * @package   Wp_Oneanddone
+ * @author    Mte90 <mte90net@gmail.com>
+ * @license   GPL-2.0+
+ * @link      http://mte90.net
+ * @copyright 2015 GPL
+ */
 
 //Add the user id on the task post types and the task post types in the user meta
 function set_completed_task_for_user_id( $user_id, $task_id ) {

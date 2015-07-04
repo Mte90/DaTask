@@ -13,11 +13,11 @@
 class WO_AJAX_Filter {
 
 	/**
-	 * Initialize the class with allo the hooks
+	 * Initialize the class with all the hooks
 	 *
 	 * @since     1.0.0
 	 */
-	private function __construct() {
+	public function __construct() {
 		add_action( 'wp_ajax_wpoad-ajax-search', array( $this, 'create_filtered_section' ) );
 		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $this, 'create_filtered_section' ) );
 		add_shortcode( 'oneanddone-search', array( $this, 'ajax_filter' ) );
