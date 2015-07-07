@@ -28,13 +28,13 @@ jQuery(document).ready(function () {
 
       // Return all the relevant posts...
       jQuery.ajax({
-        url: wo_js_vars.ajaxurl,
+        url: wo_js_search_vars.ajaxurl,
         data: {
           'action': 'wpoad-ajax-search',
           'filters': arr,
           'postsperpage': jQuery("#ajax-filtered-section").attr('data-postsperpage'),
-          'paged': wo_js_vars.thisPage,
-          '_ajax_nonce': wo_js_vars.nonce
+          'paged': wo_js_search_vars.thisPage,
+          '_ajax_nonce': wo_js_search_vars.nonce
         },
         beforeSend: function () {
           self.section.animate({
@@ -77,7 +77,7 @@ jQuery(document).ready(function () {
                   parent = link.parent('li');
 
           if (parent.length > 0) {
-            wo_js_vars.thisPage = 1;
+            wo_js_search_vars.thisPage = 1;
           }
 
           self.filter(self.selected());
@@ -95,7 +95,7 @@ jQuery(document).ready(function () {
           // Set to true to stop function chaining.
           self.running = true;
 
-          wo_js_vars.thisPage = 1;
+          wo_js_search_vars.thisPage = 1;
 
           self.filter(self.selected());
 
@@ -110,7 +110,7 @@ jQuery(document).ready(function () {
 
       // remove all other ".no-results" 
       jQuery(".no-results").remove();
-      jQuery("#ajax-content #ajax-filtered-section").append("<p class='no-results'>" + wo_js_vars.on_load_text + "</p>"); // add msg 
+      jQuery("#ajax-content #ajax-filtered-section").append("<p class='no-results'>" + wo_js_search_vars.on_load_text + "</p>"); // add msg 
       jQuery("#ajax-content .ajax-pagination").hide(); // hide pagination 
 
     },
