@@ -282,7 +282,6 @@ class Wp_Oneanddone {
 	 *                                       activated on an individual blog.
 	 */
 	public static function activate( $network_wide ) {
-
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
 			if ( $network_wide ) {
@@ -316,7 +315,6 @@ class Wp_Oneanddone {
 	 *                                       deactivated on an individual blog.
 	 */
 	public static function deactivate( $network_wide ) {
-
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 
 			if ( $network_wide ) {

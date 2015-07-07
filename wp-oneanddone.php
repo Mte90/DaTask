@@ -48,6 +48,12 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/language.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-oneanddone.php' );
 
 /*
+ * Load Widgets Helper
+ */
+require_once( plugin_dir_path( __FILE__ ) . 'includes/Widgets-Helper/wph-widget-class.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/widgets/recents-tasks.php' );
+
+/*
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
