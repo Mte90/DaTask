@@ -230,7 +230,6 @@ class Wp_Oneanddone {
 		add_filter( 'comment_text', array( $this, 'task_comment_show_data_frontend' ), 99, 2 );
 		add_action( 'add_meta_boxes_comment', array( $this, 'task_comment_show_metabox_data_backend' ) );
 		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
-
 	}
 
 	/**
@@ -999,8 +998,10 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function oneanddone_progress() {
-		$current_user = wp_get_current_user();
-		wo_tasks_later( $current_user->user_login );
+		if ( is_user_logged_in() ) {
+			$current_user = wp_get_current_user();
+			wo_tasks_later( $current_user->user_login );
+		}
 	}
 
 }

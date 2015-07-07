@@ -14,7 +14,8 @@
  * Add the user id on the task post types and the task post types in the user meta
  *
  * @since     1.0.0
- *
+ * @param     number $user_id ID of the user
+ * @param     number $task_id ID of task post type
  * @return    @bool true
  */
 function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
@@ -38,7 +39,8 @@ function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
  * Add in the profile the ids of the task for later
  *
  * @since     1.0.0
- *
+ * @param     number $user_id ID of the user
+ * @param     number $task_id ID of task post type
  * @return    @bool true
  */
 function wo_set_task_later_for_user_id( $user_id, $task_id ) {
@@ -61,8 +63,8 @@ function wo_set_task_later_for_user_id( $user_id, $task_id ) {
  * @return    @string html
  */
 function wo_get_tasks_completed() {
+	$plugin = Wp_Oneanddone::get_instance();
 	if ( username_exists( get_user_of_profile() ) ) {
-		$plugin = Wp_Oneanddone::get_instance();
 		$user_id = get_user_by( 'login', get_user_of_profile() );
 		$user_id = $user_id->data->ID;
 		$tasks_user = get_tasks_by_user( $user_id );
@@ -97,8 +99,6 @@ function wo_get_tasks_completed() {
  * Print the task done from the user with html
  *
  * @since     1.0.0
- *
- * @return    @string html
  */
 function wo_tasks_completed() {
 	echo wo_get_tasks_completed();
@@ -108,13 +108,14 @@ function wo_tasks_completed() {
  * Get the task later from the user with html
  *
  * @since     1.0.0
- *
+ * @param     string $user ID of the user
  * @return    @string html
  */
 function wo_get_tasks_later( $user = NULL ) {
 	if ( $user === NULL ) {
 		$user = get_user_of_profile();
 	}
+	$plugin = Wp_Oneanddone::get_instance();
 	if ( username_exists( $user ) ) {
 		$current_user = wp_get_current_user();
 		if ( $current_user->user_login === $user ) {
@@ -154,36 +155,67 @@ function wo_get_tasks_later( $user = NULL ) {
  * Print the task later from the user with html
  *
  * @since     1.0.0
- *
+ * @param     string $user ID of the user
  * @return    @string html
  */
 function wo_tasks_later( $user = NULL ) {
 	echo wo_get_tasks_later( $user );
 }
 
+/**
+ * Print the task later from the user with html
+ *
+ * @since     1.0.0
+ *
+ * @return    @string|NULL value Nick of the user
+ */
 function get_user_of_profile() {
 	global $wp_query;
+	//Get nick from the url of the page
 	if ( array_key_exists( 'member', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member' ] ) ) {
 		return $wp_query->query[ 'member' ];
+	//If the url don't have the nick get the actual
 	} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 		$current_user = wp_get_current_user();
 		return $current_user->user_login;
+	//Else null
 	} else {
 		return NULL;
 	}
 }
 
+/**
+ * Return the task ids of the user
+ *
+ * @since     1.0.0
+ *
+ * @return    array the ids
+ */
 function get_tasks_by_user( $user_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
 	return unserialize( get_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks', true ) );
 }
 
-function get_users_by_task( $task_id ) {
-	$plugin = Wp_Oneanddone::get_instance();
-	return unserialize( get_post_meta( $task_id, '_task_' . $plugin->get_plugin_slug() . '_users', true ) );
-}
-
+/**
+ * Return the task later ids of the user
+ *
+ * @since     1.0.0
+ *
+ * @return    array the ids
+ */
 function get_tasks_later_by_user( $user_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
 	return unserialize( get_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks_done', true ) );
+}
+
+/**
+ * Return the user ids by task
+ *
+ * @since     1.0.0
+ *
+ * @return    array the ids
+ */
+function get_users_by_task( $task_id ) {
+	$plugin = Wp_Oneanddone::get_instance();
+	return unserialize( get_post_meta( $task_id, '_task_' . $plugin->get_plugin_slug() . '_users', true ) );
 }
