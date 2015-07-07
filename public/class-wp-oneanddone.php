@@ -160,15 +160,10 @@ class Wp_Oneanddone {
 			), array( 'task' )
 		);
 
-		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
-
 		//Function of plugin
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/fake-page.php' );
 
-		//Override the template hierarchy
-		add_filter( 'template_include', array( $this, 'load_content_task' ) );
-		
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -179,21 +174,13 @@ class Wp_Oneanddone {
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
 		//Frontend login system
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Login.php' );
-		//Frontend Profile apge
+		//Frontend Profile page
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Profile.php' );
+		//Comment support for task
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Comment.php' );
+		//Task integration for template ecc
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Task_Support.php' );
 
-		/*
-		 * Custom Action/Shortcode
-		 */
-		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
-		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
-		add_filter( 'the_excerpt', array( $this, 'wo_task_excerpt' ) );
-		add_action( 'comment_form_logged_in_after', array( $this, 'task_comment_fields' ) );
-		add_action( 'comment_form_after_fields', array( $this, 'task_comment_fields' ) );
-		add_action( 'comment_post', array( $this, 'task_comment_save_data' ) );
-		add_filter( 'comment_text', array( $this, 'task_comment_show_data_frontend' ), 99, 2 );
-		add_action( 'add_meta_boxes_comment', array( $this, 'task_comment_show_metabox_data_backend' ) );
-		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
 	}
 
 	/**
@@ -509,239 +496,6 @@ class Wp_Oneanddone {
 			    'ajaxurl' => admin_url( 'admin-ajax.php' )
 				)
 			);
-		}
-	}
-
-	/**
-	 * Add class in the body on the frontend
-	 *
-	 * @since    1.0.0
-	 */
-	public function add_wo_class( $classes ) {
-		global $post;
-		if ( is_singular( 'task' ) ) {
-			$classes[] = $this->get_plugin_slug() . '-task';
-		} elseif ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'oneanddone-search' ) ) {
-			$classes[] = $this->get_plugin_slug() . '-search';
-		}
-		return $classes;
-	}
-
-	/**
-	 * Example for override the template system on the frontend
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_content_task( $original_template ) {
-		if ( is_singular( 'task' ) ) {
-			return wo_get_template_part( 'single', 'task', false );
-		} else {
-			return $original_template;
-		}
-	}
-
-	/**
-	 * Echo the data about the task
-	 *
-	 * @since    1.0.0
-	 */
-	public function wo_task_info() {
-		echo '<div class="alert alert-warning">' . __( 'Last edit: ', $this->get_plugin_slug() ) . get_the_modified_date() . '</div>';
-		echo '<ul class="list list-inset">';
-		echo '<li><b>';
-		_e( 'Team: ', $this->get_plugin_slug() );
-		echo '</b>';
-		$team = get_the_terms( get_the_ID(), 'task-team' );
-		foreach ( $team as $term ) {
-			echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
-		}
-		echo '</li><li><b>';
-		_e( 'Project: ', $this->get_plugin_slug() );
-		echo '</b>';
-		$project = get_the_terms( get_the_ID(), 'task-area' );
-		foreach ( $project as $term ) {
-			echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
-		}
-		echo '</li><li><b>';
-		_e( 'Estimated time: ', $this->get_plugin_slug() );
-		echo '</b>';
-		$minute = get_the_terms( get_the_ID(), 'task-minute' );
-		foreach ( $minute as $term ) {
-			echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
-		}
-		echo '</li>';
-		echo '</ul>';
-	}
-
-	/**
-	 * Echo the content of the task
-	 *
-	 * @since    1.0.0
-	 */
-	public function wo_task_content( $content ) {
-		global $post;
-		if ( get_post_type( $post->ID ) === 'task' ) {
-			$content = the_task_subtitle( false );
-		}
-		if ( is_singular( 'task' ) ) {
-			$prerequisites = get_post_meta( get_the_ID(), $this->get_fields( 'task_prerequisites' ), true );
-			if ( !empty( $prerequisites ) ) {
-				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
-				$content .= $prerequisites;
-			}
-			$matters = get_post_meta( get_the_ID(), $this->get_fields( 'task_matters' ), true );
-			if ( !empty( $matters ) ) {
-				$content = '<h2 class="alert alert-success">' . __( 'Why this matters', $this->get_plugin_slug() ) . '</h2>';
-				$content .= $matters;
-			}
-			$steps = get_post_meta( get_the_ID(), $this->get_fields( 'task_steps' ), true );
-			if ( !empty( $steps ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
-				$content .= $steps;
-			}
-			$help = get_post_meta( get_the_ID(), $this->get_fields( 'task_help' ), true );
-			if ( !empty( $help ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Need Help?', $this->get_plugin_slug() ) . '</h2>';
-				$content .= $help;
-				$content .= '<br><br>';
-			}
-			$completion = get_post_meta( get_the_ID(), $this->get_fields( 'task_completion' ), true );
-			if ( !empty( $completion ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Completion', $this->get_plugin_slug() ) . '</h2>';
-				$content .= $completion;
-				$content .= '<br><br>';
-			}
-			$mentor = get_post_meta( get_the_ID(), $this->get_fields( 'task_mentor' ), true );
-			if ( !empty( $mentor ) ) {
-				$content .= '<div class="panel panel-warning">';
-				$content .= '<div class="panel-heading">';
-				$content .= __( 'Mentor(s): ', $this->get_plugin_slug() );
-				$content .= '</div>';
-				$content .= '<div class="panel-content">';
-				$content .= $mentor;
-				$content .= '</div>';
-				$content .= '</div>';
-			}
-			$nexts = get_post_meta( get_the_ID(), $this->get_fields( 'task_next' ), true );
-			if ( !empty( $nexts ) ) {
-				$content .= '<div class="panel panel-danger">';
-				$content .= '<div class="panel-heading">';
-				$content .= __( 'Good next tasks: ', $this->get_plugin_slug() );
-				$content .= '</div>';
-				$content .= '<div class="panel-content">';
-				$next_task = '';
-				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
-				$nexts_ids = new WP_Query( array(
-				    'post_type' => 'task',
-				    'post__in' => $nexts_split ) );
-				foreach ( $nexts_ids->posts as $post ) {
-					$next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
-				}
-				wp_reset_postdata();
-				$content .= $next_task;
-				$content .= '</div>';
-				$content .= '</div>';
-			}
-			$users = unserialize( get_post_meta( get_the_ID(), $this->get_fields( 'users_of_task' ), true ) );
-			if ( is_array( $users ) ) {
-				$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
-				$content .= '<div class="panel panel-default">';
-				$content .= '<div class="panel-content">';
-				foreach ( $users as $user => $value ) {
-					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
-				}
-				$content .= '</div>';
-				$content .= '</div>';
-			}
-			$content .= '<br><br>';
-		}
-		return $content;
-	}
-
-	/**
-	 * Echo the excerpt of the task
-	 *
-	 * @since    1.0.0
-	 */
-	public function wo_task_excerpt( $content ) {
-		global $post;
-		if ( get_post_type( $post->ID ) === 'task' ) {
-			$content = the_task_subtitle( false );
-		}
-		return $content;
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function task_comment_fields() {
-		global $post;
-		if ( get_post_type( $post->ID ) === 'task' ) {
-			?>
-			<div class="form-group comment-form-tweet">
-			    <label for="tweet_url"><?php _e( 'Insert URL of the Tweet', $this->get_plugin_slug() ); ?></label>
-			    <input type="text" name="tweet_url" id="tweet_url" class="form-control" />
-			    <a href="https://twitter.com/share" class="twitter-share-button" data-via="Mte90net" data-hashtags="oneanddone">Tweet</a>
-			    <script>!function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https'; if (!d.getElementById(id)){js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }}(document, 'script', 'twitter-wjs');</script>
-			</div>
-			<?php
-		}
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function task_comment_save_data( $comment_id ) {
-		global $post;
-		if ( get_post_type( $post->ID ) === 'task' ) {
-			add_comment_meta( $comment_id, 'tweet_url', esc_html( $_POST[ 'tweet_url' ] ) );
-		}
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function task_comment_show_data_frontend( $text, $comment ) {
-		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
-			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
-			if ( $tweet ) {
-				$tweet = __( 'URL of the Tweet', $this->get_plugin_slug() ) . ': <a href="' . esc_attr( $tweet ) . '">' . esc_attr( $tweet ) . '</a>';
-				$text = $tweet . $text;
-			}
-		}
-		return $text;
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function task_comment_show_metabox_data_backend() {
-		add_meta_box( 'task-comment', __( 'Task Feedback Data' ), array( $this, 'task_comment_show_field_data_backend' ), 'comment', 'normal', 'high' );
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function task_comment_show_field_data_backend( $comment ) {
-		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
-			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
-			wp_nonce_field( 'task_comment_nonce ', 'task_comment_nonce ', false );
-			?>
-			<p>
-			    <label for="tweet_url"><?php _e( 'URL of the Tweet', $this->get_plugin_slug() ); ?></label>
-			    <input type="text" name="tweet_url" value="<?php echo esc_attr( $tweet ); ?>" class="widefat" />
-			</p>
-			<?php
-		}
-	}
-
-	/**
-	 * @since    1.0.0
-	 */
-	public function oneanddone_progress() {
-		if ( is_user_logged_in() ) {
-			$current_user = wp_get_current_user();
-			wo_tasks_later( $current_user->user_login );
 		}
 	}
 

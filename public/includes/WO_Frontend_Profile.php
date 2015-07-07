@@ -87,15 +87,16 @@ class WO_Frontend_Profile {
 	 * @since    1.0.0
 	 */
 	public function member_wp_title( $title, $sep, $seplocation ) {
+		$plugin = Wp_Oneanddone::get_instance();
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
-				$page = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
+				$page = sprintf( __( "%s's Profile", $plugin->get_plugin_slug() ), get_user_of_profile() );
 
 				return $page . ' ' . $sep . $title;
 			}
 		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-			return __( 'Your profile', $this->get_plugin_slug() ) . ' ' . $sep;
+			return __( 'Your profile', $plugin->get_plugin_slug() ) . ' ' . $sep;
 		} else {
 			return $title;
 		}
@@ -107,9 +108,10 @@ class WO_Frontend_Profile {
 	 * @since    1.0.0
 	 */
 	public function member_title( $title, $id ) {
+		$plugin = Wp_Oneanddone::get_instance();
 		global $wp_query;
 		if ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-			return __( 'Your profile', $this->get_plugin_slug() );
+			return __( 'Your profile', $plugin->get_plugin_slug() );
 		} else {
 			return $title;
 		}
