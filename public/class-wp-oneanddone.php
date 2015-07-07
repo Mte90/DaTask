@@ -281,14 +281,26 @@ class Wp_Oneanddone {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @return    array of fields
+	 * @return    array/string of fields
 	 */
-	public function get_fields() {
+	public function get_fields( $value = '' ) {
 		$fields = array();
 		$prefix = '_task_';
 		$fields[ 'users_of_task' ] = $prefix . $this->get_plugin_slug() . '_users';
 		$fields[ 'tasks_done_of_user' ] = $prefix . $this->get_plugin_slug() . '_tasks_done';
 		$fields[ 'tasks_later_of_user' ] = $prefix . $this->get_plugin_slug() . '_tasks_later';
+		$fields[ 'task_prerequisites' ] = $prefix . $this->get_plugin_slug() . '_prerequisites';
+		$fields[ 'task_matters' ] = $prefix . $this->get_plugin_slug() . '_matters';
+		$fields[ 'task_steps' ] = $prefix . $this->get_plugin_slug() . '_steps';
+		$fields[ 'task_help' ] = $prefix . $this->get_plugin_slug() . '_help';
+		$fields[ 'task_completion' ] = $prefix . $this->get_plugin_slug() . '_completion';
+		$fields[ 'task_mentor' ] = $prefix . $this->get_plugin_slug() . '_mentor';
+		$fields[ 'task_next' ] = $prefix . $this->get_plugin_slug() . '_next';
+		if ( array_key_exists( $value, $fields ) ) {
+			return $fields[ $value ];
+		} elseif ( empty( $value ) ) {
+			return $fields;
+		}
 	}
 
 	/**
@@ -541,7 +553,12 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function add_wo_class( $classes ) {
-		$classes[] = $this->get_plugin_slug();
+		global $post;
+		if ( is_singular( 'task' ) ) {
+			$classes[] = $this->get_plugin_slug() . '-task';
+		} elseif ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'oneanddone-search' ) ) {
+			$classes[] = $this->get_plugin_slug() . '-search';
+		}
 		return $classes;
 	}
 
@@ -651,7 +668,7 @@ class Wp_Oneanddone {
 		} else if ( isset( $_GET[ 'reauth' ] ) ) {
 			$action = 'reauth';
 		}
-		// redirect to change password form
+		//redirect to change password form
 		if ( $action == 'rp' || $action == 'resetpass' ) {
 			if ( isset( $_GET[ 'key' ] ) && isset( $_GET[ 'login' ] ) ) {
 				$rp_path = wp_unslash( '/login/' );
@@ -663,15 +680,15 @@ class Wp_Oneanddone {
 			wp_redirect( home_url( '/login/?action=resetpass' ) );
 			exit;
 		}
-		// redirect from wrong key when resetting password
+		//redirect from wrong key when resetting password
 		if ( $action == 'lostpassword' && isset( $_GET[ 'error' ] ) && ( $_GET[ 'error' ] == 'expiredkey' || $_GET[ 'error' ] == 'invalidkey' ) ) {
 			wp_redirect( home_url( '/login/?action=forgot&failed=wrongkey' ) );
 			exit;
 		}
 		if (
-			$action == 'post-data' || // don't mess with POST requests
-			$action == 'reauth' || // need to reauthorize
-			$action == 'logout'      // user is logging out
+			$action == 'post-data' || //don't mess with POST requests
+			$action == 'reauth'    || //need to reauthorize
+			$action == 'logout'       //user is logging out
 		) {
 			return;
 		}
@@ -720,7 +737,7 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function registration_redirect( $errors, $sanitized_user_login, $user_email ) {
-		// don't lose your time with spammers, redirect them to a success page
+		//don't lose your time with spammers, redirect them to a success page
 		if ( !isset( $_POST[ 'confirm_email' ] ) || $_POST[ 'confirm_email' ] !== '' ) {
 			wp_redirect( home_url( '/login/' ) . '?action=register&success=1' );
 			exit;
@@ -783,18 +800,18 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function frontend_validate_password_reset( $errors, $user ) {
-		// passwords don't match
+		//passwords don't match
 		if ( $errors->get_error_code() ) {
 			wp_redirect( home_url( '/login/?action=resetpass&failed=nomatch' ) );
 			exit;
 		}
-		// wp-login already checked if the password is valid, so no further check is needed
+		//wp-login already checked if the password is valid, so no further check is needed
 		if ( !empty( $_POST[ 'pass1' ] ) ) {
 			reset_password( $user, $_POST[ 'pass1' ] );
 			wp_redirect( home_url( '/login/?action=resetpass&success=1' ) );
 			exit;
 		}
-		// redirect to change password form
+		//redirect to change password form
 		wp_redirect( home_url( '/login/?action=resetpass' ) );
 		exit;
 	}
@@ -831,21 +848,21 @@ class Wp_Oneanddone {
 	public function wo_task_info() {
 		echo '<ul class="list list-inset">';
 		echo '<li><b>';
-		_e( 'Team: ', 'oneanddone' );
+		_e( 'Team: ', $this->get_plugin_slug() );
 		echo '</b>';
 		$team = get_the_terms( get_the_ID(), 'task-team' );
 		foreach ( $team as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
 		}
 		echo '</li><li><b>';
-		_e( 'Project: ', 'oneanddone' );
+		_e( 'Project: ', $this->get_plugin_slug() );
 		echo '</b>';
 		$project = get_the_terms( get_the_ID(), 'task-area' );
 		foreach ( $project as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
 		}
 		echo '</li><li><b>';
-		_e( 'Estimated time: ', 'oneanddone' );
+		_e( 'Estimated time: ', $this->get_plugin_slug() );
 		echo '</b>';
 		$minute = get_the_terms( get_the_ID(), 'task-minute' );
 		foreach ( $minute as $term ) {
@@ -866,34 +883,34 @@ class Wp_Oneanddone {
 			$content = the_task_subtitle( false );
 		}
 		if ( is_singular( 'task' ) ) {
-			$prerequisites = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_prerequisites', true );
+			$prerequisites = get_post_meta( get_the_ID(), $this->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $prerequisites;
 			}
-			$matters = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_matters', true );
+			$matters = get_post_meta( get_the_ID(), $this->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Why this matters', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $matters;
 			}
-			$steps = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_steps', true );
+			$steps = get_post_meta( get_the_ID(), $this->get_fields( 'task_steps' ), true );
 			if ( !empty( $steps ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $steps;
 			}
-			$help = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_help', true );
+			$help = get_post_meta( get_the_ID(), $this->get_fields( 'task_help' ), true );
 			if ( !empty( $help ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Need Help?', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $help;
 				$content .= '<br><br>';
 			}
-			$completion = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_completion', true );
+			$completion = get_post_meta( get_the_ID(), $this->get_fields( 'task_completion' ), true );
 			if ( !empty( $completion ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Completion', $this->get_plugin_slug() ) . '</h2>';
 				$content .= $completion;
 				$content .= '<br><br>';
 			}
-			$mentor = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_mentor', true );
+			$mentor = get_post_meta( get_the_ID(), $this->get_fields( 'task_mentor' ), true );
 			if ( !empty( $mentor ) ) {
 				$content .= '<div class="panel panel-warning">';
 				$content .= '<div class="panel-heading">';
@@ -904,7 +921,7 @@ class Wp_Oneanddone {
 				$content .= '</div>';
 				$content .= '</div>';
 			}
-			$nexts = get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_next', true );
+			$nexts = get_post_meta( get_the_ID(), $this->get_fields( 'task_next' ), true );
 			if ( !empty( $nexts ) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
@@ -924,7 +941,7 @@ class Wp_Oneanddone {
 				$content .= '</div>';
 				$content .= '</div>';
 			}
-			$users = unserialize( get_post_meta( get_the_ID(), '_task_' . $this->get_plugin_slug() . '_users', true ) );
+			$users = unserialize( get_post_meta( get_the_ID(), $this->get_fields( 'users_of_task' ), true ) );
 			if ( is_array( $users ) ) {
 				$content .= '<h2>' . __( 'List of users who completed this task', $this->get_plugin_slug() ) . '</h2>';
 				$content .= '<div class="panel panel-default">';

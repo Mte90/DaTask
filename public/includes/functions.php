@@ -23,12 +23,12 @@ function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
 	$users_of_task = get_users_by_task( $task_id );
 	if ( !isset( $users_of_task[ $user_id ] ) ) {
 		$users_of_task[ $user_id ] = true;
-		update_post_meta( $task_id, '_task_' . $plugin->get_plugin_slug() . '_users', serialize( $users_of_task ) );
+		update_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), serialize( $users_of_task ) );
 	}
 	$tasks_of_user = get_tasks_by_user( $user_id );
 	if ( !isset( $tasks_of_user[ $task_id ] ) ) {
 		$tasks_of_user[ $task_id ] = true;
-		update_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks', serialize( $tasks_of_user ) );
+		update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
 	}
 	//Add the action for create plugins
 	do_action( 'wo-set-completed-task' );
@@ -48,7 +48,7 @@ function wo_set_task_later_for_user_id( $user_id, $task_id ) {
 	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
 	if ( !isset( $tasks_later_of_user[ $task_id ] ) ) {
 		$tasks_later_of_user[ $task_id ] = true;
-		update_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks_done', serialize( $tasks_later_of_user ) );
+		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
 	//Add the action for create plugins
 	do_action( 'wo-set-task-later' );
@@ -64,6 +64,7 @@ function wo_set_task_later_for_user_id( $user_id, $task_id ) {
  */
 function wo_get_tasks_completed() {
 	$plugin = Wp_Oneanddone::get_instance();
+	$print = '';
 	if ( username_exists( get_user_of_profile() ) ) {
 		$user_id = get_user_by( 'login', get_user_of_profile() );
 		$user_id = $user_id->data->ID;
@@ -116,6 +117,7 @@ function wo_get_tasks_later( $user = NULL ) {
 		$user = get_user_of_profile();
 	}
 	$plugin = Wp_Oneanddone::get_instance();
+	$print = '';
 	if ( username_exists( $user ) ) {
 		$current_user = wp_get_current_user();
 		if ( $current_user->user_login === $user ) {
@@ -174,11 +176,11 @@ function get_user_of_profile() {
 	//Get nick from the url of the page
 	if ( array_key_exists( 'member', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member' ] ) ) {
 		return $wp_query->query[ 'member' ];
-	//If the url don't have the nick get the actual
+		//If the url don't have the nick get the actual
 	} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 		$current_user = wp_get_current_user();
 		return $current_user->user_login;
-	//Else null
+		//Else null
 	} else {
 		return NULL;
 	}
@@ -193,7 +195,7 @@ function get_user_of_profile() {
  */
 function get_tasks_by_user( $user_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
-	return unserialize( get_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks', true ) );
+	return unserialize( get_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), true ) );
 }
 
 /**
@@ -205,7 +207,7 @@ function get_tasks_by_user( $user_id ) {
  */
 function get_tasks_later_by_user( $user_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
-	return unserialize( get_user_meta( $user_id, '_task_' . $plugin->get_plugin_slug() . '_tasks_done', true ) );
+	return unserialize( get_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), true ) );
 }
 
 /**
@@ -217,5 +219,5 @@ function get_tasks_later_by_user( $user_id ) {
  */
 function get_users_by_task( $task_id ) {
 	$plugin = Wp_Oneanddone::get_instance();
-	return unserialize( get_post_meta( $task_id, '_task_' . $plugin->get_plugin_slug() . '_users', true ) );
+	return unserialize( get_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), true ) );
 }
