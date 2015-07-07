@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WO_Frontend_Login
  * Frontend Login system
@@ -10,13 +11,28 @@
  * @copyright 2015 GPL
  */
 class WO_Frontend_Login {
-	
+
 	/**
 	 * Initialize the class with all the hooks
 	 *
 	 * @since     1.0.0
 	 */
 	public function __construct() {
+		$plugin = Wp_Oneanddone::get_instance();
+		new Fake_Page(
+			array(
+		    'slug' => 'login',
+		    'post_title' => __( 'Login', $plugin->get_plugin_slug() ),
+		    'post_content' => 'content'
+			)
+		);
+		new Fake_Page(
+			array(
+		    'slug' => 'logout',
+		    'post_title' => __( 'Logout', $plugin->get_plugin_slug() ),
+		    'post_content' => 'content'
+			)
+		);
 		add_action( 'login_init', array( $this, 'frontend_login' ) );
 		add_action( 'template_redirect', array( $this, 'frontend_login_redirect' ) );
 		add_action( 'lostpassword_post', array( $this, 'frontend_reset_password' ) );
@@ -26,9 +42,9 @@ class WO_Frontend_Login {
 		add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
 		add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
 		add_filter( 'the_content', array( $this, 'login_page' ) );
+		add_filter( 'wp_nav_menu_objects', array( $this, 'login_to_logout' ) );
 	}
-	
-	
+
 	/**
 	 * Frontend login
 	 *
@@ -203,7 +219,7 @@ class WO_Frontend_Login {
 	}
 
 	/**
-	 * hide the admin bar in frontend for not admin user
+	 * Hide the admin bar in frontend for not admin user
 	 *
 	 * @since    1.0.0
 	 */
@@ -213,5 +229,26 @@ class WO_Frontend_Login {
 		}
 	}
 
+	/**
+	 * Transform Login to Logout for logged users
+	 *
+	 * @return  $items
+	 * @since    1.0.0
+	 */
+	function login_to_logout( $items ) {
+		if ( is_user_logged_in() ) {
+			foreach ( $items as $page=> $value ) {
+				if ( $items[ $page ]->post_name === 'login' ) {
+					$items[ $page ]->post_name = 'logout';
+					$items[ $page ]->post_title = 'Logout';
+					$items[ $page ]->title = 'Logout';
+					$items[ $page ]->url = get_site_url() . '/logout';
+				}
+			}
+		}
+		return $items;
+	}
+
 }
+
 new WO_Frontend_Login();

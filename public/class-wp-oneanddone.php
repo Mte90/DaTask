@@ -181,24 +181,6 @@ class Wp_Oneanddone {
 		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
 		add_filter( 'wp_title', array( $this, 'member_wp_title' ), 10, 3 );
 		add_filter( 'the_title', array( $this, 'member_title' ), 10, 2 );
-		//Frontend login system
-		/*
-		 * Load Fake Page class
-		 */
-		new Fake_Page(
-			array(
-		    'slug' => 'login',
-		    'post_title' => __( 'Login', $this->get_plugin_slug() ),
-		    'post_content' => 'content'
-			)
-		);
-		new Fake_Page(
-			array(
-		    'slug' => 'logout',
-		    'post_title' => __( 'Logout', $this->get_plugin_slug() ),
-		    'post_content' => 'content'
-			)
-		);
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
