@@ -11,16 +11,24 @@ Wordpress version Of OneAndDone Project
 
 == Description ==
 
+"One and Done is a tool for new contributors looking to help Mozilla. It allows them to easily browse tasks and find ways to contribute which match their skills. 
+You can pick an easy task that only takes a few minutes - or take on a bigger challenge."  
+This is the official description of the original OneAndDone project.
+
 Check the wiki: [https://github.com/Mte90/WP-OneAndDone/wiki](https://github.com/Mte90/WP-OneAndDone/wiki)  
 Demo site: [http://wpoad.mte90.net/](http://wpoad.mte90.net/)
 
-Ajax Filter based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
+Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
 
 Insert the shortcode for search box:
 
 Parameter filter_type can have two values for show the select or the list for choose the taxonomy: filter_type="select" or filter_type="list"
 
 [oneanddone-search posts_per_page="10" show_count=1]
+
+Insert shortcode to show task in progress:
+
+[oneanddone-progress]
 
 == Installation ==
 
@@ -53,11 +61,9 @@ Check the wiki: [https://github.com/Mte90/WP-OneAndDone/wiki](https://github.com
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. The search box 
+2. A task page
+3. Profile
 
 == Changelog ==
 
