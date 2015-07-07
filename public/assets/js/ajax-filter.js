@@ -110,15 +110,8 @@ jQuery(document).ready(function () {
 
       // remove all other ".no-results" 
       jQuery(".no-results").remove();
-
-      jQuery("body.ajax-filter #ajax-filtered-section").append("<p class='no-results'></p>"); // add msg 
-      jQuery(".no-results").html(wo_js_vars.on_load_text).fadeIn();
-      //jQuery("body.ajax-filter .ajax-loaded").hide(); // hide all results 
-      jQuery("body.ajax-filter .pagination").hide(); // hide pagination 
-
-      jQuery('html, body').animate({
-        scrollTop: jQuery("#ajax-filtered-section").offset().top - 120
-      }, 500);
+      jQuery("#ajax-content #ajax-filtered-section").append("<p class='no-results'>" + wo_js_vars.on_load_text + "</p>"); // add msg 
+      jQuery("#ajax-content .ajax-pagination").hide(); // hide pagination 
 
     },
     init: function (opts) {

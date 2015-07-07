@@ -164,7 +164,7 @@ class Wp_Oneanddone {
 
 		//Function of plugin
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
-		require_once( plugin_dir_path( __FILE__ ) . 'includes/fake-page.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/fake-page.php' );
 
 		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
@@ -274,6 +274,21 @@ class Wp_Oneanddone {
 	 */
 	public function get_cpts() {
 		return $this->cpts;
+	}
+
+	/**
+	 * Return the fields
+	 *
+	 * @since    1.0.0
+	 *
+	 * @return    array of fields
+	 */
+	public function get_fields() {
+		$fields = array();
+		$prefix = '_task_';
+		$fields[ 'users_of_task' ] = $prefix . $this->get_plugin_slug() . '_users';
+		$fields[ 'tasks_done_of_user' ] = $prefix . $this->get_plugin_slug() . '_tasks_done';
+		$fields[ 'tasks_later_of_user' ] = $prefix . $this->get_plugin_slug() . '_tasks_later';
 	}
 
 	/**
@@ -499,17 +514,14 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function enqueue_js_vars() {
-		//if ( is_singular( 'task' ) ) {
-		wp_localize_script( $this->get_plugin_slug() . '-filter-plugin-script', 'wo_js_vars', array(
-		    'ajaxurl' => admin_url( 'admin-ajax.php' ),
-		    'site_name' => get_bloginfo( "sitename" ),
-		    'search' => __( 'Search', $this->get_plugin_slug() ),
-		    'search_results_for' => __( 'Search Results For', $this->get_plugin_slug() ),
-		    'on_load_text' => __( 'Search & filter to see results', $this->get_plugin_slug() ),
-		    'thisPage' => 1,
-		    'nonce' => esc_js( wp_create_nonce( 'filternonce' ) )
-			)
-		);
+		//if ( has_shortcode( 'oneanddone-search' ) ) {
+			wp_localize_script( $this->get_plugin_slug() . '-filter-plugin-script', 'wo_js_vars', array(
+			    'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			    'on_load_text' => __( 'Search to see results', $this->get_plugin_slug() ),
+			    'thisPage' => 1,
+			    'nonce' => esc_js( wp_create_nonce( 'filternonce' ) )
+				)
+			);
 		//}
 	}
 
@@ -686,6 +698,7 @@ class Wp_Oneanddone {
 	 */
 	public function prevent_access_backend() {
 		if ( current_user_can( 'subscriber' ) && !defined( 'DOING_AJAX' ) ) {
+			$current_user = wp_get_current_user();
 			wp_redirect( home_url( '/member/' . $current_user->user_login ) );
 			exit;
 		}
