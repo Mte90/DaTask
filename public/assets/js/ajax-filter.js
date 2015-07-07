@@ -111,7 +111,7 @@ jQuery(document).ready(function () {
       // remove all other ".no-results" 
       jQuery(".no-results").remove();
       jQuery("#ajax-content #ajax-filtered-section").append("<p class='no-results'>" + wo_js_search_vars.on_load_text + "</p>"); // add msg 
-      jQuery("#ajax-content .ajax-pagination").hide(); // hide pagination 
+      jQuery("#ajax-content .ajax-pagination, #ajax-content .ajax-loaded").hide(); // hide pagination 
 
     },
     init: function (opts) {
