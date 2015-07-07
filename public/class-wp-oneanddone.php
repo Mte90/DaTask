@@ -168,20 +168,7 @@ class Wp_Oneanddone {
 
 		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
-		//Member page
-		new Fake_Page(
-			array(
-		    'slug' => 'member',
-		    'post_title' => __( 'Your profile', $this->get_plugin_slug() ),
-		    'post_content' => 'content'
-			)
-		);
-		add_filter( 'query_vars', array( $this, 'add_member_permalink' ) );
-		add_filter( 'init', array( $this, 'rewrite_rule' ) );
-		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
-		add_filter( 'wp_title', array( $this, 'member_wp_title' ), 10, 3 );
-		add_filter( 'the_title', array( $this, 'member_title' ), 10, 2 );
-
+		
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
@@ -192,6 +179,8 @@ class Wp_Oneanddone {
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
 		//Frontend login system
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Login.php' );
+		//Frontend Profile apge
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Profile.php' );
 
 		/*
 		 * Custom Action/Shortcode
@@ -548,87 +537,6 @@ class Wp_Oneanddone {
 			return wo_get_template_part( 'single', 'task', false );
 		} else {
 			return $original_template;
-		}
-	}
-
-	/**
-	 * Add the rewrite permalink for member
-	 *
-	 * @since    1.0.0
-	 */
-	public function add_member_permalink( $vars ) {
-		$vars[] = 'member';
-		return $vars;
-	}
-
-	/**
-	 * Add the rewrite permalink for member
-	 *
-	 * @since    1.0.0
-	 */
-	public function rewrite_rule() {
-		add_rewrite_tag( '%member%', '([^&]+)' );
-		add_rewrite_rule(
-			'^member/([^/]*)/?', 'index.php?member=$matches[1]', 'top'
-		);
-	}
-
-	/**
-	 * Include the template for the profile page
-	 *
-	 * @since    1.0.0
-	 */
-	public function userprofile_template() {
-		global $wp_query;
-		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
-			if ( get_user_of_profile() !== NULL ) {
-				wo_get_template_part( 'user', 'profile', true );
-				exit;
-			} else {
-				$wp_query->set_404();
-			}
-		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-			if ( is_user_logged_in() ) {
-				$current_user = wp_get_current_user();
-				wp_redirect( home_url( '/member/' . $current_user->user_login ) );
-				exit;
-			} else {
-				wp_redirect( home_url( '/login/' ) );
-			}
-		}
-	}
-
-	/**
-	 * Add the head title for the member page
-	 *
-	 * @since    1.0.0
-	 */
-	public function member_wp_title( $title, $sep, $seplocation ) {
-		global $wp_query;
-		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
-			if ( get_user_of_profile() !== NULL ) {
-				$page = sprintf( __( "%s's Profile", $this->get_plugin_slug() ), get_user_of_profile() );
-
-				return $page . ' ' . $sep . $title;
-			}
-		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-			return __( 'Your profile', $this->get_plugin_slug() ) . ' ' . $sep;
-		} else {
-			return $title;
-		}
-	}
-
-	/**
-	 * Add the title for the member page
-	 *
-	 * @since    1.0.0
-	 */
-	public function member_title( $title, $id ) {
-		global $wp_query;
-		if ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-			return __( 'Your profile', $this->get_plugin_slug() );
-		} else {
-			return $title;
 		}
 	}
 
