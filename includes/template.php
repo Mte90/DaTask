@@ -43,27 +43,27 @@ function wo_get_template_part( $slug, $name = '', $include = true ) {
 	}
 }
 
-/*
+/**
  * Echo the subtitle of the task
  * 
+ * @param    @bool print or not to print
+ * @return   echo or string
  * @since    1.0.0
  */
-
 function the_task_subtitle( $echo = true ) {
 	$plugin = Wp_Oneanddone::get_instance();
 	if ( $echo ) {
-		echo get_post_meta( get_the_ID(), '_task_' . $plugin->get_plugin_slug() . '_subtitle', true );
+		echo get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
 	} else {
-		return get_post_meta( get_the_ID(), '_task_' . $plugin->get_plugin_slug() . '_subtitle', true );
+		return get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
 	}
 }
 
-/*
- * Get stared button
+/**
+ * Print Task button
  * 
  * @since    1.0.0
  */
-
 function task_buttons() {
 	if ( is_user_logged_in() ) {
 		?>

@@ -296,6 +296,7 @@ class Wp_Oneanddone {
 		$fields[ 'task_completion' ] = $prefix . $this->get_plugin_slug() . '_completion';
 		$fields[ 'task_mentor' ] = $prefix . $this->get_plugin_slug() . '_mentor';
 		$fields[ 'task_next' ] = $prefix . $this->get_plugin_slug() . '_next';
+		$fields[ 'task_subtitle' ] = $prefix . $this->get_plugin_slug() . '_subtitle';
 		if ( array_key_exists( $value, $fields ) ) {
 			return $fields[ $value ];
 		} elseif ( empty( $value ) ) {
@@ -687,7 +688,7 @@ class Wp_Oneanddone {
 		}
 		if (
 			$action == 'post-data' || //don't mess with POST requests
-			$action == 'reauth'    || //need to reauthorize
+			$action == 'reauth' || //need to reauthorize
 			$action == 'logout'       //user is logging out
 		) {
 			return;
@@ -846,6 +847,7 @@ class Wp_Oneanddone {
 	 * @since    1.0.0
 	 */
 	public function wo_task_info() {
+		echo '<div class="alert alert-warning">' . __( 'Last edit: ', $this->get_plugin_slug() ) . get_the_modified_date() . '</div>';
 		echo '<ul class="list list-inset">';
 		echo '<li><b>';
 		_e( 'Team: ', $this->get_plugin_slug() );
