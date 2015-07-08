@@ -54,8 +54,8 @@ class Wp_Oneanddone_Admin {
 		$this->version = $plugin->get_plugin_version();
 		$this->cpts = $plugin->get_cpts();
 
-		// Load admin JavaScript.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		// Load admin JavaScript after jQuery loading
+		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_admin_scripts' ) );
 
 		// At Glance Dashboard widget for your cpts
 		add_filter( 'dashboard_glance_items', array( $this, 'cpt_dashboard_support' ), 10, 1 );
@@ -84,15 +84,15 @@ class Wp_Oneanddone_Admin {
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CPT_Columns.php' );
 		$post_columns = new CPT_columns( 'task' );
 		$post_columns->add_column( 'Done', array(
-			'label' => __( 'Done', $this->plugin_slug ),
-			'type' => 'custom_value',
-			'callback' => array($this, 'number_of_done'),
-			'sortable' => true,
-			'prefix' => "<b>",
-			'suffix' => "</b>",
-			'def' => "Not defined", // default value in case post meta not found
-			'order' => "-1"
-				)
+		    'label' => __( 'Done', $this->plugin_slug ),
+		    'type' => 'custom_value',
+		    'callback' => array( $this, 'number_of_done' ),
+		    'sortable' => true,
+		    'prefix' => "<b>",
+		    'suffix' => "</b>",
+		    'def' => "Not defined", // default value in case post meta not found
+		    'order' => "-1"
+			)
 		);
 	}
 
@@ -104,16 +104,6 @@ class Wp_Oneanddone_Admin {
 	 * @return    object    A single instance of this class.
 	 */
 	public static function get_instance() {
-
-		/*
-		 * @TODO :
-		 *
-		 * - Uncomment following lines if the admin class should only be available for super admins
-		 */
-		/* if( ! is_super_admin() ) {
-		  return;
-		  } */
-
 		// If the single instance hasn't been set, set it now.
 		if ( null == self::$instance ) {
 			self::$instance = new self;
@@ -127,11 +117,24 @@ class Wp_Oneanddone_Admin {
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_scripts() {
+		$screen = get_current_screen();
+		if ( $screen->post_type === 'task' ) {
+			echo '<script type="text/javascript">
+			jQuery(document).ready(function() { 
+				jQuery("#publish").click(function (e) {
+					var mandatory = jQuery("#task-area-all .selectit input:checked, #task-team-all .selectit input:checked");
+					if (mandatory.length === 0) {
+						e.preventDefault();
+					}
+				});
+			});
+			</script>';
+			return;
+		}
 		if ( !isset( $this->plugin_screen_hook_suffix ) ) {
 			return;
 		}
 
-		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), Wp_Oneanddone::VERSION );
 		}
@@ -159,7 +162,7 @@ class Wp_Oneanddone_Admin {
 		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
 		 */
 		$this->plugin_screen_hook_suffix = add_options_page(
-				__( 'Page Title', $this->plugin_slug ), $this->plugin_name, 'manage_options', $this->plugin_slug, array( $this, 'display_plugin_admin_page' )
+			__( 'Page Title', $this->plugin_slug ), $this->plugin_name, 'manage_options', $this->plugin_slug, array( $this, 'display_plugin_admin_page' )
 		);
 		/*
 		 * Settings page in the menu
@@ -184,10 +187,10 @@ class Wp_Oneanddone_Admin {
 	 */
 	public function add_action_links( $links ) {
 		return array_merge(
-				array(
-			'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings' ) . '</a>',
-			'donate' => '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=danielemte90@alice.it&item_name=Donation">' . __( 'Donate', $this->plugin_slug ) . '</a>'
-				), $links
+			array(
+		    'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_slug ) . '">' . __( 'Settings' ) . '</a>',
+		    'donate' => '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=danielemte90@alice.it&item_name=Donation">' . __( 'Donate', $this->plugin_slug ) . '</a>'
+			), $links
 		);
 	}
 
@@ -231,103 +234,103 @@ class Wp_Oneanddone_Admin {
 		$prefix = '_task_';
 
 		$cmb_task = new_cmb2_box( array(
-			'id' => $prefix . 'metabox',
-			'title' => __( 'Task Info', $this->plugin_slug ),
-			'object_types' => array( 'task', ), // Post type
-			'context' => 'normal',
-			'priority' => 'high',
-			'show_names' => true, // Show field names on the left
-				) );
+		    'id' => $prefix . 'metabox',
+		    'title' => __( 'Task Info', $this->plugin_slug ),
+		    'object_types' => array( 'task', ), // Post type
+		    'context' => 'normal',
+		    'priority' => 'high',
+		    'show_names' => true, // Show field names on the left
+			) );
 
 		$cmb_task->add_field( array(
-			'name' => __( 'Subtitle', $this->plugin_slug ),
-			'desc' => __( 'Description in a row', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_subtitle',
-			'type' => 'text'
-		) );
-
-		$cmb_task->add_field( array(
-			'name' => __( 'Prerequisites', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_prerequisites',
-			'type' => 'wysiwyg',
-			'options' => array( 'textarea_rows' => '5' )
-		) );
-		
-		$cmb_task->add_field( array(
-			'name' => __( 'Why this matters', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_matters',
-			'type' => 'wysiwyg',
-			'options' => array( 'textarea_rows' => '5' )
+		    'name' => __( 'Subtitle', $this->plugin_slug ),
+		    'desc' => __( 'Description in a row', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_subtitle',
+		    'type' => 'text'
 		) );
 
 		$cmb_task->add_field( array(
-			'name' => __( 'Steps', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_steps',
-			'type' => 'wysiwyg',
-			'options' => array( 'textarea_rows' => '10' )
-		) );
-		
-		$cmb_task->add_field( array(
-			'name' => __( 'Need Help?', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_help',
-			'type' => 'wysiwyg',
-			'options' => array( 'textarea_rows' => '5' )
+		    'name' => __( 'Prerequisites', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_prerequisites',
+		    'type' => 'wysiwyg',
+		    'options' => array( 'textarea_rows' => '5' )
 		) );
 
 		$cmb_task->add_field( array(
-			'name' => __( 'Completion', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_completion',
-			'type' => 'wysiwyg',
-			'options' => array( 'textarea_rows' => '5' )
+		    'name' => __( 'Why this matters', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_matters',
+		    'type' => 'wysiwyg',
+		    'options' => array( 'textarea_rows' => '5' )
 		) );
 
 		$cmb_task->add_field( array(
-			'name' => __( 'Mentor(s)', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_mentor',
-			'type' => 'text'
+		    'name' => __( 'Steps', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_steps',
+		    'type' => 'wysiwyg',
+		    'options' => array( 'textarea_rows' => '10' )
 		) );
 
 		$cmb_task->add_field( array(
-			'name' => __( 'Good next tasks (IDs)', $this->plugin_slug ),
-			'id' => $prefix . $this->plugin_slug . '_next',
-			'type' => 'post_search_text',
-			'post_type' => 'task'
+		    'name' => __( 'Need Help?', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_help',
+		    'type' => 'wysiwyg',
+		    'options' => array( 'textarea_rows' => '5' )
 		) );
 
 		$cmb_task->add_field( array(
-			'id' => $prefix . $this->plugin_slug . '_users',
-			'type' => 'hidden'
+		    'name' => __( 'Completion', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_completion',
+		    'type' => 'wysiwyg',
+		    'options' => array( 'textarea_rows' => '5' )
+		) );
+
+		$cmb_task->add_field( array(
+		    'name' => __( 'Mentor(s)', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_mentor',
+		    'type' => 'text'
+		) );
+
+		$cmb_task->add_field( array(
+		    'name' => __( 'Good next tasks (IDs)', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_next',
+		    'type' => 'post_search_text',
+		    'post_type' => 'task'
+		) );
+
+		$cmb_task->add_field( array(
+		    'id' => $prefix . $this->plugin_slug . '_users',
+		    'type' => 'hidden'
 		) );
 
 		$cmb_user_task = new_cmb2_box( array(
-			'id' => $prefix . 'user_metabox',
-			'title' => __( 'Task Completed', $this->plugin_slug ),
-			'object_types' => array( 'user' ), // Post type
-			'context' => 'normal',
-			'priority' => 'high',
-			'show_names' => true, // Show field names on the left
-		) );
-		
+		    'id' => $prefix . 'user_metabox',
+		    'title' => __( 'Task Completed', $this->plugin_slug ),
+		    'object_types' => array( 'user' ), // Post type
+		    'context' => 'normal',
+		    'priority' => 'high',
+		    'show_names' => true, // Show field names on the left
+			) );
+
 		$cmb_user_task->add_field( array(
-			'id' => $prefix . $this->plugin_slug . '_tasks',
-			'type' => 'hidden'
+		    'id' => $prefix . $this->plugin_slug . '_tasks',
+		    'type' => 'hidden'
 		) );
-		
+
 		$cmb_user_task->add_field( array(
-			'id' => $prefix . $this->plugin_slug . '_tasks_done',
-			'type' => 'hidden'
+		    'id' => $prefix . $this->plugin_slug . '_tasks_done',
+		    'type' => 'hidden'
 		) );
 	}
-	
+
 	/**
 	 * Return the total of done of the task
 	 *
 	 * @since    1.0.0
 	 */
-	public function number_of_done($task_id) {
+	public function number_of_done( $task_id ) {
 		//the number of user is the number of done
 		$users_of_task = get_users_by_task( $task_id );
-		return count($users_of_task);
+		return count( $users_of_task );
 	}
 
 }
