@@ -53,7 +53,7 @@
 		'id' => $this->plugin_slug . '_tweet_comments',
 		'type' => 'checkbox'
 	    ) );
-	    cmb2_metabox_form( $this->plugin_slug . '_options-second', $this->plugin_slug . '-settings-second' );
+	    cmb2_metabox_form( $this->plugin_slug . '_options-extra', $this->plugin_slug . '-settings-extra' );
 	    ?>
 
 	    <!-- @TODO: Provide other markup for your options page here. -->

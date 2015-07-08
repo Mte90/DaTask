@@ -1,4 +1,5 @@
 <?php
+
 /**
  * WP-OneAndDone.
  *
@@ -160,7 +161,10 @@ class Wp_Oneanddone {
 			), array( 'task' )
 		);
 
-		//Function of plugin
+		$options = get_option( $this->get_plugin_slug() . '-settings' );
+		$options_extra = get_option( $this->get_plugin_slug() . '-extra' );
+
+		//Function of pluginß
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/fake-page.php' );
 
@@ -172,15 +176,18 @@ class Wp_Oneanddone {
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Task.php' );
 		//Search Shortcode
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
-		//Frontend login system
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Login.php' );
+		if ( isset( $options[ $this->get_plugin_slug() . '_enable_frontend' ] ) && $options[ $this->get_plugin_slug() . '_enable_frontend' ] === 'on' ) {
+			//Frontend login system
+			require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Login.php' );
+		}
 		//Frontend Profile page
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Profile.php' );
-		//Comment support for task
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Comment.php' );
+		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tweet_comments' ] ) && $options_extra[ $this->get_plugin_slug() . '_tweet_comments' ] === 'on' ) {
+			//Comment support for task
+			require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Comment.php' );
+		}
 		//Task integration for template ecc
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Task_Support.php' );
-
 	}
 
 	/**
@@ -283,7 +290,6 @@ class Wp_Oneanddone {
 	 */
 	public static function activate( $network_wide ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
 			if ( $network_wide ) {
 
 				// Get all blog ids
@@ -316,7 +322,6 @@ class Wp_Oneanddone {
 	 */
 	public static function deactivate( $network_wide ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
 			if ( $network_wide ) {
 
 				// Get all blog ids
@@ -381,7 +386,6 @@ class Wp_Oneanddone {
 	 * @return   array|false    The blog ids, false if no matches.
 	 */
 	private static function get_blog_ids() {
-
 		global $wpdb;
 
 		// get an array of blog ids
