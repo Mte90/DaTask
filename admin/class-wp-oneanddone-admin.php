@@ -57,6 +57,10 @@ class Wp_Oneanddone_Admin {
 		// Load admin JavaScript after jQuery loading
 		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_files' ) );
+		
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WP-Admin-Notice/WP_Admin_Notice.php' );
+		//Reset User Task 
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_User_Backend.php' );
 
 		// At Glance Dashboard widget for your cpts
 		add_filter( 'dashboard_glance_items', array( $this, 'cpt_dashboard_support' ), 10, 1 );
