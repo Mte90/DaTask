@@ -164,10 +164,6 @@ class Wp_Oneanddone {
 		$options = get_option( $this->get_plugin_slug() . '-settings' );
 		$options_extra = get_option( $this->get_plugin_slug() . '-extra' );
 
-		//Function of pluginß
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Functions.php' );
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/fake-page.php' );
-
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );

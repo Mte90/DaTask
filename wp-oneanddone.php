@@ -45,6 +45,8 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/template.php' );
  * Load Language wrapper function for WPML/Ceceppa Multilingua/Polylang
  */
 require_once( plugin_dir_path( __FILE__ ) . 'includes/language.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'public/includes/fake-page.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/WO_Functions.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-oneanddone.php' );
 
 /*
