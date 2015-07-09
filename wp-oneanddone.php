@@ -52,6 +52,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-oneanddone.php' );
  */
 require_once( plugin_dir_path( __FILE__ ) . 'includes/Widgets-Helper/wph-widget-class.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/widgets/recents-tasks.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/widgets/most-task-done.php' );
 
 /*
  * Register hooks that are fired when the plugin is activated or deactivated.

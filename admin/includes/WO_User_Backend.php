@@ -16,7 +16,7 @@
  * @package Wp_Oneanddone
  * @author  Mte90 <mte90net@gmail.com>
  */
-class WO_Reset_User_Task {
+class WO_User_Backend {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -72,4 +72,4 @@ class WO_Reset_User_Task {
 
 }
 
-new WO_Reset_User_Task();
+new WO_User_Backend();
