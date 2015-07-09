@@ -165,7 +165,7 @@ class Wp_Oneanddone {
 		$options_extra = get_option( $this->get_plugin_slug() . '-extra' );
 
 		//Function of pluginß
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/functions.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Functions.php' );
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/fake-page.php' );
 
 		// Load public-facing style sheet and JavaScript.

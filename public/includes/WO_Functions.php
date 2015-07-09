@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WP-OneAndDone.
+ * WP-OneAndDone Functions
  *
  * @package   Wp_Oneanddone
  * @author    Mte90 <mte90net@gmail.com>
