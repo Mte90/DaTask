@@ -7,7 +7,7 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Task Manager insipired to Mozilla OneAndDone project
+Task Manager inspired to Mozilla OneAndDone project
 
 == Description ==
 
@@ -39,7 +39,7 @@ Insert shortcode to show task in progress:
 = Using The WordPress Dashboard =
 
 1. Navigate to the 'Add New' in the plugins dashboard
-2. Search for 'wp-oneanddone'
+2. Search for 'datask'
 3. Click 'Install Now'
 4. Activate the plugin on the Plugin dashboard
 
@@ -47,15 +47,15 @@ Insert shortcode to show task in progress:
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Navigate to the 'Upload' area
-3. Select `wp-oneanddone.zip` from your computer
+3. Select `datask.zip` from your computer
 4. Click 'Install Now'
 5. Activate the plugin in the Plugin dashboard
 
 = Using FTP =
 
-1. Download `wp-oneanddone.zip`
-2. Extract the `wp-oneanddone` directory to your computer
-3. Upload the `wp-oneanddone` directory to the `/wp-content/plugins/` directory
+1. Download `datask.zip`
+2. Extract the `datask` directory to your computer
+3. Upload the `datask` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 == Frequently Asked Questions ==
 

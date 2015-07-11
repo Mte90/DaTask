@@ -95,7 +95,7 @@
     <div class="right-column-settings-page postbox">
 	<h3 class="hndle"><span><?php _e( 'DaTask', $this->plugin_slug ); ?></span></h3>
 	<div class="inside">
-	    <a href="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered"><img src="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered/raw/master/wp-oneanddone/assets/icon-256x256.png" alt=""></a>
+	    <a href="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered"><img src="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered/raw/master/wp-datask/assets/icon-256x256.png" alt=""></a>
 	</div>
     </div>
 </div>

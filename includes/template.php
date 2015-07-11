@@ -16,7 +16,7 @@ function dt_get_template_part( $slug, $name = '', $include = true ) {
 	$plugin = DaTask::get_instance();
 	$plugin_slug = $plugin->get_plugin_slug() . '/templates/';
 
-	// Look in yourtheme/slug-name.php and yourtheme/wp-oneanddone/slug-name.php
+	// Look in yourtheme/slug-name.php and yourtheme/wp-datask/slug-name.php
 	if ( $name ) {
 		$template = locate_template( array( "{$slug}-{$name}.php", $plugin_slug . "{$slug}-{$name}.php" ) );
 	} else {

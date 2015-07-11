@@ -27,7 +27,7 @@ class DT_Task_Support {
 		add_action( 'dt-task-info', array( $this, 'dt_task_info' ) );
 		add_filter( 'the_content', array( $this, 'dt_task_content' ) );
 		add_filter( 'the_excerpt', array( $this, 'dt_task_excerpt' ) );
-		add_shortcode( 'datask-progress', array( $this, 'oneanddone_progress' ) );
+		add_shortcode( 'datask-progress', array( $this, 'datask_progress' ) );
 	
 	}
 	
@@ -199,7 +199,7 @@ class DT_Task_Support {
 	 * 
 	 * @since    1.0.0
 	 */
-	public function oneanddone_progress() {
+	public function datask_progress() {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
 			dt_tasks_later( $current_user->user_login );

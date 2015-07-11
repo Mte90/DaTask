@@ -15,7 +15,7 @@
  * public-facing side of the WordPress site.
  *
  * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-wp-oneanddone-admin.php`
+ * functionality, then refer to `class-wp-datask-admin.php`
  *
  * @package DaTask
  * @author  Mte90 <mte90net@gmail.com>
@@ -32,7 +32,7 @@ class DaTask {
 	const VERSION = '1.0.0';
 
 	/**
-	 * @TODO - Rename "wp-oneanddone" to the name of your plugin
+	 * @TODO - Rename "wp-datask" to the name of your plugin
 	 *
 	 * Unique identifier for your plugin.
 	 *

@@ -15,7 +15,7 @@
  * administrative side of the WordPress site.
  *
  * If you're interested in introducing public-facing
- * functionality, then refer to `class-wp-oneanddone.php`
+ * functionality, then refer to `class-wp-datask.php`
  *
  * @package DaTask_Admin
  * @author  Mte90 <mte90net@gmail.com>
