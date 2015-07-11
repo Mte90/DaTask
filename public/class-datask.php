@@ -403,7 +403,7 @@ class DaTask {
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
 		    'WP' => new WordPress_Requirement( '4.1.0' ),
 		    'Plugin' => new Plugin_Requirement( array(
-			array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' )
+			//array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' )
 			    ) )
 			) );
 

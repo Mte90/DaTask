@@ -5,7 +5,7 @@
  * This includes the header, options, and other information that should provide
  * The User Interface to the end user.
  *
- * @package   Wp-DaTask
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -53,10 +53,8 @@
 		'id' => $this->plugin_slug . '_tweet_comments',
 		'type' => 'checkbox'
 	    ) );
-	    cmb2_metabox_form( $this->plugin_slug . '_options-extra', $this->plugin_slug . '-settings-extra' );
+	    cmb2_metabox_form( $this->plugin_slug . '_options-second', $this->plugin_slug . '-settings-extra' );
 	    ?>
-
-	    <!-- @TODO: Provide other markup for your options page here. -->
 	</div>
 	<div id="tabs-3" class="metabox-holder">
 	    <div class="postbox">

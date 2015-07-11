@@ -4,7 +4,7 @@
  * Load template files of the plugin also include a filter dt_get_template_part<br>
  * Based on WooCommerce function<br>
  *
- * @package   Wp-DaTask
+ * @package   DaTask
  * @author  Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @copyright 2014 

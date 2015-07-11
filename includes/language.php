@@ -5,7 +5,7 @@
  * 
  * example use https://gist.github.com/Mte90/fe687ceed408ab743238
  * 
- * @package   Wp-DaTask
+ * @package   DaTask
  * @author Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @copyright 2014 

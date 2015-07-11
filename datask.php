@@ -47,7 +47,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/template.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/language.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'public/includes/fake-page.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Functions.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-datask.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'public/class-datask.php' );
 
 /*
  * Load Widgets Helper
@@ -69,7 +69,7 @@ add_action( 'plugins_loaded', array( 'DaTask', 'get_instance' ) );
  * ---------------------------------------------------------------------------- */
 if ( is_admin() ) {
 	if ( (!defined( 'DOING_AJAX' ) || !DOING_AJAX ) ) {
-		require_once( plugin_dir_path( __FILE__ ) . 'admin/class-wp-datask-admin.php' );
+		require_once( plugin_dir_path( __FILE__ ) . 'admin/class-datask-admin.php' );
 		add_action( 'plugins_loaded', array( 'DaTask_Admin', 'get_instance' ) );
 	} else {
 		require_once( plugin_dir_path( __FILE__ ) . '/admin/includes/cmb2_post_search_field.php' );
