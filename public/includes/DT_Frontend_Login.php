@@ -1,16 +1,16 @@
 <?php
 
 /**
- * WO_Frontend_Login
+ * DT_Frontend_Login
  * Frontend Login system
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-class WO_Frontend_Login {
+class DT_Frontend_Login {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -18,7 +18,7 @@ class WO_Frontend_Login {
 	 * @since     1.0.0
 	 */
 	public function __construct() {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		new Fake_Page(
 			array(
 		    'slug' => 'login',
@@ -212,7 +212,7 @@ class WO_Frontend_Login {
 	 */
 	public function login_page( $content ) {
 		if ( is_page( 'login' ) ) {
-			wo_get_template_part( 'log', 'in', true );
+			dt_get_template_part( 'log', 'in', true );
 		} else {
 			return $content;
 		}
@@ -251,4 +251,4 @@ class WO_Frontend_Login {
 
 }
 
-new WO_Frontend_Login();
+new DT_Frontend_Login();

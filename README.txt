@@ -1,4 +1,4 @@
-=== WP-OneAndDone ===
+=== DaTask ===
 Contributors: Mte90
 Tags: task
 Requires at least: 4.2
@@ -7,16 +7,20 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Wordpress version Of OneAndDone Project
+Task Manager insipired to Mozilla OneAndDone project
 
 == Description ==
 
-"One and Done is a tool for new contributors looking to help Mozilla. It allows them to easily browse tasks and find ways to contribute which match their skills. 
-You can pick an easy task that only takes a few minutes - or take on a bigger challenge."  
-This is the official description of the original OneAndDone project.
+DaTask (is a working in progress) is a tool for help people that join a project (with all the instructions) but not know how to start.  
+Allows to easily browse task and show in their profile the task done or in progress.  
+Case Example:    
 
-Check the wiki: [https://github.com/Mte90/WP-OneAndDone/wiki](https://github.com/Mte90/WP-OneAndDone/wiki)  
-Demo site: [http://wpoad.mte90.net/](http://wpoad.mte90.net/)
+* Quality Assurance for your project
+* Steps to release a new project 
+* Tasks for new collaborators on a project (ticket, patch, ecc)
+
+Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/DaTask/wiki)  
+Demo site: [http://datask.mte90.net/](http://datask.mte90.net/)
 
 Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
 
@@ -24,11 +28,11 @@ Insert the shortcode for search box:
 
 Parameter filter_type can have two values for show the select or the list for choose the taxonomy: filter_type="select" or filter_type="list"
 
-[oneanddone-search posts_per_page="10" show_count=1]
+[datask-search posts_per_page="10" show_count=1]
 
 Insert shortcode to show task in progress:
 
-[oneanddone-progress]
+[datask-progress]
 
 == Installation ==
 
@@ -57,7 +61,7 @@ Insert shortcode to show task in progress:
 
 = Why not use the original project? =
 
-Check the wiki: [https://github.com/Mte90/WP-OneAndDone/wiki](https://github.com/Mte90/WP-OneAndDone/wiki) 
+Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/DaTask/wiki) 
 
 == Screenshots ==
 

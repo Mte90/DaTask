@@ -1,9 +1,9 @@
 <?php
 
 /**
- * WP-OneAndDone Functions
+ * DaTask Functions
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -18,8 +18,8 @@
  * @param     number $task_id ID of task post type
  * @return    @bool true
  */
-function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
-	$plugin = Wp_Oneanddone::get_instance();
+function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
+	$plugin = DaTask::get_instance();
 	$users_of_task = get_users_by_task( $task_id );
 	if ( !isset( $users_of_task[ $user_id ] ) ) {
 		$users_of_task[ $user_id ] = true;
@@ -30,8 +30,13 @@ function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
 		$tasks_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
 	}
-	//Add the action for create plugins
-	do_action( 'wo-set-completed-task' );
+
+	/**
+	 * Fires before the end of function `dt_set_completed_task_for_user_id`
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'dt-set-completed-task' );
 	return true;
 }
 
@@ -43,15 +48,19 @@ function wo_set_completed_task_for_user_id( $user_id, $task_id ) {
  * @param     number $task_id ID of task post type
  * @return    @bool true
  */
-function wo_set_task_later_for_user_id( $user_id, $task_id ) {
-	$plugin = Wp_Oneanddone::get_instance();
+function dt_set_task_later_for_user_id( $user_id, $task_id ) {
+	$plugin = DaTask::get_instance();
 	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
 	if ( !isset( $tasks_later_of_user[ $task_id ] ) ) {
 		$tasks_later_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
-	//Add the action for create plugins
-	do_action( 'wo-set-task-later' );
+	/**
+	 * Fires before the end of function `dt_set_task_later_for_user_id`
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'dt-set-task-later' );
 	return true;
 }
 
@@ -62,8 +71,8 @@ function wo_set_task_later_for_user_id( $user_id, $task_id ) {
  *
  * @return    @string html
  */
-function wo_get_tasks_completed() {
-	$plugin = Wp_Oneanddone::get_instance();
+function dt_get_tasks_completed() {
+	$plugin = DaTask::get_instance();
 	$print = '';
 	if ( username_exists( get_user_of_profile() ) ) {
 		$user_id = get_user_by( 'login', get_user_of_profile() );
@@ -87,8 +96,14 @@ function wo_get_tasks_completed() {
 			$print .= '</div>';
 			$print .= '</div>';
 			wp_reset_postdata();
-			//Add the filter for improve this output
-			$print = apply_filters( 'wo-get-completed-task', $print );
+			/**
+			 * Filter the box with task done
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $html the html output
+			 */
+			$print = apply_filters( 'dt-get-completed-task', $print );
 		}
 	} else {
 		$print = __( "This profile not exist!", $plugin->get_plugin_slug() );
@@ -101,8 +116,8 @@ function wo_get_tasks_completed() {
  *
  * @since     1.0.0
  */
-function wo_tasks_completed() {
-	echo wo_get_tasks_completed();
+function dt_tasks_completed() {
+	echo dt_get_tasks_completed();
 }
 
 /**
@@ -112,16 +127,16 @@ function wo_tasks_completed() {
  * @param     string $user ID of the user
  * @return    @string html
  */
-function wo_get_tasks_later( $user = NULL ) {
+function dt_get_tasks_later( $user = NULL ) {
 	if ( $user === NULL ) {
 		$user = get_user_of_profile();
 	}
-	$plugin = Wp_Oneanddone::get_instance();
+	$plugin = DaTask::get_instance();
 	$print = '';
 	if ( username_exists( $user ) ) {
 		$current_user = wp_get_current_user();
 		if ( $current_user->user_login === $user ) {
-			$plugin = Wp_Oneanddone::get_instance();
+			$plugin = DaTask::get_instance();
 			$user_id = get_user_by( 'login', $user );
 			$user_id = $user_id->data->ID;
 			$tasks_later_user = get_tasks_later_by_user( $user_id );
@@ -143,8 +158,14 @@ function wo_get_tasks_later( $user = NULL ) {
 				$print .= '</div>';
 				$print .= '</div>';
 				wp_reset_postdata();
-				//Add the filter for improve this output
-				$print = apply_filters( 'wo-get-task-later', $print );
+				/**
+				 * Filter the box with task later
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $html the html output
+				 */
+				$print = apply_filters( 'dt-get-task-later', $print );
 			}
 		}
 	} else {
@@ -160,8 +181,8 @@ function wo_get_tasks_later( $user = NULL ) {
  * @param     string $user ID of the user
  * @return    @string html
  */
-function wo_tasks_later( $user = NULL ) {
-	echo wo_get_tasks_later( $user );
+function dt_tasks_later( $user = NULL ) {
+	echo dt_get_tasks_later( $user );
 }
 
 /**
@@ -194,7 +215,7 @@ function get_user_of_profile() {
  * @return    array the ids
  */
 function get_tasks_by_user( $user_id ) {
-	$plugin = Wp_Oneanddone::get_instance();
+	$plugin = DaTask::get_instance();
 	return unserialize( get_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), true ) );
 }
 
@@ -206,7 +227,7 @@ function get_tasks_by_user( $user_id ) {
  * @return    array the ids
  */
 function get_tasks_later_by_user( $user_id ) {
-	$plugin = Wp_Oneanddone::get_instance();
+	$plugin = DaTask::get_instance();
 	return unserialize( get_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), true ) );
 }
 
@@ -218,6 +239,6 @@ function get_tasks_later_by_user( $user_id ) {
  * @return    array the ids
  */
 function get_users_by_task( $task_id ) {
-	$plugin = Wp_Oneanddone::get_instance();
+	$plugin = DaTask::get_instance();
 	return unserialize( get_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), true ) );
 }

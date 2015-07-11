@@ -1,9 +1,9 @@
 <?php
 
 /**
- * WP-OneAndDone.
+ * DaTask.
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -13,10 +13,10 @@
 /**
  * This class contain the link on user backend
  *
- * @package Wp_Oneanddone
+ * @package DaTask
  * @author  Mte90 <mte90net@gmail.com>
  */
-class WO_User_Backend {
+class DT_User_Backend {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -39,7 +39,7 @@ class WO_User_Backend {
 	 * @return array The actions to display for this user row.
 	 */
 	public function filter_user_row_actions( array $actions, WP_User $user ) {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		if ( is_admin() ) {
 			$link = wp_nonce_url( add_query_arg( array(
 			    'action' => 'reset_task_later_user',
@@ -63,7 +63,7 @@ class WO_User_Backend {
 		if ( $_GET[ 'action' ] === 'reset_task_later_user' ) {
 			$user_id = absint( $_REQUEST[ 'user_id' ] );
 			check_admin_referer( 'reset_task_later_user_' . $user_id );
-			$plugin = Wp_Oneanddone::get_instance();
+			$plugin = DaTask::get_instance();
 			update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( '' ) );
 			$user = get_user_by( 'id', $user_id );
 			New WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', $plugin->get_plugin_slug() ), $user->data->user_login ), 'updated' );
@@ -72,4 +72,4 @@ class WO_User_Backend {
 
 }
 
-new WO_User_Backend();
+new DT_User_Backend();

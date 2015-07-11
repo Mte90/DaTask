@@ -1,16 +1,16 @@
 <?php
 
 /**
- * WO_Task_Support
+ * DT_Task_Support
  * Task integration for template ecc
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-class WO_Task_Support {
+class DT_Task_Support {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -18,16 +18,16 @@ class WO_Task_Support {
 	 * @since     1.0.0
 	 */
 	public function __construct() {	
-		add_filter( 'body_class', array( $this, 'add_wo_class' ), 10, 3 );
+		add_filter( 'body_class', array( $this, 'add_dt_class' ), 10, 3 );
 		//Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
 		/*
 		 * Custom Action/Shortcode
 		 */
-		add_action( 'wo-task-info', array( $this, 'wo_task_info' ) );
-		add_filter( 'the_content', array( $this, 'wo_task_content' ) );
-		add_filter( 'the_excerpt', array( $this, 'wo_task_excerpt' ) );
-		add_shortcode( 'oneanddone-progress', array( $this, 'oneanddone_progress' ) );
+		add_action( 'dt-task-info', array( $this, 'dt_task_info' ) );
+		add_filter( 'the_content', array( $this, 'dt_task_content' ) );
+		add_filter( 'the_excerpt', array( $this, 'dt_task_excerpt' ) );
+		add_shortcode( 'datask-progress', array( $this, 'oneanddone_progress' ) );
 	
 	}
 	
@@ -36,12 +36,12 @@ class WO_Task_Support {
 	 *
 	 * @since    1.0.0
 	 */
-	public function add_wo_class( $classes ) {
-		$plugin = Wp_Oneanddone::get_instance();
+	public function add_dt_class( $classes ) {
+		$plugin = DaTask::get_instance();
 		global $post;
 		if ( is_singular( 'task' ) ) {
 			$classes[] = $plugin->get_plugin_slug() . '-task';
-		} elseif ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'oneanddone-search' ) ) {
+		} elseif ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'datask-search' ) ) {
 			$classes[] = $plugin->get_plugin_slug() . '-search';
 		}
 		return $classes;
@@ -54,7 +54,7 @@ class WO_Task_Support {
 	 */
 	public function load_content_task( $original_template ) {
 		if ( is_singular( 'task' ) ) {
-			return wo_get_template_part( 'single', 'task', false );
+			return dt_get_template_part( 'single', 'task', false );
 		} else {
 			return $original_template;
 		}
@@ -65,8 +65,8 @@ class WO_Task_Support {
 	 *
 	 * @since    1.0.0
 	 */
-	public function wo_task_info() {
-		$plugin = Wp_Oneanddone::get_instance();
+	public function dt_task_info() {
+		$plugin = DaTask::get_instance();
 		echo '<div class="alert alert-warning">' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . get_the_modified_date() . '</div>';
 		echo '<ul class="list list-inset">';
 		echo '<li><b>';
@@ -99,9 +99,9 @@ class WO_Task_Support {
 	 *
 	 * @since    1.0.0
 	 */
-	public function wo_task_content( $content ) {
+	public function dt_task_content( $content ) {
 		global $post;
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		if ( get_post_type( $post->ID ) === 'task' ) {
 			$content = the_task_subtitle( false );
 		}
@@ -185,7 +185,7 @@ class WO_Task_Support {
 	 *
 	 * @since    1.0.0
 	 */
-	public function wo_task_excerpt( $content ) {
+	public function dt_task_excerpt( $content ) {
 		global $post;
 		if ( get_post_type( $post->ID ) === 'task' ) {
 			$content = the_task_subtitle( false );
@@ -202,9 +202,9 @@ class WO_Task_Support {
 	public function oneanddone_progress() {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			wo_tasks_later( $current_user->user_login );
+			dt_tasks_later( $current_user->user_login );
 		}
 	}
 }
 
-new WO_Task_Support();
+new DT_Task_Support();

@@ -2,7 +2,7 @@
 if ( !defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-$plugin = Wp_Oneanddone::get_instance();
+$plugin = DaTask::get_instance();
 get_header();
 ?>
 <div id="content-main" class="main" role="main">
@@ -12,8 +12,8 @@ get_header();
 	</header>
 	<h2 class="alert alert-warning"><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h2>
 	<?php
-	wo_tasks_later();
-	wo_tasks_completed();
+	dt_tasks_later();
+	dt_tasks_completed();
 	?>
     </div>
     <?php get_sidebar(); ?>

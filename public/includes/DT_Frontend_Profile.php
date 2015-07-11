@@ -1,16 +1,16 @@
 <?php
 
 /**
- * WO_Frontend_Profile
+ * DT_Frontend_Profile
  * Frontend Profile page
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-class WO_Frontend_Profile {
+class DT_Frontend_Profile {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -18,7 +18,7 @@ class WO_Frontend_Profile {
 	 * @since     1.0.0
 	 */
 	public function __construct() {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		
 		new Fake_Page(
 			array(
@@ -65,7 +65,7 @@ class WO_Frontend_Profile {
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
-				wo_get_template_part( 'user', 'profile', true );
+				dt_get_template_part( 'user', 'profile', true );
 				exit;
 			} else {
 				$wp_query->set_404();
@@ -87,7 +87,7 @@ class WO_Frontend_Profile {
 	 * @since    1.0.0
 	 */
 	public function member_wp_title( $title, $sep, $seplocation ) {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
@@ -108,7 +108,7 @@ class WO_Frontend_Profile {
 	 * @since    1.0.0
 	 */
 	public function member_title( $title, $id ) {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		global $wp_query;
 		if ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 			return __( 'Your profile', $plugin->get_plugin_slug() );
@@ -118,4 +118,4 @@ class WO_Frontend_Profile {
 	}
 }
 
-new WO_Frontend_Profile();
+new DT_Frontend_Profile();

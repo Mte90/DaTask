@@ -33,7 +33,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
      *   ) )
      * 	) );
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class Plugin_Requirements {
@@ -65,7 +65,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
         /**
          * Initialize the library 
          * 
-         * @param    string    $pluginname The WP-OneAndDone used for the warning
+         * @param    string    $pluginname The DaTask used for the warning
          * @param    string    $pluginslug The Plugin slug used for the deactivation
          * @param    array    $args The subclasses
          */
@@ -136,7 +136,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
     /**
      * Check the PHP environment, for example go to Plugin_Requirements documentation
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class PHP_Requirement {
@@ -183,7 +183,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
     /**
      * Check the Wordpress environment, for example go to Plugin_Requirements documentation
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class WordPress_Requirement {
@@ -232,7 +232,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
     /**
      * Check the PHP extension, for example go to Plugin_Requirements documentation
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class PHP_Extension_Requirement {
@@ -296,7 +296,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
     /**
      * Check the plugin required, for example go to Plugin_Requirements documentation
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class Plugin_Requirement {
@@ -361,7 +361,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
     /**
      * Generate the exception that stop the activation of the plugin
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class Plugin_Requirements_Exception extends \Exception {
@@ -371,7 +371,7 @@ if ( class_exists( 'Plugin_Requirements' ) === false ) {
     /**
      * Generate the warning error and deactivate the plugin
      *
-     * @package Wp-Oneanddone
+     * @package Wp-DaTask
      * @author  Mte90 and dsawardekar
      */
     class Requirement_Error {

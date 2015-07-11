@@ -1,9 +1,9 @@
 <?php
 
 /**
- * WP-OneAndDone.
+ * DaTask.
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -17,10 +17,10 @@
  * If you're interested in introducing administrative or dashboard
  * functionality, then refer to `class-wp-oneanddone-admin.php`
  *
- * @package Wp_Oneanddone
+ * @package DaTask
  * @author  Mte90 <mte90net@gmail.com>
  */
-class Wp_Oneanddone {
+class DaTask {
 
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
@@ -45,7 +45,7 @@ class Wp_Oneanddone {
 	 *
 	 * @var      string
 	 */
-	protected static $plugin_slug = 'wp-oneanddone';
+	protected static $plugin_slug = 'datask';
 
 	/**
 	 *
@@ -56,7 +56,7 @@ class Wp_Oneanddone {
 	 *
 	 * @var      string
 	 */
-	protected static $plugin_name = 'WP-OneAndDone';
+	protected static $plugin_name = 'DaTask';
 
 	/**
 	 * Instance of this class.
@@ -74,7 +74,7 @@ class Wp_Oneanddone {
 	 *
 	 * @var      object
 	 */
-	protected $cpts = array( 'task', 'task-done' );
+	protected $cpts = array( 'task' );
 
 	/**
 	 * Array of capabilities by roles
@@ -169,21 +169,21 @@ class Wp_Oneanddone {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
 		//Ajax frontend
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Task.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Task.php' );
 		//Search Shortcode
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_AJAX_Filter.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Filter.php' );
 		if ( isset( $options[ $this->get_plugin_slug() . '_enable_frontend' ] ) && $options[ $this->get_plugin_slug() . '_enable_frontend' ] === 'on' ) {
 			//Frontend login system
-			require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Login.php' );
+			require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Frontend_Login.php' );
 		}
 		//Frontend Profile page
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Frontend_Profile.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Frontend_Profile.php' );
 		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tweet_comments' ] ) && $options_extra[ $this->get_plugin_slug() . '_tweet_comments' ] === 'on' ) {
 			//Comment support for task
-			require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Comment.php' );
+			require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Comment.php' );
 		}
 		//Task integration for template ecc
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_Task_Support.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Task_Support.php' );
 	}
 
 	/**
@@ -465,7 +465,7 @@ class Wp_Oneanddone {
 	 */
 	public function enqueue_scripts() {
 		global $post;
-		if ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'oneanddone-search' ) ) {
+		if ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'datask-search' ) ) {
 			wp_enqueue_script( $this->get_plugin_slug() . '-filter-plugin-script', plugins_url( 'assets/js/ajax-filter.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		}
 		if ( is_user_logged_in() && is_singular( 'task' ) ) {
@@ -480,8 +480,8 @@ class Wp_Oneanddone {
 	 */
 	public function enqueue_js_vars() {
 		global $post;
-		if ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'oneanddone-search' ) ) {
-			wp_localize_script( $this->get_plugin_slug() . '-filter-plugin-script', 'wo_js_search_vars', array(
+		if ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'datask-search' ) ) {
+			wp_localize_script( $this->get_plugin_slug() . '-filter-plugin-script', 'dt_js_search_vars', array(
 			    'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			    'on_load_text' => __( 'Search to see results', $this->get_plugin_slug() ),
 			    'thisPage' => 1,
@@ -490,7 +490,7 @@ class Wp_Oneanddone {
 			);
 		}
 		if ( is_user_logged_in() && is_singular( 'task' ) ) {
-			wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'wo_js_vars', array(
+			wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'dt_js_vars', array(
 			    'ajaxurl' => admin_url( 'admin-ajax.php' )
 				)
 			);

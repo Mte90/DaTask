@@ -1,9 +1,9 @@
 <?php
 
 /**
- * WP-OneAndDone.
+ * DaTask.
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -13,10 +13,10 @@
 /**
  * This class contain all the ajax requests for the task system.
  *
- * @package Wp_Oneanddone
+ * @package DaTask
  * @author  Mte90 <mte90net@gmail.com>
  */
-class WO_AJAX_Task {
+class DT_AJAX_Task {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -24,8 +24,8 @@ class WO_AJAX_Task {
 	 * @since     1.0.0
 	 */
 	public function __construct() {
-		add_action( 'wp_ajax_wo_complete_task', array( $this, 'wo_complete_task' ) );
-		add_action( 'wp_ajax_wo_task_later', array( $this, 'wo_task_later' ) );
+		add_action( 'wp_ajax_dt_complete_task', array( $this, 'dt_complete_task' ) );
+		add_action( 'wp_ajax_dt_task_later', array( $this, 'dt_task_later' ) );
 	}
 
 	/**
@@ -35,13 +35,13 @@ class WO_AJAX_Task {
 	 *
 	 * @return    result
 	 */
-	public function wo_complete_task() {
+	public function dt_complete_task() {
 		//Based on check_ajax_referer
 		if ( isset( $_GET[ '_wpnonce' ] ) ) {
 			$nonce = $_GET[ '_wpnonce' ];
 		}
 
-		$result = wp_verify_nonce( $nonce, 'wo-task-action' );
+		$result = wp_verify_nonce( $nonce, 'dt-task-action' );
 
 		if ( false === $result ) {
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -51,7 +51,7 @@ class WO_AJAX_Task {
 			}
 		}
 		if ( is_user_logged_in() ) {
-			wo_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
+			dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			echo 'done!';
 		} else {
 			echo 'error!';
@@ -66,13 +66,13 @@ class WO_AJAX_Task {
 	 *
 	 * @return    result
 	 */
-	public function wo_task_later() {
+	public function dt_task_later() {
 		//Based on check_ajax_referer
 		if ( isset( $_GET[ '_wpnonce' ] ) ) {
 			$nonce = $_GET[ '_wpnonce' ];
 		}
 
-		$result = wp_verify_nonce( $nonce, 'wo-task-action' );
+		$result = wp_verify_nonce( $nonce, 'dt-task-action' );
 
 		if ( false === $result ) {
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -82,7 +82,7 @@ class WO_AJAX_Task {
 			}
 		}
 		if ( is_user_logged_in() ) {
-			wo_set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
+			dt_set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			echo 'done!';
 		} else {
 			echo 'error!';
@@ -92,4 +92,4 @@ class WO_AJAX_Task {
 
 }
 
-new WO_AJAX_Task();
+new DT_AJAX_Task();

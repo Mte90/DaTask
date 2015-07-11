@@ -5,7 +5,7 @@
  * This includes the header, options, and other information that should provide
  * The User Interface to the end user.
  *
- * @package   Wp-Oneanddone
+ * @package   Wp-DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -64,9 +64,9 @@
 		<div class="inside">
 		    <p><?php _e( 'Export the plugin settings for this site as a .json file. This allows you to easily import the configuration into another site.', $this->plugin_slug ); ?></p>
 		    <form method="post">
-			<p><input type="hidden" name="wo_action" value="export_settings" /></p>
+			<p><input type="hidden" name="dt_action" value="export_settings" /></p>
 			<p>
-			    <?php wp_nonce_field( 'wo_export_nonce', 'wo_export_nonce' ); ?>
+			    <?php wp_nonce_field( 'dt_export_nonce', 'dt_export_nonce' ); ?>
 			    <?php submit_button( __( 'Export' ), 'secondary', 'submit', false ); ?>
 			</p>
 		    </form>
@@ -79,11 +79,11 @@
 		    <p><?php _e( 'Import the plugin settings from a .json file. This file can be obtained by exporting the settings on another site using the form above.', $this->plugin_slug ); ?></p>
 		    <form method="post" enctype="multipart/form-data">
 			<p>
-			    <input type="file" name="wo_import_file"/>
+			    <input type="file" name="dt_import_file"/>
 			</p>
 			<p>
-			    <input type="hidden" name="wo_action" value="import_settings" />
-			    <?php wp_nonce_field( 'wo_import_nonce', 'wo_import_nonce' ); ?>
+			    <input type="hidden" name="dt_action" value="import_settings" />
+			    <?php wp_nonce_field( 'dt_import_nonce', 'dt_import_nonce' ); ?>
 			    <?php submit_button( __( 'Import' ), 'secondary', 'submit', false ); ?>
 			</p>
 		    </form>
@@ -93,7 +93,7 @@
     </div>
 
     <div class="right-column-settings-page postbox">
-	<h3 class="hndle"><span><?php _e( 'WP-OneAndDone', $this->plugin_slug ); ?></span></h3>
+	<h3 class="hndle"><span><?php _e( 'DaTask', $this->plugin_slug ); ?></span></h3>
 	<div class="inside">
 	    <a href="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered"><img src="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered/raw/master/wp-oneanddone/assets/icon-256x256.png" alt=""></a>
 	</div>

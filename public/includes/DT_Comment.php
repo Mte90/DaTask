@@ -1,16 +1,16 @@
 <?php
 
 /**
- * WO_Comment
+ * DT_Comment
  * Comment supports for task post type
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-class WO_Comment {
+class DT_Comment {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -33,7 +33,7 @@ class WO_Comment {
 	 * @since    1.0.0
 	 */
 	public function task_comment_fields() {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		global $post;
 		if ( get_post_type( $post->ID ) === 'task' ) {
 			?>
@@ -84,7 +84,7 @@ class WO_Comment {
 	 * @since    1.0.0
 	 */
 	public function task_comment_show_metabox_data_backend() {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		add_meta_box( 'task-comment', __( 'Task Feedback Data', $plugin->get_plugin_slug()  ), array( $this, 'task_comment_show_field_data_backend' ), 'comment', 'normal', 'high' );
 	}
 
@@ -95,7 +95,7 @@ class WO_Comment {
 	 * @since    1.0.0
 	 */
 	public function task_comment_show_field_data_backend( $comment ) {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
 			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
 			wp_nonce_field( 'task_comment_nonce ', 'task_comment_nonce ', false );
@@ -109,4 +109,4 @@ class WO_Comment {
 	}
 }
 
-new WO_Comment();
+new DT_Comment();

@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) {
 	</header>
 	<div class="entry-content">
 		<?php	
-		do_action('wo-task-info');
+		do_action('dt-task-info');
 		the_content();	
 		task_buttons();
 		comments_template();

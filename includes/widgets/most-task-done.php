@@ -4,7 +4,7 @@
 class Most_Task_Done_Widget extends WPH_Widget {
 
 	function __construct() {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
 		$args = array(
@@ -37,7 +37,7 @@ class Most_Task_Done_Widget extends WPH_Widget {
 	}
 
 	function widget( $args, $instance ) {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		$out = $args[ 'before_widget' ];
 		$out .= $args[ 'before_title' ];
 		$out .= $instance[ 'title' ];

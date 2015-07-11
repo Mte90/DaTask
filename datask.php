@@ -1,24 +1,24 @@
 <?php
 
 /**
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
  * @copyright 2014 GPL
  *
  * @wordpress-plugin
- * Plugin Name:       WP-OneAndDone
+ * Plugin Name:       DaTask
  * Plugin URI:        @TODO
  * Description:       @TODO
  * Version:           1.0.0
  * Author:            Mte90
  * Author URI:        http://mte90.net
- * Text Domain:       wp-oneanddone
+ * Text Domain:       datask
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * WordPress-Plugin-Boilerplate-Powered: v1.1.0
+ * WordPress-Plugin-Boilerplate-Powered: v1.1.2
  */
 // If this file is called directly, abort.
 if ( !defined( 'WPINC' ) ) {
@@ -46,7 +46,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/template.php' );
  */
 require_once( plugin_dir_path( __FILE__ ) . 'includes/language.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'public/includes/fake-page.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'includes/WO_Functions.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Functions.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'public/class-wp-oneanddone.php' );
 
 /*
@@ -60,9 +60,9 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/widgets/most-task-done.php
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array( 'Wp_Oneanddone', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Wp_Oneanddone', 'deactivate' ) );
-add_action( 'plugins_loaded', array( 'Wp_Oneanddone', 'get_instance' ) );
+register_activation_hook( __FILE__, array( 'DaTask', 'activate' ) );
+register_deactivation_hook( __FILE__, array( 'DaTask', 'deactivate' ) );
+add_action( 'plugins_loaded', array( 'DaTask', 'get_instance' ) );
 
 /* ----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
@@ -70,7 +70,7 @@ add_action( 'plugins_loaded', array( 'Wp_Oneanddone', 'get_instance' ) );
 if ( is_admin() ) {
 	if ( (!defined( 'DOING_AJAX' ) || !DOING_AJAX ) ) {
 		require_once( plugin_dir_path( __FILE__ ) . 'admin/class-wp-oneanddone-admin.php' );
-		add_action( 'plugins_loaded', array( 'Wp_Oneanddone_Admin', 'get_instance' ) );
+		add_action( 'plugins_loaded', array( 'DaTask_Admin', 'get_instance' ) );
 	} else {
 		require_once( plugin_dir_path( __FILE__ ) . '/admin/includes/cmb2_post_search_field.php' );
 	}

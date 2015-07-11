@@ -1,9 +1,9 @@
 <?php
 
 /**
- * WP-OneAndDone.
+ * DaTask.
  *
- * @package   Wp_Oneanddone_Admin
+ * @package   DaTask_Admin
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
@@ -17,10 +17,10 @@
  * If you're interested in introducing public-facing
  * functionality, then refer to `class-wp-oneanddone.php`
  *
- * @package Wp_Oneanddone_Admin
+ * @package DaTask_Admin
  * @author  Mte90 <mte90net@gmail.com>
  */
-class Wp_Oneanddone_Admin {
+class DaTask_Admin {
 
 	/**
 	 * Instance of this class.
@@ -48,7 +48,7 @@ class Wp_Oneanddone_Admin {
 	 */
 	private function __construct() {
 
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->plugin_name = $plugin->get_plugin_name();
 		$this->version = $plugin->get_plugin_version();
@@ -60,7 +60,7 @@ class Wp_Oneanddone_Admin {
 		
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WP-Admin-Notice/WP_Admin_Notice.php' );
 		//Reset User Task 
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/WO_User_Backend.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_User_Backend.php' );
 
 		// At Glance Dashboard widget for your cpts
 		add_filter( 'dashboard_glance_items', array( $this, 'cpt_dashboard_support' ), 10, 1 );
@@ -133,10 +133,10 @@ class Wp_Oneanddone_Admin {
 		}
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id || strpos( $_SERVER[ 'REQUEST_URI' ], 'index.php' ) || strpos( $_SERVER[ 'REQUEST_URI' ], get_bloginfo( 'wpurl' ) . '/wp-admin/' ) ) {
-			wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array( 'dashicons' ), Wp_Oneanddone::VERSION );
+			wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array( 'dashicons' ), DaTask::VERSION );
 		}
 		if ( $this->plugin_screen_hook_suffix === $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), Wp_Oneanddone::VERSION );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), DaTask::VERSION );
 		}
 	}
 	

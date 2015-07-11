@@ -1,9 +1,9 @@
 jQuery(document).ready(function () {
-  var WO_Ajax_Filter = function (opts) {
+  var DT_Ajax_Filter = function (opts) {
     this.init(opts);
   };
 
-  WO_Ajax_Filter.prototype = {
+  DT_Ajax_Filter.prototype = {
     selected: function () {
 
       arr = this.loop(jQuery('.' + this.selected_filters + ':selected, .' + this.selected_filters + ' input:checked'));
@@ -28,13 +28,13 @@ jQuery(document).ready(function () {
 
       // Return all the relevant posts...
       jQuery.ajax({
-        url: wo_js_search_vars.ajaxurl,
+        url: dt_js_search_vars.ajaxurl,
         data: {
           'action': 'wpoad-ajax-search',
           'filters': arr,
           'postsperpage': jQuery("#ajax-filtered-section").attr('data-postsperpage'),
-          'paged': wo_js_search_vars.thisPage,
-          '_ajax_nonce': wo_js_search_vars.nonce
+          'paged': dt_js_search_vars.thisPage,
+          '_ajax_nonce': dt_js_search_vars.nonce
         },
         beforeSend: function () {
           self.section.animate({
@@ -77,7 +77,7 @@ jQuery(document).ready(function () {
                   parent = link.parent('li');
 
           if (parent.length > 0) {
-            wo_js_search_vars.thisPage = 1;
+            dt_js_search_vars.thisPage = 1;
           }
 
           self.filter(self.selected());
@@ -95,7 +95,7 @@ jQuery(document).ready(function () {
           // Set to true to stop function chaining.
           self.running = true;
 
-          wo_js_search_vars.thisPage = 1;
+          dt_js_search_vars.thisPage = 1;
 
           self.filter(self.selected());
 
@@ -110,7 +110,7 @@ jQuery(document).ready(function () {
 
       // remove all other ".no-results" 
       jQuery(".no-results").remove();
-      jQuery("#ajax-content #ajax-filtered-section").append("<p class='no-results'>" + wo_js_search_vars.on_load_text + "</p>"); // add msg 
+      jQuery("#ajax-content #ajax-filtered-section").append("<p class='no-results'>" + dt_js_search_vars.on_load_text + "</p>"); // add msg 
       jQuery("#ajax-content .ajax-pagination, #ajax-content .ajax-loaded").hide(); // hide pagination 
 
     },
@@ -130,7 +130,7 @@ jQuery(document).ready(function () {
 
   };
 
-  var af_filter = new WO_Ajax_Filter({
+  var af_filter = new DT_Ajax_Filter({
     'section': '#ajax-filtered-section',
     'links': '.pagelink, #go',
     'selected_filters': 'filter-selected'

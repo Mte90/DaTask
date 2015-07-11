@@ -4,7 +4,7 @@
 class Recent_Tasks_Widget extends WPH_Widget {
 
 	function __construct() {
-		$plugin = Wp_Oneanddone::get_instance();
+		$plugin = DaTask::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
 		$args = array(

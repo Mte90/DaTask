@@ -1,16 +1,16 @@
 <?php
 
 /**
- * WO_AJAX_Filter
+ * DT_AJAX_Filter
  * Based on Simple Search Ajax of James Irving-Swift
  *
- * @package   Wp_Oneanddone
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-class WO_AJAX_Filter {
+class DT_AJAX_Filter {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -20,7 +20,7 @@ class WO_AJAX_Filter {
 	public function __construct() {
 		add_action( 'wp_ajax_wpoad-ajax-search', array( $this, 'create_filtered_section' ) );
 		add_action( 'wp_ajax_nopriv_wpoad-ajax-search', array( $this, 'create_filtered_section' ) );
-		add_shortcode( 'oneanddone-search', array( $this, 'ajax_filter' ) );
+		add_shortcode( 'datask-search', array( $this, 'ajax_filter' ) );
 	}
 
 	/**
@@ -105,14 +105,14 @@ class WO_AJAX_Filter {
 		$i = 0;
 
 		// new WP_Query 
-		$wo_ajax_filter_wp_query = new WP_Query();
+		$dt_ajax_filter_wp_query = new WP_Query();
 
 		// parse args 
-		$wo_ajax_filter_wp_query->query( $args );
+		$dt_ajax_filter_wp_query->query( $args );
 
-		if ( $wo_ajax_filter_wp_query->have_posts() ) {
-			while ( $wo_ajax_filter_wp_query->have_posts() ) {
-				$wo_ajax_filter_wp_query->the_post();
+		if ( $dt_ajax_filter_wp_query->have_posts() ) {
+			while ( $dt_ajax_filter_wp_query->have_posts() ) {
+				$dt_ajax_filter_wp_query->the_post();
 				?>
 				<article class="ajax-loaded">
 				    <h3><?php the_title(); ?></h3>
@@ -129,7 +129,7 @@ class WO_AJAX_Filter {
 			_e( "No Results found :(" );
 			echo "</p>";
 		}
-		$this->pagination( $wo_ajax_filter_wp_query->found_posts, $posts_per_page );
+		$this->pagination( $dt_ajax_filter_wp_query->found_posts, $posts_per_page );
 
 		// reset global post object 
 		wp_reset_query();
@@ -334,4 +334,4 @@ class WO_AJAX_Filter {
 
 }
 
-new WO_AJAX_Filter();
+new DT_AJAX_Filter();

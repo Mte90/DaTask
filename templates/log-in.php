@@ -6,7 +6,7 @@ if ( !defined( 'ABSPATH' ) ) {
 $action = !empty( $_GET[ 'action' ] ) && ($_GET[ 'action' ] === 'register' || $_GET[ 'action' ] === 'forgot' || $_GET[ 'action' ] === 'resetpass') ? $_GET[ 'action' ] : 'login';
 $success = !empty( $_GET[ 'success' ] );
 $failed = !empty( $_GET[ 'failed' ] ) ? $_GET[ 'failed' ] : false;
-$plugin = Wp_Oneanddone::get_instance();
+$plugin = DaTask::get_instance();
 ?>
 
 <div id="content-main" class="main" role="main">
