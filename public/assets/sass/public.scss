@@ -14,9 +14,14 @@
 .form-group {
 	min-height:34px;
 	select.form-control {
-		width:32%;
+		width:19%;
 		float:left;
 		margin-right:1%;
+		padding-left:6px;
+		padding-right:6px;
+	}
+	.search-form-button {
+		float: right;
 	}
 }
 .comment-form-tweet {

@@ -1,29 +1,35 @@
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-datask\/public\/assets\/sass\/public\.scss}line{font-family:\000032}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\000032}}
 .entry-header.jumbotron {
   padding: 20px !important;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-datask\/public\/assets\/sass\/public\.scss}line{font-family:\000035}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\000035}}
 .entry-header h1, .entry-header h2 {
   margin: 0px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-datask\/public\/assets\/sass\/public\.scss}line{font-family:\0000310}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\0000310}}
 .panel .panel-content {
   padding: 10px 15px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-datask\/public\/assets\/sass\/public\.scss}line{font-family:\0000314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\0000314}}
 .form-group {
   min-height: 34px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-datask\/public\/assets\/sass\/public\.scss}line{font-family:\0000316}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\0000316}}
 .form-group select.form-control {
-  width: 32%;
+  width: 19%;
   float: left;
   margin-right: 1%;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\0000323}}
+.form-group .search-form-button {
+  float: right;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/wp-datask\/public\/assets\/sass\/public\.scss}line{font-family:\0000323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/www\/VVV\/www\/wpoad\/htdocs\/wp-content\/plugins\/DaTask\/public\/assets\/sass\/public\.scss}line{font-family:\0000328}}
 .comment-form-tweet .twitter-share-button {
   float: right;
   margin-top: -27px;

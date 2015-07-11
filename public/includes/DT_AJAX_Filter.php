@@ -116,7 +116,7 @@ class DT_AJAX_Filter {
 				?>
 				<article class="ajax-loaded">
 				    <h3><?php the_title(); ?></h3>
-				<?php the_post_thumbnail( array( 150, 150 ) ); ?>
+				    <?php the_post_thumbnail( array( 150, 150 ) ); ?>
 				    <p><?php the_excerpt(); ?></p>
 				    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( "Read More" ); ?></a>
 				</article>
@@ -227,7 +227,7 @@ class DT_AJAX_Filter {
 	 * @return      string      HTML for filter nav
 	 */
 	public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
-		$taxonomies = array( 'task-area', 'task-difficulty', 'task-minute' );
+		$taxonomies = array( 'task-team', 'task-area', 'task-difficulty', 'task-minute' );
 
 		$searcher = isset( $_GET[ "s" ] ) ? $_GET[ "s" ] : "";
 		?>
@@ -269,9 +269,9 @@ class DT_AJAX_Filter {
 						// build selects for changing values 
 						case "select";
 							echo '<select class="filter-' . $taxonomy . ' ajax-select form-control">';
-							echo "<option value=\"\" class=\"default\">-- " . $the_tax_name . " --</option>";
+							echo "<option value=\"\" class=\"default\">" . $the_tax_name . "</option>";
 							foreach ( $terms as $term ) {
-								echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '">';
+								echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '"> - ';
 								echo $term->name;
 								if ( $show_count == 1 ) {
 									echo ' (' . $term->count . ')';
@@ -288,7 +288,7 @@ class DT_AJAX_Filter {
 							echo '<h3>' . $the_tax_name . '</h3>';
 							echo '<ul class="list-group">';
 							foreach ( $terms as $term ) {
-								echo '<li class="list-group-item"><input class="ajax-list" type="checkbox" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '" /> <label>' . $term->name . '</a></label>';
+								echo '<li class="list-group-item"><input class="ajax-list" type="checkbox" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '" /><label>' . $term->name . '</a></label>';
 								if ( $show_count == 1 ) {
 									echo '<span class="badge">' . $term->count . '</span>';
 								}
@@ -299,12 +299,12 @@ class DT_AJAX_Filter {
 					}
 				}
 			}
-			?> 
-		    </div> 
-		    <div class="form-group">
-			<input type="submit" id="go" class="go filter btn btn-primary" value="<?php _e( "Search" ); ?>" />
-			<input type="reset" id="reset" class="reset btn btn-primary" value="<?php _e( "Clear" ); ?>" />
-		    </div>		    
+			?>
+			<div class="search-form-button">
+			    <input type="submit" id="go" class="go filter btn btn-primary" value="<?php _e( "Search" ); ?>" />
+			    <input type="reset" id="reset" class="reset btn btn-primary" value="<?php _e( "Clear" ); ?>" />
+			</div>
+		    </div> 	    
 		</div>
 		<?php
 	}
