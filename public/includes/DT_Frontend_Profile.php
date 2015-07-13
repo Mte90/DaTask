@@ -10,6 +10,7 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
+
 class DT_Frontend_Profile {
 
 	/**
@@ -19,7 +20,7 @@ class DT_Frontend_Profile {
 	 */
 	public function __construct() {
 		$plugin = DaTask::get_instance();
-		
+		// Create Fake Page for members profile
 		new Fake_Page(
 			array(
 		    'slug' => 'member',
@@ -38,6 +39,10 @@ class DT_Frontend_Profile {
 	 * Add the rewrite permalink for member
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $vars The permalinks.
+	 * 
+	 * @return array $vars The permalinks.
 	 */
 	public function add_member_permalink( $vars ) {
 		$vars[] = 'member';
@@ -85,6 +90,12 @@ class DT_Frontend_Profile {
 	 * Add the head title for the member page
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $title       Title of the page.
+	 * @param string $sep         Separator for the title.
+	 * @param string $seplocation Another separator.
+	 * 
+	 * @return string $title Title of the page
 	 */
 	public function member_wp_title( $title, $sep, $seplocation ) {
 		$plugin = DaTask::get_instance();
@@ -106,6 +117,11 @@ class DT_Frontend_Profile {
 	 * Add the title for the member page
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string  $title Title of the page.
+	 * @param integer $id    ID of the page.
+	 * 
+	 * @return string $title Title of the page
 	 */
 	public function member_title( $title, $id ) {
 		$plugin = DaTask::get_instance();

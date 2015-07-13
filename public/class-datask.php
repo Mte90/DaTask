@@ -1,7 +1,11 @@
 <?php
 
 /**
- * DaTask.
+ * Plugin class. This class should ideally be used to work with the
+ * public-facing side of the WordPress site.
+ *
+ * If you're interested in introducing administrative or dashboard
+ * functionality, then refer to `class-wp-datask-admin.php`
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
@@ -10,16 +14,6 @@
  * @copyright 2015 GPL
  */
 
-/**
- * Plugin class. This class should ideally be used to work with the
- * public-facing side of the WordPress site.
- *
- * If you're interested in introducing administrative or dashboard
- * functionality, then refer to `class-wp-datask-admin.php`
- *
- * @package DaTask
- * @author  Mte90 <mte90net@gmail.com>
- */
 class DaTask {
 
 	/**
@@ -32,11 +26,6 @@ class DaTask {
 	const VERSION = '1.0.0';
 
 	/**
-	 * @TODO - Rename "wp-datask" to the name of your plugin
-	 *
-	 * Unique identifier for your plugin.
-	 *
-	 *
 	 * The variable name is used as the text domain when internationalizing strings
 	 * of text. Its value should match the Text Domain file header in the main
 	 * plugin file.
@@ -50,7 +39,6 @@ class DaTask {
 	/**
 	 *
 	 * Unique identifier for your plugin.
-	 *
 	 *
 	 * @since    1.0.0
 	 *
@@ -168,21 +156,21 @@ class DaTask {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
-		//Ajax frontend
+		// Ajax frontend
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Task.php' );
-		//Search Shortcode
+		// Search Shortcode
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Filter.php' );
 		if ( isset( $options[ $this->get_plugin_slug() . '_enable_frontend' ] ) && $options[ $this->get_plugin_slug() . '_enable_frontend' ] === 'on' ) {
-			//Frontend login system
+			// Frontend login system
 			require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Frontend_Login.php' );
 		}
-		//Frontend Profile page
+		// Frontend Profile page
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Frontend_Profile.php' );
 		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tweet_comments' ] ) && $options_extra[ $this->get_plugin_slug() . '_tweet_comments' ] === 'on' ) {
-			//Comment support for task
+			// Comment support for task
 			require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Comment.php' );
 		}
-		//Task integration for template ecc
+		// Task integration for template ecc
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Task_Support.php' );
 	}
 
@@ -235,7 +223,9 @@ class DaTask {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @return    array/string of fields
+	 * @param array $value Key for get the real field key.
+	 * 
+	 * @return    array String of fields.
 	 */
 	public function get_fields( $value = '' ) {
 		$fields = array();
@@ -279,15 +269,11 @@ class DaTask {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses
-	 *                                       "Network Activate" action, false if
-	 *                                       WPMU is disabled or plugin is
-	 *                                       activated on an individual blog.
+	 * @param    boolean $network_wide True if WPMU superadmin uses "Network Activate" action, false if WPMU is disabled or plugin is activated on an individual blog.
 	 */
 	public static function activate( $network_wide ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 			if ( $network_wide ) {
-
 				// Get all blog ids
 				$blog_ids = self::get_blog_ids();
 
@@ -311,15 +297,11 @@ class DaTask {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    boolean    $network_wide    True if WPMU superadmin uses
-	 *                                       "Network Deactivate" action, false if
-	 *                                       WPMU is disabled or plugin is
-	 *                                       deactivated on an individual blog.
+	 * @param    boolean $network_wide True if WPMU superadmin uses "Network Deactivate" action, false if WPMU is disabled or plugin is deactivated on an individual blog.
 	 */
 	public static function deactivate( $network_wide ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() ) {
 			if ( $network_wide ) {
-
 				// Get all blog ids
 				$blog_ids = self::get_blog_ids();
 
@@ -343,7 +325,9 @@ class DaTask {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    int    $blog_id    ID of the new blog.
+	 * @param    integer $blog_id ID of the new blog.
+	 * 
+	 * @return void
 	 */
 	public function activate_new_site( $blog_id ) {
 		if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
@@ -360,11 +344,13 @@ class DaTask {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param    object    $query   
+	 * @param    object $query WP_Query object.
+	 * 
+	 * @return object WP_Query object with task post type  
 	 */
 	public function filter_search( $query ) {
 		if ( $query->is_search ) {
-			//Mantain support for post
+			// Mantain support for post
 			$this->cpts[] = 'task';
 			$query->set( 'post_type', $this->cpts );
 		}
@@ -384,7 +370,7 @@ class DaTask {
 	private static function get_blog_ids() {
 		global $wpdb;
 
-		// get an array of blog ids
+		// Get an array of blog ids
 		$sql = "SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0'
 			AND deleted = '0'";
@@ -398,12 +384,12 @@ class DaTask {
 	 * @since    1.0.0
 	 */
 	private static function single_activate() {
-		//Requirements Detection System - read the doc/example in the library file
+		// Requirements Detection System - read the doc/example in the library file
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/requirements.php' );
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
 		    'WP' => new WordPress_Requirement( '4.1.0' ),
 		    'Plugin' => new Plugin_Requirement( array(
-			//array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' )
+			    // array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' )
 			    ) )
 			) );
 
@@ -412,17 +398,17 @@ class DaTask {
 			$wp_roles = new WP_Roles;
 		}
 		foreach ( $wp_roles->role_names as $role => $label ) {
-			//if the role is a standard role, map the default caps, otherwise, map as a subscriber
+			// If the role is a standard role, map the default caps, otherwise, map as a subscriber
 			$caps = ( array_key_exists( $role, self::$plugin_roles ) ) ? self::$plugin_roles[ $role ] : self::$plugin_roles[ 'subscriber' ];
-			//loop and assign
+			// Loop and assign
 			foreach ( $caps as $cap => $grant ) {
-				//check to see if the user already has this capability, if so, don't re-add as that would override grant
+				// Check to see if the user already has this capability, if so, don't re-add as that would override grant
 				if ( !isset( $wp_roles->roles[ $role ][ 'capabilities' ][ $cap ] ) ) {
 					$wp_roles->add_cap( $role, $cap, $grant );
 				}
 			}
 		}
-		//Clear the permalinks
+		// Clear the permalinks
 		flush_rewrite_rules();
 	}
 
@@ -432,7 +418,7 @@ class DaTask {
 	 * @since    1.0.0
 	 */
 	private static function single_deactivate() {
-		//Clear the permalinks
+		// Clear the permalinks
 		flush_rewrite_rules();
 	}
 

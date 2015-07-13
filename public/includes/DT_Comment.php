@@ -10,6 +10,7 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
+
 class DT_Comment {
 
 	/**
@@ -52,6 +53,8 @@ class DT_Comment {
 	 * Save Tweet field in comments
 	 * 
 	 * @since    1.0.0
+	 * 
+	 * @param       integer $comment_id The ID of the comment.
 	 */
 	public function task_comment_save_data( $comment_id ) {
 		global $post;
@@ -65,11 +68,17 @@ class DT_Comment {
 	 * Add in frontend the tweet in comment
 	 * 
 	 * @since    1.0.0
+	 * 
+	 * @param       string $text    HTML code.
+	 * @param       string $comment The comment.
+	 * 
+	 * @return string $text URL of the tweet
 	 */
 	public function task_comment_show_data_frontend( $text, $comment ) {
 		if ( get_post_type( $comment->comment_post_ID ) === 'task' ) {
 			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
 			if ( $tweet ) {
+				$plugin = DaTask::get_instance();
 				$tweet = __( 'URL of the Tweet', $plugin->get_plugin_slug() ) . ': <a href="' . esc_attr( $tweet ) . '">' . esc_attr( $tweet ) . '</a>';
 				$text = $tweet . $text;
 			}
@@ -93,6 +102,8 @@ class DT_Comment {
 	 * Show tweet url in backend comment
 	 * 
 	 * @since    1.0.0
+	 * 
+	 * @param       string $comment The comment.
 	 */
 	public function task_comment_show_field_data_backend( $comment ) {
 		$plugin = DaTask::get_instance();

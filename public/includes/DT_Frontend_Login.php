@@ -10,6 +10,7 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
+
 class DT_Frontend_Login {
 
 	/**
@@ -19,6 +20,7 @@ class DT_Frontend_Login {
 	 */
 	public function __construct() {
 		$plugin = DaTask::get_instance();
+		// Initialize the fake page for the login system
 		new Fake_Page(
 			array(
 		    'slug' => 'login',
@@ -42,6 +44,7 @@ class DT_Frontend_Login {
 		add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
 		add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
 		add_filter( 'the_content', array( $this, 'login_page' ) );
+		// Switch login to logout for logged users
 		add_filter( 'wp_nav_menu_objects', array( $this, 'login_to_logout' ) );
 	}
 
@@ -49,6 +52,8 @@ class DT_Frontend_Login {
 	 * Frontend login
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @return void 
 	 */
 	public function frontend_login() {
 		$action = isset( $_REQUEST[ 'action' ] ) ? $_REQUEST[ 'action' ] : 'login';
@@ -57,7 +62,7 @@ class DT_Frontend_Login {
 		} else if ( isset( $_GET[ 'reauth' ] ) ) {
 			$action = 'reauth';
 		}
-		//redirect to change password form
+		// Redirect to change password form
 		if ( $action == 'rp' || $action == 'resetpass' ) {
 			if ( isset( $_GET[ 'key' ] ) && isset( $_GET[ 'login' ] ) ) {
 				$rp_path = wp_unslash( '/login/' );
@@ -69,17 +74,17 @@ class DT_Frontend_Login {
 			wp_redirect( home_url( '/login/?action=resetpass' ) );
 			exit;
 		}
-		//redirect from wrong key when resetting password
+		// Redirect from wrong key when resetting password
 		if ( $action == 'lostpassword' && isset( $_GET[ 'error' ] ) && ( $_GET[ 'error' ] == 'expiredkey' || $_GET[ 'error' ] == 'invalidkey' ) ) {
 			wp_redirect( home_url( '/login/?action=forgot&failed=wrongkey' ) );
 			exit;
 		}
 		if (
-			$action == 'post-data' || //don't mess with POST requests
-			$action == 'reauth' || //need to reauthorize
-			$action == 'logout'       //user is logging out
+			$action == 'post-data' || // Don't mess with POST requests
+			$action == 'reauth' || // Need to reauthorize
+			$action == 'logout'       // User is logging out
 		) {
-			return;
+			return NULL;
 		}
 		wp_redirect( home_url( '/login/' ) );
 		exit;
@@ -124,9 +129,15 @@ class DT_Frontend_Login {
 	 *  Redirect on registration
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param object $errors               Error generated from WordPress.
+	 * @param string $sanitized_user_login THe user login sanitized.
+	 * @param string $user_email           The email of the user.
+	 * 
+	 * @return object $errors 
 	 */
 	public function registration_redirect( $errors, $sanitized_user_login, $user_email ) {
-		//don't lose your time with spammers, redirect them to a success page
+		// Don't lose your time with spammers, redirect them to a success page
 		if ( !isset( $_POST[ 'confirm_email' ] ) || $_POST[ 'confirm_email' ] !== '' ) {
 			wp_redirect( home_url( '/login/' ) . '?action=register&success=1' );
 			exit;
@@ -154,6 +165,10 @@ class DT_Frontend_Login {
 	 * Redirect after login
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $redirect_to URL
+	 * @param string $url another url
+	 * @param object $user The WP User object
 	 */
 	public function login_redirect( $redirect_to, $url, $user ) {
 		if ( !isset( $user->errors ) ) {
@@ -187,20 +202,23 @@ class DT_Frontend_Login {
 	 * Validate the password in frontend
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param object $errors Error object
+	 * @param object $user The WP User object
 	 */
 	public function frontend_validate_password_reset( $errors, $user ) {
-		//passwords don't match
+		// Passwords don't match
 		if ( $errors->get_error_code() ) {
 			wp_redirect( home_url( '/login/?action=resetpass&failed=nomatch' ) );
 			exit;
 		}
-		//wp-login already checked if the password is valid, so no further check is needed
+		// wp-login already checked if the password is valid, so no further check is needed
 		if ( !empty( $_POST[ 'pass1' ] ) ) {
 			reset_password( $user, $_POST[ 'pass1' ] );
 			wp_redirect( home_url( '/login/?action=resetpass&success=1' ) );
 			exit;
 		}
-		//redirect to change password form
+		// Redirect to change password form
 		wp_redirect( home_url( '/login/?action=resetpass' ) );
 		exit;
 	}
@@ -209,6 +227,8 @@ class DT_Frontend_Login {
 	 * Load login page
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $content HTML from WordPress
 	 */
 	public function login_page( $content ) {
 		if ( is_page( 'login' ) ) {

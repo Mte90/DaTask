@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DaTask.
+ * This class contain the link on user backend
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
@@ -10,12 +10,6 @@
  * @copyright 2015 GPL
  */
 
-/**
- * This class contain the link on user backend
- *
- * @package DaTask
- * @author  Mte90 <mte90net@gmail.com>
- */
 class DT_User_Backend {
 
 	/**
@@ -33,6 +27,8 @@ class DT_User_Backend {
 
 	/**
 	 * Adds a 'Switch To' link to each list of user actions on the Users screen.
+	 * 
+	 * @since     1.0.0
 	 *
 	 * @param  array   $actions The actions to display for this user row.
 	 * @param  WP_User $user    The user object displayed in this row.
@@ -54,6 +50,8 @@ class DT_User_Backend {
 
 	/**
 	 * Load localisation files and route actions depending on the 'action' query var.
+	 * 
+	 * @since     1.0.0
 	 */
 	public function action_init() {
 		if ( !isset( $_REQUEST[ 'action' ] ) ) {

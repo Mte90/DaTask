@@ -10,6 +10,7 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
+
 class DT_AJAX_Filter {
 
 	/**
@@ -26,19 +27,19 @@ class DT_AJAX_Filter {
 	/**
 	 * Build the filtered element on the search results page
 	 * 
-	 * @since       1.7.0
-	 * @param       int         $posts_per_page
+	 * @since       1.0.0
 	 * 
-	 * @return      string      HTML for results
+	 * @param       integer $posts_per_page
+	 * 
 	 */
 	public function create_filtered_section( $posts_per_page = 10 ) {
 		$filters = array();
-		// post data passed, so update values 
+		// Post data passed, so update values 
 		if ( $_GET ) {
-			// secure with a nonce 
+			// Secure with a nonce 
 			check_ajax_referer( 'filternonce' );
 
-			// grab post data 
+			// Grab post data 
 			$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
 
 			if ( isset( $_GET[ 'postsperpage' ] ) ) {
@@ -46,36 +47,36 @@ class DT_AJAX_Filter {
 			}
 		}
 
-		// counter 
+		// Counter 
 		$c = 0;
 
-		if ( isset( $_GET_filters ) && $_GET_filters[ 0 ] != "" ) { //check that the array isn't blank
-			// this while loop puts the filters in a usable array 
+		if ( isset( $_GET_filters ) && $_GET_filters[ 0 ] != "" ) { // Check that the array isn't blank
+			// This while loop puts the filters in a usable array 
 			while ( $c < count( $_GET_filters ) ) {
-				// explode string to array 
+				// Explode string to array 
 				$string = explode( '=', $_GET_filters[ $c ] );
 
-				// check if each item is an array - or caste 
+				// Check if each item is an array - or caste 
 				if ( !isset( $filters[ $string[ 0 ] ] ) || !is_array( $filters[ $string[ 0 ] ] ) ) {
 					$filters[ $string[ 0 ] ] = array();
 				}
-				// add items to array 
+				// Add items to array 
 				array_push( $filters[ $string[ 0 ] ], $string[ 1 ] );
 
-				// clean up empty items 
+				// Clean up empty items 
 				array_filter( $filters );
 
-				// iterate 
+				// Iterate 
 				$c++;
 			}
 		}
 
-		// build args list 
+		// Build args list 
 		$args = array(
 		    "post_type" => array( 'task' ), "posts_per_page" => ( int ) $posts_per_page, "tax_query" => array(), "orderby" => 'title', "order" => 'DESC', "post_status" => "publish"
 		);
 
-		// check if paging value passed, if so add to the query 
+		// Check if paging value passed, if so add to the query 
 		if ( isset( $_GET[ 'paged' ] ) ) {
 			$args[ 'paged' ] = $_GET[ 'paged' ];
 		} else {
@@ -83,7 +84,7 @@ class DT_AJAX_Filter {
 		}
 
 		if ( isset( $filters ) && !empty( $filters ) ) {
-			// add all the filters to tax_query 
+			// Add all the filters to tax_query 
 			foreach ( $filters as $taxonomy => $ids ) {
 				if ( $taxonomy !== 'search' ) {
 					foreach ( $ids as $id ) {
@@ -101,13 +102,13 @@ class DT_AJAX_Filter {
 			$args[ 'tax_query' ][ 'relation' ] = 'AND';
 		}
 
-		// counter 
+		// Counter 
 		$i = 0;
 
-		// new WP_Query 
+		// New WP_Query 
 		$dt_ajax_filter_wp_query = new WP_Query();
 
-		// parse args 
+		// Parse args 
 		$dt_ajax_filter_wp_query->query( $args );
 
 		if ( $dt_ajax_filter_wp_query->have_posts() ) {
@@ -121,9 +122,8 @@ class DT_AJAX_Filter {
 				    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( "Read More" ); ?></a>
 				</article>
 				<?php
-				// iterate 
 				$i++;
-			} // while loop 
+			}
 		} else {
 			echo "<p class='no-results'>";
 			_e( "No Results found :(" );
@@ -131,10 +131,10 @@ class DT_AJAX_Filter {
 		}
 		$this->pagination( $dt_ajax_filter_wp_query->found_posts, $posts_per_page );
 
-		// reset global post object 
+		// Reset global post object 
 		wp_reset_query();
 
-		// called from ajax - so needs to die 
+		// Called from ajax - so needs to die 
 		if ( $_GET ) {
 			die();
 		}
@@ -143,8 +143,11 @@ class DT_AJAX_Filter {
 	/**
 	 * Buid pagination 
 	 * 
-	 * @since       1.4.0
-	 * @return      String      HTML for pagination
+	 * @since       1.0.0
+	 * 
+	 * @param       integer $total_posts    Post totali.
+	 * @param       integer $posts_per_page Post per pagina.
+	 * 
 	 */
 	public function pagination( $total_posts, $posts_per_page ) {
 		?>
@@ -167,8 +170,8 @@ class DT_AJAX_Filter {
 			} else {
 				$page_number = 1;
 			}
-			$pages = ( int ) ceil( $total_posts / $posts_per_page ); // add the pages
-			//Print position 1
+			$pages = ( int ) ceil( $total_posts / $posts_per_page ); // Add the pages
+			// Print position 1
 			if ( $page_number >= 1 ) {
 				if ( 1 === $page_number ) {
 					$active = ' class="active"';
@@ -186,7 +189,7 @@ class DT_AJAX_Filter {
 					<?php
 				}
 			}
-			//print 3 page
+			// Print 3 page
 			if ( $page_number - 1 !== 0 ) {
 				?>
 				<li class="minus"><a href="#" class="pagelink-<?php echo ($page_number - 1); ?> pagelink" rel="<?php echo ($page_number - 1); ?>"><?php echo ($page_number - 1); ?></a></li>
@@ -217,14 +220,13 @@ class DT_AJAX_Filter {
 	}
 
 	/**
-	 * build list of terms to filter by
+	 * Build list of terms to filter by
 	 * 
-	 * @since       1.7.0
-	 * @param       array   $taxonomies
-	 * @param       string  
-	 * @param       int     $show_count
+	 * @since       1.0.0
 	 * 
-	 * @return      string      HTML for filter nav
+	 * @param       string  $filter_type List or select.
+	 * @param       integer $show_count  Show the post.
+	 * 
 	 */
 	public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
 		$taxonomies = array( 'task-team', 'task-area', 'task-difficulty', 'task-minute' );
@@ -255,18 +257,18 @@ class DT_AJAX_Filter {
 					reset( $terms );
 					$first_key = key( $terms );
 
-					// nothing cooking in this taxonomy 
+					// Nothing cooking in this taxonomy 
 					if ( !$terms[ $first_key ] ) {
 						continue;
 					}
 
-					// get tax name 
+					// Get tax name 
 					$the_tax = get_taxonomy( $terms[ $first_key ]->taxonomy );
 					$the_tax_name = $the_tax->labels->singular_name;
 
-					// select or list items ? 
+					// Select or list items ? 
 					switch ( $filter_type ) {
-						// build selects for changing values 
+						// Build selects for changing values 
 						case "select";
 							echo '<select class="filter-' . $taxonomy . ' ajax-select form-control">';
 							echo "<option value=\"\" class=\"default\">" . $the_tax_name . "</option>";
@@ -281,7 +283,7 @@ class DT_AJAX_Filter {
 							echo '</select>';
 							break;
 
-						// build list items for changing values 
+						// Build list items for changing values 
 						case "list";
 						default;
 							echo '<div class="filter-' . $taxonomy . ' filter-selected">';
@@ -312,9 +314,9 @@ class DT_AJAX_Filter {
 	/**
 	 * Write the shortcode
 	 * 
-	 * @param       array   $atts
-	 * @since       1.5
-	 * @return      HTML
+	 * @since       1.0.0
+	 * 
+	 * @param       array $atts The values from the shortcode.
 	 */
 	function ajax_filter( $atts ) {
 		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;

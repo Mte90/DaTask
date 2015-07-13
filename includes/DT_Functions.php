@@ -14,9 +14,9 @@
  * Add the user id on the task post types and the task post types in the user meta
  *
  * @since     1.0.0
- * @param     number $user_id ID of the user
- * @param     number $task_id ID of task post type
- * @return    @bool true
+ * @param     integer $user_id ID of the user.
+ * @param     integer $task_id ID of task post type.
+ * @return    bool true
  */
 function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 	$plugin = DaTask::get_instance();
@@ -44,9 +44,9 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
  * Add in the profile the ids of the task for later
  *
  * @since     1.0.0
- * @param     number $user_id ID of the user
- * @param     number $task_id ID of task post type
- * @return    @bool true
+ * @param     integer $user_id ID of the user.
+ * @param     integer $task_id ID of task post type.
+ * @return    bool true
  */
 function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 	$plugin = DaTask::get_instance();
@@ -55,6 +55,7 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 		$tasks_later_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
+	
 	/**
 	 * Fires before the end of function `dt_set_task_later_for_user_id`
 	 *
@@ -96,6 +97,7 @@ function dt_get_tasks_completed() {
 			$print .= '</div>';
 			$print .= '</div>';
 			wp_reset_postdata();
+			
 			/**
 			 * Filter the box with task done
 			 *
@@ -124,8 +126,8 @@ function dt_tasks_completed() {
  * Get the task later from the user with html
  *
  * @since     1.0.0
- * @param     string $user ID of the user
- * @return    @string html
+ * @param     string $user ID of the user.
+ * @return    string html
  */
 function dt_get_tasks_later( $user = NULL ) {
 	if ( $user === NULL ) {
@@ -178,8 +180,7 @@ function dt_get_tasks_later( $user = NULL ) {
  * Print the task later from the user with html
  *
  * @since     1.0.0
- * @param     string $user ID of the user
- * @return    @string html
+ * @param     string $user ID of the user.
  */
 function dt_tasks_later( $user = NULL ) {
 	echo dt_get_tasks_later( $user );
@@ -194,14 +195,14 @@ function dt_tasks_later( $user = NULL ) {
  */
 function get_user_of_profile() {
 	global $wp_query;
-	//Get nick from the url of the page
+	// Get nick from the url of the page
 	if ( array_key_exists( 'member', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member' ] ) ) {
 		return $wp_query->query[ 'member' ];
-		//If the url don't have the nick get the actual
+		// If the url don't have the nick get the actual
 	} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 		$current_user = wp_get_current_user();
 		return $current_user->user_login;
-		//Else null
+		// Else null
 	} else {
 		return NULL;
 	}
@@ -211,6 +212,8 @@ function get_user_of_profile() {
  * Return the task ids of the user
  *
  * @since     1.0.0
+ * 
+ * @param     integer $user_id ID of the user.
  *
  * @return    array the ids
  */
@@ -223,6 +226,8 @@ function get_tasks_by_user( $user_id ) {
  * Return the task later ids of the user
  *
  * @since     1.0.0
+ * 
+ * @param     integer $user_id ID of the user.
  *
  * @return    array the ids
  */
@@ -235,6 +240,8 @@ function get_tasks_later_by_user( $user_id ) {
  * Return the user ids by task
  *
  * @since     1.0.0
+ * 
+ * @param     integer $task_id ID of the user.
  *
  * @return    array the ids
  */

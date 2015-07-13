@@ -1,7 +1,11 @@
 <?php
 
 /**
- * DaTask.
+ * Plugin class. This class should ideally be used to work with the
+ * administrative side of the WordPress site.
+ *
+ * If you're interested in introducing public-facing
+ * functionality, then refer to `class-wp-datask.php`
  *
  * @package   DaTask_Admin
  * @author    Mte90 <mte90net@gmail.com>
@@ -10,16 +14,6 @@
  * @copyright 2014 GPL
  */
 
-/**
- * Plugin class. This class should ideally be used to work with the
- * administrative side of the WordPress site.
- *
- * If you're interested in introducing public-facing
- * functionality, then refer to `class-wp-datask.php`
- *
- * @package DaTask_Admin
- * @author  Mte90 <mte90net@gmail.com>
- */
 class DaTask_Admin {
 
 	/**
@@ -59,7 +53,7 @@ class DaTask_Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_files' ) );
 		
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WP-Admin-Notice/WP_Admin_Notice.php' );
-		//Reset User Task 
+		// Reset User Task 
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_User_Backend.php' );
 
 		// At Glance Dashboard widget for your cpts
@@ -75,12 +69,14 @@ class DaTask_Admin {
 		 * CMB 2 for metabox and many other cool things!
 		 * https://github.com/WebDevStudios/CMB2
 		 */
+
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2/init.php' );
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );
 
 		/*
 		 * Add metabox
 		 */
+
 		add_action( 'cmb2_init', array( $this, 'cmb_task_metaboxes' ) );
 
 		/*
@@ -88,6 +84,7 @@ class DaTask_Admin {
 		 * 
 		 * Check the file for example
 		 */
+
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/CPT_Columns.php' );
 		$post_columns = new CPT_columns( 'task' );
 		$post_columns->add_column( 'Done', array(
@@ -97,7 +94,7 @@ class DaTask_Admin {
 		    'sortable' => true,
 		    'prefix' => "<b>",
 		    'suffix' => "</b>",
-		    'def' => "Not defined", // default value in case post meta not found
+		    'def' => "Not defined", // Default value in case post meta not found
 		    'order' => "-1"
 			)
 		);
@@ -125,7 +122,7 @@ class DaTask_Admin {
 	 *
 	 * @since     1.0.0
 	 *
-	 * @return    null    Return early if no settings page is registered.
+	 * @return    void    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_files() {
 		if ( !isset( $this->plugin_screen_hook_suffix ) ) {
@@ -169,6 +166,7 @@ class DaTask_Admin {
 		/*
 		 * Settings page in the menu
 		 */
+
 		$this->plugin_screen_hook_suffix = add_menu_page( __( 'Page Title', $this->plugin_slug ), $this->plugin_name, 'manage_options', $this->plugin_slug, array( $this, 'display_plugin_admin_page' ), 'dashicons-hammer', 90 );
 	}
 
@@ -185,6 +183,10 @@ class DaTask_Admin {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param array $links The links of the menu.
+	 * 
+	 * @return array The links of the menu
 	 */
 	public function add_action_links( $links ) {
 		return array_merge(
@@ -202,6 +204,10 @@ class DaTask_Admin {
 	 *        Reference:  http://wpsnipp.com/index.php/functions-php/wordpress-post-types-dashboard-at-glance-widget/
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param array $items HTML code for your CPTs.
+	 * 
+	 * @return array HTML
 	 */
 	public function cpt_dashboard_support( $items = array() ) {
 		$post_types = $this->cpts;
@@ -226,7 +232,7 @@ class DaTask_Admin {
 	}
 
 	/**
-	 * NOTE:     Your metabox on Demo CPT
+	 * The metabox of task post type
 	 *
 	 * @since    1.0.0
 	 */
@@ -327,9 +333,11 @@ class DaTask_Admin {
 	 * Return the total of done of the task
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param integer $task_id ID of the task.
 	 */
 	public function number_of_done( $task_id ) {
-		//the number of user is the number of done
+		// The number of user is the number of done
 		$users_of_task = get_users_by_task( $task_id );
 		return count( $users_of_task );
 	}

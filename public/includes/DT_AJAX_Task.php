@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DaTask.
+ * This class contain all the ajax requests for the task system.
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
@@ -10,12 +10,6 @@
  * @copyright 2015 GPL
  */
 
-/**
- * This class contain all the ajax requests for the task system.
- *
- * @package DaTask
- * @author  Mte90 <mte90net@gmail.com>
- */
 class DT_AJAX_Task {
 
 	/**
@@ -33,10 +27,10 @@ class DT_AJAX_Task {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @return    result
+	 * @return    void
 	 */
 	public function dt_complete_task() {
-		//Based on check_ajax_referer
+		// Based on check_ajax_referer
 		if ( isset( $_GET[ '_wpnonce' ] ) ) {
 			$nonce = $_GET[ '_wpnonce' ];
 		}
@@ -64,10 +58,10 @@ class DT_AJAX_Task {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @return    result
+	 * @return   void
 	 */
 	public function dt_task_later() {
-		//Based on check_ajax_referer
+		// Based on check_ajax_referer
 		if ( isset( $_GET[ '_wpnonce' ] ) ) {
 			$nonce = $_GET[ '_wpnonce' ];
 		}

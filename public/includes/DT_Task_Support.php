@@ -10,6 +10,7 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
+
 class DT_Task_Support {
 
 	/**
@@ -19,11 +20,13 @@ class DT_Task_Support {
 	 */
 	public function __construct() {	
 		add_filter( 'body_class', array( $this, 'add_dt_class' ), 10, 3 );
-		//Override the template hierarchy
+		// Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
+		
 		/*
 		 * Custom Action/Shortcode
 		 */
+		
 		add_action( 'dt-task-info', array( $this, 'dt_task_info' ) );
 		add_filter( 'the_content', array( $this, 'dt_task_content' ) );
 		add_filter( 'the_excerpt', array( $this, 'dt_task_excerpt' ) );
@@ -35,6 +38,10 @@ class DT_Task_Support {
 	 * Add class in the body on the frontend
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param array $classes Classes of the body.
+	 * 
+	 * @return array $classes Classes of the body
 	 */
 	public function add_dt_class( $classes ) {
 		$plugin = DaTask::get_instance();
@@ -51,6 +58,10 @@ class DT_Task_Support {
 	 * Example for override the template system on the frontend
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $original_template The path of the template file.
+	 * 
+	 * @return string $original_template The path of the template file.
 	 */
 	public function load_content_task( $original_template ) {
 		if ( is_singular( 'task' ) ) {
@@ -98,6 +109,10 @@ class DT_Task_Support {
 	 * Echo the content of the task
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $content HTML code of the task data.
+	 * 
+	 * @param string $content HTML code.
 	 */
 	public function dt_task_content( $content ) {
 		global $post;
@@ -184,6 +199,8 @@ class DT_Task_Support {
 	 * Echo the excerpt of the task
 	 *
 	 * @since    1.0.0
+	 * 
+	 * @param string $content The excerpt.
 	 */
 	public function dt_task_excerpt( $content ) {
 		global $post;
