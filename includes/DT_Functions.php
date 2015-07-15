@@ -32,7 +32,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 	}
 	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
 	if ( isset( $tasks_later_of_user[ $task_id ] ) ) {
-		unset($tasks_later_of_user[ $task_id ]);
+		unset( $tasks_later_of_user[ $task_id ] );
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
 
@@ -295,8 +295,8 @@ function get_users_by_task( $task_id ) {
  *
  * @return    bool
  */
-function has_task( $task_id, $user_id = NULL) {
-	if($user_id === NULL) {
+function has_task( $task_id, $user_id = NULL ) {
+	if ( $user_id === NULL ) {
 		$user_id = get_current_user_id();
 	}
 	$tasks = get_tasks_by_user( $user_id );
@@ -317,8 +317,8 @@ function has_task( $task_id, $user_id = NULL) {
  *
  * @return    bool
  */
-function has_later_task( $task_id, $user_id = NULL) {
-	if($user_id === NULL) {
+function has_later_task( $task_id, $user_id = NULL ) {
+	if ( $user_id === NULL ) {
 		$user_id = get_current_user_id();
 	}
 	$tasks = get_tasks_later_by_user( $user_id );

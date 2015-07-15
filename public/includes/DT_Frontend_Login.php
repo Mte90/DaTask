@@ -37,7 +37,7 @@ class DT_Frontend_Login {
 		new Fake_Page(
 			array(
 		    'slug' => 'profile',
-		    'post_title' => __( 'Modifica Profilo', $plugin->get_plugin_slug() ),
+		    'post_title' => __( 'Edit Profile', $plugin->get_plugin_slug() ),
 		    'post_content' => 'content'
 			)
 		);
@@ -250,7 +250,7 @@ class DT_Frontend_Login {
 				}
 				if ( isset( $_POST[ 'user_id' ] ) ) {
 					//Hide header information in case of error
-					error_reporting(0);
+					error_reporting( 0 );
 					$current_user = wp_get_current_user();
 					$user_id = $current_user->ID;
 					$errors = new WP_Error();
@@ -287,11 +287,12 @@ class DT_Frontend_Login {
 	 */
 	function login_to_logout( $items ) {
 		if ( is_user_logged_in() ) {
+			$plugin = DaTask::get_instance();
 			foreach ( $items as $page => $value ) {
 				if ( $items[ $page ]->post_name === 'login' ) {
 					$items[ $page ]->post_name = 'logout';
-					$items[ $page ]->post_title = 'Logout';
-					$items[ $page ]->title = 'Logout';
+					$items[ $page ]->post_title = __( 'Logout', $plugin->get_plugin_slug() );
+					$items[ $page ]->title = __( 'Logout', $plugin->get_plugin_slug() );
 					$items[ $page ]->url = get_site_url() . '/logout';
 				}
 			}

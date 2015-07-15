@@ -8,7 +8,7 @@ get_header();
 <div id="content-main" class="main" role="main">
     <div class="col-md-8">
 	<header class="entry-header jumbotron">
-	    <h2><?php printf( __( "%s's Profile", $plugin->get_plugin_slug() ), get_user_of_profile() ); ?></h2>
+	    <h2><?php $user = get_user_by( 'login', get_user_of_profile() );printf( __( "%s's Profile", $plugin->get_plugin_slug() ), $user->display_name ); ?></h2>
 	</header>
 	<h2 class="alert alert-warning"><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h2>
 	<?php

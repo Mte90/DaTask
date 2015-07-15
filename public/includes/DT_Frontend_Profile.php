@@ -10,7 +10,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DT_Frontend_Profile {
 
 	/**
@@ -34,7 +33,7 @@ class DT_Frontend_Profile {
 		add_filter( 'wp_title', array( $this, 'member_wp_title' ), 10, 3 );
 		add_filter( 'the_title', array( $this, 'member_title' ), 10, 2 );
 	}
-	
+
 	/**
 	 * Add the rewrite permalink for member
 	 *
@@ -102,8 +101,8 @@ class DT_Frontend_Profile {
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
-				$page = sprintf( __( "%s's Profile", $plugin->get_plugin_slug() ), get_user_of_profile() );
-
+				$user = get_user_by( 'login', get_user_of_profile() );
+				$page = sprintf( __( "%s's Profile", $plugin->get_plugin_slug() ), $user->display_name );
 				return $page . ' ' . $sep . $title;
 			}
 		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
@@ -132,6 +131,7 @@ class DT_Frontend_Profile {
 			return $title;
 		}
 	}
+
 }
 
 new DT_Frontend_Profile();
