@@ -81,22 +81,22 @@ class DT_Task_Support {
 		echo '<div class="alert alert-warning">' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . get_the_modified_date() . '</div>';
 		echo '<ul class="list list-inset">';
 		echo '<li><b>';
-		_e( 'Team: ', $plugin->get_plugin_slug() );
-		echo '</b>';
+		_e( 'Team', $plugin->get_plugin_slug() );
+		echo ': </b>';
 		$team = get_the_terms( get_the_ID(), 'task-team' );
 		foreach ( $team as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
 		}
 		echo '</li><li><b>';
-		_e( 'Project: ', $plugin->get_plugin_slug() );
-		echo '</b>';
+		_e( 'Project', $plugin->get_plugin_slug() );
+		echo ': </b>';
 		$project = get_the_terms( get_the_ID(), 'task-area' );
 		foreach ( $project as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
 		}
 		echo '</li><li><b>';
-		_e( 'Estimated time: ', $plugin->get_plugin_slug() );
-		echo '</b>';
+		_e( 'Estimated time', $plugin->get_plugin_slug() );
+		echo ': </b>';
 		$minute = get_the_terms( get_the_ID(), 'task-minute' );
 		foreach ( $minute as $term ) {
 			echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
@@ -152,8 +152,8 @@ class DT_Task_Support {
 			if ( !empty( $mentor ) ) {
 				$content .= '<div class="panel panel-warning">';
 				$content .= '<div class="panel-heading">';
-				$content .= __( 'Mentor(s): ', $plugin->get_plugin_slug() );
-				$content .= '</div>';
+				$content .= __( 'Mentor(s)', $plugin->get_plugin_slug() );
+				$content .= ': </div>';
 				$content .= '<div class="panel-content">';
 				$content .= $mentor;
 				$content .= '</div>';
