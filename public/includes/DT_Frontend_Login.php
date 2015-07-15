@@ -10,7 +10,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DT_Frontend_Login {
 
 	/**
@@ -32,6 +31,13 @@ class DT_Frontend_Login {
 			array(
 		    'slug' => 'logout',
 		    'post_title' => __( 'Logout', $plugin->get_plugin_slug() ),
+		    'post_content' => 'content'
+			)
+		);
+		new Fake_Page(
+			array(
+		    'slug' => 'profile',
+		    'post_title' => __( 'Modifica Profilo', $plugin->get_plugin_slug() ),
 		    'post_content' => 'content'
 			)
 		);
@@ -233,6 +239,30 @@ class DT_Frontend_Login {
 	public function login_page( $content ) {
 		if ( is_page( 'login' ) ) {
 			dt_get_template_part( 'log', 'in', true );
+		} elseif ( is_page( 'profile' ) ) {
+			if ( is_user_logged_in() ) {
+				if ( !function_exists( 'get_user_to_edit' ) ) {
+					include_once(ABSPATH . '/wp-admin/includes/user.php');
+					require_once( ABSPATH . 'wp-admin/includes/misc.php' );
+				}
+				if ( !(function_exists( '_wp_get_user_contactmethods' )) ) {
+					require_once(ABSPATH . '/wp-includes/registration.php');
+				}
+				if ( isset( $_POST[ 'user_id' ] ) ) {
+					//Hide header information in case of error
+					error_reporting(0);
+					$current_user = wp_get_current_user();
+					$user_id = $current_user->ID;
+					$errors = new WP_Error();
+					do_action( 'personal_options_update', $user_id );
+					if ( !isset( $errors ) || ( isset( $errors ) && is_object( $errors ) && false == $errors->get_error_codes() ) ) {
+						$errors = edit_user( $user_id );
+					}
+				}
+				dt_get_template_part( 'user', 'edit', true );
+			} else {
+				wp_redirect( home_url( '/login/' ) );
+			}
 		} else {
 			return $content;
 		}
@@ -257,7 +287,7 @@ class DT_Frontend_Login {
 	 */
 	function login_to_logout( $items ) {
 		if ( is_user_logged_in() ) {
-			foreach ( $items as $page=> $value ) {
+			foreach ( $items as $page => $value ) {
 				if ( $items[ $page ]->post_name === 'login' ) {
 					$items[ $page ]->post_name = 'logout';
 					$items[ $page ]->post_title = 'Logout';

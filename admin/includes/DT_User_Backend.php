@@ -53,12 +53,8 @@ class DT_User_Backend {
 	 * 
 	 * @since     1.0.0
 	 */
-	public function action_init() {
-		if ( !isset( $_REQUEST[ 'action' ] ) ) {
-			return;
-		}
-
-		if ( $_GET[ 'action' ] === 'reset_task_later_user' ) {
+	public function action_init() { 
+		if ( isset($_GET[ 'action' ]) && $_GET[ 'action' ] === 'reset_task_later_user' ) {
 			$user_id = absint( $_REQUEST[ 'user_id' ] );
 			check_admin_referer( 'reset_task_later_user_' . $user_id );
 			$plugin = DaTask::get_instance();
