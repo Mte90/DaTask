@@ -387,10 +387,7 @@ class DaTask {
 		// Requirements Detection System - read the doc/example in the library file
 		require_once( plugin_dir_path( __FILE__ ) . 'includes/requirements.php' );
 		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
-		    'WP' => new WordPress_Requirement( '4.1.0' ),
-		    'Plugin' => new Plugin_Requirement( array(
-			    // array( 'Mozilla Persona (BrowserID)', 'browserid/browserid.php' )
-			    ) )
+		    'WP' => new WordPress_Requirement( '4.1.0' )
 			) );
 
 		global $wp_roles;

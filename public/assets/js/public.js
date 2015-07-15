@@ -5,6 +5,7 @@
 
     jQuery(document).ready(function () {
       jQuery(".complete").on("click", function () {
+        jQuery(this).addClass('disabled').find('.fa-refresh').css('display','inherit').addClass('animate');
         jQuery.ajax({
           type: 'GET',
           data: {
@@ -14,7 +15,10 @@
           },
           url: dt_js_vars.ajaxurl,
           success: function (value) {
-            alert('Done!');
+            jQuery(".complete").find('.fa-refresh').removeClass('animate').removeClass('fa-refresh').addClass('fa-check');
+          }, 
+          error: function (value) {
+            jQuery(".complete").removeClass('disabled').find('.fa-refresh').removeClass('animate');
           }
         });
       });
@@ -22,6 +26,7 @@
     
     jQuery(document).ready(function () {
       jQuery(".save-later").on("click", function () {
+        jQuery(this).addClass('disabled').find('.fa-refresh').css('display','inherit').addClass('animate');
         jQuery.ajax({
           type: 'GET',
           data: {
@@ -31,7 +36,10 @@
           },
           url: dt_js_vars.ajaxurl,
           success: function (value) {
-            alert('Done!');
+            jQuery(".save-later").find('.fa-refresh').removeClass('animate').removeClass('animate').removeClass('fa-refresh').addClass('fa-check');
+          }, 
+          error: function (value) {
+            jQuery(".complete").removeClass('disabled').find('.fa-refresh').removeClass('animate');
           }
         });
       });
