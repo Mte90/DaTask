@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
@@ -20,6 +19,7 @@
  * Domain Path:       /languages
  * WordPress-Plugin-Boilerplate-Powered: v1.1.2
  */
+
 // If this file is called directly, abort.
 if ( !defined( 'WPINC' ) ) {
 	die;

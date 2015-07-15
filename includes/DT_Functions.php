@@ -30,6 +30,11 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 		$tasks_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
 	}
+	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
+	if ( isset( $tasks_later_of_user[ $task_id ] ) ) {
+		unset($tasks_later_of_user[ $task_id ]);
+		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
+	}
 
 	/**
 	 * Fires before the end of function `dt_set_completed_task_for_user_id`
@@ -55,13 +60,43 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 		$tasks_later_of_user[ $task_id ] = true;
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
-	
+
 	/**
 	 * Fires before the end of function `dt_set_task_later_for_user_id`
 	 *
 	 * @since 1.0.0
 	 */
 	do_action( 'dt-set-task-later' );
+	return true;
+}
+
+/**
+ * Add the user id on the task post types and the task post types in the user meta
+ *
+ * @since     1.0.0
+ * @param     integer $user_id ID of the user.
+ * @param     integer $task_id ID of task post type.
+ * @return    bool true
+ */
+function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
+	$plugin = DaTask::get_instance();
+	$users_of_task = get_users_by_task( $task_id );
+	if ( isset( $users_of_task[ $user_id ] ) ) {
+		unset( $users_of_task[ $user_id ] );
+		update_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), serialize( $users_of_task ) );
+	}
+	$tasks_of_user = get_tasks_by_user( $user_id );
+	if ( isset( $tasks_of_user[ $task_id ] ) ) {
+		unset( $tasks_of_user[ $task_id ] );
+		update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
+	}
+
+	/**
+	 * Fires before the end of function `dt_set_completed_task_for_user_id`
+	 *
+	 * @since 1.0.0
+	 */
+	do_action( 'dt-remove-complete-task' );
 	return true;
 }
 
@@ -97,7 +132,7 @@ function dt_get_tasks_completed() {
 			$print .= '</div>';
 			$print .= '</div>';
 			wp_reset_postdata();
-			
+
 			/**
 			 * Filter the box with task done
 			 *
@@ -248,4 +283,48 @@ function get_tasks_later_by_user( $user_id ) {
 function get_users_by_task( $task_id ) {
 	$plugin = DaTask::get_instance();
 	return unserialize( get_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), true ) );
+}
+
+/**
+ * Check if the user have done the task
+ *
+ * @since     1.0.0
+ * 
+ * @param     integer $task_id ID of the task.
+ * @param     integer $user_id ID of the user.
+ *
+ * @return    bool
+ */
+function has_task( $task_id, $user_id = NULL) {
+	if($user_id === NULL) {
+		$user_id = get_current_user_id();
+	}
+	$tasks = get_tasks_by_user( $user_id );
+	if ( isset( $tasks[ $task_id ] ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Check if the user have the task later
+ *
+ * @since     1.0.0
+ * 
+ * @param     integer $task_id ID of the task.
+ * @param     integer $user_id ID of the user.
+ *
+ * @return    bool
+ */
+function has_later_task( $task_id, $user_id = NULL) {
+	if($user_id === NULL) {
+		$user_id = get_current_user_id();
+	}
+	$tasks = get_tasks_later_by_user( $user_id );
+	if ( isset( $tasks[ $task_id ] ) ) {
+		return true;
+	} else {
+		return false;
+	}
 }

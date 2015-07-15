@@ -69,9 +69,34 @@ function task_buttons() {
 		?>
 		<div class="dt-buttons">
 		    <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
-		    <button type="submit" class="button btn btn-primary complete" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Complete task' ); ?></button>
-		    <button type="submit" class="button btn btn-secondary save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Save for later' ); ?></button>
-		    <button type="submit" class="button btn btn-warning remove" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Remove complete task' ); ?></button>
+		    <button type="submit" class="button btn btn-primary complete <?php
+		    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+			    echo 'disabled';
+		    }
+		    ?>" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+			    <?php
+			    if ( has_later_task( get_the_ID() ) ) {
+				    echo '<i class="fa fa-exclamation-circle"></i>';
+			    }
+			    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+				    echo '<i class="fa fa-check"></i>';
+			    }
+			    ?><?php _e( 'Complete task' ); ?></button>
+		    <button type="submit" class="button btn btn-secondary save-later <?php
+		    if ( has_later_task( get_the_ID() ) ) {
+			    echo 'disabled';
+		    }
+		    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+			    <?php
+			    if ( has_later_task( get_the_ID() ) ) {
+				    echo '<i class="fa fa-check"></i>';
+			    }
+			    ?><?php _e( 'Save for later' ); ?></button>
+		    <button type="submit" class="button btn btn-warning remove <?php
+		    if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+			    echo 'disabled';
+		    }
+		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task' ); ?></button>
 		</div>
 		<?php
 	}
