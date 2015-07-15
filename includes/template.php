@@ -71,7 +71,7 @@ function task_buttons() {
 		    <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
 		    <button type="submit" class="button btn btn-primary complete" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Complete task' ); ?></button>
 		    <button type="submit" class="button btn btn-secondary save-later" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Save for later' ); ?></button>
-		    <button type="submit" class="button btn btn-warning remove" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Remove task' ); ?></button>
+		    <button type="submit" class="button btn btn-warning remove" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="fa fa-refresh"></i><?php _e( 'Remove complete task' ); ?></button>
 		</div>
 		<?php
 	}

@@ -20,6 +20,7 @@ class DT_AJAX_Task {
 	public function __construct() {
 		add_action( 'wp_ajax_dt_complete_task', array( $this, 'dt_complete_task' ) );
 		add_action( 'wp_ajax_dt_task_later', array( $this, 'dt_task_later' ) );
+		add_action( 'wp_ajax_dt_remove_task', array( $this, 'dt_remove_task' ) );
 	}
 
 	/**
@@ -77,6 +78,37 @@ class DT_AJAX_Task {
 		}
 		if ( is_user_logged_in() ) {
 			dt_set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
+			echo 'done!';
+		} else {
+			echo 'error!';
+		}
+		wp_die();
+	}
+	
+	/**
+	 * Remove a complete task
+	 *
+	 * @since    1.0.0
+	 *
+	 * @return    void
+	 */
+	public function dt_remove_task() {
+		// Based on check_ajax_referer
+		if ( isset( $_GET[ '_wpnonce' ] ) ) {
+			$nonce = $_GET[ '_wpnonce' ];
+		}
+
+		$result = wp_verify_nonce( $nonce, 'dt-task-action' );
+
+		if ( false === $result ) {
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				wp_die( -1 );
+			} else {
+				die( '-1' );
+			}
+		}
+		if ( is_user_logged_in() ) {
+			dt_remove_complete_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			echo 'done!';
 		} else {
 			echo 'error!';
