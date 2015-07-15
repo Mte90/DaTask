@@ -10,6 +10,7 @@ $current_user = wp_get_current_user();
 $profileuser = get_user_to_edit( $current_user->ID );
 ?>
 <div id="content-main" class="main" role="main">
+    <p><a href="<?php echo home_url( '/member/' . $profileuser->user_login ); ?>"><?php _e( 'View Public Profile', $plugin->get_plugin_slug() ); ?></a></p>
     <form id="your-profile" method="post"<?php do_action( 'user_edit_form_tag' ); ?>>
 	<?php wp_nonce_field( 'update-user_' . $current_user->ID ) ?>
 	<?php
