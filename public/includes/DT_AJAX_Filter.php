@@ -10,7 +10,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DT_AJAX_Filter {
 
 	/**
@@ -33,6 +32,7 @@ class DT_AJAX_Filter {
 	 * 
 	 */
 	public function create_filtered_section( $posts_per_page = 10 ) {
+		$plugin = DaTask::get_instance();
 		$filters = array();
 		// Post data passed, so update values 
 		if ( $_GET ) {
@@ -124,12 +124,12 @@ class DT_AJAX_Filter {
 				<?php
 				$i++;
 			}
+			$this->pagination( $dt_ajax_filter_wp_query->found_posts, $posts_per_page );
 		} else {
 			echo "<p class='no-results'>";
-			_e( "No Results found :(" );
+			_e( "No Results found :(", $plugin->get_plugin_slug() );
 			echo "</p>";
 		}
-		$this->pagination( $dt_ajax_filter_wp_query->found_posts, $posts_per_page );
 
 		// Reset global post object 
 		wp_reset_query();
@@ -230,18 +230,17 @@ class DT_AJAX_Filter {
 	 */
 	public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
 		$taxonomies = array( 'task-team', 'task-area', 'task-difficulty', 'task-minute' );
-
+		$plugin = DaTask::get_instance();
 		$searcher = isset( $_GET[ "s" ] ) ? $_GET[ "s" ] : "";
 		?>
 		<div id="ajax-filters" class="ajax-filters">
-
 		    <div class="form-group">
 			<input type="text" value="<?php echo $searcher; ?>" name="searcher" id="searcher" placeholder="<?php _e( "Search" ); ?>" class="filter-selected form-control" />
 		    </div>
 		    <div class="form-group">
 			<?php
 			if ( $taxonomies && isset( $taxonomies[ 0 ] ) && $taxonomies[ 0 ] > '' ) {
-
+				$emptytask = 0;
 				foreach ( $taxonomies as $taxonomy ) {
 
 					$terms = get_terms( $taxonomy, array(
@@ -251,6 +250,7 @@ class DT_AJAX_Filter {
 					);
 
 					if ( !isset( $terms ) || empty( $terms ) || is_wp_error( $terms ) ) {
+						$emptytask++;
 						continue;
 					}
 
@@ -301,11 +301,17 @@ class DT_AJAX_Filter {
 					}
 				}
 			}
+			if ( $emptytask === 4 ) {
+				_e( 'There are no tasks!', $plugin->get_plugin_slug() );
+			} else {
+				?>
+				<div class="search-form-button">
+				    <input type="submit" id="go" class="go filter btn btn-primary" value="<?php _e( "Search" ); ?>" />
+				    <input type="reset" id="reset" class="reset btn btn-primary" value="<?php _e( "Clear" ); ?>" />
+				</div>
+				<?php
+			}
 			?>
-			<div class="search-form-button">
-			    <input type="submit" id="go" class="go filter btn btn-primary" value="<?php _e( "Search" ); ?>" />
-			    <input type="reset" id="reset" class="reset btn btn-primary" value="<?php _e( "Clear" ); ?>" />
-			</div>
 		    </div> 	    
 		</div>
 		<?php
