@@ -48,8 +48,8 @@ class DT_Frontend_Login {
 		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
 		add_action( 'admin_init', array( $this, 'prevent_access_backend' ) );
 		add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
-		$options = get_option( $this->get_plugin_slug() . '-settings' );
-		if ( isset( $options[ $this->get_plugin_slug() . '_disable_adminbar' ] ) && $options[ $this->get_plugin_slug() . '_disable_adminbar' ] === 'on' ) {
+		$options = get_option( $plugin->get_plugin_slug() . '-settings' );
+		if ( isset( $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] ) && $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] === 'on' ) {
 			add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
 		}
 		add_filter( 'the_content', array( $this, 'login_page' ) );
