@@ -323,6 +323,7 @@ class DT_AJAX_Filter {
 		$posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
 		$filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
 		$this->create_filter_nav( $filter_type, $show_count );
+		ob_start();
 		?>  
 		<div id="ajax-content" class="r-content-wide">
 		    <section id="ajax-filtered-section" data-postsperpage="<?php echo $posts_per_page ?>">
@@ -332,6 +333,9 @@ class DT_AJAX_Filter {
 		    </section>
 		</div>
 		<?php
+		$output = ob_get_contents();
+		ob_clean();
+		return $output;
 	}
 
 }

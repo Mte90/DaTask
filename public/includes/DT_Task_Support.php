@@ -219,7 +219,7 @@ class DT_Task_Support {
 	public function datask_progress() {
 		if ( is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			dt_tasks_later( $current_user->user_login );
+			return dt_get_tasks_later( $current_user->user_login );
 		}
 	}
 }
