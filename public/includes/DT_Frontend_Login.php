@@ -48,7 +48,10 @@ class DT_Frontend_Login {
 		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
 		add_action( 'admin_init', array( $this, 'prevent_access_backend' ) );
 		add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
-		add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
+		$options = get_option( $this->get_plugin_slug() . '-settings' );
+		if ( isset( $options[ $this->get_plugin_slug() . '_disable_adminbar' ] ) && $options[ $this->get_plugin_slug() . '_disable_adminbar' ] === 'on' ) {
+			add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
+		}
 		add_filter( 'the_content', array( $this, 'login_page' ) );
 		// Switch login to logout for logged users
 		add_filter( 'wp_nav_menu_objects', array( $this, 'login_to_logout' ) );

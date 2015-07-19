@@ -37,6 +37,12 @@
 		'desc' => __( 'Add register/login in the frontend', $this->plugin_slug ),
 		'type' => 'checkbox'
 	    ) );
+	    $cmb->add_field( array(
+		'name' => 'Frontend Login - Disable Admin Bar for other users',
+		'id' => $this->plugin_slug . '_disable_adminbar',
+		'desc' => __( 'Require the Frontend Login system enabled', $this->plugin_slug ),
+		'type' => 'checkbox'
+	    ) );
 	    cmb2_metabox_form( $this->plugin_slug . '_options', $this->plugin_slug . '-settings' );
 	    ?>
 	</div>
