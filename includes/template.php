@@ -81,7 +81,7 @@ function task_buttons() {
 			    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
 				    echo '<i class="fa fa-check"></i>';
 			    }
-			    ?><?php _e( 'Complete task' ); ?></button>
+			    ?><?php _e( 'Complete this task' , $plugin->get_plugin_slug()); ?></button>
 		    <button type="submit" class="button btn btn-secondary save-later <?php
 		    if ( has_later_task( get_the_ID() ) ) {
 			    echo 'disabled';
@@ -91,12 +91,12 @@ function task_buttons() {
 			    if ( has_later_task( get_the_ID() ) ) {
 				    echo '<i class="fa fa-check"></i>';
 			    }
-			    ?><?php _e( 'Save for later' ); ?></button>
+			    ?><?php _e( 'Save for later', $plugin->get_plugin_slug() ); ?></button>
 		    <button type="submit" class="button btn btn-warning remove <?php
 		    if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
 			    echo 'disabled';
 		    }
-		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task' ); ?></button>
+		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', $plugin->get_plugin_slug() ); ?></button>
 		</div>
 		<?php
 	}

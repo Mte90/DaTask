@@ -19,21 +19,21 @@ $profileuser = get_user_to_edit( $current_user->ID );
 	?>
 	<table class="form-table">
 	    <tr>
-		<th><label for="user_login"><?php _e( 'Username' ); ?></label></th>
-		<td><input type="text" name="user_login" id="user_login" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="form-control" /><em><span class="description"><?php _e( 'Usernames cannot be changed.' ); ?></span></em></td>
+		<th><label for="user_login"><?php _e( 'Username', $plugin->get_plugin_slug() ); ?></label></th>
+		<td><input type="text" name="user_login" id="user_login" value="<?php echo esc_attr( $profileuser->user_login ); ?>" disabled="disabled" class="form-control" /><em><span class="description"><?php _e( 'Usernames cannot be changed.', $plugin->get_plugin_slug() ); ?></span></em></td>
 	    </tr>
 	    <tr>
-		<th><label for="first_name"><?php _e( 'First Name' ) ?></label></th>
+		<th><label for="first_name"><?php _e( 'First Name', $plugin->get_plugin_slug() ) ?></label></th>
 		<td><input type="text" name="first_name" id="first_name" value="<?php echo esc_attr( $profileuser->first_name ) ?>" class="form-control" /></td>
 	    </tr>
 
 	    <tr>
-		<th><label for="last_name"><?php _e( 'Last Name' ) ?></label></th>
+		<th><label for="last_name"><?php _e( 'Last Name', $plugin->get_plugin_slug() ) ?></label></th>
 		<td><input type="text" name="last_name" id="last_name" value="<?php echo esc_attr( $profileuser->last_name ) ?>" class="form-control" /></td>
 	    </tr>
 
 	    <tr>
-		<th><label for="nickname"><?php _e( 'Nickname' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
+		<th><label for="nickname"><?php _e( 'Nickname', $plugin->get_plugin_slug() ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
 		<td><input type="text" name="nickname" id="nickname" value="<?php echo esc_attr( $profileuser->nickname ) ?>" class="form-control" /></td>
 	    </tr>
 
@@ -70,21 +70,21 @@ $profileuser = get_user_to_edit( $current_user->ID );
 		</td>
 	    </tr>
 	    <tr>
-		<th><label for="email"><?php _e( 'E-mail' ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
+		<th><label for="email"><?php _e( 'E-mail', $plugin->get_plugin_slug() ); ?> <span class="description"><?php _e( '(required)' ); ?></span></label></th>
 		<td><input type="text" name="email" id="email" value="<?php echo esc_attr( $profileuser->user_email ) ?>" class="form-control" />
 		</td>
 	    </tr>
 
 	    <tr>
-		<th><label for="url"><?php _e( 'Website' ) ?></label></th>
+		<th><label for="url"><?php _e( 'Website', $plugin->get_plugin_slug() ) ?></label></th>
 		<td><input type="text" name="url" id="url" value="<?php echo esc_attr( $profileuser->user_url ) ?>" class="form-control" /></td>
 	    </tr>
 	    <tr>
-		<th><label for="description"><?php _e( 'Biographical Info' ); ?></label></th>
+		<th><label for="description"><?php _e( 'Biographical Info', $plugin->get_plugin_slug() ); ?></label></th>
 		<td><textarea name="description" id="description" rows="5" cols="30" class="form-control"><?php echo esc_html( $profileuser->description ); ?></textarea><em><span class="description"><?php _e( 'Share a little biographical information to fill out your profile. This may be shown publicly.' ); ?></span></em></td>
 	    </tr>
 	    <tr>
-		<th><label for="pass1"><?php _e( 'New Password' ); ?></label><br /><span class="description"><small><?php _e( "If you would like to change the password type a new one. Otherwise leave this blank." ); ?></small></span></th>
+		<th><label for="pass1"><?php _e( 'New Password', $plugin->get_plugin_slug() ); ?></label><br /><span class="description"><small><?php _e( "If you would like to change the password type a new one. Otherwise leave this blank." ); ?></small></span></th>
 		<td>
 		    <input type="password" name="pass1" id="pass1" size="16" value="" autocomplete="off" class="form-control" />
 		    <input type="password" name="pass2" id="pass2" size="16" value="" autocomplete="off" class="form-control" />
@@ -99,7 +99,7 @@ $profileuser = get_user_to_edit( $current_user->ID );
 	<p class="submit">
 	    <input type="hidden" name="action" value="update" />
 	    <input type="hidden" name="user_id" id="user_id" value="<?php echo esc_attr( $current_user->ID ); ?>" />
-	    <input type="submit" class="btn btn-primary" value="<?php _e( 'Update Profile' ); ?>" name="submit" />
+	    <input type="submit" class="btn btn-primary" value="<?php _e( 'Update Profile', $plugin->get_plugin_slug() ); ?>" name="submit" />
 	</p>
     </form>
 </div>

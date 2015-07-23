@@ -8,8 +8,8 @@ class Most_Task_Done_Widget extends WPH_Widget {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
 		$args = array(
-		    'label' => __( 'Most Task Done', $this->plugin_slug ),
-		    'description' => __( 'Most Task Done', $this->plugin_slug ),
+		    'label' => __( 'Most Tasks Done', $this->plugin_slug ),
+		    'description' => __( 'Most Tasks Done', $this->plugin_slug ),
 		);
 
 		$args[ 'fields' ] = array(

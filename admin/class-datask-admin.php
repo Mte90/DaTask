@@ -172,7 +172,7 @@ class DaTask_Admin {
 		 * Settings page in the menu
 		 */
 
-		$this->plugin_screen_hook_suffix = add_menu_page( __( 'Page Title', $this->plugin_slug ), $this->plugin_name, 'manage_options', $this->plugin_slug, array( $this, 'display_plugin_admin_page' ), 'dashicons-hammer', 90 );
+		$this->plugin_screen_hook_suffix = add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_options', $this->plugin_slug, array( $this, 'display_plugin_admin_page' ), 'dashicons-hammer', 90 );
 	}
 
 	/**

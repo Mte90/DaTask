@@ -8,7 +8,7 @@ class Recent_Tasks_Widget extends WPH_Widget {
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
 		$args = array(
-		    'label' => __( 'Recent Tasks', $this->plugin_slug ),
+		    'label' => __( 'Recents Tasks', $this->plugin_slug ),
 		    'description' => __( 'Recent Tasks in the system', $this->plugin_slug ),
 		);
 

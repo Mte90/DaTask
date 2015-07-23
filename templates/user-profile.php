@@ -17,10 +17,10 @@ get_header();
 	    <div class="panel-body">
 		<?php if ( is_user_logged_in() ) {
 			?>
-			<p><?php _e( 'Email' ) ?>: <a href="mailto:<?php echo $user->user_email; ?>"><?php echo $user->user_email; ?></a></p>
+			<p><?php _e( 'Email', $plugin->get_plugin_slug() ) ?>: <a href="mailto:<?php echo $user->user_email; ?>"><?php echo $user->user_email; ?></a></p>
 		<?php } ?>
 		<?php if ( !empty( $user->user_url ) ) { ?>
-			<p><?php _e( 'Website' ) ?>: <a href="<?php echo $user->user_url; ?>"><?php echo $user->user_url; ?></a></p>
+			<p><?php _e( 'Website', $plugin->get_plugin_slug() ) ?>: <a href="<?php echo $user->user_url; ?>"><?php echo $user->user_url; ?></a></p>
 		<?php } ?>
 		<?php if ( !empty( $user->description ) ) { ?>
 			<div class="description"><?php echo wpautop( the_author_meta( 'description', $user->ID ) ); ?></div>
