@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaTask\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-07-23 18:32+0200\n"
-"PO-Revision-Date: 2015-07-23 18:38+0200\n"
+"POT-Creation-Date: 2015-07-24 18:58+0200\n"
+"PO-Revision-Date: 2015-07-24 18:59+0200\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it_IT\n"
@@ -117,13 +117,26 @@ msgstr "Extra"
 msgid "Import/Export"
 msgstr "Importa/Esporta"
 
+#: admin/views/admin.php:35
+msgid "Frontend Login"
+msgstr "Login Frontend"
+
 #: admin/views/admin.php:37
 msgid "Add register/login in the frontend"
 msgstr "Aggiungi registra/login nel frontend"
 
+#: admin/views/admin.php:41
+msgid "Frontend Login - Disable Admin Bar for other users"
+msgstr ""
+"Login Frontend - Disattiva la Barra di Amministrazione per gli altri utenti"
+
 #: admin/views/admin.php:43
 msgid "Require the Frontend Login system enabled"
 msgstr "Richiede il sistema di Login nel Frontend"
+
+#: admin/views/admin.php:58
+msgid "Tweet Field in comments"
+msgstr "Campo per il Tweet nei commenti"
 
 #: admin/views/admin.php:67
 msgid "Export Settings"
@@ -151,9 +164,9 @@ msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on another site using the form above."
 msgstr ""
-"Importa la configurazione del plugin da un file .json. Questo file puó essere "
-"ottenuto dall'esportazione delle impostazioni di un altro sito tramite il "
-"modulo soprastante."
+"Importa la configurazione del plugin da un file .json. Questo file puó "
+"essere ottenuto dall'esportazione delle impostazioni di un altro sito "
+"tramite il modulo soprastante."
 
 #: admin/views/admin.php:91
 msgid "Import"
@@ -195,7 +208,8 @@ msgstr "Rimuovi il task completato"
 msgid "Most Tasks Done"
 msgstr "I task piú completati"
 
-#: includes/widgets/most-task-done.php:26 includes/widgets/recents-tasks.php:26
+#: includes/widgets/most-task-done.php:26
+#: includes/widgets/recents-tasks.php:26
 msgid "Task showed"
 msgstr "Task mostrati"
 
@@ -208,47 +222,47 @@ msgstr "Task Recenti"
 msgid "Recent Tasks in the system"
 msgstr "Task recenti nel sistema"
 
-#: public/class-datask.php:103
+#: public/class-datask.php:394
 msgid "Task"
 msgstr "Task"
 
-#: public/class-datask.php:103
+#: public/class-datask.php:394
 msgid "Tasks"
 msgstr "Task"
 
-#: public/class-datask.php:117
+#: public/class-datask.php:404
 msgid "Area"
 msgstr "Area"
 
-#: public/class-datask.php:117
+#: public/class-datask.php:404
 msgid "Areas"
 msgstr "Aree"
 
-#: public/class-datask.php:126
+#: public/class-datask.php:413
 msgid "Difficulty"
 msgstr "Difficoltá"
 
-#: public/class-datask.php:126
+#: public/class-datask.php:413
 msgid "Difficulties"
 msgstr "Difficoltá"
 
-#: public/class-datask.php:135 public/includes/DT_Task_Support.php:84
+#: public/class-datask.php:422 public/includes/DT_Task_Support.php:84
 msgid "Team"
 msgstr "Team"
 
-#: public/class-datask.php:135
+#: public/class-datask.php:422
 msgid "Teams"
 msgstr "Team"
 
-#: public/class-datask.php:144
+#: public/class-datask.php:431
 msgid "Estimated minute"
 msgstr "Minuto stimato"
 
-#: public/class-datask.php:144
+#: public/class-datask.php:431
 msgid "Estimated minutes"
 msgstr "Minuti stimati"
 
-#: public/class-datask.php:469
+#: public/class-datask.php:474
 msgid "Search to see results"
 msgstr "Cerca per dei risultati"
 
@@ -356,8 +370,8 @@ msgstr "Reimposta password"
 msgid ""
 "Your password has been updated. <a href=\"/login/\">Proceed to login</a>."
 msgstr ""
-"La tua password é stata aggiornata. <a href=\"/login/\">Procedi per il login</"
-"a>."
+"La tua password é stata aggiornata. <a href=\"/login/\">Procedi per il "
+"login</a>."
 
 #: templates/log-in.php:52
 msgid "Invalid username or password. Please try again."
@@ -376,8 +390,8 @@ msgid ""
 "Username can only contain alphanumerical characters, \"_\" and \"-\". Please "
 "choose another username."
 msgstr ""
-"L'Username puó contenere solo caratteri alfanumerici, *_* e *_*. Inserisci un "
-"altro username."
+"L'Username puó contenere solo caratteri alfanumerici, *_* e *_*. Inserisci "
+"un altro username."
 
 #: templates/log-in.php:94
 msgid "Username already in use."
@@ -415,8 +429,8 @@ msgstr "Ti sará inviata una password via email."
 
 #: templates/log-in.php:139
 msgid ""
-"The reset key is wrong or expired. Please check that you used the right reset "
-"link or request a new one."
+"The reset key is wrong or expired. Please check that you used the right "
+"reset link or request a new one."
 msgstr ""
 "La chiave per il reset é sbagliata o scaduta. Verifica di aver usato la "
 "chiave giusta o richiedi un nuovo link."
@@ -496,16 +510,16 @@ msgstr "Informazioni Biografiche"
 
 #: templates/user-edit.php:84
 msgid ""
-"Share a little biographical information to fill out your profile. This may be "
-"shown publicly."
+"Share a little biographical information to fill out your profile. This may "
+"be shown publicly."
 msgstr ""
 "Condividi una piccola biografia per il tuo profilo. Sará mostrato "
 "pubblicamente."
 
 #: templates/user-edit.php:87
 msgid ""
-"If you would like to change the password type a new one. Otherwise leave this "
-"blank."
+"If you would like to change the password type a new one. Otherwise leave "
+"this blank."
 msgstr ""
 "Se vuoi cambiare la password inseriscine una nuova. Altrimenti lascia il "
 "campo vuoto."
