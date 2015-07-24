@@ -317,7 +317,7 @@ if ( ! class_exists( 'CPT_Core' ) ) :
 			}
 			$locale = apply_filters( 'plugin_locale', get_locale(), 'cpt-core' );
 			$mofile = dirname( __FILE__ ) . '/languages/cpt-core-'. $locale .'.mo';
-			echo load_textdomain( 'cpt-core', $mofile );
+			load_textdomain( 'cpt-core', $mofile );
 		}
 
 	}
