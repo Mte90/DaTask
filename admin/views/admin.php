@@ -32,13 +32,13 @@
 		'show_names' => true,
 		    ) );
 	    $cmb->add_field( array(
-		'name' => 'Frontend Login',
+		'name' => __( 'Frontend Login', $this->plugin_slug ),
 		'id' => $this->plugin_slug . '_enable_frontend',
 		'desc' => __( 'Add register/login in the frontend', $this->plugin_slug ),
 		'type' => 'checkbox'
 	    ) );
 	    $cmb->add_field( array(
-		'name' => 'Frontend Login - Disable Admin Bar for other users',
+		'name' => __( 'Frontend Login - Disable Admin Bar for other users', $this->plugin_slug ),
 		'id' => $this->plugin_slug . '_disable_adminbar',
 		'desc' => __( 'Require the Frontend Login system enabled', $this->plugin_slug ),
 		'type' => 'checkbox'
@@ -55,7 +55,7 @@
 		'show_names' => true,
 		    ) );
 	    $cmb->add_field( array(
-		'name' => 'Tweet Field in comments',
+		'name' => __( 'Tweet Field in comments', $this->plugin_slug ),
 		'id' => $this->plugin_slug . '_tweet_comments',
 		'type' => 'checkbox'
 	    ) );
@@ -99,7 +99,7 @@
     <div class="right-column-settings-page postbox">
 	<h3 class="hndle"><span><?php _e( 'DaTask', $this->plugin_slug ); ?></span></h3>
 	<div class="inside">
-	    <a href="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered"><img src="https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered/raw/master/wp-datask/assets/icon-256x256.png" alt=""></a>
+	    <a href="https://github.com/Mte90/DaTask"><img src="https://raw.githubusercontent.com/Mte90/DaTask/master/assets/icon-256x256.png" alt=""></a>
 	</div>
     </div>
 </div>

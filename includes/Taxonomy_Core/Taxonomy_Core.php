@@ -99,8 +99,8 @@ class Taxonomy_Core {
 		$this->object_types  = (array) $object_types;
 
 		// load text domain
-		add_action( 'plugins_loaded', array( $this, 'l10n' ) );
-		add_action( 'init', array( $this, 'register_taxonomy' ), 5 );
+		add_action( 'init', array( $this, 'l10n' ), 5 );
+		add_action( 'init', array( $this, 'register_taxonomy' ),5);
 	}
 
 	/**
@@ -158,7 +158,7 @@ class Taxonomy_Core {
 	 */
 	public function register_taxonomy() {
 		global $wp_taxonomies;
-
+		
 		// Register our Taxonomy
 		$args = register_taxonomy( $this->taxonomy, $this->object_types, $this->get_args() );
 		// If error, yell about it.

@@ -13,7 +13,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DaTask {
 
 	/**
@@ -94,63 +93,16 @@ class DaTask {
 	 */
 	private function __construct() {
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 4 );
+		add_action( 'init', array( $this, 'load_cpt_taxonomy' ), 4 );
 
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
-		register_via_cpt_core(
-			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
-		    'taxonomies' => array( 'task-projects' ),
-		    'supports' => array( 'title', 'comments' ),
-		    'capabilities' => array(
-			'edit_post' => 'edit_tasks',
-			'edit_others_posts' => 'edit_other_tasks',
-		    ),
-		    'map_meta_cap' => true
-			)
-		);
-
 		add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
 
-		register_via_taxonomy_core(
-			array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
-		    'public' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
-
-		register_via_taxonomy_core(
-			array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
-		    'public' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
-
-		register_via_taxonomy_core(
-			array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
-		    'public' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
-
-		register_via_taxonomy_core(
-			array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
-		    'public' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
-
 		$options = get_option( $this->get_plugin_slug() . '-settings' );
-		$options_extra = get_option( $this->get_plugin_slug() . 'settings--extra' );
+		$options_extra = get_option( $this->get_plugin_slug() . 'settings-extra' );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
@@ -430,6 +382,59 @@ class DaTask {
 
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
 		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
+	}
+
+	/**
+	 * Load the CPT and Taxonomy
+	 *
+	 * @since    1.0.0
+	 */
+	public function load_cpt_taxonomy() {
+		register_via_cpt_core(
+			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
+		    'supports' => array( 'title', 'comments' ),
+		    'capabilities' => array(
+			'edit_post' => 'edit_tasks',
+			'edit_others_posts' => 'edit_other_tasks',
+		    ),
+		    'map_meta_cap' => true
+			)
+		);
+		register_via_taxonomy_core(
+			array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
+		);
+
+		register_via_taxonomy_core(
+			array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
+		);
+
+		register_via_taxonomy_core(
+			array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
+		);
+
+		register_via_taxonomy_core(
+			array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
+		    'public' => true,
+		    'capabilities' => array(
+			'assign_terms' => 'edit_posts',
+		    )
+			), array( 'task' )
+		);
 	}
 
 	/**
