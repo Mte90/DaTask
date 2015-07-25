@@ -93,7 +93,6 @@ class DaTask {
 	 */
 	private function __construct() {
 		// Load plugin text domain
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 4 );
 		add_action( 'init', array( $this, 'load_cpt_taxonomy' ), 4 );
 
 		// Activate plugin when new blog is added
@@ -369,19 +368,6 @@ class DaTask {
 	private static function single_deactivate() {
 		// Clear the permalinks
 		flush_rewrite_rules();
-	}
-
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @since    1.0.0
-	 */
-	public function load_plugin_textdomain() {
-		$domain = $this->get_plugin_slug();
-		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-
-		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-		load_plugin_textdomain( $domain, FALSE, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
 	}
 
 	/**
