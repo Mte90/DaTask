@@ -66,6 +66,7 @@ function the_task_subtitle( $echo = true ) {
  */
 function task_buttons() {
 	if ( is_user_logged_in() ) {
+		$plugin = DaTask::get_instance();
 		?>
 		<div class="dt-buttons">
 		    <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>

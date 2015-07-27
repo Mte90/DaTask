@@ -10,7 +10,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DT_Task_Support {
 
 	/**
@@ -18,22 +17,21 @@ class DT_Task_Support {
 	 *
 	 * @since     1.0.0
 	 */
-	public function __construct() {	
+	public function __construct() {
 		add_filter( 'body_class', array( $this, 'add_dt_class' ), 10, 3 );
 		// Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
-		
+
 		/*
 		 * Custom Action/Shortcode
 		 */
-		
+
 		add_action( 'dt-task-info', array( $this, 'dt_task_info' ) );
 		add_filter( 'the_content', array( $this, 'dt_task_content' ) );
 		add_filter( 'the_excerpt', array( $this, 'dt_task_excerpt' ) );
 		add_shortcode( 'datask-progress', array( $this, 'datask_progress' ) );
-	
 	}
-	
+
 	/**
 	 * Add class in the body on the frontend
 	 *
@@ -53,7 +51,7 @@ class DT_Task_Support {
 		}
 		return $classes;
 	}
-	
+
 	/**
 	 * Example for override the template system on the frontend
 	 *
@@ -70,7 +68,7 @@ class DT_Task_Support {
 			return $original_template;
 		}
 	}
-	
+
 	/**
 	 * Echo the data about the task
 	 *
@@ -78,30 +76,48 @@ class DT_Task_Support {
 	 */
 	public function dt_task_info() {
 		$plugin = DaTask::get_instance();
-		echo '<div class="alert alert-warning">' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . get_the_modified_date() . '</div>';
+		echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . '</b> ' . get_the_modified_date() . '</div>';
 		echo '<ul class="list list-inset">';
-		echo '<li><b>';
-		_e( 'Team', $plugin->get_plugin_slug() );
-		echo ': </b>';
 		$team = get_the_terms( get_the_ID(), 'task-team' );
-		foreach ( $team as $term ) {
-			echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
+		if ( !empty( $team ) ) {
+			echo '<li><b>';
+			_e( 'Team', $plugin->get_plugin_slug() );
+			echo ': </b>';
+			foreach ( $team as $term ) {
+				echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
+			}
+			echo '</li>';
 		}
-		echo '</li><li><b>';
-		_e( 'Project', $plugin->get_plugin_slug() );
-		echo ': </b>';
 		$project = get_the_terms( get_the_ID(), 'task-area' );
-		foreach ( $project as $term ) {
-			echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
+		if ( !empty( $project ) ) {
+			echo '<li><b>';
+			_e( 'Project', $plugin->get_plugin_slug() );
+			echo ': </b>';
+			foreach ( $project as $term ) {
+				echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
+			}
+			echo '</li>';
 		}
-		echo '</li><li><b>';
-		_e( 'Estimated time', $plugin->get_plugin_slug() );
-		echo ': </b>';
+		$difficulty = get_the_terms( get_the_ID(), 'task-difficulty' );
+		if ( !empty( $difficulty ) ) {
+			echo '<li><b>';
+			_e( 'Difficulty', $plugin->get_plugin_slug() );
+			echo ': </b>';
+			foreach ( $difficulty as $term ) {
+				echo '<a href="' . get_term_link( $term->slug, 'task-difficulty' ) . '">' . $term->name . '</a>, ';
+			}
+			echo '</li>';
+		}
 		$minute = get_the_terms( get_the_ID(), 'task-minute' );
-		foreach ( $minute as $term ) {
-			echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
+		if ( !empty( $minute ) ) {
+			echo '<li><b>';
+			_e( 'Estimated time', $plugin->get_plugin_slug() );
+			echo ': </b>';
+			foreach ( $minute as $term ) {
+				echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
+			}
+			echo '</li>';
 		}
-		echo '</li>';
 		echo '</ul>';
 	}
 
@@ -222,6 +238,7 @@ class DT_Task_Support {
 			return dt_get_tasks_later( $current_user->user_login );
 		}
 	}
+
 }
 
 new DT_Task_Support();
