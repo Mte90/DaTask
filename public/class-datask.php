@@ -101,7 +101,7 @@ class DaTask {
 		add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
 
 		$options = get_option( $this->get_plugin_slug() . '-settings' );
-		$options_extra = get_option( $this->get_plugin_slug() . 'settings-extra' );
+		$options_extra = get_option( $this->get_plugin_slug() . '-settings-extra' );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
