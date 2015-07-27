@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-07-23 18:32+0200\n"
+"POT-Creation-Date: 2015-07-28 00:20+0200\n"
 "PO-Revision-Date: 2014-07-07 18:52+0100\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: LANGUAGE <translations@example.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Poedit 1.8.3\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;"
 "_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c\n"
@@ -51,27 +51,27 @@ msgstr ""
 msgid "Description in a row"
 msgstr ""
 
-#: admin/class-datask-admin.php:265 public/includes/DT_Task_Support.php:126
+#: admin/class-datask-admin.php:265 public/includes/DT_Task_Support.php:142
 msgid "Prerequisites"
 msgstr ""
 
-#: admin/class-datask-admin.php:272 public/includes/DT_Task_Support.php:131
+#: admin/class-datask-admin.php:272 public/includes/DT_Task_Support.php:147
 msgid "Why this matters"
 msgstr ""
 
-#: admin/class-datask-admin.php:279 public/includes/DT_Task_Support.php:136
+#: admin/class-datask-admin.php:279 public/includes/DT_Task_Support.php:152
 msgid "Steps"
 msgstr ""
 
-#: admin/class-datask-admin.php:286 public/includes/DT_Task_Support.php:141
+#: admin/class-datask-admin.php:286 public/includes/DT_Task_Support.php:157
 msgid "Need Help?"
 msgstr ""
 
-#: admin/class-datask-admin.php:293 public/includes/DT_Task_Support.php:147
+#: admin/class-datask-admin.php:293 public/includes/DT_Task_Support.php:163
 msgid "Completion"
 msgstr ""
 
-#: admin/class-datask-admin.php:300 public/includes/DT_Task_Support.php:155
+#: admin/class-datask-admin.php:300 public/includes/DT_Task_Support.php:171
 msgid "Mentor(s)"
 msgstr ""
 
@@ -116,12 +116,24 @@ msgstr ""
 msgid "Import/Export"
 msgstr ""
 
+#: admin/views/admin.php:35
+msgid "Frontend Login"
+msgstr ""
+
 #: admin/views/admin.php:37
 msgid "Add register/login in the frontend"
 msgstr ""
 
+#: admin/views/admin.php:41
+msgid "Frontend Login - Disable Admin Bar for other users"
+msgstr ""
+
 #: admin/views/admin.php:43
 msgid "Require the Frontend Login system enabled"
+msgstr ""
+
+#: admin/views/admin.php:58
+msgid "Tweet Field in comments"
 msgstr ""
 
 #: admin/views/admin.php:67
@@ -169,15 +181,15 @@ msgstr ""
 msgid "Tasks in progress"
 msgstr ""
 
-#: includes/template.php:84
+#: includes/template.php:85
 msgid "Complete this task"
 msgstr ""
 
-#: includes/template.php:94
+#: includes/template.php:95
 msgid "Save for later"
 msgstr ""
 
-#: includes/template.php:99
+#: includes/template.php:100
 msgid "Remove complete task"
 msgstr ""
 
@@ -202,47 +214,47 @@ msgstr ""
 msgid "Recent Tasks in the system"
 msgstr ""
 
-#: public/class-datask.php:103
+#: public/class-datask.php:380
 msgid "Task"
 msgstr ""
 
-#: public/class-datask.php:103
+#: public/class-datask.php:380
 msgid "Tasks"
 msgstr ""
 
-#: public/class-datask.php:117
+#: public/class-datask.php:390
 msgid "Area"
 msgstr ""
 
-#: public/class-datask.php:117
+#: public/class-datask.php:390
 msgid "Areas"
 msgstr ""
 
-#: public/class-datask.php:126
+#: public/class-datask.php:399 public/includes/DT_Task_Support.php:104
 msgid "Difficulty"
 msgstr ""
 
-#: public/class-datask.php:126
+#: public/class-datask.php:399
 msgid "Difficulties"
 msgstr ""
 
-#: public/class-datask.php:135 public/includes/DT_Task_Support.php:84
+#: public/class-datask.php:408 public/includes/DT_Task_Support.php:84
 msgid "Team"
 msgstr ""
 
-#: public/class-datask.php:135
+#: public/class-datask.php:408
 msgid "Teams"
 msgstr ""
 
-#: public/class-datask.php:144
+#: public/class-datask.php:417
 msgid "Estimated minute"
 msgstr ""
 
-#: public/class-datask.php:144
+#: public/class-datask.php:417
 msgid "Estimated minutes"
 msgstr ""
 
-#: public/class-datask.php:469
+#: public/class-datask.php:460
 msgid "Search to see results"
 msgstr ""
 
@@ -305,23 +317,23 @@ msgstr ""
 msgid "%s's Profile"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:81
+#: public/includes/DT_Task_Support.php:79
 msgid "Last edit: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:91
+#: public/includes/DT_Task_Support.php:94
 msgid "Project"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:98
+#: public/includes/DT_Task_Support.php:114
 msgid "Estimated time"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:166
+#: public/includes/DT_Task_Support.php:182
 msgid "Good next tasks: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:184
+#: public/includes/DT_Task_Support.php:200
 msgid "List of users who completed this task"
 msgstr ""
 
