@@ -76,7 +76,7 @@ class DT_Task_Support {
 	 */
 	public function dt_task_info() {
 		$plugin = DaTask::get_instance();
-		echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . '</b> ' . get_the_modified_date() . '</div>';
+		echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . '</b> ' . ucfirst( get_the_modified_date() ) . '</div>';
 		echo '<ul class="list list-inset">';
 		$team = get_the_terms( get_the_ID(), 'task-team' );
 		if ( !empty( $team ) ) {
@@ -134,7 +134,7 @@ class DT_Task_Support {
 		global $post;
 		$plugin = DaTask::get_instance();
 		if ( get_post_type( $post->ID ) === 'task' ) {
-			$content = the_task_subtitle( false );
+			$content = wpautop( the_task_subtitle( false ) );
 		}
 		if ( is_singular( 'task' ) ) {
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );

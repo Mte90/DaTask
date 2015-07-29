@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: DaTask\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-07-29 11:39+0200\n"
-"PO-Revision-Date: 2015-07-29 11:40+0200\n"
+"PO-Revision-Date: 2015-07-29 12:28+0200\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it_IT\n"
@@ -337,7 +337,7 @@ msgstr "Ultima Modifica:"
 
 #: public/includes/DT_Task_Support.php:94
 msgid "Project"
-msgstr "I miei progetti"
+msgstr "Progetti"
 
 #: public/includes/DT_Task_Support.php:114
 msgid "Estimated time"

@@ -65,8 +65,8 @@ function the_task_subtitle( $echo = true ) {
  * @since    1.0.0
  */
 function task_buttons() {
+	$plugin = DaTask::get_instance();
 	if ( is_user_logged_in() ) {
-		$plugin = DaTask::get_instance();
 		?>
 		<div class="dt-buttons">
 		    <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
@@ -82,7 +82,7 @@ function task_buttons() {
 			    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
 				    echo '<i class="fa fa-check"></i>';
 			    }
-			    ?><?php _e( 'Complete this task' , $plugin->get_plugin_slug()); ?></button>
+			    ?><?php _e( 'Complete this task', $plugin->get_plugin_slug() ); ?></button>
 		    <button type="submit" class="button btn btn-secondary save-later <?php
 		    if ( has_later_task( get_the_ID() ) ) {
 			    echo 'disabled';
@@ -101,6 +101,8 @@ function task_buttons() {
 		</div>
 		<?php
 	} else {
+		echo '<h3 class="alert alert-danger">';
 		_e( 'Save your history of tasks done or in progress with a free account!', $plugin->get_plugin_slug() );
+		echo '</h3>';
 	}
 }
