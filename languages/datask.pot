@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-07-28 00:20+0200\n"
+"POT-Creation-Date: 2015-07-29 11:39+0200\n"
 "PO-Revision-Date: 2014-07-07 18:52+0100\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: LANGUAGE <translations@example.com >\n"
@@ -193,6 +193,10 @@ msgstr ""
 msgid "Remove complete task"
 msgstr ""
 
+#: includes/template.php:104
+msgid "Save your history of tasks done or in progress with a free account!"
+msgstr ""
+
 #: includes/widgets/most-task-done.php:11
 #: includes/widgets/most-task-done.php:12
 #: includes/widgets/most-task-done.php:17
@@ -258,24 +262,24 @@ msgstr ""
 msgid "Search to see results"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:122
+#: public/includes/DT_AJAX_Filter.php:121
 msgid "Read More"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:130
+#: public/includes/DT_AJAX_Filter.php:129
 msgid "No Results found :("
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:238
-#: public/includes/DT_AJAX_Filter.php:309
+#: public/includes/DT_AJAX_Filter.php:237
+#: public/includes/DT_AJAX_Filter.php:308
 msgid "Search"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:305
+#: public/includes/DT_AJAX_Filter.php:304
 msgid "There are no tasks!"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:310
+#: public/includes/DT_AJAX_Filter.php:309
 msgid "Clear"
 msgstr ""
 

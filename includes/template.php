@@ -100,5 +100,7 @@ function task_buttons() {
 		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', $plugin->get_plugin_slug() ); ?></button>
 		</div>
 		<?php
+	} else {
+		_e( 'Save your history of tasks done or in progress with a free account!', $plugin->get_plugin_slug() );
 	}
 }

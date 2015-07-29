@@ -5,15 +5,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaTask\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-07-24 18:58+0200\n"
-"PO-Revision-Date: 2015-07-24 18:59+0200\n"
+"POT-Creation-Date: 2015-07-29 11:39+0200\n"
+"PO-Revision-Date: 2015-07-29 11:40+0200\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Poedit 1.8.3\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;"
 "_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c\n"
@@ -52,27 +52,27 @@ msgstr "Sotto Titolo"
 msgid "Description in a row"
 msgstr "Descrizione in una riga"
 
-#: admin/class-datask-admin.php:265 public/includes/DT_Task_Support.php:126
+#: admin/class-datask-admin.php:265 public/includes/DT_Task_Support.php:142
 msgid "Prerequisites"
 msgstr "Prerequisiti"
 
-#: admin/class-datask-admin.php:272 public/includes/DT_Task_Support.php:131
+#: admin/class-datask-admin.php:272 public/includes/DT_Task_Support.php:147
 msgid "Why this matters"
 msgstr "Perché é importante"
 
-#: admin/class-datask-admin.php:279 public/includes/DT_Task_Support.php:136
+#: admin/class-datask-admin.php:279 public/includes/DT_Task_Support.php:152
 msgid "Steps"
 msgstr "Passaggi"
 
-#: admin/class-datask-admin.php:286 public/includes/DT_Task_Support.php:141
+#: admin/class-datask-admin.php:286 public/includes/DT_Task_Support.php:157
 msgid "Need Help?"
 msgstr "Bisogno di aiuto?"
 
-#: admin/class-datask-admin.php:293 public/includes/DT_Task_Support.php:147
+#: admin/class-datask-admin.php:293 public/includes/DT_Task_Support.php:163
 msgid "Completion"
 msgstr "Completamento"
 
-#: admin/class-datask-admin.php:300 public/includes/DT_Task_Support.php:155
+#: admin/class-datask-admin.php:300 public/includes/DT_Task_Support.php:171
 msgid "Mentor(s)"
 msgstr "Mentor(e/i)"
 
@@ -189,17 +189,23 @@ msgstr "Il profilo non esiste!"
 msgid "Tasks in progress"
 msgstr "Task in lavorazione"
 
-#: includes/template.php:84
+#: includes/template.php:85
 msgid "Complete this task"
 msgstr "Chiudi Task"
 
-#: includes/template.php:94
+#: includes/template.php:95
 msgid "Save for later"
 msgstr "Salva per dopo"
 
-#: includes/template.php:99
+#: includes/template.php:100
 msgid "Remove complete task"
 msgstr "Rimuovi il task completato"
+
+#: includes/template.php:104
+msgid "Save your history of tasks done or in progress with a free account!"
+msgstr ""
+"Salva il tuo storico di task completati o in progresso con un account "
+"gratuito!"
 
 #: includes/widgets/most-task-done.php:11
 #: includes/widgets/most-task-done.php:12
@@ -222,68 +228,68 @@ msgstr "Task Recenti"
 msgid "Recent Tasks in the system"
 msgstr "Task recenti nel sistema"
 
-#: public/class-datask.php:394
+#: public/class-datask.php:380
 msgid "Task"
 msgstr "Task"
 
-#: public/class-datask.php:394
+#: public/class-datask.php:380
 msgid "Tasks"
 msgstr "Task"
 
-#: public/class-datask.php:404
+#: public/class-datask.php:390
 msgid "Area"
 msgstr "Area"
 
-#: public/class-datask.php:404
+#: public/class-datask.php:390
 msgid "Areas"
 msgstr "Aree"
 
-#: public/class-datask.php:413
+#: public/class-datask.php:399 public/includes/DT_Task_Support.php:104
 msgid "Difficulty"
 msgstr "Difficoltá"
 
-#: public/class-datask.php:413
+#: public/class-datask.php:399
 msgid "Difficulties"
 msgstr "Difficoltá"
 
-#: public/class-datask.php:422 public/includes/DT_Task_Support.php:84
+#: public/class-datask.php:408 public/includes/DT_Task_Support.php:84
 msgid "Team"
 msgstr "Team"
 
-#: public/class-datask.php:422
+#: public/class-datask.php:408
 msgid "Teams"
 msgstr "Team"
 
-#: public/class-datask.php:431
+#: public/class-datask.php:417
 msgid "Estimated minute"
 msgstr "Minuto stimato"
 
-#: public/class-datask.php:431
+#: public/class-datask.php:417
 msgid "Estimated minutes"
 msgstr "Minuti stimati"
 
-#: public/class-datask.php:474
+#: public/class-datask.php:460
 msgid "Search to see results"
 msgstr "Cerca per dei risultati"
 
-#: public/includes/DT_AJAX_Filter.php:122
+#: public/includes/DT_AJAX_Filter.php:121
 msgid "Read More"
 msgstr "Leggi tutto"
 
-#: public/includes/DT_AJAX_Filter.php:130
+#: public/includes/DT_AJAX_Filter.php:129
 msgid "No Results found :("
 msgstr "Nessun risultato trovato :("
 
-#: public/includes/DT_AJAX_Filter.php:238
-#: public/includes/DT_AJAX_Filter.php:309
+#: public/includes/DT_AJAX_Filter.php:237
+#: public/includes/DT_AJAX_Filter.php:308
 msgid "Search"
 msgstr "Cerca"
 
-#: public/includes/DT_AJAX_Filter.php:305
+#: public/includes/DT_AJAX_Filter.php:304
 msgid "There are no tasks!"
 msgstr "Non ci sono task!"
 
-#: public/includes/DT_AJAX_Filter.php:310
+#: public/includes/DT_AJAX_Filter.php:309
 msgid "Clear"
 msgstr "Pulisci"
 
@@ -325,23 +331,23 @@ msgstr "Il tuo profilo"
 msgid "%s's Profile"
 msgstr "Profilo di %s"
 
-#: public/includes/DT_Task_Support.php:81
+#: public/includes/DT_Task_Support.php:79
 msgid "Last edit: "
 msgstr "Ultima Modifica:"
 
-#: public/includes/DT_Task_Support.php:91
+#: public/includes/DT_Task_Support.php:94
 msgid "Project"
 msgstr "I miei progetti"
 
-#: public/includes/DT_Task_Support.php:98
+#: public/includes/DT_Task_Support.php:114
 msgid "Estimated time"
 msgstr "Tempo stimato"
 
-#: public/includes/DT_Task_Support.php:166
+#: public/includes/DT_Task_Support.php:182
 msgid "Good next tasks: "
 msgstr "Ottimi task successivi:"
 
-#: public/includes/DT_Task_Support.php:184
+#: public/includes/DT_Task_Support.php:200
 msgid "List of users who completed this task"
 msgstr "Lista degli utenti che hanno completato il task"
 
