@@ -140,28 +140,28 @@ class DT_Task_Support {
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= $prerequisites;
+				$content .= wpautop( $prerequisites );
 			}
 			$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= $matters;
+				$content .= wpautop( $matters );
 			}
 			$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
 			if ( !empty( $steps ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= $steps;
+				$content .= wpautop( $steps );
 			}
 			$help = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_help' ), true );
 			if ( !empty( $help ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Need Help?', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= $help;
+				$content .= wpautop( $help );
 				$content .= '<br><br>';
 			}
 			$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 			if ( !empty( $completion ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Completion', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= $completion;
+				$content .= wpautop( $completion );
 				$content .= '<br><br>';
 			}
 			$mentor = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
