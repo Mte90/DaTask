@@ -72,6 +72,7 @@ class DaTask_Admin {
 
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/CMB2/init.php' );
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_user_search_field.php' );
 
 		/*
 		 * Add metabox
@@ -299,7 +300,7 @@ class DaTask_Admin {
 		$cmb_task->add_field( array(
 		    'name' => __( 'Mentor(s)', $this->plugin_slug ),
 		    'id' => $prefix . $this->plugin_slug . '_mentor',
-		    'type' => 'text'
+		    'type' => 'user_search_text'
 		) );
 
 		$cmb_task->add_field( array(

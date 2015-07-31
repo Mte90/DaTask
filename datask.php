@@ -74,5 +74,6 @@ if ( is_admin() ) {
 		add_action( 'plugins_loaded', array( 'DaTask_Admin', 'get_instance' ) );
 	} else {
 		require_once( plugin_dir_path( __FILE__ ) . '/admin/includes/cmb2_post_search_field.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/admin/includes/cmb2_user_search_field.php' );
 	}
 }
