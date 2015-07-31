@@ -93,7 +93,6 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 	            'find': '<?php echo esc_js( $find ) ?>'
 	          };
 
-
 	          var UserSearchView = window.Backbone.View.extend({
 	            el: '#find-users',
 	            overlaySet: false,
@@ -416,6 +415,12 @@ function wp_ajax_find_users() {
 }
 add_action( 'wp_ajax_find_users', 'wp_ajax_find_users' );
 
+/**
+ * Add support for search on Dsiplay Name field
+ * 
+ * @param array $search_columns
+ * @return string
+ */
 function cmb2_user_search_field_display_name( $search_columns ) {
 	$search_columns[] = 'display_name';
 	return $search_columns;

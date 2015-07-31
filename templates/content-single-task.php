@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) {
 		<?php	
 		do_action('dt-task-info');
 		the_content();	
-		task_buttons();
+		datask_buttons();
 		comments_template();
 		?>
 	</div>

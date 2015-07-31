@@ -442,7 +442,7 @@ class DaTask {
 		if ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'datask-search' ) ) {
 			wp_enqueue_script( $this->get_plugin_slug() . '-filter-plugin-script', plugins_url( 'assets/js/ajax-filter.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		}
-		if ( is_user_logged_in() && is_singular( 'task' ) ) {
+		if ( is_user_logged_in() && (is_singular( 'task' ) || get_user_of_profile()) ) {
 			wp_enqueue_script( $this->get_plugin_slug() . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), self::VERSION );
 		}
 	}

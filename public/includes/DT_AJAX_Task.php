@@ -21,6 +21,7 @@ class DT_AJAX_Task {
 		add_action( 'wp_ajax_dt_complete_task', array( $this, 'dt_complete_task' ) );
 		add_action( 'wp_ajax_dt_task_later', array( $this, 'dt_task_later' ) );
 		add_action( 'wp_ajax_dt_remove_task', array( $this, 'dt_remove_task' ) );
+		add_action( 'wp_ajax_dt_contact_user', array( $this, 'dt_contact_user' ) );
 	}
 
 	/**
@@ -115,7 +116,23 @@ class DT_AJAX_Task {
 		}
 		wp_die();
 	}
-
+	
+	/**
+	 * Sent an email to the user
+	 *
+	 * @since    1.0.0
+	 *
+	 * @return    void
+	 */
+	public function dt_contact_user(){
+		if ( is_user_logged_in() ) {
+			
+			echo 'done!';
+		} else {
+			echo 'error!';
+		}
+		wp_die();
+	}
 }
 
 new DT_AJAX_Task();

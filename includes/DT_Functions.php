@@ -141,6 +141,8 @@ function dt_get_tasks_completed() {
 			 * @param string $html the html output
 			 */
 			$print = apply_filters( 'dt-get-completed-task', $print );
+		} else {
+			_e( 'Nothing task done :(', $plugin->get_plugin_slug() );
 		}
 	} else {
 		$print = __( "This profile not exist!", $plugin->get_plugin_slug() );

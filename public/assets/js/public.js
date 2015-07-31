@@ -1,8 +1,6 @@
 (function ($) {
   "use strict";
 
-  $(function () {
-
     jQuery(document).ready(function () {//:not(.disabled)
       jQuery(".dt-buttons .complete").on("click", function () {
         if (!jQuery(this).hasClass('disabled')) {
@@ -71,7 +69,5 @@
         });
       });
     });
-
-  });
 
 }(jQuery));

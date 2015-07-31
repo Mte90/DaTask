@@ -35,6 +35,7 @@ get_header();
 	<?php
 	dt_tasks_later();
 	dt_tasks_completed();
+	datask_user_form();
 	?>
     </div>
     <?php get_sidebar(); ?>
