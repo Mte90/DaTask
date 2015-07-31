@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaTask\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-07-29 11:39+0200\n"
-"PO-Revision-Date: 2015-07-29 12:28+0200\n"
+"POT-Creation-Date: 2015-07-31 22:40+0200\n"
+"PO-Revision-Date: 2015-07-31 22:41+0200\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it_IT\n"
@@ -27,52 +27,53 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-4: public/includes/requirements.php\n"
 "X-Poedit-SearchPathExcluded-5: admin/includes/cmb2_post_search_field.php\n"
 "X-Poedit-SearchPathExcluded-6: admin/includes/CPT_Columns.php\n"
+"X-Poedit-SearchPathExcluded-7: admin/includes/cmb2_user_search_field.php\n"
 
 #: admin/class-datask-admin.php:96
 msgid "Done"
 msgstr "Fatto"
 
-#: admin/class-datask-admin.php:199
+#: admin/class-datask-admin.php:198
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: admin/class-datask-admin.php:200
+#: admin/class-datask-admin.php:199
 msgid "Donate"
 msgstr "Dona"
 
-#: admin/class-datask-admin.php:250
+#: admin/class-datask-admin.php:249
 msgid "Task Info"
 msgstr "Informazioni Task"
 
-#: admin/class-datask-admin.php:258
+#: admin/class-datask-admin.php:257
 msgid "Subtitle"
 msgstr "Sotto Titolo"
 
-#: admin/class-datask-admin.php:259
+#: admin/class-datask-admin.php:258
 msgid "Description in a row"
 msgstr "Descrizione in una riga"
 
-#: admin/class-datask-admin.php:265 public/includes/DT_Task_Support.php:142
+#: admin/class-datask-admin.php:264 public/includes/DT_Task_Support.php:142
 msgid "Prerequisites"
 msgstr "Prerequisiti"
 
-#: admin/class-datask-admin.php:272 public/includes/DT_Task_Support.php:147
+#: admin/class-datask-admin.php:271 public/includes/DT_Task_Support.php:147
 msgid "Why this matters"
 msgstr "Perché é importante"
 
-#: admin/class-datask-admin.php:279 public/includes/DT_Task_Support.php:152
+#: admin/class-datask-admin.php:278 public/includes/DT_Task_Support.php:152
 msgid "Steps"
 msgstr "Passaggi"
 
-#: admin/class-datask-admin.php:286 public/includes/DT_Task_Support.php:157
+#: admin/class-datask-admin.php:285 public/includes/DT_Task_Support.php:157
 msgid "Need Help?"
 msgstr "Bisogno di aiuto?"
 
-#: admin/class-datask-admin.php:293 public/includes/DT_Task_Support.php:163
+#: admin/class-datask-admin.php:292 public/includes/DT_Task_Support.php:163
 msgid "Completion"
 msgstr "Completamento"
 
-#: admin/class-datask-admin.php:300 public/includes/DT_Task_Support.php:171
+#: admin/class-datask-admin.php:299 public/includes/DT_Task_Support.php:171
 msgid "Mentor(s)"
 msgstr "Mentor(e/i)"
 
@@ -84,11 +85,11 @@ msgstr "Ottimi task successivi (ID)"
 msgid "Task Completed"
 msgstr "Task completati"
 
-#: admin/class-datask-admin.php:394
+#: admin/class-datask-admin.php:395
 msgid "Please upload a valid .json file"
 msgstr "Carica un file .json valido"
 
-#: admin/class-datask-admin.php:398
+#: admin/class-datask-admin.php:399
 msgid "Please upload a file to import"
 msgstr "Carica il file da importare"
 
@@ -181,11 +182,15 @@ msgstr "DaTask"
 msgid "%d Tasks Completed"
 msgstr "%d Task Completati"
 
-#: includes/DT_Functions.php:146 includes/DT_Functions.php:209
+#: includes/DT_Functions.php:146
+msgid "Nothing task done :("
+msgstr "Nessun task completato :("
+
+#: includes/DT_Functions.php:150 includes/DT_Functions.php:213
 msgid "This profile not exist!"
 msgstr "Il profilo non esiste!"
 
-#: includes/DT_Functions.php:183
+#: includes/DT_Functions.php:187
 msgid "Tasks in progress"
 msgstr "Task in lavorazione"
 
@@ -201,11 +206,19 @@ msgstr "Salva per dopo"
 msgid "Remove complete task"
 msgstr "Rimuovi il task completato"
 
-#: includes/template.php:104
+#: includes/template.php:105
 msgid "Save your history of tasks done or in progress with a free account!"
 msgstr ""
 "Salva il tuo storico di task completati o in progresso con un account "
 "gratuito!"
+
+#: includes/template.php:123
+msgid "Contact"
+msgstr "Contatta"
+
+#: includes/template.php:128
+msgid "Sent"
+msgstr "Invia"
 
 #: includes/widgets/most-task-done.php:11
 #: includes/widgets/most-task-done.php:12
@@ -293,6 +306,15 @@ msgstr "Non ci sono task!"
 msgid "Clear"
 msgstr "Pulisci"
 
+#: public/includes/DT_AJAX_Task.php:149 public/includes/DT_AJAX_Task.php:156
+#, php-format
+msgid "Contact from %s by %s"
+msgstr "Contatto da %s di %s"
+
+#: public/includes/DT_AJAX_Task.php:150
+msgid "Profile"
+msgstr "Profilo"
+
 #: public/includes/DT_Comment.php:42
 msgid "Insert URL of the Tweet"
 msgstr "Inserisci la URL del Tweet"
@@ -343,11 +365,11 @@ msgstr "Progetti"
 msgid "Estimated time"
 msgstr "Tempo stimato"
 
-#: public/includes/DT_Task_Support.php:182
+#: public/includes/DT_Task_Support.php:187
 msgid "Good next tasks: "
 msgstr "Ottimi task successivi:"
 
-#: public/includes/DT_Task_Support.php:200
+#: public/includes/DT_Task_Support.php:205
 msgid "List of users who completed this task"
 msgstr "Lista degli utenti che hanno completato il task"
 
