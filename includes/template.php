@@ -64,7 +64,7 @@ function the_task_subtitle( $echo = true ) {
  * 
  * @since    1.0.0
  */
-function task_buttons() {
+function datask_buttons() {
 	$plugin = DaTask::get_instance();
 	if ( is_user_logged_in() ) {
 		?>
@@ -104,5 +104,31 @@ function task_buttons() {
 		echo '<h3 class="alert alert-danger">';
 		_e( 'Save your history of tasks done or in progress with a free account!', $plugin->get_plugin_slug() );
 		echo '</h3>';
+	}
+}
+
+/**
+ * User contact form
+ * 
+ * @since    1.0.0
+ */
+function datask_user_form() {
+	if ( is_user_logged_in() ) {
+		$user = get_user_by( 'login', get_user_of_profile() );
+		$current_user = wp_get_current_user();
+		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login) {
+			$plugin = DaTask::get_instance();
+			$content = '<div class="panel panel-warning" id="user-contact-form">';
+			$content .= '<div class="panel-heading">';
+			$content .= __( 'Contact', $plugin->get_plugin_slug() ) . ' ' . $user->display_name;
+			$content .= '</div>';
+			$content .= '<div class="panel-content">';
+			$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
+			$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
+			$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', $plugin->get_plugin_slug() ) . '</button>';
+			$content .= '</div>';
+			$content .= '</div>';
+			echo $content;
+		}
 	}
 }

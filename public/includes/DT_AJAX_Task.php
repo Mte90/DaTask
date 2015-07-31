@@ -9,7 +9,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DT_AJAX_Task {
 
 	/**
@@ -85,7 +84,7 @@ class DT_AJAX_Task {
 		}
 		wp_die();
 	}
-	
+
 	/**
 	 * Remove a complete task
 	 *
@@ -116,7 +115,7 @@ class DT_AJAX_Task {
 		}
 		wp_die();
 	}
-	
+
 	/**
 	 * Sent an email to the user
 	 *
@@ -124,15 +123,47 @@ class DT_AJAX_Task {
 	 *
 	 * @return    void
 	 */
-	public function dt_contact_user(){
-		if ( is_user_logged_in() ) {
-			
-			echo 'done!';
+	public function dt_contact_user() {
+		// Based on check_ajax_referer
+		if ( isset( $_POST[ '_wpnonce' ] ) ) {
+			$nonce = $_POST[ '_wpnonce' ];
+		}
+
+		$result = wp_verify_nonce( $nonce, 'dt_contact_user' );
+
+		if ( false === $result ) {
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				wp_die( -1 );
+			} else {
+				die( '-1' );
+			}
+		}
+		if ( is_user_logged_in() && !empty( $_POST[ 'content' ] ) ) {
+			//Receiver user
+			$user = get_user_by( 'login', $_POST[ 'user_login' ] );
+			//Sender user
+			$current_user = wp_get_current_user();
+			if ( $current_user->user_login !== $user->user_login ) {
+				$plugin = DaTask::get_instance();
+				//Body
+				$message = sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
+				$message .= '<br>' . __( 'Profile', $plugin->get_plugin_slug() );
+				$message .= ': <a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . home_url( '/member/' . $current_user->user_login ) . '</a>';
+				$message .= wpautop( esc_html( $_POST[ 'content' ] ) );
+				//Headers
+				$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );
+				//Send email
+				wp_mail( $user->user_email, sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), get_bloginfo( 'name' ), $current_user->user_login ), $message, $headers );
+				echo 'done!';
+				wp_die();
+			}
+			echo 'error!';
+			wp_die();
 		} else {
 			echo 'error!';
 		}
-		wp_die();
 	}
+
 }
 
 new DT_AJAX_Task();

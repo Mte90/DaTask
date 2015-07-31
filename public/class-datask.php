@@ -463,7 +463,7 @@ class DaTask {
 				)
 			);
 		}
-		if ( is_user_logged_in() && is_singular( 'task' ) ) {
+		if ( is_user_logged_in() && (is_singular( 'task' ) || get_user_of_profile()) ) {
 			wp_localize_script( $this->get_plugin_slug() . '-plugin-script', 'dt_js_vars', array(
 			    'ajaxurl' => admin_url( 'admin-ajax.php' )
 				)

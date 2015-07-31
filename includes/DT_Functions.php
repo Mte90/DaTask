@@ -142,7 +142,9 @@ function dt_get_tasks_completed() {
 			 */
 			$print = apply_filters( 'dt-get-completed-task', $print );
 		} else {
-			_e( 'Nothing task done :(', $plugin->get_plugin_slug() );
+			$print .= '<h5>';
+			$print .= __( 'Nothing task done :(', $plugin->get_plugin_slug() );
+			$print .= '</h5>';
 		}
 	} else {
 		$print = __( "This profile not exist!", $plugin->get_plugin_slug() );
