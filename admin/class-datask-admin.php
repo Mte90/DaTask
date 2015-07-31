@@ -13,7 +13,6 @@
  * @link      http://mte90.net
  * @copyright 2014 GPL
  */
-
 class DaTask_Admin {
 
 	/**
@@ -51,7 +50,7 @@ class DaTask_Admin {
 		// Load admin JavaScript after jQuery loading
 		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_files' ) );
-		
+
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WP-Admin-Notice/WP_Admin_Notice.php' );
 		// Reset User Task 
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_User_Backend.php' );
@@ -79,7 +78,7 @@ class DaTask_Admin {
 		 */
 
 		add_action( 'cmb2_init', array( $this, 'cmb_task_metaboxes' ) );
-		
+
 		// Add the export settings method
 		add_action( 'admin_init', array( $this, 'settings_export' ) );
 		// Add the import settings method
@@ -122,7 +121,6 @@ class DaTask_Admin {
 		return self::$instance;
 	}
 
-	
 	/**
 	 * Register and enqueue admin-specific style sheet.
 	 *
@@ -142,7 +140,7 @@ class DaTask_Admin {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), DaTask::VERSION );
 		}
 	}
-	
+
 	/**
 	 * Register and enqueue admin-specific style sheet.
 	 * @return    null    Return early if no settings page is registered.
@@ -300,7 +298,8 @@ class DaTask_Admin {
 		$cmb_task->add_field( array(
 		    'name' => __( 'Mentor(s)', $this->plugin_slug ),
 		    'id' => $prefix . $this->plugin_slug . '_mentor',
-		    'type' => 'user_search_text'
+		    'type' => 'user_search_text',
+		    'roles' => array( 'administrator', 'author', 'editor' )
 		) );
 
 		$cmb_task->add_field( array(
@@ -347,7 +346,7 @@ class DaTask_Admin {
 		$users_of_task = get_users_by_task( $task_id );
 		return count( $users_of_task );
 	}
-	
+
 	/**
 	 * Process a settings export from config
 	 * @since    1.0.0
@@ -376,6 +375,7 @@ class DaTask_Admin {
 		}
 		exit;
 	}
+
 	/**
 	 * Process a settings import from a json file
 	 * @since    1.0.0
@@ -405,6 +405,5 @@ class DaTask_Admin {
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . $this->plugin_slug ) );
 		exit;
 	}
-
 
 }
