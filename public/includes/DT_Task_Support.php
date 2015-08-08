@@ -174,7 +174,7 @@ class DT_Task_Support {
 				$mentors_split = explode( ',', str_replace( ' ', '', $mentor ) );
 				foreach ( $mentors_split as $user ) {
 					$user = get_user_by( 'id', $user );
-					$name = trim( $user->first_name ) ? $user->first_name . ' ' . $user->last_name : $user->user_login;
+					$name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
 					$content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>, ';
 				}
 				$content .= '</div>';

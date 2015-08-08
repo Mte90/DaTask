@@ -47,7 +47,7 @@ class DT_Frontend_Login {
 		add_action( 'validate_password_reset', array( $this, 'frontend_validate_password_reset', 10, 2 ) );
 		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
 		add_action( 'admin_init', array( $this, 'prevent_access_backend' ) );
-		add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
+		//add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
 		$options = get_option( $plugin->get_plugin_slug() . '-settings' );
 		if ( isset( $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] ) && $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] === 'on' ) {
 			add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
@@ -74,7 +74,7 @@ class DT_Frontend_Login {
 		// Redirect to change password form
 		if ( $action == 'rp' || $action == 'resetpass' ) {
 			if ( isset( $_GET[ 'key' ] ) && isset( $_GET[ 'login' ] ) ) {
-				$rp_path = wp_unslash( '/login/' );
+				$rp_path = wp_unslash( home_url( '/login/' ) );
 				$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
 				$value = sprintf( '%s:%s', wp_unslash( $_GET[ 'login' ] ), wp_unslash( $_GET[ 'key' ] ) );
 				setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
@@ -146,11 +146,6 @@ class DT_Frontend_Login {
 	 * @return object $errors 
 	 */
 	public function registration_redirect( $errors, $sanitized_user_login, $user_email ) {
-		// Don't lose your time with spammers, redirect them to a success page
-		if ( !isset( $_POST[ 'confirm_email' ] ) || $_POST[ 'confirm_email' ] !== '' ) {
-			wp_redirect( home_url( '/login/' ) . '?action=register&success=1' );
-			exit;
-		}
 		if ( !empty( $errors->errors ) ) {
 			if ( isset( $errors->errors[ 'username_exists' ] ) ) {
 				wp_redirect( home_url( '/login/' ) . '?action=register&failed=username_exists' );

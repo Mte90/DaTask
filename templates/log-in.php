@@ -79,57 +79,59 @@ $plugin = DaTask::get_instance();
 			</div>
 		    </div>
 		</div>
-		<div class="panel-register col-lg-6" <?php
-		if ( $action === 'resetpass' ) {
-			echo 'style="display:none;"';
-		}
-		?>>
-			 <?php if ( $action === 'register' && $failed ): ?>
-			    <div class="panel panel-danger">
+		<?php if ( get_option( 'users_can_register' ) ) { ?>
+			<div class="panel-register col-lg-6" <?php
+			if ( $action === 'resetpass' ) {
+				echo 'style="display:none;"';
+			}
+			?>>
+				 <?php if ( $action === 'register' && $failed ): ?>
+				    <div class="panel panel-danger">
+					<div class="panel-heading">
+					    <?php
+					    if ( $failed === 'invalid_character' ) {
+						    _e( 'Username can only contain alphanumerical characters, "_" and "-". Please choose another username.', $plugin->get_plugin_slug() );
+					    } elseif ( $failed === 'username_exists' ) {
+						    _e( 'Username already in use.', $plugin->get_plugin_slug() );
+					    } elseif ( $failed === 'email_exists' ) {
+						    _e( 'E-mail already in use. Maybe you are already registered?', $plugin->get_plugin_slug() );
+					    } elseif ( $failed === 'empty' ) {
+						    _e( 'All fields are required.', $plugin->get_plugin_slug() );
+					    } else {
+						    _e( 'An error occurred while registering the new user. Please try again.', $plugin->get_plugin_slug() );
+					    }
+					    ?>
+					</div>
+				    </div>
+			    <?php endif; ?>
+			    <div class="panel panel-info">
 				<div class="panel-heading">
-				    <?php
-				    if ( $failed === 'invalid_character' ) {
-					    _e( 'Username can only contain alphanumerical characters, "_" and "-". Please choose another username.', $plugin->get_plugin_slug() );
-				    } elseif ( $failed === 'username_exists' ) {
-					    _e( 'Username already in use.', $plugin->get_plugin_slug() );
-				    } elseif ( $failed === 'email_exists' ) {
-					    _e( 'E-mail already in use. Maybe you are already registered?', $plugin->get_plugin_slug() );
-				    } elseif ( $failed === 'empty' ) {
-					    _e( 'All fields are required.', $plugin->get_plugin_slug() );
-				    } else {
-					    _e( 'An error occurred while registering the new user. Please try again.', $plugin->get_plugin_slug() );
-				    }
-				    ?>
+				    <?php _e( 'Register', $plugin->get_plugin_slug() ); ?>
+				</div>
+				<div class="panel-body">
+				    <form action="<?php echo site_url( 'wp-login.php?action=register', 'login_post' ) ?>" method="post">
+					<div class="form-group">
+					    <label for="user_login"><?php _e( 'Username', $plugin->get_plugin_slug() ); ?></label>
+					    <input type="text" name="user_login" class="form-control" value="">
+					</div>
+					<div class="form-group">
+					    <label for="user_email"><?php _e( 'E-mail', $plugin->get_plugin_slug() ); ?></label>
+					    <input type="text" name="user_email" class="form-control" value="">
+					</div>
+					<div class="form-group">
+					    <label for="confirm_email"><?php _e( 'Confirm E-mail', $plugin->get_plugin_slug() ); ?></label>
+					    <input type="text" name="confirm_email" class="form-control" value="">
+					    <p class="help-block"><?php _e( 'A password will be e-mailed to you.', $plugin->get_plugin_slug() ); ?></p>
+					</div>
+					<div class="form-group">
+					    <input type="hidden" name="redirect_to" value="/login/?action=register&amp;success=1" />
+					    <input type="submit" name="wp-submit" id="wp-submit" class="button btn btn-primary" value="<?php _e( 'Register', $plugin->get_plugin_slug() ); ?>" />
+					</div>
+				    </form>
 				</div>
 			    </div>
-		    <?php endif; ?>
-		    <div class="panel panel-info">
-			<div class="panel-heading">
-			    <?php _e( 'Register', $plugin->get_plugin_slug() ); ?>
 			</div>
-			<div class="panel-body">
-			    <form action="<?php echo site_url( 'wp-login.php?action=register', 'login_post' ) ?>" method="post">
-				<div class="form-group">
-				    <label for="user_login"><?php _e( 'Username', $plugin->get_plugin_slug() ); ?></label>
-				    <input type="text" name="user_login" class="form-control" value="">
-				</div>
-				<div class="form-group">
-				    <label for="user_email"><?php _e( 'E-mail', $plugin->get_plugin_slug() ); ?></label>
-				    <input type="text" name="user_email" class="form-control" value="">
-				</div>
-				<div class="form-group">
-				    <label for="confirm_email"><?php _e( 'Confirm E-mail', $plugin->get_plugin_slug() ); ?></label>
-				    <input type="text" name="confirm_email" class="form-control" value="">
-				    <p class="help-block"><?php _e( 'A password will be e-mailed to you.', $plugin->get_plugin_slug() ); ?></p>
-				</div>
-				<div class="form-group">
-				    <input type="hidden" name="redirect_to" value="/login/?action=register&amp;success=1" />
-				    <input type="submit" name="wp-submit" id="wp-submit" class="button btn btn-primary" value="<?php _e( 'Register', $plugin->get_plugin_slug() ); ?>" />
-				</div>
-			    </form>
-			</div>
-		    </div>
-		</div>
+		<?php } ?>
 		<div class="panel-forgot col-lg-12">
 		    <?php if ( $action === 'forgot' && $failed ): ?>
 			    <div class="panel panel-danger">

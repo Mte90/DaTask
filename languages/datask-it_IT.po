@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: DaTask\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
 "POT-Creation-Date: 2015-07-31 22:40+0200\n"
-"PO-Revision-Date: 2015-07-31 22:41+0200\n"
+"PO-Revision-Date: 2015-08-08 16:53+0200\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it_IT\n"
@@ -227,8 +227,7 @@ msgstr "Invia"
 msgid "Most Tasks Done"
 msgstr "I task piú completati"
 
-#: includes/widgets/most-task-done.php:26
-#: includes/widgets/recents-tasks.php:26
+#: includes/widgets/most-task-done.php:26 includes/widgets/recents-tasks.php:26
 msgid "Task showed"
 msgstr "Task mostrati"
 
@@ -445,7 +444,7 @@ msgstr "Registrati"
 
 #: templates/log-in.php:117 templates/user-edit.php:73
 msgid "E-mail"
-msgstr "Inserisci un nome utente o indirizzo e-mail."
+msgstr "Email"
 
 #: templates/log-in.php:121
 msgid "Confirm E-mail"

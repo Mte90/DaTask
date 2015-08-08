@@ -27,8 +27,8 @@ function cmb2_user_search_render_field( $field, $escaped_value, $object_id, $obj
 		$list = explode( ',', $field->escaped_value );
 		foreach ( $list as $value ) {
 			$user = get_user_by( 'id', $value );
-			$name = trim( $user->first_name ) ? $user->first_name . ' ' . $user->last_name : $user->user_login;
-			echo '<li data-id="' . trim( $value ) . '"><b>' . __( 'Title' ) . ':</b> ' . $name;
+			$name = $user->display_name ? $user->display_name : $user->user_login;
+			echo '<li data-id="' . trim( $value ) . '"><b>' . __( 'Name' ) . ':</b> ' . $name;
 			echo '<div title="' . __( 'Remove' ) . '" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div>';
 			echo '</li>';
 		}
@@ -226,7 +226,7 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 	                });
 	              } else {
 	                if ($('.cmb-type-user-search-text ul li[data-id="' + newids + '"]').length === 0) {
-	                  $('.cmb-type-user-search-text ul').append('<li data-id="' + newids + '"><b><?php _e( 'Title' ) ?>:</b> ' + this.$checkedLabel[0] + '<div title="<?php _e( 'Remove' ) ?>" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div></li>');
+	                  $('.cmb-type-user-search-text ul').append('<li data-id="' + newids + '"><b><?php _e( 'Name' ) ?>:</b> ' + this.$checkedLabel[0] + '<div title="<?php _e( 'Remove' ) ?>" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div></li>');
 	                }
 	              }
 
@@ -398,7 +398,7 @@ function wp_ajax_find_users() {
 		wp_send_json_error( __( 'No items found.' ) );
 	}
 
-	$html = '<table class="widefat"><thead><tr><th class="found-radio"><br /></th><th>' . __( 'Title' ) . '</th><th class="no-break">' . __( 'Email' ) . '</th></tr></thead><tbody>';
+	$html = '<table class="widefat"><thead><tr><th class="found-radio"><br /></th><th>' . __( 'Name' ) . '</th><th class="no-break">' . __( 'Email' ) . '</th></tr></thead><tbody>';
 	$alt = '';
 
 	foreach ( $users as $user ) {
