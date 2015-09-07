@@ -71,15 +71,16 @@ class DaTask {
 	 * @var array
 	 */
 	protected static $plugin_roles = array(
-	    'editor' => array(
+	    'administrator' => array(
 		'edit_tasks' => true,
 		'edit_others_tasks' => true,
-	    ),
-	    'author' => array(
+	    ), 'editor' => array(
+		'edit_tasks' => true,
+		'edit_others_tasks' => true,
+	    ), 'author' => array(
 		'edit_tasks' => true,
 		'edit_others_tasks' => false,
-	    ),
-	    'subscriber' => array(
+	    ), 'subscriber' => array(
 		'edit_tasks' => false,
 		'edit_others_tasks' => false,
 	    ),
@@ -381,7 +382,7 @@ class DaTask {
 		    'supports' => array( 'title', 'comments' ),
 		    'capabilities' => array(
 			'edit_post' => 'edit_tasks',
-			'edit_others_posts' => 'edit_other_tasks',
+			'edit_others_posts' => 'edit_others_tasks',
 		    ),
 		    'map_meta_cap' => true
 			)

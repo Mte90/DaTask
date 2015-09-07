@@ -47,11 +47,10 @@ class DT_AJAX_Task {
 		}
 		if ( is_user_logged_in() ) {
 			dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
-			echo 'done!';
+			wp_send_json_success();
 		} else {
-			echo 'error!';
+			wp_send_json_error();
 		}
-		wp_die();
 	}
 
 	/**
@@ -78,11 +77,10 @@ class DT_AJAX_Task {
 		}
 		if ( is_user_logged_in() ) {
 			dt_set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
-			echo 'done!';
+			wp_send_json_success();
 		} else {
-			echo 'error!';
+			wp_send_json_error();
 		}
-		wp_die();
 	}
 
 	/**
@@ -109,11 +107,10 @@ class DT_AJAX_Task {
 		}
 		if ( is_user_logged_in() ) {
 			dt_remove_complete_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
-			echo 'done!';
+			wp_send_json_success();
 		} else {
-			echo 'error!';
+			wp_send_json_error();
 		}
-		wp_die();
 	}
 
 	/**
@@ -154,13 +151,11 @@ class DT_AJAX_Task {
 				$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );
 				//Send email
 				wp_mail( $user->user_email, sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), get_bloginfo( 'name' ), $current_user->user_login ), $message, $headers );
-				echo 'done!';
-				wp_die();
+				wp_send_json_success();
 			}
-			echo 'error!';
-			wp_die();
+			wp_send_json_error();
 		} else {
-			echo 'error!';
+			wp_send_json_error();
 		}
 	}
 
