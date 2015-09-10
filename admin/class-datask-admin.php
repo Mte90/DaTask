@@ -259,6 +259,13 @@ class DaTask_Admin {
 		    'id' => $prefix . $this->plugin_slug . '_subtitle',
 		    'type' => 'text'
 		) );
+		
+		$cmb_task->add_field( array(
+		    'name' => __( 'Required or Suggested Tasks', $this->plugin_slug ),
+		    'id' => $prefix . $this->plugin_slug . '_before',
+		    'type' => 'post_search_text',
+		    'post_type' => 'task'
+		) );
 
 		$cmb_task->add_field( array(
 		    'name' => __( 'Prerequisites', $this->plugin_slug ),
@@ -303,7 +310,7 @@ class DaTask_Admin {
 		) );
 
 		$cmb_task->add_field( array(
-		    'name' => __( 'Good next tasks (IDs)', $this->plugin_slug ),
+		    'name' => __( 'Good next tasks', $this->plugin_slug ),
 		    'id' => $prefix . $this->plugin_slug . '_next',
 		    'type' => 'post_search_text',
 		    'post_type' => 'task'

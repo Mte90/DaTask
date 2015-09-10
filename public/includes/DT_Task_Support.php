@@ -137,6 +137,26 @@ class DT_Task_Support {
 			$content = wpautop( the_task_subtitle( false ) );
 		}
 		if ( is_singular( 'task' ) ) {
+			$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
+			if ( !empty( $befores ) ) {
+				$content .= '<div class="panel panel-danger">';
+				$content .= '<div class="panel-heading">';
+				$content .= __( 'Required or Suggested tasks: ', $plugin->get_plugin_slug() );
+				$content .= '</div>';
+				$content .= '<div class="panel-content">';
+				$befores_task = '';
+				$befores_split = explode( ',', str_replace( ' ', '', $befores ) );
+				$befores_ids = new WP_Query( array(
+				    'post_type' => 'task',
+				    'post__in' => $befores_split ) );
+				foreach ( $befores_ids->posts as $post ) {
+					$befores_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
+				}
+				wp_reset_postdata();
+				$content .= $befores_task;
+				$content .= '</div>';
+				$content .= '</div>';
+			}
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h2>';

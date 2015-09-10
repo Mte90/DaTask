@@ -185,6 +185,7 @@ class DaTask {
 		$fields[ 'users_of_task' ] = $prefix . $this->get_plugin_slug() . '_users';
 		$fields[ 'tasks_done_of_user' ] = $prefix . $this->get_plugin_slug() . '_tasks_done';
 		$fields[ 'tasks_later_of_user' ] = $prefix . $this->get_plugin_slug() . '_tasks_later';
+		$fields[ 'task_before' ] = $prefix . $this->get_plugin_slug() . '_before';
 		$fields[ 'task_prerequisites' ] = $prefix . $this->get_plugin_slug() . '_prerequisites';
 		$fields[ 'task_matters' ] = $prefix . $this->get_plugin_slug() . '_matters';
 		$fields[ 'task_steps' ] = $prefix . $this->get_plugin_slug() . '_steps';
