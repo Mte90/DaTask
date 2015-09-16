@@ -103,6 +103,16 @@ class DaTask_Admin {
 		    'order' => "-1"
 			)
 		);
+		$post_columns->add_column( 'Author', array(
+		    'label' => __( 'Author', $this->plugin_slug ),
+		    'type' => 'custom_value',
+		    'callback' => array( $this, 'author_of_task' ),
+		    'sortable' => true,
+		    'prefix' => "<b>",
+		    'suffix' => "</b>",
+		    'order' => "-1"
+			)
+		);
 	}
 
 	/**
@@ -247,10 +257,10 @@ class DaTask_Admin {
 		$cmb_task = new_cmb2_box( array(
 		    'id' => $prefix . 'metabox',
 		    'title' => __( 'Task Info', $this->plugin_slug ),
-		    'object_types' => array( 'task', ), 
+		    'object_types' => array( 'task', ),
 		    'context' => 'normal',
 		    'priority' => 'high',
-		    'show_names' => true, 
+		    'show_names' => true,
 			) );
 
 		$cmb_task->add_field( array(
@@ -324,7 +334,7 @@ class DaTask_Admin {
 		$cmb_user_task = new_cmb2_box( array(
 		    'id' => $prefix . 'user_metabox',
 		    'title' => __( 'Task Completed', $this->plugin_slug ),
-		    'object_types' => array( 'user' ), 
+		    'object_types' => array( 'user' ),
 		    'context' => 'normal',
 		    'priority' => 'high',
 		    'show_names' => true,
@@ -356,6 +366,18 @@ class DaTask_Admin {
 		} else {
 			return 0;
 		}
+	}
+
+	/**
+	 * Return the author of the task
+	 *
+	 * @since    1.0.0
+	 * 
+	 * @param integer $task_id ID of the task.
+	 */
+	public function author_of_task( $task_id ) {
+		$author_id = get_post_field( 'post_author', $task_id );
+		return '<a href="' . admin_url() . 'edit.php?post_type=task&author=' . $author_id . '">' . get_the_author_meta( 'user_nicename', $author_id ) . '</a>';
 	}
 
 	/**
