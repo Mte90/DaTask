@@ -337,12 +337,6 @@ class DaTask {
 	 * @since    1.0.0
 	 */
 	private static function single_activate() {
-		// Requirements Detection System - read the doc/example in the library file
-		require_once( plugin_dir_path( __FILE__ ) . 'includes/requirements.php' );
-		new Plugin_Requirements( self::$plugin_name, self::$plugin_slug, array(
-		    'WP' => new WordPress_Requirement( '4.1.0' )
-			) );
-
 		global $wp_roles;
 		if ( !isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles;
