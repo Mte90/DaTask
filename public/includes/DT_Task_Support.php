@@ -138,7 +138,7 @@ class DT_Task_Support {
 		}
 		if ( is_singular( 'task' ) ) {
 			$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
-			if ( !empty( $befores ) ) {
+			if ( !empty( $befores ) && is_array($befores) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Required or Suggested tasks: ', $plugin->get_plugin_slug() );
@@ -184,14 +184,14 @@ class DT_Task_Support {
 				$content .= wpautop( $completion );
 				$content .= '<br><br>';
 			}
-			$mentor = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
-			if ( !empty( $mentor ) ) {
+			$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
+			if ( !empty( $mentors ) && is_array($mentors) ) {
 				$content .= '<div class="panel panel-warning">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Mentor(s)', $plugin->get_plugin_slug() );
 				$content .= ': </div>';
 				$content .= '<div class="panel-content">';
-				$mentors_split = explode( ',', str_replace( ' ', '', $mentor ) );
+				$mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
 				foreach ( $mentors_split as $user ) {
 					$user = get_user_by( 'id', $user );
 					$name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
@@ -201,7 +201,7 @@ class DT_Task_Support {
 				$content .= '</div>';
 			}
 			$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
-			if ( !empty( $nexts ) ) {
+			if ( !empty( $nexts ) && is_array($nexts) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Good next tasks: ', $plugin->get_plugin_slug() );

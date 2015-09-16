@@ -247,10 +247,10 @@ class DaTask_Admin {
 		$cmb_task = new_cmb2_box( array(
 		    'id' => $prefix . 'metabox',
 		    'title' => __( 'Task Info', $this->plugin_slug ),
-		    'object_types' => array( 'task', ), // Post type
+		    'object_types' => array( 'task', ), 
 		    'context' => 'normal',
 		    'priority' => 'high',
-		    'show_names' => true, // Show field names on the left
+		    'show_names' => true, 
 			) );
 
 		$cmb_task->add_field( array(
@@ -324,10 +324,10 @@ class DaTask_Admin {
 		$cmb_user_task = new_cmb2_box( array(
 		    'id' => $prefix . 'user_metabox',
 		    'title' => __( 'Task Completed', $this->plugin_slug ),
-		    'object_types' => array( 'user' ), // Post type
+		    'object_types' => array( 'user' ), 
 		    'context' => 'normal',
 		    'priority' => 'high',
-		    'show_names' => true, // Show field names on the left
+		    'show_names' => true,
 			) );
 
 		$cmb_user_task->add_field( array(
