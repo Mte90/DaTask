@@ -146,6 +146,9 @@ class DaTask_Admin {
 		if ( $this->plugin_screen_hook_suffix == $screen->id || strpos( $_SERVER[ 'REQUEST_URI' ], 'index.php' ) || strpos( $_SERVER[ 'REQUEST_URI' ], get_bloginfo( 'wpurl' ) . '/wp-admin/' ) ) {
 			wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array( 'dashicons' ), DaTask::VERSION );
 		}
+		if ( 'task' === $screen->id && ($screen->action === 'add' ||$_GET[ 'action' ] === 'edit' ) ) {
+			wp_enqueue_script( $this->plugin_slug . '-task-admin-script', plugins_url( 'assets/js/task.js', __FILE__ ), array( 'jquery' ), DaTask::VERSION );
+		}
 		if ( $this->plugin_screen_hook_suffix === $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), DaTask::VERSION );
 		}
