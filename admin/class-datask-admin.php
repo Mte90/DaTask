@@ -48,7 +48,6 @@ class DaTask_Admin {
 		$this->cpts = $plugin->get_cpts();
 
 		// Load admin JavaScript after jQuery loading
-		add_action( 'admin_print_footer_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_files' ) );
 
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/WP-Admin-Notice/WP_Admin_Notice.php' );
@@ -148,29 +147,13 @@ class DaTask_Admin {
 		}
 		if ( 'task' === $screen->id && ($screen->action === 'add' ||$_GET[ 'action' ] === 'edit' ) ) {
 			wp_enqueue_script( $this->plugin_slug . '-task-admin-script', plugins_url( 'assets/js/task.js', __FILE__ ), array( 'jquery' ), DaTask::VERSION );
+			wp_localize_script( $this->plugin_slug . '-task-admin-script', 'dt_js_admin_vars', array(
+			    'alert' => __( 'You have not selected a taxonomy!', $this->plugin_slug ),
+				)
+			);
 		}
 		if ( $this->plugin_screen_hook_suffix === $screen->id ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), DaTask::VERSION );
-		}
-	}
-
-	/**
-	 * Register and enqueue admin-specific style sheet.
-	 * @return    null    Return early if no settings page is registered.
-	 */
-	public function enqueue_admin_scripts() {
-		$screen = get_current_screen();
-		if ( $screen->post_type === 'task' ) {
-			echo '<script type="text/javascript">
-			jQuery(document).ready(function() { 
-				jQuery("#publish").click(function (e) {
-					var mandatory = jQuery("#task-area-all .selectit input:checked, #task-team-all .selectit input:checked");
-					if (mandatory.length === 0) {
-						e.preventDefault();
-					}
-				});
-			});
-			</script>';
 		}
 	}
 
