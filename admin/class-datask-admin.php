@@ -259,7 +259,7 @@ class DaTask_Admin {
 		    'id' => $prefix . $this->plugin_slug . '_subtitle',
 		    'type' => 'text'
 		) );
-		
+
 		$cmb_task->add_field( array(
 		    'name' => __( 'Required or Suggested Tasks', $this->plugin_slug ),
 		    'id' => $prefix . $this->plugin_slug . '_before',
@@ -351,7 +351,11 @@ class DaTask_Admin {
 	public function number_of_done( $task_id ) {
 		// The number of user is the number of done
 		$users_of_task = get_users_by_task( $task_id );
-		return count( $users_of_task );
+		if ( is_array( $users_of_task ) ) {
+			return count( $users_of_task );
+		} else {
+			return 0;
+		}
 	}
 
 	/**
