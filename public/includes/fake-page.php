@@ -17,6 +17,7 @@ if ( !class_exists( 'Fake_Page' ) ) {
 
 		public $slug = '';
 		public $args = array();
+		public $id;
 
 		/**
 		 * __construct<br>
