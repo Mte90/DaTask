@@ -124,6 +124,8 @@ class DaTask {
 		}
 		// Task integration for template ecc
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Task_Support.php' );
+		// Support for API Rest v1
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_API_v1.php' );
 	}
 
 	/**

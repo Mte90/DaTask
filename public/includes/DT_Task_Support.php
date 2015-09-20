@@ -138,7 +138,7 @@ class DT_Task_Support {
 		}
 		if ( is_singular( 'task' ) ) {
 			$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
-			if ( !empty( $befores ) && is_array( $befores ) ) {
+			if ( !empty( $befores ) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Required or Suggested tasks: ', $plugin->get_plugin_slug() );
@@ -185,7 +185,7 @@ class DT_Task_Support {
 				$content .= '<br><br>';
 			}
 			$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
-			if ( !empty( $mentors ) && is_array( $mentors ) ) {
+			if ( !empty( $mentors ) ) {
 				$content .= '<div class="panel panel-warning">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Mentor(s)', $plugin->get_plugin_slug() );
@@ -201,7 +201,7 @@ class DT_Task_Support {
 				$content .= '</div>';
 			}
 			$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
-			if ( !empty( $nexts ) && is_array( $nexts ) ) {
+			if ( !empty( $nexts ) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Good next tasks: ', $plugin->get_plugin_slug() );
@@ -221,7 +221,7 @@ class DT_Task_Support {
 				$content .= '</div>';
 			}
 			$users = unserialize( get_post_meta( get_the_ID(), $plugin->get_fields( 'users_of_task' ), true ) );
-			if ( is_array( $users ) ) {
+			if ( !empty( $users ) ) {
 				$content .= '<h2>' . __( 'List of users who completed this task', $plugin->get_plugin_slug() ) . '</h2>';
 				$content .= '<div class="panel panel-default">';
 				$content .= '<div class="panel-content">';
