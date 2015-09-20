@@ -9,7 +9,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 // If uninstall not called from WordPress, then exit
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
@@ -18,15 +17,16 @@ if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 global $wpdb, $wp_roles;
 
 $plugin_roles = array(
-    'editor' => array(
+    'administrator' => array(
+	'edit_tasks' => true,
+	'edit_others_tasks' => true,
+    ), 'editor' => array(
 	'edit_demo' => true,
 	'edit_others_demo' => true,
-    ),
-    'author' => array(
+    ), 'author' => array(
 	'edit_demo' => true,
 	'edit_others_demo' => false,
-    ),
-    'subscriber' => array(
+    ), 'subscriber' => array(
 	'edit_demo' => false,
 	'edit_others_demo' => false,
     ),
@@ -78,3 +78,6 @@ if ( is_multisite() ) {
 		}
 	}
 }
+
+delete_option( $this->plugin_slug . '-settings' );
+delete_option( $this->plugin_slug . '-settings-extra' );
