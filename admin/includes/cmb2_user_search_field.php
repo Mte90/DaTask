@@ -51,16 +51,12 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 		return;
 	}
 
-	$has_user_search_field = false;
+	$actual_field = '';
 	foreach ( $fields as $field ) {
 		if ( 'user_search_text' == $field[ 'type' ] ) {
-			$has_user_search_field = true;
+			$actual_field = $field;
 			break;
 		}
-	}
-
-	if ( !$has_user_search_field ) {
-		return;
 	}
 
 	// JS needed for modal
@@ -93,7 +89,7 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 	            'find': '<?php echo esc_js( $find ) ?>'
 	          };
 
-	          var UserSearchView = window.Backbone.View.extend({
+	          var UserSearchView<?php echo $actual_field[ 'id' ] ?> = window.Backbone.View.extend({
 	            el: '#find-users',
 	            overlaySet: false,
 	            $overlay: false,
@@ -220,13 +216,13 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 	                ids = newids.split(',');
 	                $.each(ids, function (index, value) {
 	                  var cleaned = value.trim().toString();
-	                  if ($('.cmb-type-user-search-text ul li[data-id="' + cleaned + '"]').length === 0) {
-	                    $('.cmb-type-user-search-text ul').append('<li data-id="' + cleaned + '"><b><?php _e( 'Title' ) ?>:</b> ' + labels[index] + '<div title="<?php _e( 'Remove' ) ?>" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div></li>');
+	                  if ($('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> ul li[data-id="' + cleaned + '"]').length === 0) {
+	                    $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> ul').append('<li data-id="' + cleaned + '"><b><?php _e( 'Title' ) ?>:</b> ' + labels[index] + '<div title="<?php _e( 'Remove' ) ?>" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div></li>');
 	                  }
 	                });
 	              } else {
-	                if ($('.cmb-type-user-search-text ul li[data-id="' + newids + '"]').length === 0) {
-	                  $('.cmb-type-user-search-text ul').append('<li data-id="' + newids + '"><b><?php _e( 'Name' ) ?>:</b> ' + this.$checkedLabel[0] + '<div title="<?php _e( 'Remove' ) ?>" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div></li>');
+	                if ($('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> ul li[data-id="' + newids + '"]').length === 0) {
+	                  $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> ul').append('<li data-id="' + newids + '"><b><?php _e( 'Name' ) ?>:</b> ' + this.$checkedLabel[0] + '<div title="<?php _e( 'Remove' ) ?>" style="color: #999;margin: -0.1em 0 0 2px; cursor: pointer;" class="cmb-user-search-remove dashicons dashicons-no"></div></li>');
 	                }
 	              }
 
@@ -235,14 +231,14 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 
 	          });
 
-	          window.cmb2_user_search = new UserSearchView();
+	          window.cmb2_user_search<?php echo $actual_field[ 'id' ] ?> = new UserSearchView<?php echo $actual_field[ 'id' ] ?>();
 
-	          $('.cmb-type-user-search-text .cmb-th label').after('<div title="' + l10n.find + '" style="position:relative;left:30%;color: #999;cursor: pointer;" class="dashicons dashicons-search"></div>');
+	          $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> .cmb-th label').after('<div title="' + l10n.find + '" style="position:relative;left:30%;color: #999;cursor: pointer;" class="dashicons dashicons-search"></div>');
 
-	          $('.cmb-type-user-search-text .cmb-th .dashicons-search').on('click', openSearch);
+	          $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> .cmb-th .dashicons-search').on('click', openSearch);
 
 	          function openSearch(evt) {
-	            var search = window.cmb2_user_search;
+	            var search = window.cmb2_user_search<?php echo $actual_field[ 'id' ] ?>;
 	            search.$idInput = $(evt.currentTarget).parents('.cmb-type-user-search-text').find('.cmb-td input[type="text"]');
 	            search.roles = search.$idInput.data('roles');
 	            search.selectType = 'radio' === search.$idInput.data('selecttype') ? 'radio' : 'checkbox';
@@ -250,8 +246,8 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 	            search.trigger('open');
 	          }
 
-	          $('.cmb-type-user-search-text').on('click', '.cmb-user-search-remove', function () {
-	            var ids = $('.cmb-type-user-search-text').find('.cmb-td input[type="text"]').val();
+	          $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?>').on('click', '.cmb-user-search-remove', function () {
+	            var ids = $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?>').find('.cmb-td input[type="text"]').val();
 	            var $choosen = $(this);
 	            if (ids.indexOf(',') !== -1) {
 	              ids = ids.split(',');
@@ -263,20 +259,20 @@ function cmb2_user_search_render_js( $cmb_id, $object_id, $object_type, $cmb ) {
 	                  ids.splice(index, 1);
 	                }
 	              });
-	              $('.cmb-type-user-search-text').find('.cmb-td input[type="text"]').val(ids.join(','));
+	              $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?>').find('.cmb-td input[type="text"]').val(ids.join(','));
 	            } else {
 	              $choosen.parent().remove();
-	              $('.cmb-type-user-search-text').find('.cmb-td input[type="text"]').val('');
+	              $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?>').find('.cmb-td input[type="text"]').val('');
 	            }
 	          });
 
-	          $(".cmb-type-user-search-text ul").sortable({
+	          $(".cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> ul").sortable({
 	            update: function (event, ui) {
 	              var ids = [];
-	              $('.cmb-type-user-search-text ul li').each(function (index, value) {
+	              $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?> ul li').each(function (index, value) {
 	                ids.push($(this).data('id'));
 	              });
-	              $('.cmb-type-user-search-text').find('.cmb-td input[type="text"]').val(ids.join(', '));
+	              $('.cmb-type-user-search-text.cmb2-id-<?php echo str_replace( '_', '-', sanitize_html_class( $actual_field[ 'id' ] ) ) ?>').find('.cmb-td input[type="text"]').val(ids.join(', '));
 	            }
 	          });
 
