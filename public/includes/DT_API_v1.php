@@ -62,7 +62,6 @@ class DT_APIv1 {
 			$nexts = get_post_meta( $_post[ 'ID' ], $plugin->get_fields( 'task_next' ), true );
 			$next_task = '';
 			if ( !empty( $nexts ) ) {
-				$nexts = '';
 				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
 				$nexts_ids = new WP_Query( array(
 				    'post_type' => 'task',
@@ -73,14 +72,6 @@ class DT_APIv1 {
 				wp_reset_postdata();
 			}
 			$_post[ 'content' ][ 'next' ] = $next_task;
-			$users = unserialize( get_post_meta( $_post[ 'ID' ], $plugin->get_fields( 'users_of_task' ), true ) );
-			$next_user = '';
-			if ( !empty( $users ) ) {
-				foreach ( $users as $user => $value ) {
-					$next_user .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
-				}
-			}
-			$_post[ 'content' ][ 'users' ] = $next_user;
 		}
 		return $_post;
 	}
