@@ -30,6 +30,7 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 * Ajax based
 * Widgets avalaible
 * New post type with 4 taxonomy: Team, Area, Difficulty and Estimated minute
+* Support for WP REST API v1 
 
 == Installation ==
 
