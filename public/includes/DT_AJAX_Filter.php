@@ -73,7 +73,7 @@ class DT_AJAX_Filter {
 
 		// Build args list 
 		$args = array(
-		    "post_type" => array( 'task' ), "posts_per_page" => ( int ) $posts_per_page, "tax_query" => array(), "orderby" => 'title', "order" => 'DESC', "post_status" => "publish"
+		    "post_type" => array( 'task' ), "posts_per_page" => ( int ) $posts_per_page, "tax_query" => array(), "orderby" => 'date', "order" => 'DESC', "post_status" => "publish"
 		);
 
 		// Check if paging value passed, if so add to the query 
@@ -244,6 +244,7 @@ class DT_AJAX_Filter {
 
 					$terms = get_terms( $taxonomy, array(
 					    'orderby' => 'name',
+					    'order' => 'ASC',
 					    'hide_empty' => 1
 						)
 					);
