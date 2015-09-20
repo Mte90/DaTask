@@ -159,12 +159,12 @@ class DT_Task_Support {
 			}
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
-				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h2 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h2>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 			}
 			$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
-				$content = '<h2 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h2 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h2>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $matters ) ) ) );
 			}
 			$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
