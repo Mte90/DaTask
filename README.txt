@@ -24,13 +24,13 @@ Demo site: [http://datask.mte90.net/](http://datask.mte90.net/)
 
 Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
 
-* Use bootstrap class name
+* Bootstrap class names in frontend
 * Template customizable (`templates` folder rename in your theme in datask)
 * Frontend Login options
 * Ajax based
 * Widgets avalaible
 * New post type with 4 taxonomy: Team, Area, Difficulty and Estimated minute
-* Support for WP REST API v1 
+* Support for [WP REST API v1](https://github.com/Mte90/DaTask/wiki/API-Rest-V1)
 
 == Installation ==
 
