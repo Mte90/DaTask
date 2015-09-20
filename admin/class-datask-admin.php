@@ -81,10 +81,7 @@ class DaTask_Admin {
 
 		add_action( 'cmb2_init', array( $this, 'cmb_task_metaboxes' ) );
 
-		// Add the export settings method
-		add_action( 'admin_init', array( $this, 'settings_export' ) );
-		// Add the import settings method
-		add_action( 'admin_init', array( $this, 'settings_import' ) );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/impexp.php' );
 
 		/*
 		 * Load CPT_Columns
@@ -383,65 +380,6 @@ class DaTask_Admin {
 	public function author_of_task( $task_id ) {
 		$author_id = get_post_field( 'post_author', $task_id );
 		return '<a href="' . admin_url() . 'edit.php?post_type=task&author=' . $author_id . '">' . get_the_author_meta( 'user_nicename', $author_id ) . '</a>';
-	}
-
-	/**
-	 * Process a settings export from config
-	 * @since    1.0.0
-	 */
-	function settings_export() {
-		if ( empty( $_POST[ 'dt_action' ] ) || 'export_settings' != $_POST[ 'dt_action' ] ) {
-			return;
-		}
-		if ( !wp_verify_nonce( $_POST[ 'dt_export_nonce' ], 'dt_export_nonce' ) ) {
-			return;
-		}
-		if ( !current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		$settings[ 0 ] = get_option( $this->plugin_slug . '-settings' );
-		$settings[ 1 ] = get_option( $this->plugin_slug . '-settings-extra' );
-		ignore_user_abort( true );
-		nocache_headers();
-		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=pn-settings-export-' . date( 'm-d-Y' ) . '.json' );
-		header( "Expires: 0" );
-		if ( version_compare( PHP_VERSION, '5.4.0', '>=' ) ) {
-			echo json_encode( $settings, JSON_PRETTY_PRINT );
-		} else {
-			echo json_encode( $settings );
-		}
-		exit;
-	}
-
-	/**
-	 * Process a settings import from a json file
-	 * @since    1.0.0
-	 */
-	function settings_import() {
-		if ( empty( $_POST[ 'dt_action' ] ) || 'import_settings' != $_POST[ 'dt_action' ] ) {
-			return;
-		}
-		if ( !wp_verify_nonce( $_POST[ 'pn_import_nonce' ], 'dt_import_nonce' ) ) {
-			return;
-		}
-		if ( !current_user_can( 'manage_options' ) ) {
-			return;
-		}
-		$extension = end( explode( '.', $_FILES[ 'dt_import_file' ][ 'name' ] ) );
-		if ( $extension != 'json' ) {
-			wp_die( __( 'Please upload a valid .json file', $this->plugin_slug ) );
-		}
-		$import_file = $_FILES[ 'pn_import_file' ][ 'tmp_name' ];
-		if ( empty( $import_file ) ) {
-			wp_die( __( 'Please upload a file to import', $this->plugin_slug ) );
-		}
-		// Retrieve the settings from the file and convert the json object to an array.
-		$settings = ( array ) json_decode( file_get_contents( $import_file ) );
-		update_option( $this->plugin_slug . '-settings', get_object_vars( $settings[ 0 ] ) );
-		update_option( $this->plugin_slug . '-settings-extra', get_object_vars( $settings[ 1 ] ) );
-		wp_safe_redirect( admin_url( 'options-general.php?page=' . $this->plugin_slug ) );
-		exit;
 	}
 
 }
