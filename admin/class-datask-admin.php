@@ -55,7 +55,10 @@ class DaTask_Admin {
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_User_Backend.php' );
 
 		// At Glance Dashboard widget for your cpts
-		add_filter( 'dashboard_glance_items', array( $this, 'cpt_dashboard_support' ), 10, 1 );
+		add_filter( 'dashboard_glance_items', array( $this, 'cpt_glance_dashboard_support' ), 10, 1 );
+		// Activity Dashboard widget for your cpts
+		add_filter( 'dashboard_recent_posts_query_args', array( $this, 'cpt_activity_dashboard_support' ), 10, 1 );
+		
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
@@ -209,7 +212,7 @@ class DaTask_Admin {
 	 * 
 	 * @return array HTML
 	 */
-	public function cpt_dashboard_support( $items = array() ) {
+	public function cpt_glance_dashboard_support( $items = array() ) {
 		$post_types = $this->cpts;
 		foreach ( $post_types as $type ) {
 			if ( !post_type_exists( $type ) ) {
@@ -229,6 +232,22 @@ class DaTask_Admin {
 			}
 		}
 		return $items;
+	}
+	
+	
+	/**
+	 * Add the recents post type in the activity widget<br>
+	 * NOTE: add in $post_types your cpts
+	 *
+	 * @since    1.0.0
+	 */
+	function cpt_activity_dashboard_support( $query_args ) {
+		if ( !is_array( $query_args[ 'post_type' ] ) ) {
+			//Set default post type
+			$query_args[ 'post_type' ] = array( 'page' );
+		}
+		$query_args[ 'post_type' ] = array_merge( $query_args[ 'post_type' ], $this->cpts );
+		return $query_args;
 	}
 
 	/**
