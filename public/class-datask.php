@@ -379,7 +379,8 @@ class DaTask {
 			'edit_post' => 'edit_tasks',
 			'edit_others_posts' => 'edit_others_tasks',
 		    ),
-		    'map_meta_cap' => true
+		    'map_meta_cap' => true,
+			    'menu_icon'   => 'dashicons-welcome-add-page',
 			)
 		);
 		register_via_taxonomy_core(

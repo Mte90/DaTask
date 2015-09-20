@@ -131,14 +131,14 @@ class DT_Task_Support {
 	 * @param string $content HTML code.
 	 */
 	public function dt_task_content( $content ) {
-		global $post;
+		global $post, $wp_embed;
 		$plugin = DaTask::get_instance();
 		if ( get_post_type( $post->ID ) === 'task' ) {
 			$content = wpautop( the_task_subtitle( false ) );
 		}
 		if ( is_singular( 'task' ) ) {
 			$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
-			if ( !empty( $befores ) && is_array($befores) ) {
+			if ( !empty( $befores ) && is_array( $befores ) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Required or Suggested tasks: ', $plugin->get_plugin_slug() );
@@ -160,32 +160,32 @@ class DT_Task_Support {
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= wpautop( $prerequisites );
+				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 			}
 			$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
 				$content = '<h2 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= wpautop( $matters );
+				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $matters ) ) ) );
 			}
 			$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
 			if ( !empty( $steps ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= wpautop( $steps );
+				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $steps ) ) ) );
 			}
 			$help = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_help' ), true );
 			if ( !empty( $help ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Need Help?', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= wpautop( $help );
+				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $help ) ) ) );
 				$content .= '<br><br>';
 			}
 			$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 			if ( !empty( $completion ) ) {
 				$content .= '<h2 class="alert alert-success">' . __( 'Completion', $plugin->get_plugin_slug() ) . '</h2>';
-				$content .= wpautop( $completion );
+				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 				$content .= '<br><br>';
 			}
 			$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
-			if ( !empty( $mentors ) && is_array($mentors) ) {
+			if ( !empty( $mentors ) && is_array( $mentors ) ) {
 				$content .= '<div class="panel panel-warning">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Mentor(s)', $plugin->get_plugin_slug() );
@@ -201,7 +201,7 @@ class DT_Task_Support {
 				$content .= '</div>';
 			}
 			$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
-			if ( !empty( $nexts ) && is_array($nexts) ) {
+			if ( !empty( $nexts ) && is_array( $nexts ) ) {
 				$content .= '<div class="panel panel-danger">';
 				$content .= '<div class="panel-heading">';
 				$content .= __( 'Good next tasks: ', $plugin->get_plugin_slug() );
