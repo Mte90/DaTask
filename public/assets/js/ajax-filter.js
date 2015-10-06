@@ -79,6 +79,10 @@ jQuery(document).ready(function () {
           if (parent.length > 0) {
             dt_js_search_vars.thisPage = 1;
           }
+          
+          if(jQuery(this).attr('rel')) {
+            dt_js_search_vars.thisPage = jQuery(this).attr('rel');
+          }
 
           self.filter(self.selected());
 
