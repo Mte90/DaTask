@@ -1,9 +1,9 @@
 === DaTask ===
 Contributors: Mte90
-Tags: task
+Tags: task, task managemtn, activity, learning
 Requires at least: 4.2
 Tested up to: 4.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,7 +25,7 @@ Demo site: [http://datask.mte90.net/](http://datask.mte90.net/)
 Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
 
 * Bootstrap class names in frontend
-* Template customizable (`templates` folder rename in your theme in datask)
+* Template customizable (`datask` folder in your theme)
 * Frontend Login options
 * Ajax based
 * Widgets avalaible
