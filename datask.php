@@ -10,7 +10,7 @@
  * Plugin Name:       DaTask
  * Plugin URI:        @TODO
  * Description:       @TODO
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Mte90
  * Author URI:        http://mte90.net
  * Text Domain:       datask
