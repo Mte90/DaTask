@@ -272,7 +272,7 @@ class DT_Frontend_Login {
 	 * @since    1.0.0
 	 */
 	public function remove_admin_bar() {
-		if ( !is_admin() ) {
+		if ( !current_user_can('manage_options') ) {
 			show_admin_bar( false );
 		}
 	}
