@@ -22,10 +22,6 @@ class DT_Task_Support {
 		// Override the template hierarchy
 		add_filter( 'template_include', array( $this, 'load_content_task' ) );
 
-		/*
-		 * Custom Action/Shortcode
-		 */
-
 		add_action( 'dt-task-info', array( $this, 'dt_task_info' ) );
 		add_filter( 'the_content', array( $this, 'dt_task_content' ) );
 		add_filter( 'the_excerpt', array( $this, 'dt_task_excerpt' ) );

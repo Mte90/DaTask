@@ -59,7 +59,16 @@
 		'id' => $this->plugin_slug . '_tweet_comments',
 		'type' => 'checkbox'
 	    ) );
+	    $cmb->add_field( array(
+		'name' => __( 'Slug of the Post Type', $this->plugin_slug ),
+		'id' => $this->plugin_slug . '_cpt_slug',
+		'type' => 'text'
+	    ) );
 	    cmb2_metabox_form( $this->plugin_slug . '_options-second', $this->plugin_slug . '-settings-extra' );
+	    if ( isset( $_POST[ 'object_id' ] ) && $_POST[ 'object_id' ] ) {
+		    // Clear the permalinks
+		    flush_rewrite_rules();
+	    }
 	    ?>
 	</div>
 	<div id="tabs-3" class="metabox-holder">

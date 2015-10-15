@@ -374,17 +374,21 @@ class DaTask {
 	 * @since    1.0.0
 	 */
 	public function load_cpt_taxonomy() {
-		register_via_cpt_core(
-			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), array(
+		$options_extra = get_option( $this->get_plugin_slug() . '-settings-extra' );
+		$task_post_type = array(
 		    'supports' => array( 'title', 'comments' ),
 		    'capabilities' => array(
 			'edit_post' => 'edit_tasks',
 			'edit_others_posts' => 'edit_others_tasks',
 		    ),
 		    'map_meta_cap' => true,
-			    'menu_icon'   => 'dashicons-welcome-add-page',
-			)
+		    'menu_icon' => 'dashicons-welcome-add-page',
 		);
+		if ( isset( $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ] ) ) {
+			$task_post_type[ 'rewrite' ][ 'slug' ] = $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ];
+		}
+		register_via_cpt_core(
+			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), $task_post_type );
 		register_via_taxonomy_core(
 			array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
 		    'public' => true,
