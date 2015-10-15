@@ -235,8 +235,15 @@ class DT_Frontend_Login {
 	 * @param string $content HTML from WordPress
 	 */
 	public function login_page( $content ) {
+		// Is a filter, so return the template code!
 		if ( is_page( 'login' ) ) {
-			dt_get_template_part( 'log', 'in', true );
+			if ( !is_user_logged_in() ) {
+				ob_start();
+				dt_get_template_part( 'log', 'in', true );
+				$template = ob_get_contents();
+				ob_end_clean();
+				return $template;
+			}
 		} elseif ( is_page( 'profile' ) ) {
 			if ( is_user_logged_in() ) {
 				if ( !function_exists( 'get_user_to_edit' ) ) {
@@ -257,7 +264,11 @@ class DT_Frontend_Login {
 						$errors = edit_user( $user_id );
 					}
 				}
+				ob_start();
 				dt_get_template_part( 'user', 'edit', true );
+				$template = ob_get_contents();
+				ob_end_clean();
+				return $template;
 			} else {
 				wp_redirect( home_url( '/login/' ) );
 			}
@@ -272,7 +283,7 @@ class DT_Frontend_Login {
 	 * @since    1.0.0
 	 */
 	public function remove_admin_bar() {
-		if ( !current_user_can('manage_options') ) {
+		if ( !current_user_can( 'manage_options' ) ) {
 			show_admin_bar( false );
 		}
 	}

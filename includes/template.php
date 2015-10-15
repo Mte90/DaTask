@@ -28,7 +28,7 @@ function dt_get_template_part( $slug, $name = '', $include = true ) {
 		$template = $path . "{$slug}-{$name}.php";
 	}
 
-	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/woocommerce/slug.php
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/datask/slug.php
 	if ( !$template ) {
 		$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
 	}

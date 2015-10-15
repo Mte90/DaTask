@@ -82,6 +82,10 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 
 == Changelog ==
 
+= 1.0.2 =
+* Support for Yoast SEO
+* Better management of template files in `the_content` filter
+
 = 1.0.1 =
 * Fix in js pagination that not work 
 * datask folder in the theme for the template override (was templates/datask)
