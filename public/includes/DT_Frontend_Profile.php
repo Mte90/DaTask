@@ -30,8 +30,8 @@ class DT_Frontend_Profile {
 		add_filter( 'query_vars', array( $this, 'add_member_permalink' ) );
 		add_filter( 'init', array( $this, 'rewrite_rule' ) );
 		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
-		add_filter( 'wp_title', array( $this, 'member_wp_title' ), 10, 3 );
-		add_filter( 'the_title', array( $this, 'member_title' ), 10, 2 );
+		add_filter( 'wp_title', array( $this, 'member_wp_title' ), 9999, 3 );
+		add_filter( 'the_title', array( $this, 'member_title' ), 999, 2 );
 	}
 
 	/**
@@ -103,7 +103,11 @@ class DT_Frontend_Profile {
 			if ( get_user_of_profile() !== NULL ) {
 				$user = get_user_by( 'login', get_user_of_profile() );
 				$page = sprintf( __( "%s's Profile", $plugin->get_plugin_slug() ), $user->display_name );
-				return $page . ' ' . $sep . $title;
+				if ( !defined( 'WPSEO_FILE' ) ) {
+					return $page . ' ' . $sep . $title;
+				} else {
+					return $page . ' ' . $sep;
+				}
 			}
 		} elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
 			return __( 'Your profile', $plugin->get_plugin_slug() ) . ' ' . $sep;
