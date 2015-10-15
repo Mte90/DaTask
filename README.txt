@@ -85,6 +85,9 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 = 1.0.2 =
 * Support for Yoast SEO
 * Better management of template files in `the_content` filter
+* Rewrite support for Post Type slug
+* Show avatar in porfile page
+* Improvement on JS for search form
 
 = 1.0.1 =
 * Fix in js pagination that not work 
