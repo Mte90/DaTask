@@ -63,7 +63,7 @@ jQuery(document).ready(function () {
 
 	  var self = this;
 
-	  jQuery('#ajax-filters').on('click', this.links, function (e) {
+	  jQuery('#ajax-filters, #ajax-content').on('click', this.links, function (e) {
 		if (self.running === false) {
 		  // Set to true to stop function chaining.
 		  self.running = true;
@@ -81,7 +81,7 @@ jQuery(document).ready(function () {
 		e.preventDefault();
 	  });
 
-	  jQuery('#ajax-filters').on('change', this.select, function (e) {
+	  jQuery('#ajax-filters, #ajax-content').on('change', this.select, function (e) {
 		if (self.running === false) {
 		  // Set to true to stop function chaining.
 		  self.running = true;
