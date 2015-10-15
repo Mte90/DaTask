@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-09-10 18:05+0200\n"
+"POT-Creation-Date: 2015-10-15 19:15+0200\n"
 "PO-Revision-Date: 2014-07-07 18:52+0100\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: LANGUAGE <translations@example.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;"
 "_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c\n"
@@ -27,73 +27,74 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-5: admin/includes/cmb2_post_search_field.php\n"
 "X-Poedit-SearchPathExcluded-6: admin/includes/CPT_Columns.php\n"
 "X-Poedit-SearchPathExcluded-7: admin/includes/cmb2_user_search_field.php\n"
+"X-Poedit-SearchPathExcluded-8: node_modules\n"
 
-#: admin/class-datask-admin.php:96
+#: admin/class-datask-admin.php:95
 msgid "Done"
 msgstr ""
 
-#: admin/class-datask-admin.php:198
+#: admin/class-datask-admin.php:106
+msgid "Author"
+msgstr ""
+
+#: admin/class-datask-admin.php:151
+msgid "You have not selected a taxonomy!"
+msgstr ""
+
+#: admin/class-datask-admin.php:194
 msgid "Settings"
 msgstr ""
 
-#: admin/class-datask-admin.php:199
+#: admin/class-datask-admin.php:195
 msgid "Donate"
 msgstr ""
 
-#: admin/class-datask-admin.php:249
+#: admin/class-datask-admin.php:261
 msgid "Task Info"
 msgstr ""
 
-#: admin/class-datask-admin.php:257
+#: admin/class-datask-admin.php:269
 msgid "Subtitle"
 msgstr ""
 
-#: admin/class-datask-admin.php:258
+#: admin/class-datask-admin.php:270
 msgid "Description in a row"
 msgstr ""
 
-#: admin/class-datask-admin.php:264
+#: admin/class-datask-admin.php:276
 msgid "Required or Suggested Tasks"
 msgstr ""
 
-#: admin/class-datask-admin.php:271 public/includes/DT_Task_Support.php:162
+#: admin/class-datask-admin.php:283 public/includes/DT_Task_Support.php:158
 msgid "Prerequisites"
 msgstr ""
 
-#: admin/class-datask-admin.php:278 public/includes/DT_Task_Support.php:167
+#: admin/class-datask-admin.php:290 public/includes/DT_Task_Support.php:163
 msgid "Why this matters"
 msgstr ""
 
-#: admin/class-datask-admin.php:285 public/includes/DT_Task_Support.php:172
+#: admin/class-datask-admin.php:297 public/includes/DT_Task_Support.php:168
 msgid "Steps"
 msgstr ""
 
-#: admin/class-datask-admin.php:292 public/includes/DT_Task_Support.php:177
+#: admin/class-datask-admin.php:304 public/includes/DT_Task_Support.php:173
 msgid "Need Help?"
 msgstr ""
 
-#: admin/class-datask-admin.php:299 public/includes/DT_Task_Support.php:183
+#: admin/class-datask-admin.php:311 public/includes/DT_Task_Support.php:179
 msgid "Completion"
 msgstr ""
 
-#: admin/class-datask-admin.php:306 public/includes/DT_Task_Support.php:191
+#: admin/class-datask-admin.php:318 public/includes/DT_Task_Support.php:187
 msgid "Mentor(s)"
 msgstr ""
 
-#: admin/class-datask-admin.php:313
+#: admin/class-datask-admin.php:325
 msgid "Good next tasks"
 msgstr ""
 
-#: admin/class-datask-admin.php:326
+#: admin/class-datask-admin.php:338
 msgid "Task Completed"
-msgstr ""
-
-#: admin/class-datask-admin.php:402
-msgid "Please upload a valid .json file"
-msgstr ""
-
-#: admin/class-datask-admin.php:406
-msgid "Please upload a file to import"
 msgstr ""
 
 #: admin/includes/DT_User_Backend.php:44
@@ -107,6 +108,14 @@ msgstr ""
 #: admin/includes/DT_User_Backend.php:63
 #, php-format
 msgid "Task in progress reset for <b>%s</b> done!"
+msgstr ""
+
+#: admin/includes/impexp.php:73
+msgid "Please upload a valid .json file"
+msgstr ""
+
+#: admin/includes/impexp.php:77
+msgid "Please upload a file to import"
 msgstr ""
 
 #: admin/views/admin.php:22
@@ -141,35 +150,39 @@ msgstr ""
 msgid "Tweet Field in comments"
 msgstr ""
 
-#: admin/views/admin.php:67
+#: admin/views/admin.php:63
+msgid "Slug of the Post Type"
+msgstr ""
+
+#: admin/views/admin.php:76
 msgid "Export Settings"
 msgstr ""
 
-#: admin/views/admin.php:69
+#: admin/views/admin.php:78
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
 msgstr ""
 
-#: admin/views/admin.php:74
+#: admin/views/admin.php:83
 msgid "Export"
 msgstr ""
 
-#: admin/views/admin.php:81
+#: admin/views/admin.php:90
 msgid "Import Settings"
 msgstr ""
 
-#: admin/views/admin.php:83
+#: admin/views/admin.php:92
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on another site using the form above."
 msgstr ""
 
-#: admin/views/admin.php:91
+#: admin/views/admin.php:100
 msgid "Import"
 msgstr ""
 
-#: admin/views/admin.php:100
+#: admin/views/admin.php:109
 msgid "DaTask"
 msgstr ""
 
@@ -234,47 +247,47 @@ msgstr ""
 msgid "Recent Tasks in the system"
 msgstr ""
 
-#: public/class-datask.php:382
+#: public/class-datask.php:391
 msgid "Task"
 msgstr ""
 
-#: public/class-datask.php:382
+#: public/class-datask.php:391
 msgid "Tasks"
 msgstr ""
 
-#: public/class-datask.php:392
+#: public/class-datask.php:393
 msgid "Area"
 msgstr ""
 
-#: public/class-datask.php:392
+#: public/class-datask.php:393
 msgid "Areas"
 msgstr ""
 
-#: public/class-datask.php:401 public/includes/DT_Task_Support.php:104
+#: public/class-datask.php:402 public/includes/DT_Task_Support.php:100
 msgid "Difficulty"
 msgstr ""
 
-#: public/class-datask.php:401
+#: public/class-datask.php:402
 msgid "Difficulties"
 msgstr ""
 
-#: public/class-datask.php:410 public/includes/DT_Task_Support.php:84
+#: public/class-datask.php:411 public/includes/DT_Task_Support.php:80
 msgid "Team"
 msgstr ""
 
-#: public/class-datask.php:410
+#: public/class-datask.php:411
 msgid "Teams"
 msgstr ""
 
-#: public/class-datask.php:419
+#: public/class-datask.php:420
 msgid "Estimated minute"
 msgstr ""
 
-#: public/class-datask.php:419
+#: public/class-datask.php:420
 msgid "Estimated minutes"
 msgstr ""
 
-#: public/class-datask.php:462
+#: public/class-datask.php:463
 msgid "Search to see results"
 msgstr ""
 
@@ -287,15 +300,15 @@ msgid "No Results found :("
 msgstr ""
 
 #: public/includes/DT_AJAX_Filter.php:237
-#: public/includes/DT_AJAX_Filter.php:308
+#: public/includes/DT_AJAX_Filter.php:309
 msgid "Search"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:304
+#: public/includes/DT_AJAX_Filter.php:305
 msgid "There are no tasks!"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:309
+#: public/includes/DT_AJAX_Filter.php:310
 msgid "Clear"
 msgstr ""
 
@@ -326,8 +339,8 @@ msgid "Login"
 msgstr ""
 
 #: public/includes/DT_Frontend_Login.php:33
-#: public/includes/DT_Frontend_Login.php:292
-#: public/includes/DT_Frontend_Login.php:293
+#: public/includes/DT_Frontend_Login.php:303
+#: public/includes/DT_Frontend_Login.php:304
 msgid "Logout"
 msgstr ""
 
@@ -336,37 +349,37 @@ msgid "Edit Profile"
 msgstr ""
 
 #: public/includes/DT_Frontend_Profile.php:26
-#: public/includes/DT_Frontend_Profile.php:109
-#: public/includes/DT_Frontend_Profile.php:129
+#: public/includes/DT_Frontend_Profile.php:104
+#: public/includes/DT_Frontend_Profile.php:134
 msgid "Your profile"
 msgstr ""
 
-#: public/includes/DT_Frontend_Profile.php:105 templates/user-profile.php:13
+#: public/includes/DT_Frontend_Profile.php:108 templates/user-profile.php:13
 #, php-format
 msgid "%s's Profile"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:79
+#: public/includes/DT_Task_Support.php:75
 msgid "Last edit: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:94
+#: public/includes/DT_Task_Support.php:90
 msgid "Project"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:114
+#: public/includes/DT_Task_Support.php:110
 msgid "Estimated time"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:144
+#: public/includes/DT_Task_Support.php:140
 msgid "Required or Suggested tasks: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:207
+#: public/includes/DT_Task_Support.php:203
 msgid "Good next tasks: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:225
+#: public/includes/DT_Task_Support.php:221
 msgid "List of users who completed this task"
 msgstr ""
 
@@ -513,7 +526,7 @@ msgstr ""
 msgid "Display to Public as"
 msgstr ""
 
-#: templates/user-edit.php:79 templates/user-profile.php:23
+#: templates/user-edit.php:79 templates/user-profile.php:26
 msgid "Website"
 msgstr ""
 
@@ -545,14 +558,14 @@ msgstr ""
 msgid "Update Profile"
 msgstr ""
 
-#: templates/user-profile.php:20
+#: templates/user-profile.php:23
 msgid "Email"
 msgstr ""
 
-#: templates/user-profile.php:30
+#: templates/user-profile.php:35
 msgid "Edit profile"
 msgstr ""
 
-#: templates/user-profile.php:34
+#: templates/user-profile.php:39
 msgid "Dashboard"
 msgstr ""

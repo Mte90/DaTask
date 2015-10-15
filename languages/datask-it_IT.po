@@ -5,15 +5,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DaTask\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-09-10 18:05+0200\n"
-"PO-Revision-Date: 2015-09-10 18:05+0200\n"
+"POT-Creation-Date: 2015-10-15 19:13+0200\n"
+"PO-Revision-Date: 2015-10-15 19:14+0200\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;"
 "_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c\n"
@@ -28,74 +28,75 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-5: admin/includes/cmb2_post_search_field.php\n"
 "X-Poedit-SearchPathExcluded-6: admin/includes/CPT_Columns.php\n"
 "X-Poedit-SearchPathExcluded-7: admin/includes/cmb2_user_search_field.php\n"
+"X-Poedit-SearchPathExcluded-8: node_modules\n"
 
-#: admin/class-datask-admin.php:96
+#: admin/class-datask-admin.php:95
 msgid "Done"
 msgstr "Fatto"
 
-#: admin/class-datask-admin.php:198
+#: admin/class-datask-admin.php:106
+msgid "Author"
+msgstr "Autore"
+
+#: admin/class-datask-admin.php:151
+msgid "You have not selected a taxonomy!"
+msgstr "Non hai selezionato una tassonomia!"
+
+#: admin/class-datask-admin.php:194
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: admin/class-datask-admin.php:199
+#: admin/class-datask-admin.php:195
 msgid "Donate"
 msgstr "Dona"
 
-#: admin/class-datask-admin.php:249
+#: admin/class-datask-admin.php:261
 msgid "Task Info"
 msgstr "Informazioni Task"
 
-#: admin/class-datask-admin.php:257
+#: admin/class-datask-admin.php:269
 msgid "Subtitle"
 msgstr "Sotto Titolo"
 
-#: admin/class-datask-admin.php:258
+#: admin/class-datask-admin.php:270
 msgid "Description in a row"
 msgstr "Descrizione in una riga"
 
-#: admin/class-datask-admin.php:264
+#: admin/class-datask-admin.php:276
 msgid "Required or Suggested Tasks"
 msgstr "Task Richiesti o Suggeriti"
 
-#: admin/class-datask-admin.php:271 public/includes/DT_Task_Support.php:162
+#: admin/class-datask-admin.php:283 public/includes/DT_Task_Support.php:158
 msgid "Prerequisites"
 msgstr "Prerequisiti"
 
-#: admin/class-datask-admin.php:278 public/includes/DT_Task_Support.php:167
+#: admin/class-datask-admin.php:290 public/includes/DT_Task_Support.php:163
 msgid "Why this matters"
 msgstr "Perché é importante"
 
-#: admin/class-datask-admin.php:285 public/includes/DT_Task_Support.php:172
+#: admin/class-datask-admin.php:297 public/includes/DT_Task_Support.php:168
 msgid "Steps"
 msgstr "Passaggi"
 
-#: admin/class-datask-admin.php:292 public/includes/DT_Task_Support.php:177
+#: admin/class-datask-admin.php:304 public/includes/DT_Task_Support.php:173
 msgid "Need Help?"
 msgstr "Bisogno di aiuto?"
 
-#: admin/class-datask-admin.php:299 public/includes/DT_Task_Support.php:183
+#: admin/class-datask-admin.php:311 public/includes/DT_Task_Support.php:179
 msgid "Completion"
 msgstr "Completamento"
 
-#: admin/class-datask-admin.php:306 public/includes/DT_Task_Support.php:191
+#: admin/class-datask-admin.php:318 public/includes/DT_Task_Support.php:187
 msgid "Mentor(s)"
 msgstr "Mentor(e/i)"
 
-#: admin/class-datask-admin.php:313
+#: admin/class-datask-admin.php:325
 msgid "Good next tasks"
 msgstr "Ottimi task successivi:"
 
-#: admin/class-datask-admin.php:326
+#: admin/class-datask-admin.php:338
 msgid "Task Completed"
 msgstr "Task completati"
-
-#: admin/class-datask-admin.php:402
-msgid "Please upload a valid .json file"
-msgstr "Carica un file .json valido"
-
-#: admin/class-datask-admin.php:406
-msgid "Please upload a file to import"
-msgstr "Carica il file da importare"
 
 #: admin/includes/DT_User_Backend.php:44
 msgid "Reset Task in Progress"
@@ -109,6 +110,14 @@ msgstr "Vedi Profilo Pubblico"
 #, php-format
 msgid "Task in progress reset for <b>%s</b> done!"
 msgstr "Task in lavorazione resettati per <b>%s</b> effettuato!"
+
+#: admin/includes/impexp.php:73
+msgid "Please upload a valid .json file"
+msgstr "Carica un file .json valido"
+
+#: admin/includes/impexp.php:77
+msgid "Please upload a file to import"
+msgstr "Carica il file da importare"
 
 #: admin/views/admin.php:22
 msgid "General"
@@ -143,11 +152,15 @@ msgstr "Richiede il sistema di Login nel Frontend"
 msgid "Tweet Field in comments"
 msgstr "Campo per il Tweet nei commenti"
 
-#: admin/views/admin.php:67
+#: admin/views/admin.php:63
+msgid "Slug of the Post Type"
+msgstr "Slug del Post Type"
+
+#: admin/views/admin.php:76
 msgid "Export Settings"
 msgstr "Esporta Impostazioni"
 
-#: admin/views/admin.php:69
+#: admin/views/admin.php:78
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
@@ -156,15 +169,15 @@ msgstr ""
 "Questo ti permetterá ti importare facilmente la configurazione su un altro "
 "sito."
 
-#: admin/views/admin.php:74
+#: admin/views/admin.php:83
 msgid "Export"
 msgstr "Esporta"
 
-#: admin/views/admin.php:81
+#: admin/views/admin.php:90
 msgid "Import Settings"
 msgstr "Importa Impostazioni"
 
-#: admin/views/admin.php:83
+#: admin/views/admin.php:92
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on another site using the form above."
@@ -173,11 +186,11 @@ msgstr ""
 "essere ottenuto dall'esportazione delle impostazioni di un altro sito "
 "tramite il modulo soprastante."
 
-#: admin/views/admin.php:91
+#: admin/views/admin.php:100
 msgid "Import"
 msgstr "Importa"
 
-#: admin/views/admin.php:100
+#: admin/views/admin.php:109
 msgid "DaTask"
 msgstr "DaTask"
 
@@ -244,47 +257,47 @@ msgstr "Task Recenti"
 msgid "Recent Tasks in the system"
 msgstr "Task recenti nel sistema"
 
-#: public/class-datask.php:382
+#: public/class-datask.php:391
 msgid "Task"
 msgstr "Task"
 
-#: public/class-datask.php:382
+#: public/class-datask.php:391
 msgid "Tasks"
 msgstr "Task"
 
-#: public/class-datask.php:392
+#: public/class-datask.php:393
 msgid "Area"
 msgstr "Area"
 
-#: public/class-datask.php:392
+#: public/class-datask.php:393
 msgid "Areas"
 msgstr "Aree"
 
-#: public/class-datask.php:401 public/includes/DT_Task_Support.php:104
+#: public/class-datask.php:402 public/includes/DT_Task_Support.php:100
 msgid "Difficulty"
 msgstr "Difficoltá"
 
-#: public/class-datask.php:401
+#: public/class-datask.php:402
 msgid "Difficulties"
 msgstr "Difficoltá"
 
-#: public/class-datask.php:410 public/includes/DT_Task_Support.php:84
+#: public/class-datask.php:411 public/includes/DT_Task_Support.php:80
 msgid "Team"
 msgstr "Team"
 
-#: public/class-datask.php:410
+#: public/class-datask.php:411
 msgid "Teams"
 msgstr "Team"
 
-#: public/class-datask.php:419
+#: public/class-datask.php:420
 msgid "Estimated minute"
 msgstr "Minuto stimato"
 
-#: public/class-datask.php:419
+#: public/class-datask.php:420
 msgid "Estimated minutes"
 msgstr "Minuti stimati"
 
-#: public/class-datask.php:462
+#: public/class-datask.php:463
 msgid "Search to see results"
 msgstr "Cerca per dei risultati"
 
@@ -297,15 +310,15 @@ msgid "No Results found :("
 msgstr "Nessun risultato trovato :("
 
 #: public/includes/DT_AJAX_Filter.php:237
-#: public/includes/DT_AJAX_Filter.php:308
+#: public/includes/DT_AJAX_Filter.php:309
 msgid "Search"
 msgstr "Cerca"
 
-#: public/includes/DT_AJAX_Filter.php:304
+#: public/includes/DT_AJAX_Filter.php:305
 msgid "There are no tasks!"
 msgstr "Non ci sono task!"
 
-#: public/includes/DT_AJAX_Filter.php:309
+#: public/includes/DT_AJAX_Filter.php:310
 msgid "Clear"
 msgstr "Pulisci"
 
@@ -336,8 +349,8 @@ msgid "Login"
 msgstr "Accedi"
 
 #: public/includes/DT_Frontend_Login.php:33
-#: public/includes/DT_Frontend_Login.php:292
-#: public/includes/DT_Frontend_Login.php:293
+#: public/includes/DT_Frontend_Login.php:303
+#: public/includes/DT_Frontend_Login.php:304
 msgid "Logout"
 msgstr "Logout"
 
@@ -346,37 +359,37 @@ msgid "Edit Profile"
 msgstr "Modifica Profilo"
 
 #: public/includes/DT_Frontend_Profile.php:26
-#: public/includes/DT_Frontend_Profile.php:109
-#: public/includes/DT_Frontend_Profile.php:129
+#: public/includes/DT_Frontend_Profile.php:104
+#: public/includes/DT_Frontend_Profile.php:134
 msgid "Your profile"
 msgstr "Il tuo profilo"
 
-#: public/includes/DT_Frontend_Profile.php:105 templates/user-profile.php:13
+#: public/includes/DT_Frontend_Profile.php:108 templates/user-profile.php:13
 #, php-format
 msgid "%s's Profile"
 msgstr "Profilo di %s"
 
-#: public/includes/DT_Task_Support.php:79
+#: public/includes/DT_Task_Support.php:75
 msgid "Last edit: "
 msgstr "Ultima Modifica:"
 
-#: public/includes/DT_Task_Support.php:94
+#: public/includes/DT_Task_Support.php:90
 msgid "Project"
 msgstr "Progetti"
 
-#: public/includes/DT_Task_Support.php:114
+#: public/includes/DT_Task_Support.php:110
 msgid "Estimated time"
 msgstr "Tempo stimato"
 
-#: public/includes/DT_Task_Support.php:144
+#: public/includes/DT_Task_Support.php:140
 msgid "Required or Suggested tasks: "
 msgstr "Task Richiesti o Suggeriti:"
 
-#: public/includes/DT_Task_Support.php:207
+#: public/includes/DT_Task_Support.php:203
 msgid "Good next tasks: "
 msgstr "Ottimi task successivi:"
 
-#: public/includes/DT_Task_Support.php:225
+#: public/includes/DT_Task_Support.php:221
 msgid "List of users who completed this task"
 msgstr "Lista degli utenti che hanno completato il task"
 
@@ -535,7 +548,7 @@ msgstr "(obbligatorio)"
 msgid "Display to Public as"
 msgstr "Mostra pubblicamente come"
 
-#: templates/user-edit.php:79 templates/user-profile.php:23
+#: templates/user-edit.php:79 templates/user-profile.php:26
 msgid "Website"
 msgstr "Sito web"
 
@@ -571,15 +584,15 @@ msgstr "Robustezza"
 msgid "Update Profile"
 msgstr "Aggiorna Profilo"
 
-#: templates/user-profile.php:20
+#: templates/user-profile.php:23
 msgid "Email"
 msgstr "Email"
 
-#: templates/user-profile.php:30
+#: templates/user-profile.php:35
 msgid "Edit profile"
 msgstr "Modifica profilo"
 
-#: templates/user-profile.php:34
+#: templates/user-profile.php:39
 msgid "Dashboard"
 msgstr "Bacheca"
 

@@ -4,19 +4,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-09-10 18:05+0200\n"
-"PO-Revision-Date: 2015-09-25 19:49+0100\n"
-"Last-Translator: Michal Stanke <michal.stanke@mikk.cz>\n"
+"POT-Creation-Date: 2015-10-15 19:15+0200\n"
+"PO-Revision-Date: 2015-10-15 19:15+0200\n"
+"Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: Mozilla.cz <info@mozilla.cz>\n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.5\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;"
 "_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: admin/includes/CMB2\n"
 "X-Poedit-SearchPathExcluded-1: includes/CPT_Core\n"
 "X-Poedit-SearchPathExcluded-2: includes/Taxonomy_Core\n"
@@ -25,76 +27,75 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-5: admin/includes/cmb2_post_search_field.php\n"
 "X-Poedit-SearchPathExcluded-6: admin/includes/CPT_Columns.php\n"
 "X-Poedit-SearchPathExcluded-7: admin/includes/cmb2_user_search_field.php\n"
-"Language: cs_CZ\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-8: node_modules\n"
 
-#: admin/class-datask-admin.php:96
+#: admin/class-datask-admin.php:95
 msgid "Done"
 msgstr "Hotovo"
 
-#: admin/class-datask-admin.php:198
+#: admin/class-datask-admin.php:106
+msgid "Author"
+msgstr ""
+
+#: admin/class-datask-admin.php:151
+msgid "You have not selected a taxonomy!"
+msgstr ""
+
+#: admin/class-datask-admin.php:194
 msgid "Settings"
 msgstr "Nastavení"
 
-#: admin/class-datask-admin.php:199
+#: admin/class-datask-admin.php:195
 msgid "Donate"
 msgstr "Přispět"
 
-#: admin/class-datask-admin.php:249
+#: admin/class-datask-admin.php:261
 msgid "Task Info"
 msgstr "Informace o úkolu"
 
-#: admin/class-datask-admin.php:257
+#: admin/class-datask-admin.php:269
 msgid "Subtitle"
 msgstr "Podnadpis"
 
-#: admin/class-datask-admin.php:258
+#: admin/class-datask-admin.php:270
 msgid "Description in a row"
 msgstr "Popisek v jedné řádce"
 
-#: admin/class-datask-admin.php:264
+#: admin/class-datask-admin.php:276
 msgid "Required or Suggested Tasks"
 msgstr "Vyžadované nebo doporučené úkoly"
 
-#: admin/class-datask-admin.php:271 public/includes/DT_Task_Support.php:162
+#: admin/class-datask-admin.php:283 public/includes/DT_Task_Support.php:158
 msgid "Prerequisites"
 msgstr "Požadavky"
 
-#: admin/class-datask-admin.php:278 public/includes/DT_Task_Support.php:167
+#: admin/class-datask-admin.php:290 public/includes/DT_Task_Support.php:163
 msgid "Why this matters"
 msgstr "Proč na tomto záleží"
 
-#: admin/class-datask-admin.php:285 public/includes/DT_Task_Support.php:172
+#: admin/class-datask-admin.php:297 public/includes/DT_Task_Support.php:168
 msgid "Steps"
 msgstr "Kroky"
 
-#: admin/class-datask-admin.php:292 public/includes/DT_Task_Support.php:177
+#: admin/class-datask-admin.php:304 public/includes/DT_Task_Support.php:173
 msgid "Need Help?"
 msgstr "Potřebujete pomoci?"
 
-#: admin/class-datask-admin.php:299 public/includes/DT_Task_Support.php:183
+#: admin/class-datask-admin.php:311 public/includes/DT_Task_Support.php:179
 msgid "Completion"
 msgstr "Dokončení"
 
-#: admin/class-datask-admin.php:306 public/includes/DT_Task_Support.php:191
+#: admin/class-datask-admin.php:318 public/includes/DT_Task_Support.php:187
 msgid "Mentor(s)"
 msgstr "Mentoři"
 
-#: admin/class-datask-admin.php:313
+#: admin/class-datask-admin.php:325
 msgid "Good next tasks"
 msgstr "Vhodný další úkol"
 
-#: admin/class-datask-admin.php:326
+#: admin/class-datask-admin.php:338
 msgid "Task Completed"
 msgstr "Úkol dokončen"
-
-#: admin/class-datask-admin.php:402
-msgid "Please upload a valid .json file"
-msgstr "Nahrajte prosím platný soubor typu .json."
-
-#: admin/class-datask-admin.php:406
-msgid "Please upload a file to import"
-msgstr "Nahrajte prosím soubor pro import"
 
 #: admin/includes/DT_User_Backend.php:44
 msgid "Reset Task in Progress"
@@ -108,6 +109,14 @@ msgstr "Zobrazit veřejný profil"
 #, php-format
 msgid "Task in progress reset for <b>%s</b> done!"
 msgstr "Obnovení úkolu <b>%s</b> dokončeno!"
+
+#: admin/includes/impexp.php:73
+msgid "Please upload a valid .json file"
+msgstr "Nahrajte prosím platný soubor typu .json."
+
+#: admin/includes/impexp.php:77
+msgid "Please upload a file to import"
+msgstr "Nahrajte prosím soubor pro import"
 
 #: admin/views/admin.php:22
 msgid "General"
@@ -142,11 +151,15 @@ msgstr "Vyžaduje povolení přihlášení v sytému"
 msgid "Tweet Field in comments"
 msgstr "Pole pro Tweety v komentářích"
 
-#: admin/views/admin.php:67
+#: admin/views/admin.php:63
+msgid "Slug of the Post Type"
+msgstr ""
+
+#: admin/views/admin.php:76
 msgid "Export Settings"
 msgstr "Exportovat nastavení"
 
-#: admin/views/admin.php:69
+#: admin/views/admin.php:78
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
@@ -154,15 +167,15 @@ msgstr ""
 "Exportujte nastavení pluginu z této stránky do souboru .json. To vám umožní "
 "snadný import nastavení na jiné stránce."
 
-#: admin/views/admin.php:74
+#: admin/views/admin.php:83
 msgid "Export"
 msgstr "Export"
 
-#: admin/views/admin.php:81
+#: admin/views/admin.php:90
 msgid "Import Settings"
 msgstr "Importovat nastavení"
 
-#: admin/views/admin.php:83
+#: admin/views/admin.php:92
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on another site using the form above."
@@ -170,11 +183,11 @@ msgstr ""
 "Importuje nastavení pluginu ze souboru .json. Ten můžete získat exportováním "
 "nastavení na jiné stránce pomocí formuláře výše."
 
-#: admin/views/admin.php:91
+#: admin/views/admin.php:100
 msgid "Import"
 msgstr "Import"
 
-#: admin/views/admin.php:100
+#: admin/views/admin.php:109
 msgid "DaTask"
 msgstr "DaTask"
 
@@ -226,8 +239,7 @@ msgstr "Odesláno"
 msgid "Most Tasks Done"
 msgstr "Většina úkolů dokončena"
 
-#: includes/widgets/most-task-done.php:26
-#: includes/widgets/recents-tasks.php:26
+#: includes/widgets/most-task-done.php:26 includes/widgets/recents-tasks.php:26
 msgid "Task showed"
 msgstr "Úkol zobrazen"
 
@@ -240,47 +252,47 @@ msgstr "Nedávné úkoly"
 msgid "Recent Tasks in the system"
 msgstr "Nedávné úkoly v systému"
 
-#: public/class-datask.php:382
+#: public/class-datask.php:391
 msgid "Task"
 msgstr "Úkol"
 
-#: public/class-datask.php:382
+#: public/class-datask.php:391
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: public/class-datask.php:392
+#: public/class-datask.php:393
 msgid "Area"
 msgstr "Oblast"
 
-#: public/class-datask.php:392
+#: public/class-datask.php:393
 msgid "Areas"
 msgstr "Oblasti"
 
-#: public/class-datask.php:401 public/includes/DT_Task_Support.php:104
+#: public/class-datask.php:402 public/includes/DT_Task_Support.php:100
 msgid "Difficulty"
 msgstr "Úroveň náročnosti"
 
-#: public/class-datask.php:401
+#: public/class-datask.php:402
 msgid "Difficulties"
 msgstr "Úrovně náročnosti"
 
-#: public/class-datask.php:410 public/includes/DT_Task_Support.php:84
+#: public/class-datask.php:411 public/includes/DT_Task_Support.php:80
 msgid "Team"
 msgstr "Tým"
 
-#: public/class-datask.php:410
+#: public/class-datask.php:411
 msgid "Teams"
 msgstr "Týmy"
 
-#: public/class-datask.php:419
+#: public/class-datask.php:420
 msgid "Estimated minute"
 msgstr "Odhad v minutách"
 
-#: public/class-datask.php:419
+#: public/class-datask.php:420
 msgid "Estimated minutes"
 msgstr "Odhad v minutách"
 
-#: public/class-datask.php:462
+#: public/class-datask.php:463
 msgid "Search to see results"
 msgstr ""
 
@@ -293,15 +305,15 @@ msgid "No Results found :("
 msgstr "Nenalezeny žádné výsledky :("
 
 #: public/includes/DT_AJAX_Filter.php:237
-#: public/includes/DT_AJAX_Filter.php:308
+#: public/includes/DT_AJAX_Filter.php:309
 msgid "Search"
 msgstr "Hledat"
 
-#: public/includes/DT_AJAX_Filter.php:304
+#: public/includes/DT_AJAX_Filter.php:305
 msgid "There are no tasks!"
 msgstr "Nejsou zde žádné úkoly!"
 
-#: public/includes/DT_AJAX_Filter.php:309
+#: public/includes/DT_AJAX_Filter.php:310
 msgid "Clear"
 msgstr "Vymazat"
 
@@ -332,8 +344,8 @@ msgid "Login"
 msgstr "Přihlásit"
 
 #: public/includes/DT_Frontend_Login.php:33
-#: public/includes/DT_Frontend_Login.php:292
-#: public/includes/DT_Frontend_Login.php:293
+#: public/includes/DT_Frontend_Login.php:303
+#: public/includes/DT_Frontend_Login.php:304
 msgid "Logout"
 msgstr "Odhlásit"
 
@@ -342,37 +354,37 @@ msgid "Edit Profile"
 msgstr "Upravit profil"
 
 #: public/includes/DT_Frontend_Profile.php:26
-#: public/includes/DT_Frontend_Profile.php:109
-#: public/includes/DT_Frontend_Profile.php:129
+#: public/includes/DT_Frontend_Profile.php:104
+#: public/includes/DT_Frontend_Profile.php:134
 msgid "Your profile"
 msgstr "Váš profil"
 
-#: public/includes/DT_Frontend_Profile.php:105 templates/user-profile.php:13
+#: public/includes/DT_Frontend_Profile.php:108 templates/user-profile.php:13
 #, php-format
 msgid "%s's Profile"
 msgstr "Profil uživatele %s"
 
-#: public/includes/DT_Task_Support.php:79
+#: public/includes/DT_Task_Support.php:75
 msgid "Last edit: "
 msgstr "Naposledy upraveno:"
 
-#: public/includes/DT_Task_Support.php:94
+#: public/includes/DT_Task_Support.php:90
 msgid "Project"
 msgstr "Projekt"
 
-#: public/includes/DT_Task_Support.php:114
+#: public/includes/DT_Task_Support.php:110
 msgid "Estimated time"
 msgstr "Odhadovaný čas"
 
-#: public/includes/DT_Task_Support.php:144
+#: public/includes/DT_Task_Support.php:140
 msgid "Required or Suggested tasks: "
 msgstr "Vyžadované nebo doporučené úkoly:"
 
-#: public/includes/DT_Task_Support.php:207
+#: public/includes/DT_Task_Support.php:203
 msgid "Good next tasks: "
 msgstr "Vhodný další úkol:"
 
-#: public/includes/DT_Task_Support.php:225
+#: public/includes/DT_Task_Support.php:221
 msgid "List of users who completed this task"
 msgstr "Seznam uživatelů, kteří dokončili tento úkol"
 
@@ -529,7 +541,7 @@ msgstr "(vyžadováno)"
 msgid "Display to Public as"
 msgstr "Veřejně zobrazovat jako"
 
-#: templates/user-edit.php:79 templates/user-profile.php:23
+#: templates/user-edit.php:79 templates/user-profile.php:26
 msgid "Website"
 msgstr "Webová stránka"
 
@@ -563,14 +575,14 @@ msgstr "Indikátor síly"
 msgid "Update Profile"
 msgstr "Aktualizovat profil"
 
-#: templates/user-profile.php:20
+#: templates/user-profile.php:23
 msgid "Email"
 msgstr "E-mail"
 
-#: templates/user-profile.php:30
+#: templates/user-profile.php:35
 msgid "Edit profile"
 msgstr "Upravit profil"
 
-#: templates/user-profile.php:34
+#: templates/user-profile.php:39
 msgid "Dashboard"
 msgstr "Nástěnka"
