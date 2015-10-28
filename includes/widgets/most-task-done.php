@@ -42,7 +42,7 @@ class Most_Task_Done_Widget extends WPH_Widget {
 		$out .= $args[ 'before_title' ];
 		$out .= $instance[ 'title' ];
 		$out .= $args[ 'after_title' ];
-		$tasks = new WP_Query( array( 'post_type' => 'task', 'showposts' => $instance[ 'number' ], 'meta_key' => $plugin->get_fields( 'users_of_task' ), 'orderby' => 'meta_value_num', ) );
+		$tasks = new WP_Query( array( 'post_type' => 'task', 'showposts' => $instance[ 'number' ], 'meta_key' => $plugin->get_fields( 'tasks_counter' ), 'orderby' => 'meta_value_num', ) );
 		if ( $tasks->have_posts() ) {
 			$out .= '<ul class="widget-task-list">';
 			while ( $tasks->have_posts() ) : $tasks->the_post();
