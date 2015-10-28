@@ -25,6 +25,13 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 		$users_of_task[ $user_id ] = true;
 		update_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), serialize( $users_of_task ) );
 	}
+	$counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
+	if ( empty( $counter ) ) {
+		$counter = 1;
+	} else {
+		$counter++;
+	}
+	update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
 	$tasks_of_user = get_tasks_by_user( $user_id );
 	if ( !isset( $tasks_of_user[ $task_id ] ) ) {
 		$tasks_of_user[ $task_id ] = true;
@@ -85,6 +92,13 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
 		unset( $users_of_task[ $user_id ] );
 		update_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), serialize( $users_of_task ) );
 	}
+	$counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
+	if ( empty( $counter ) ) {
+		$counter = 1;
+	} else {
+		$counter--;
+	}
+	update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
 	$tasks_of_user = get_tasks_by_user( $user_id );
 	if ( isset( $tasks_of_user[ $task_id ] ) ) {
 		unset( $tasks_of_user[ $task_id ] );

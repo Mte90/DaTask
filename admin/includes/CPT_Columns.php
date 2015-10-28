@@ -306,12 +306,19 @@ if ( !class_exists( 'CPT_columns' ) ) {
 			}
 
 			$orderby = $query->get( 'orderby' );
-			$keys = array_keys( ( array ) $this->cpt_sortable_columns );
-			if ( in_array( $orderby, $keys ) ) {
-				//order by meta
-				if ( 'post_meta' == $this->cpt_sortable_columns[ $orderby ][ 'type' ] ) {
-					$query->set( 'meta_key', $orderby );
-					$query->set( 'orderby', $this->cpt_sortable_columns[ $orderby ][ 'orderby' ] );
+			if ( (!empty( $orderby ) && isset( $this->cpt_sortable_columns[ $orderby ] )) && $this->cpt_sortable_columns[ $orderby ][ 'type' ] === 'custom_value' ) {
+				$query->set( 'orderby', 'meta_value' );
+				$query->set( 'meta_key', $this->cpt_sortable_columns[ $orderby ][ 'meta_key' ] );
+
+				print_r( $query );
+			} else {
+				$keys = array_keys( ( array ) $this->cpt_sortable_columns );
+				if ( in_array( $orderby, $keys ) ) {
+					//order by meta
+					if ( 'post_meta' == $this->cpt_sortable_columns[ $orderby ][ 'type' ] ) {
+						$query->set( 'meta_key', $orderby );
+						$query->set( 'orderby', $this->cpt_sortable_columns[ $orderby ][ 'orderby' ] );
+					}
 				}
 			}
 		}

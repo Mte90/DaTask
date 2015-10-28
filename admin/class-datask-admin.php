@@ -58,7 +58,7 @@ class DaTask_Admin {
 		add_filter( 'dashboard_glance_items', array( $this, 'cpt_glance_dashboard_support' ), 10, 1 );
 		// Activity Dashboard widget for your cpts
 		add_filter( 'dashboard_recent_posts_query_args', array( $this, 'cpt_activity_dashboard_support' ), 10, 1 );
-		
+
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
@@ -98,8 +98,9 @@ class DaTask_Admin {
 		    'sortable' => true,
 		    'prefix' => "<b>",
 		    'suffix' => "</b>",
-		    'def' => "Not defined", // Default value in case post meta not found
-		    'order' => "-1"
+		    'def' => "0",
+		    'order' => "-1",
+		    'meta_key' => '_task_' . $this->plugin_slug . '_counter'
 			)
 		);
 		$post_columns->add_column( 'Author', array(
@@ -109,7 +110,8 @@ class DaTask_Admin {
 		    'sortable' => true,
 		    'prefix' => "<b>",
 		    'suffix' => "</b>",
-		    'order' => "-1"
+		    'order' => "-1",
+		    'meta_key' => 'post_author'
 			)
 		);
 	}
@@ -145,7 +147,7 @@ class DaTask_Admin {
 		if ( $this->plugin_screen_hook_suffix == $screen->id || strpos( $_SERVER[ 'REQUEST_URI' ], 'index.php' ) || strpos( $_SERVER[ 'REQUEST_URI' ], get_bloginfo( 'wpurl' ) . '/wp-admin/' ) ) {
 			wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array( 'dashicons' ), DaTask::VERSION );
 		}
-		if ( 'task' === $screen->id && ($screen->action === 'add' ||$_GET[ 'action' ] === 'edit' ) ) {
+		if ( 'task' === $screen->id && ($screen->action === 'add' || $_GET[ 'action' ] === 'edit' ) ) {
 			wp_enqueue_script( $this->plugin_slug . '-task-admin-script', plugins_url( 'assets/js/task.js', __FILE__ ), array( 'jquery' ), DaTask::VERSION );
 			wp_localize_script( $this->plugin_slug . '-task-admin-script', 'dt_js_admin_vars', array(
 			    'alert' => __( 'You have not selected a taxonomy!', $this->plugin_slug ),
@@ -230,8 +232,7 @@ class DaTask_Admin {
 		}
 		return $items;
 	}
-	
-	
+
 	/**
 	 * Add the recents post type in the activity widget<br>
 	 * NOTE: add in $post_types your cpts
@@ -333,6 +334,12 @@ class DaTask_Admin {
 		    'type' => 'hidden'
 		) );
 
+		$cmb_task->add_field( array(
+		    'id' => $prefix . $this->plugin_slug . '_counter',
+		    'type' => 'hidden',
+		    'default' => '0'
+		) );
+
 		$cmb_user_task = new_cmb2_box( array(
 		    'id' => $prefix . 'user_metabox',
 		    'title' => __( 'Task Completed', $this->plugin_slug ),
@@ -361,12 +368,11 @@ class DaTask_Admin {
 	 * @param integer $task_id ID of the task.
 	 */
 	public function number_of_done( $task_id ) {
-		// The number of user is the number of done
-		$users_of_task = get_users_by_task( $task_id );
-		if ( is_array( $users_of_task ) ) {
-			return count( $users_of_task );
-		} else {
+		$counter = get_post_field( '_task_' . $this->plugin_slug . '_counter', $task_id );
+		if ( empty( $counter ) ) {
 			return 0;
+		} else {
+			return $counter;
 		}
 	}
 
