@@ -1,9 +1,9 @@
 === DaTask ===
 Contributors: Mte90
-Tags: task, task managemtn, activity, learning
+Tags: task, task management, activity, learning
 Requires at least: 4.2
 Tested up to: 4.1
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,11 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 3. Profile
 
 == Changelog ==
+
+= 1.0.3 =
+* [Add] Czech Translation
+* [Add] Scroll to comment area after Task Done
+* [BugFix] Now order by task done works!
 
 = 1.0.2 =
 * Support for Yoast SEO

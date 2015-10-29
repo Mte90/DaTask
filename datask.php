@@ -4,13 +4,13 @@
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
  * @link      http://mte90.net
- * @copyright 2014 GPL
+ * @copyright 2015 GPL
  *
  * @wordpress-plugin
  * Plugin Name:       DaTask
- * Plugin URI:        @TODO
- * Description:       @TODO
- * Version:           1.0.2
+ * Plugin URI:        https://github.com/Mte90/DaTask
+ * Description:       Task Management system inspired to Mozilla OneAndDone project
+ * Version:           1.0.3
  * Author:            Mte90
  * Author URI:        http://mte90.net
  * Text Domain:       datask
