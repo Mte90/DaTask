@@ -79,9 +79,75 @@ class DT_API {
 		}
 		return $_post;
 	}
-	
-	function fields_to_apiv2(){
-		
+
+	public function fields_to_apiv2() {
+		$args = array(
+		    'get_callback' => array( $this, 'get_meta_data' ),
+		);
+		register_rest_field( 'task', 'task_before', $args );
+		register_rest_field( 'task', 'task_prerequisites', $args );
+		register_rest_field( 'task', 'task_matters', $args );
+		register_rest_field( 'task', 'task_steps', $args );
+		register_rest_field( 'task', 'task_help', $args );
+		register_rest_field( 'task', 'task_completion', $args );
+		register_rest_field( 'task', 'task_mentor', $args );
+		register_rest_field( 'task', 'task_next', $args );
+	}
+
+	/**
+	 * Get the value of the "starship" field
+	 *
+	 * @param array $object Details of current post.
+	 * @param string $field_name Name of field.
+	 * @param WP_REST_Request $request Current request
+	 *
+	 * @return mixed
+	 */
+	public function get_meta_data( $object, $field, $request ) {
+		$plugin = DaTask::get_instance();
+		if ( 'task_before' === $field ) {
+			$befores_task = '';
+			$befores = get_post_meta( $object[ 'id' ], $plugin->get_fields( 'task_before' ), true );
+			if ( !empty( $befores ) ) {
+				$befores_split = explode( ',', str_replace( ' ', '', $befores ) );
+				$befores_ids = new WP_Query( array(
+				    'post_type' => 'task',
+				    'post__in' => $befores_split ) );
+				foreach ( $befores_ids->posts as $post ) {
+					$befores_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
+				}
+				wp_reset_postdata();
+			}
+			return array( 'ids' => $befores, 'rendered' => $befores_task );
+		} else if ( 'task_mentor' === $field ) {
+			$mentors = get_post_meta( $object[ 'id' ], $plugin->get_fields( 'task_mentor' ), true );
+			$mentors_task = '';
+			if ( !empty( $mentors ) ) {
+				$mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
+				foreach ( $mentors_split as $user ) {
+					$user = get_user_by( 'id', $user );
+					$name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
+					$mentors_task .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>, ';
+				}
+			}
+			return array( 'ids' => $mentors, 'rendered' => $mentors_task );
+		}else if ( 'task_next' === $field ) {
+			$nexts = get_post_meta( $object[ 'id' ], $plugin->get_fields( 'task_next' ), true );
+			$next_task = '';
+			if ( !empty( $nexts ) ) {
+				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
+				$nexts_ids = new WP_Query( array(
+				    'post_type' => 'task',
+				    'post__in' => $nexts_split ) );
+				foreach ( $nexts_ids->posts as $post ) {
+					$next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
+				}
+				wp_reset_postdata();
+			}
+			return array( 'ids' => $nexts, 'rendered' => $next_task );
+		} else {
+			return get_post_meta( $object[ 'id' ], $plugin->get_fields( $field ), true );
+		}
 	}
 
 }
