@@ -28,10 +28,9 @@ class DaTask {
 	 * The variable name is used as the text domain when internationalizing strings
 	 * of text. Its value should match the Text Domain file header in the main
 	 * plugin file.
-	 *
-	 * @since    1.0.0
-	 *
+	 * 
 	 * @var      string
+	 * @since    1.0.0
 	 */
 	protected static $plugin_slug = 'datask';
 
@@ -39,36 +38,32 @@ class DaTask {
 	 *
 	 * Unique identifier for your plugin.
 	 *
-	 * @since    1.0.0
-	 *
 	 * @var      string
+	 * @since    1.0.0
 	 */
 	protected static $plugin_name = 'DaTask';
 
 	/**
 	 * Instance of this class.
 	 *
-	 * @since    1.0.0
-	 *
 	 * @var      object
+	 * @since    1.0.0
 	 */
 	protected static $instance = null;
 
 	/**
 	 * Array of cpts of the plugin
 	 *
-	 * @since    1.0.0
-	 *
 	 * @var      object
+	 * @since    1.0.0
 	 */
 	protected $cpts = array( 'task' );
 
 	/**
 	 * Array of capabilities by roles
 	 * 
-	 * @since 1.0.0
-	 * 
 	 * @var array
+	 * @since 1.0.0
 	 */
 	protected static $plugin_roles = array(
 	    'administrator' => array(
@@ -299,9 +294,7 @@ class DaTask {
 	 * Add support for custom CPT on the search box
 	 *
 	 * @since    1.0.0
-	 *
-	 * @param    object $query WP_Query object.
-	 * 
+	 * @param object $query WP_Query object.
 	 * @return object WP_Query object with task post type  
 	 */
 	public function filter_search( $query ) {
@@ -320,8 +313,7 @@ class DaTask {
 	 * - not deleted
 	 *
 	 * @since    1.0.0
-	 *
-	 * @return   array|false    The blog ids, false if no matches.
+	 * @return array|false The blog ids, false if no matches.
 	 */
 	private static function get_blog_ids() {
 		global $wpdb;

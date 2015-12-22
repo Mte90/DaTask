@@ -7,29 +7,28 @@
  * If you're interested in introducing public-facing
  * functionality, then refer to `class-wp-datask.php`
  *
- * @package   DaTask_Admin
+ * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
+ * @since     1.0.0
  * @link      http://mte90.net
- * @copyright 2014 GPL
+ * @copyright 2015 GPL
  */
 class DaTask_Admin {
 
 	/**
 	 * Instance of this class.
 	 *
-	 * @since    1.0.0
-	 *
 	 * @var      object
+	 * @since    1.0.0
 	 */
 	protected static $instance = null;
 
 	/**
 	 * Slug of the plugin screen.
 	 *
-	 * @since    1.0.0
-	 *
 	 * @var      string
+	 * @since    1.0.0
 	 */
 	protected $plugin_screen_hook_suffix = null;
 
@@ -136,8 +135,7 @@ class DaTask_Admin {
 	 * Register and enqueue admin-specific style sheet.
 	 *
 	 * @since     1.0.0
-	 *
-	 * @return    void    Return early if no settings page is registered.
+	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_files() {
 		if ( !isset( $this->plugin_screen_hook_suffix ) ) {
@@ -185,10 +183,8 @@ class DaTask_Admin {
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    1.0.0
-	 * 
-	 * @param array $links The links of the menu.
-	 * 
-	 * @return array The links of the menu
+	 * @param    array $links The links of the menu.
+	 * @return   array The links of the menu
 	 */
 	public function add_action_links( $links ) {
 		return array_merge(
@@ -206,10 +202,8 @@ class DaTask_Admin {
 	 *        Reference:  http://wpsnipp.com/index.php/functions-php/wordpress-post-types-dashboard-at-glance-widget/
 	 *
 	 * @since    1.0.0
-	 * 
-	 * @param array $items HTML code for your CPTs.
-	 * 
-	 * @return array HTML
+	 * @param    array $items HTML code for your CPTs.
+	 * @return   array HTML
 	 */
 	public function cpt_glance_dashboard_support( $items = array() ) {
 		$post_types = $this->cpts;
@@ -238,10 +232,12 @@ class DaTask_Admin {
 	 * NOTE: add in $post_types your cpts
 	 *
 	 * @since    1.0.0
+	 * @param    array $query_args The url args.
+	 * @return   array $query_args The url args edited
 	 */
 	function cpt_activity_dashboard_support( $query_args ) {
 		if ( !is_array( $query_args[ 'post_type' ] ) ) {
-			//Set default post type
+			// Set default post type
 			$query_args[ 'post_type' ] = array( 'page' );
 		}
 		$query_args[ 'post_type' ] = array_merge( $query_args[ 'post_type' ], $this->cpts );
@@ -364,8 +360,8 @@ class DaTask_Admin {
 	 * Return the total of done of the task
 	 *
 	 * @since    1.0.0
-	 * 
-	 * @param integer $task_id ID of the task.
+	 * @param    integer $task_id ID of the task.
+	 * @return   integer $counter Number of counter done of the task
 	 */
 	public function number_of_done( $task_id ) {
 		$counter = get_post_field( '_task_' . $this->plugin_slug . '_counter', $task_id );
@@ -380,8 +376,8 @@ class DaTask_Admin {
 	 * Return the author of the task
 	 *
 	 * @since    1.0.0
-	 * 
-	 * @param integer $task_id ID of the task.
+	 * @param    integer $task_id ID of the task.
+	 * @return   string The HTML link to user profile backend
 	 */
 	public function author_of_task( $task_id ) {
 		$author_id = get_post_field( 'post_author', $task_id );

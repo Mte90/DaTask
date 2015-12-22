@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This class contain the link on user backend
+ * This class contain the reset link for counter on user backend
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
+ * @since     1.0.0
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 class DT_User_Backend {
 
 	/**
@@ -53,8 +53,8 @@ class DT_User_Backend {
 	 * 
 	 * @since     1.0.0
 	 */
-	public function action_init() { 
-		if ( isset($_GET[ 'action' ]) && $_GET[ 'action' ] === 'reset_task_later_user' ) {
+	public function action_init() {
+		if ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'reset_task_later_user' ) {
 			$user_id = absint( $_REQUEST[ 'user_id' ] );
 			check_admin_referer( 'reset_task_later_user_' . $user_id );
 			$plugin = DaTask::get_instance();

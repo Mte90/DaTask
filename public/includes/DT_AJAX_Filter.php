@@ -27,7 +27,6 @@ class DT_AJAX_Filter {
 	 * Build the filtered element on the search results page
 	 * 
 	 * @since       1.0.0
-	 * 
 	 * @param       integer $posts_per_page
 	 * 
 	 */
@@ -142,10 +141,9 @@ class DT_AJAX_Filter {
 	/**
 	 * Buid pagination 
 	 * 
-	 * @since       1.0.0
-	 * 
-	 * @param       integer $total_posts    Post totali.
-	 * @param       integer $posts_per_page Post per pagina.
+	 * @since 1.0.0
+	 * @param integer $total_posts Post totali.
+	 * @param integer $posts_per_page Post per pagina.
 	 * 
 	 */
 	public function pagination( $total_posts, $posts_per_page ) {
@@ -221,10 +219,9 @@ class DT_AJAX_Filter {
 	/**
 	 * Build list of terms to filter by
 	 * 
-	 * @since       1.0.0
-	 * 
-	 * @param       string  $filter_type List or select.
-	 * @param       integer $show_count  Show the post.
+	 * @since 1.0.0
+	 * @param string $filter_type List or select.
+	 * @param integer $show_count Show the post.
 	 * 
 	 */
 	public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
@@ -321,8 +318,8 @@ class DT_AJAX_Filter {
 	 * Write the shortcode
 	 * 
 	 * @since       1.0.0
-	 * 
-	 * @param       array $atts The values from the shortcode.
+	 * @param array $atts The values from the shortcode.
+	 * @return string THe HTML code
 	 */
 	function ajax_filter( $atts ) {
 		$show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;

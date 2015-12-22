@@ -1,6 +1,14 @@
 <?php
 
-// Create custom widget class extending WPH_Widget
+/**
+ * Create custom widget class extending WPH_Widget
+ * 
+ * @package   DaTask
+ * @author    Mte90 <mte90net@gmail.com>
+ * @license   GPL-2.0+
+ * @copyright 2015
+ */
+
 class Recent_Tasks_Widget extends WPH_Widget {
 
 	function __construct() {

@@ -52,9 +52,8 @@ class DT_Comment {
 	 * 
 	 * Save Tweet field in comments
 	 * 
-	 * @since    1.0.0
-	 * 
-	 * @param       integer $comment_id The ID of the comment.
+	 * @since 1.0.0
+	 * @param integer $comment_id The ID of the comment.
 	 */
 	public function task_comment_save_data( $comment_id ) {
 		global $post;
@@ -68,10 +67,8 @@ class DT_Comment {
 	 * Add in frontend the tweet in comment
 	 * 
 	 * @since    1.0.0
-	 * 
-	 * @param       string $text    HTML code.
-	 * @param       string $comment The comment.
-	 * 
+	 * @param string $text HTML code.
+	 * @param string $comment The comment.
 	 * @return string $text URL of the tweet
 	 */
 	public function task_comment_show_data_frontend( $text, $comment ) {
@@ -90,7 +87,7 @@ class DT_Comment {
 	 * 
 	 * Add metabox in comments
 	 * 
-	 * @since    1.0.0
+	 * @since 1.0.0
 	 */
 	public function task_comment_show_metabox_data_backend() {
 		$plugin = DaTask::get_instance();
@@ -101,9 +98,8 @@ class DT_Comment {
 	 * 
 	 * Show tweet url in backend comment
 	 * 
-	 * @since    1.0.0
-	 * 
-	 * @param       string $comment The comment.
+	 * @since 1.0.0
+	 * @param string $comment The comment.
 	 */
 	public function task_comment_show_field_data_backend( $comment ) {
 		$plugin = DaTask::get_instance();

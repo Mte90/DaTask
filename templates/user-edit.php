@@ -1,5 +1,17 @@
 <?php
-//Based on Frontend Edit Profile Plugin
+/**
+ * The Template for displaying the user edit page
+ *
+ * This template can be overridden by copying it to yourtheme/datask/user-edit.php.
+ * Based on Frontend Edit Profile Plugin
+ *
+ * @package   DaTask
+ * @author    Mte90 <mte90net@gmail.com>
+ * @license   GPL-2.0+
+ * @link      http://mte90.net
+ * @copyright 2015 GPL
+ */
+
 if ( !defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -103,4 +115,5 @@ $profileuser = get_user_to_edit( $current_user->ID );
 	</p>
     </form>
 </div>
-<?php wp_print_scripts( 'user-profile' ); ?>
+<?php 
+wp_print_scripts( 'user-profile' ); 

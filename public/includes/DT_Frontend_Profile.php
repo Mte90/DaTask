@@ -1,7 +1,6 @@
 <?php
 
 /**
- * DT_Frontend_Profile
  * Frontend Profile page
  *
  * @package   DaTask
@@ -38,9 +37,7 @@ class DT_Frontend_Profile {
 	 * Add the rewrite permalink for member
 	 *
 	 * @since    1.0.0
-	 * 
 	 * @param string $vars The permalinks.
-	 * 
 	 * @return array $vars The permalinks.
 	 */
 	public function add_member_permalink( $vars ) {
@@ -90,8 +87,8 @@ class DT_Frontend_Profile {
 	 *
 	 * @since    1.0.0
 	 * 
-	 * @param string $title       Title of the page.
-	 * @param string $sep         Separator for the title.
+	 * @param string $title Title of the page.
+	 * @param string $sep Separator for the title.
 	 * @param string $seplocation Another separator.
 	 * 
 	 * @return string $title Title of the page
@@ -121,10 +118,8 @@ class DT_Frontend_Profile {
 	 * Add the title for the member page
 	 *
 	 * @since    1.0.0
-	 * 
 	 * @param string  $title Title of the page.
 	 * @param integer $id    ID of the page.
-	 * 
 	 * @return string $title Title of the page
 	 */
 	public function member_title( $title, $id ) {

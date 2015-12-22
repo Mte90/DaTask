@@ -27,8 +27,12 @@ class DT_API {
 
 	/**
 	 * Add fields to api for tasks
-	 * 
-	 * @since    1.0.0
+	 *
+	 * @param array $_post Details of current post.
+	 * @param array $post
+	 * @param array $context
+	 * @since 1.0.0
+	 * @return mixed
 	 */
 	public function fields_to_apiv1( $_post, $post, $context ) {
 		if ( $_post[ 'type' ] === 'task' ) {
@@ -80,6 +84,11 @@ class DT_API {
 		return $_post;
 	}
 
+	/**
+	 * Add fields to api v2 for tasks
+	 *
+	 * @since 1.0.0
+	 */
 	public function fields_to_apiv2() {
 		$args = array(
 		    'get_callback' => array( $this, 'get_meta_data' ),
@@ -98,8 +107,8 @@ class DT_API {
 	 * Get the value of the "starship" field
 	 *
 	 * @param array $object Details of current post.
-	 * @param string $field_name Name of field.
-	 * @param WP_REST_Request $request Current request
+	 * @param string $field Name of field.
+	 * @param WP_REST_Request $request Current request.
 	 *
 	 * @return mixed
 	 */
@@ -131,7 +140,7 @@ class DT_API {
 				}
 			}
 			return array( 'ids' => $mentors, 'rendered' => $mentors_task );
-		}else if ( 'task_next' === $field ) {
+		} else if ( 'task_next' === $field ) {
 			$nexts = get_post_meta( $object[ 'id' ], $plugin->get_fields( 'task_next' ), true );
 			$next_task = '';
 			if ( !empty( $nexts ) ) {

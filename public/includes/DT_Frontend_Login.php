@@ -1,7 +1,6 @@
 <?php
 
 /**
- * DT_Frontend_Login
  * Frontend Login system
  *
  * @package   DaTask
@@ -47,7 +46,7 @@ class DT_Frontend_Login {
 		add_action( 'validate_password_reset', array( $this, 'frontend_validate_password_reset', 10, 2 ) );
 		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
 		add_action( 'admin_init', array( $this, 'prevent_access_backend' ) );
-		//add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
+		// add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
 		$options = get_option( $plugin->get_plugin_slug() . '-settings' );
 		if ( isset( $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] ) && $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] === 'on' ) {
 			add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
@@ -139,9 +138,9 @@ class DT_Frontend_Login {
 	 *
 	 * @since    1.0.0
 	 * 
-	 * @param object $errors               Error generated from WordPress.
-	 * @param string $sanitized_user_login THe user login sanitized.
-	 * @param string $user_email           The email of the user.
+	 * @param object $errors Error generated from WordPress.
+	 * @param string $sanitized_user_login The user login sanitized.
+	 * @param string $user_email The email of the user.
 	 * 
 	 * @return object $errors 
 	 */
@@ -207,8 +206,8 @@ class DT_Frontend_Login {
 	 *
 	 * @since    1.0.0
 	 * 
-	 * @param object $errors Error object
-	 * @param object $user The WP User object
+	 * @param object $errors Error object.
+	 * @param object $user The WP User object.
 	 */
 	public function frontend_validate_password_reset( $errors, $user ) {
 		// Passwords don't match
@@ -232,7 +231,8 @@ class DT_Frontend_Login {
 	 *
 	 * @since    1.0.0
 	 * 
-	 * @param string $content HTML from WordPress
+	 * @param string $content HTML from WordPress.
+	 * @return string The HTML of the login page
 	 */
 	public function login_page( $content ) {
 		// Is a filter, so return the template code!
@@ -254,7 +254,7 @@ class DT_Frontend_Login {
 					require_once(ABSPATH . '/wp-includes/registration.php');
 				}
 				if ( isset( $_POST[ 'user_id' ] ) ) {
-					//Hide header information in case of error
+					// Hide header information in case of error
 					error_reporting( 0 );
 					$current_user = wp_get_current_user();
 					$user_id = $current_user->ID;

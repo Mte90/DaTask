@@ -32,9 +32,7 @@ class DT_Task_Support {
 	 * Add class in the body on the frontend
 	 *
 	 * @since    1.0.0
-	 * 
 	 * @param array $classes Classes of the body.
-	 * 
 	 * @return array $classes Classes of the body
 	 */
 	public function add_dt_class( $classes ) {
@@ -52,9 +50,7 @@ class DT_Task_Support {
 	 * Example for override the template system on the frontend
 	 *
 	 * @since    1.0.0
-	 * 
 	 * @param string $original_template The path of the template file.
-	 * 
 	 * @return string $original_template The path of the template file.
 	 */
 	public function load_content_task( $original_template ) {
@@ -121,10 +117,8 @@ class DT_Task_Support {
 	 * Echo the content of the task
 	 *
 	 * @since    1.0.0
-	 * 
 	 * @param string $content HTML code of the task data.
-	 * 
-	 * @param string $content HTML code.
+	 * @return string $content HTML code.
 	 */
 	public function dt_task_content( $content ) {
 		global $post, $wp_embed;
@@ -236,7 +230,6 @@ class DT_Task_Support {
 	 * Echo the excerpt of the task
 	 *
 	 * @since    1.0.0
-	 * 
 	 * @param string $content The excerpt.
 	 */
 	public function dt_task_excerpt( $content ) {
@@ -252,6 +245,7 @@ class DT_Task_Support {
 	 * The shortcode show the task in progress
 	 * 
 	 * @since    1.0.0
+	 * @return string The HTML of the Box of task in progress
 	 */
 	public function datask_progress() {
 		if ( is_user_logged_in() ) {

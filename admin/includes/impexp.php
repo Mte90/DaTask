@@ -1,15 +1,17 @@
 <?php
+
 /**
  * Provide Import and Export of the settings of the plugin
  *
  * @package   DaTask
- * @author  Mte90 <mte90net@gmail.com>
+ * @author    Mte90 <mte90net@gmail.com>
  * @license   GPL-2.0+
- * @copyright 2014-2015
- * @since    1.0.0
+ * @since     1.0.0
+ * @link      http://mte90.net
+ * @copyright 2015 GPL
  */
 class DT_ImpExp {
-		
+
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
@@ -20,12 +22,12 @@ class DT_ImpExp {
 		$plugin = DaTask::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 		$this->plugin_name = $plugin->get_plugin_name();
-		//Add the export settings method
+		// Add the export settings method
 		add_action( 'admin_init', array( $this, 'settings_export' ) );
-		//Add the import settings method
+		// Add the import settings method
 		add_action( 'admin_init', array( $this, 'settings_import' ) );
 	}
-	
+
 	/**
 	 * Process a settings export from config
 	 * @since    1.0.0
@@ -54,6 +56,7 @@ class DT_ImpExp {
 		}
 		exit;
 	}
+
 	/**
 	 * Process a settings import from a json file
 	 * @since    1.0.0
@@ -83,5 +86,7 @@ class DT_ImpExp {
 		wp_safe_redirect( admin_url( 'options-general.php?page=' . $this->plugin_slug ) );
 		exit;
 	}
+
 }
+
 new DT_ImpExp();

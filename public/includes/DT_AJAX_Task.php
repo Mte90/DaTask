@@ -26,9 +26,8 @@ class DT_AJAX_Task {
 	/**
 	 * Add a complete task
 	 *
-	 * @since    1.0.0
-	 *
-	 * @return    void
+	 * @since 1.0.0
+	 * @return mixed
 	 */
 	public function dt_complete_task() {
 		// Based on check_ajax_referer
@@ -56,9 +55,8 @@ class DT_AJAX_Task {
 	/**
 	 * Add a task later
 	 *
-	 * @since    1.0.0
-	 *
-	 * @return   void
+	 * @since 1.0.0
+	 * @return mixed
 	 */
 	public function dt_task_later() {
 		// Based on check_ajax_referer
@@ -86,9 +84,8 @@ class DT_AJAX_Task {
 	/**
 	 * Remove a complete task
 	 *
-	 * @since    1.0.0
-	 *
-	 * @return    void
+	 * @since 1.0.0
+	 * @return mixed
 	 */
 	public function dt_remove_task() {
 		// Based on check_ajax_referer
@@ -116,9 +113,8 @@ class DT_AJAX_Task {
 	/**
 	 * Sent an email to the user
 	 *
-	 * @since    1.0.0
-	 *
-	 * @return    void
+	 * @since 1.0.0
+	 * @return mixed
 	 */
 	public function dt_contact_user() {
 		// Based on check_ajax_referer
@@ -136,20 +132,20 @@ class DT_AJAX_Task {
 			}
 		}
 		if ( is_user_logged_in() && !empty( $_POST[ 'content' ] ) ) {
-			//Receiver user
+			// Receiver user
 			$user = get_user_by( 'login', $_POST[ 'user_login' ] );
-			//Sender user
+			// Sender user
 			$current_user = wp_get_current_user();
 			if ( $current_user->user_login !== $user->user_login ) {
 				$plugin = DaTask::get_instance();
-				//Body
+				// Body
 				$message = sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
 				$message .= '<br>' . __( 'Profile', $plugin->get_plugin_slug() );
 				$message .= ': <a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . home_url( '/member/' . $current_user->user_login ) . '</a>';
 				$message .= wpautop( esc_html( $_POST[ 'content' ] ) );
-				//Headers
+				// Headers
 				$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );
-				//Send email
+				// Send email
 				wp_mail( $user->user_email, sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), get_bloginfo( 'name' ), $current_user->user_login ), $message, $headers );
 				wp_send_json_success();
 			}

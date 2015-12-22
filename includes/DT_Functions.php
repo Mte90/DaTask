@@ -43,7 +43,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
 
-	/**
+	/*
 	 * Fires before the end of function `dt_set_completed_task_for_user_id`
 	 *
 	 * @since 1.0.0
@@ -68,7 +68,7 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
 
-	/**
+	/*
 	 * Fires before the end of function `dt_set_task_later_for_user_id`
 	 *
 	 * @since 1.0.0
@@ -105,7 +105,7 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
 	}
 
-	/**
+	/*
 	 * Fires before the end of function `dt_set_completed_task_for_user_id`
 	 *
 	 * @since 1.0.0
@@ -147,7 +147,7 @@ function dt_get_tasks_completed() {
 			$print .= '</div>';
 			wp_reset_postdata();
 
-			/**
+			/*
 			 * Filter the box with task done
 			 *
 			 * @since 1.0.0
@@ -213,7 +213,7 @@ function dt_get_tasks_later( $user = NULL ) {
 				$print .= '</div>';
 				$print .= '</div>';
 				wp_reset_postdata();
-				/**
+				/*
 				 * Filter the box with task later
 				 *
 				 * @since 1.0.0
@@ -311,7 +311,7 @@ function get_users_by_task( $task_id ) {
  * @param     integer $task_id ID of the task.
  * @param     integer $user_id ID of the user.
  *
- * @return    bool
+ * @return    boolean
  */
 function has_task( $task_id, $user_id = NULL ) {
 	if ( $user_id === NULL ) {
@@ -333,7 +333,7 @@ function has_task( $task_id, $user_id = NULL ) {
  * @param     integer $task_id ID of the task.
  * @param     integer $user_id ID of the user.
  *
- * @return    bool
+ * @return    boolean
  */
 function has_later_task( $task_id, $user_id = NULL ) {
 	if ( $user_id === NULL ) {

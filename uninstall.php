@@ -50,7 +50,7 @@ if ( is_multisite() ) {
 
 				// Loop and assign
 				foreach ( $caps as $cap => $grant ) {
-					//check to see if the user already has this capability, if so, don't re-add as that would override grant
+					// Check to see if the user already has this capability, if so, don't re-add as that would override grant
 					if ( !isset( $wp_roles->roles[ $role ][ 'capabilities' ][ $cap ] ) ) {
 						$wp_roles->remove_cap( $cap );
 					}

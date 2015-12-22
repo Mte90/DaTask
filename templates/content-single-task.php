@@ -1,4 +1,16 @@
 <?php
+/**
+ * The Template for displaying task content in the single.php template
+ *
+ * This template can be overridden by copying it to yourtheme/datask/log-in.php.
+ *
+ * @package   DaTask
+ * @author    Mte90 <mte90net@gmail.com>
+ * @license   GPL-2.0+
+ * @link      http://mte90.net
+ * @copyright 2015 GPL
+ */
+
 if ( !defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }

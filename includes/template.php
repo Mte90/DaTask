@@ -1,14 +1,24 @@
 <?php
+/**
+ * Template functions used in DaTask
+ *
+ * @package   DaTask
+ * @author    Mte90 <mte90net@gmail.com>
+ * @license   GPL-2.0+
+ * @since     1.0.0
+ * @link      http://mte90.net
+ * @copyright 2015 GPL
+ */
 
 /**
  * Load template files of the plugin also include a filter dt_get_template_part<br>
  * Based on WooCommerce function<br>
  *
- * @package   DaTask
- * @author  Mte90 <mte90net@gmail.com>
- * @license   GPL-2.0+
- * @copyright 2014 
- * @since    1.0.0
+ * @since 1.0.0
+ * @param string $slug The slug for the template file.
+ * @param string $name The name of the template file.
+ * @param bool $include Include the template file.
+ * @return   string|bool Name of the file or the result of include of the template
  */
 function dt_get_template_part( $slug, $name = '', $include = true ) {
 	$template = '';
@@ -46,8 +56,8 @@ function dt_get_template_part( $slug, $name = '', $include = true ) {
 /**
  * Echo the subtitle of the task
  * 
- * @param    @bool print or not to print
- * @return   echo or string
+ * @param    bool $echo Print or not to print.
+ * @return   bool|string Echo or the value
  * @since    1.0.0
  */
 function the_task_subtitle( $echo = true ) {
@@ -84,20 +94,20 @@ function datask_buttons() {
 			    }
 			    ?><?php _e( 'Complete this task', $plugin->get_plugin_slug() ); ?></button>
 		    <button type="submit" class="button btn btn-secondary save-later <?php
-		    if ( has_later_task( get_the_ID() ) ) {
-			    echo 'disabled';
-		    }
-		    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+		if ( has_later_task( get_the_ID() ) ) {
+			echo 'disabled';
+		}
+			    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
 			    <?php
 			    if ( has_later_task( get_the_ID() ) ) {
 				    echo '<i class="fa fa-check"></i>';
 			    }
 			    ?><?php _e( 'Save for later', $plugin->get_plugin_slug() ); ?></button>
 		    <button type="submit" class="button btn btn-warning remove <?php
-		    if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
-			    echo 'disabled';
-		    }
-		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', $plugin->get_plugin_slug() ); ?></button>
+		if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+			echo 'disabled';
+		}
+			    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', $plugin->get_plugin_slug() ); ?></button>
 		</div>
 		<?php
 	} else {
@@ -116,7 +126,7 @@ function datask_user_form() {
 	if ( is_user_logged_in() ) {
 		$user = get_user_by( 'login', get_user_of_profile() );
 		$current_user = wp_get_current_user();
-		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login) {
+		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
 			$plugin = DaTask::get_instance();
 			$content = '<div class="panel panel-warning" id="user-contact-form">';
 			$content .= '<div class="panel-heading">';
