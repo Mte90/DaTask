@@ -125,7 +125,7 @@ class DaTask {
 		// Task integration for template ecc
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Task_Support.php' );
 		// Support for API Rest v1
-		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_API_v1.php' );
+		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_API.php' );
 	}
 
 	/**
@@ -383,6 +383,8 @@ class DaTask {
 			'edit_others_posts' => 'edit_others_tasks',
 		    ),
 		    'map_meta_cap' => true,
+		    'show_in_rest' => true,
+		    'rest_controller_class' => 'WP_REST_Posts_Controller',
 		    'menu_icon' => 'dashicons-welcome-add-page',
 		);
 		if ( isset( $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ] ) ) {
@@ -393,6 +395,8 @@ class DaTask {
 		register_via_taxonomy_core(
 			array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
 		    'public' => true,
+		    'show_in_rest' => true,
+		    'rest_controller_class' => 'WP_REST_Posts_Controller',
 		    'capabilities' => array(
 			'assign_terms' => 'edit_posts',
 		    )
@@ -402,6 +406,8 @@ class DaTask {
 		register_via_taxonomy_core(
 			array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
 		    'public' => true,
+		    'show_in_rest' => true,
+		    'rest_controller_class' => 'WP_REST_Posts_Controller',
 		    'capabilities' => array(
 			'assign_terms' => 'edit_posts',
 		    )
@@ -411,6 +417,8 @@ class DaTask {
 		register_via_taxonomy_core(
 			array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
 		    'public' => true,
+		    'show_in_rest' => true,
+		    'rest_controller_class' => 'WP_REST_Posts_Controller',
 		    'capabilities' => array(
 			'assign_terms' => 'edit_posts',
 		    )
@@ -420,6 +428,8 @@ class DaTask {
 		register_via_taxonomy_core(
 			array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
 		    'public' => true,
+		    'show_in_rest' => true,
+		    'rest_controller_class' => 'WP_REST_Posts_Controller',
 		    'capabilities' => array(
 			'assign_terms' => 'edit_posts',
 		    )

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DT_APIv1
+ * DT_API
  * Support for API rest
  *
  * @package   DaTask
@@ -10,7 +10,7 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-class DT_APIv1 {
+class DT_API {
 
 	/**
 	 * Initialize the class with all the hooks
@@ -18,7 +18,11 @@ class DT_APIv1 {
 	 * @since     1.0.0
 	 */
 	public function __construct() {
-		add_filter( 'json_prepare_post', array( $this, 'add_fields_to_api' ), 99, 3 );
+		if ( defined( 'JSON_API_VERSION' ) ) {
+			add_filter( 'json_prepare_post', array( $this, 'fields_to_apiv1' ), 99, 3 );
+		} elseif ( defined( 'REST_API_VERSION' ) ) {
+			add_action( 'rest_api_init', array( $this, 'fields_to_apiv2' ) );
+		}
 	}
 
 	/**
@@ -26,7 +30,7 @@ class DT_APIv1 {
 	 * 
 	 * @since    1.0.0
 	 */
-	public function add_fields_to_api( $_post, $post, $context ) {
+	public function fields_to_apiv1( $_post, $post, $context ) {
 		if ( $_post[ 'type' ] === 'task' ) {
 			$plugin = DaTask::get_instance();
 			$_post[ 'content' ] = array();
@@ -75,7 +79,11 @@ class DT_APIv1 {
 		}
 		return $_post;
 	}
+	
+	function fields_to_apiv2(){
+		
+	}
 
 }
 
-new DT_APIv1();
+new DT_API();

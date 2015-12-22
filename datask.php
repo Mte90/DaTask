@@ -63,7 +63,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/widgets/most-task-done.php
  */
 register_activation_hook( __FILE__, array( 'DaTask', 'activate' ) );
 register_deactivation_hook( __FILE__, array( 'DaTask', 'deactivate' ) );
-add_action( 'plugins_loaded', array( 'DaTask', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'DaTask', 'get_instance' ), 99999 );
 
 /* ----------------------------------------------------------------------------*
  * Dashboard and Administrative Functionality
