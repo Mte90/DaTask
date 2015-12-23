@@ -195,12 +195,12 @@ function dt_get_tasks_later( $user = NULL ) {
 			$user_id = get_user_by( 'login', $user );
 			$user_id = $user_id->data->ID;
 			$tasks_later_user = get_tasks_later_by_user( $user_id );
+			$print = '<div class="panel panel-danger">';
+			$print .= '<div class="panel-heading">';
+			$print .= __( 'Tasks in progress', $plugin->get_plugin_slug() );
+			$print .= '</div>';
+			$print .= '<div class="panel-content">';
 			if ( !empty( $tasks_later_user ) ) {
-				$print = '<div class="panel panel-danger">';
-				$print .= '<div class="panel-heading">';
-				$print .= __( 'Tasks in progress', $plugin->get_plugin_slug() );
-				$print .= '</div>';
-				$print .= '<div class="panel-content">';
 				$task_implode = array_keys( $tasks_later_user );
 				$tasks = new WP_Query( array(
 				    'post_type' => 'task',
@@ -212,8 +212,6 @@ function dt_get_tasks_later( $user = NULL ) {
 					$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . $area[ 0 ]->name . ' - ' . $minute[ 0 ]->name . ' ' . __( 'minute estimated', $plugin->get_plugin_slug() ) . '</li>';
 				}
 				$print .= '</ul>';
-				$print .= '</div>';
-				$print .= '</div>';
 				wp_reset_postdata();
 				/*
 				 * Filter the box with task later
@@ -223,7 +221,11 @@ function dt_get_tasks_later( $user = NULL ) {
 				 * @param string $html the html output
 				 */
 				$print = apply_filters( 'dt-get-task-later', $print );
+			} else {
+				$print .= __( "You don't have any task to do! Pick one!", $plugin->get_plugin_slug() );
 			}
+			$print .= '</div>';
+			$print .= '</div>';
 		}
 	} else {
 		$print = __( "This profile not exist!", $plugin->get_plugin_slug() );
