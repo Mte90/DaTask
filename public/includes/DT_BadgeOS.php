@@ -1,8 +1,7 @@
 <?php
 
 /**
- * DT_BadgeOS
- * Comment supports for task post type
+ * BadgeOS support
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
@@ -15,7 +14,7 @@ class DT_BadgeOS {
 	/**
 	 * Initialize the class with all the hooks
 	 *
-	 * @since     1.0.0
+	 * @since     1.1.0
 	 */
 	public function __construct() {
 		add_filter( 'badgeos_activity_triggers', array( $this, 'add_trigger' ) );
@@ -26,12 +25,26 @@ class DT_BadgeOS {
 		add_action( 'admin_footer', array( $this, 'step_js' ) );
 	}
 
+	/**
+	 * Add the trigger
+	 *
+	 * @since    1.1.0
+	 * @param array $triggers The triggers.
+	 * @return array $triggers The new triggers.
+	 */
 	public function add_trigger( $triggers ) {
 		$plugin = DaTask::get_instance();
 		$triggers[ 'datask_badgeos_trigger' ] = __( 'DaTask Done Task', $plugin->get_plugin_slug() );
 		return $triggers;
 	}
 
+	/**
+	 * Add the select to pick the task
+	 *
+	 * @since    1.1.0
+	 * @param integer $step_id The step id.
+	 * @param integer $post_id The post id.
+	 */
 	public function task_list( $step_id, $post_id ) {
 		$plugin = DaTask::get_instance();
 		$tasks = new WP_Query( array(
@@ -46,12 +59,27 @@ class DT_BadgeOS {
 		echo '</select>';
 	}
 
+	/**
+	 * Add the requirements for the step
+	 *
+	 * @since    1.1.0
+	 * @param array $requirements The requirements of the step.
+	 * @return array $requirements The new requirements.
+	 */
 	public function requirements( $requirements, $step_id ) {
 		$plugin = DaTask::get_instance();
-		$requirements[ 'datask_done' ] = get_post_meta( $step_id, '_badgeos_datask_trigger', true ); //__( 'DaTask Task Done', $plugin->get_plugin_slug() );
+		$requirements[ 'datask_done' ] = get_post_meta( $step_id, '_badgeos_datask_trigger', true ); 
 		return $requirements;
 	}
 
+	/**
+	 * Save the task associated
+	 *
+	 * @since    1.1.0
+	 * @param array $title The title.
+	 * @param array $step_id The step id.
+	 * @param array $step_data The data sent.
+	 */
 	public function trigger_event() {
 		global $blog_id, $wpdb;
 		$plugin = DaTask::get_instance();
@@ -95,12 +123,25 @@ class DT_BadgeOS {
 		}
 	}
 
+	/**
+	 * Add the trigger
+	 *
+	 * @since    1.0.0
+	 * @param array $triggers The triggers.
+	 * @return array $triggers The new triggers.
+	 */
 	public function save_step( $title, $step_id, $step_data ) {
 		if ( 'datask_badgeos_trigger' == $step_data[ 'trigger_type' ] ) {
 			update_post_meta( $step_id, '_badgeos_datask_trigger', $step_data[ 'datask_badgeos_trigger' ] );
+			update_post_meta( $step_data[ 'datask_badgeos_trigger' ], 'badgeos_datask', $step_data['datask_badgeos_task'] );
 		}
 	}
 
+	/**
+	 * Add the js code for the step
+	 *
+	 * @since    1.1.0
+	 */
 	public function step_js() {
 		?>
 		<script type="text/javascript">
@@ -108,11 +149,11 @@ class DT_BadgeOS {
 			  // Inject our custom step details into the update step action
 			  $(document).on('update_step_data', function (event, step_details, step) {
 			    step_details.datask_badgeos_trigger = $('.select-datask-trigger', step).val();
+			    step_details.datask_badgeos_task = $('#post_ID').val();
 			  });
 			});
 		</script>
 		<?php
-
 	}
 
 }

@@ -196,6 +196,7 @@ class DaTask {
 		$fields[ 'task_mentor' ] = $prefix . $this->get_plugin_slug() . '_mentor';
 		$fields[ 'task_next' ] = $prefix . $this->get_plugin_slug() . '_next';
 		$fields[ 'task_subtitle' ] = $prefix . $this->get_plugin_slug() . '_subtitle';
+		$fields[ 'badgeos' ] = 'badgeos_datask';
 		if ( array_key_exists( $value, $fields ) ) {
 			return $fields[ $value ];
 		} elseif ( empty( $value ) ) {

@@ -70,6 +70,10 @@ Insert shortcode to show task in progress:
 
 `[datask-progress]`
 
+Show the badge attached to task [require BadgeOS}]
+
+`[datask-badge]`
+
 = Why not use the original project? =
 
 Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/DaTask/wiki) 

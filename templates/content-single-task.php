@@ -25,6 +25,7 @@ if ( !defined( 'ABSPATH' ) ) {
 		<?php	
 		do_action('dt-task-info');
 		the_content();	
+		do_shortcode('[datask-badge]');
 		datask_buttons();
 		comments_template();
 		?>
