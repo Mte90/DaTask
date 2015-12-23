@@ -207,7 +207,9 @@ function dt_get_tasks_later( $user = NULL ) {
 				    'post__in' => $task_implode ) );
 				$print .= '<ul>';
 				foreach ( $tasks->posts as $task ) {
-					$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
+					$area = get_the_terms( $task->ID, 'task-area' );
+					$minute = get_the_terms( $task->ID, 'task-minute' );
+					$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . $area[ 0 ]->name . ' - ' . $minute[ 0 ]->name . ' ' . __( 'minute estimated', $plugin->get_plugin_slug() ) . '</li>';
 				}
 				$print .= '</ul>';
 				$print .= '</div>';
