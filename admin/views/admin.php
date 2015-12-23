@@ -64,6 +64,30 @@
 		'id' => $this->plugin_slug . '_cpt_slug',
 		'type' => 'text'
 	    ) );
+	    $cmb->add_field( array(
+		'name' => __( 'Slug of the Task Area taxonomy', $this->plugin_slug ),
+		'id' => $this->plugin_slug . '_tax_area',
+		'type' => 'text',
+		'placeholder' => 'area'
+	    ) );
+	    $cmb->add_field( array(
+		'name' => __( 'Slug of the Task Difficulty taxonomy', $this->plugin_slug ),
+		'id' => $this->plugin_slug . '_tax_difficulty',
+		'type' => 'text',
+		'placeholder' => 'difficulty'
+	    ) );
+	    $cmb->add_field( array(
+		'name' => __( 'Slug of the Task Team taxonomy', $this->plugin_slug ),
+		'id' => $this->plugin_slug . '_tax_team',
+		'type' => 'text',
+		'placeholder' => 'team'
+	    ) );
+	    $cmb->add_field( array(
+		'name' => __( 'Slug of the Task Minute Estimated taxonomy', $this->plugin_slug ),
+		'id' => $this->plugin_slug . '_tax_minute',
+		'type' => 'text',
+		'placeholder' => 'minute'
+	    ) );
 	    cmb2_metabox_form( $this->plugin_slug . '_options-second', $this->plugin_slug . '-settings-extra' );
 	    if ( isset( $_POST[ 'object_id' ] ) && $_POST[ 'object_id' ] ) {
 		    // Clear the permalinks

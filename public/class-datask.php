@@ -381,47 +381,36 @@ class DaTask {
 		if ( isset( $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ] ) ) {
 			$task_post_type[ 'rewrite' ][ 'slug' ] = $options_extra[ $this->get_plugin_slug() . '_cpt_slug' ];
 		}
-		register_via_cpt_core(
-			array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), $task_post_type );
-		register_via_taxonomy_core(
-			array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), array(
+		register_via_cpt_core( array( __( 'Task', $this->get_plugin_slug() ), __( 'Tasks', $this->get_plugin_slug() ), 'task' ), $task_post_type );
+		$tax = array(
 		    'public' => true,
 		    'show_in_rest' => true,
 		    'capabilities' => array(
 			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
+		    ) );
+		$tax_area = $tax;
+		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tax_area' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_tax_area' ] ) ) {
+			$tax_area[ 'rewrite' ][ 'slug' ] = $options_extra[ $this->get_plugin_slug() . '_tax_area' ];
+		}
+		register_via_taxonomy_core( array( __( 'Area', $this->get_plugin_slug() ), __( 'Areas', $this->get_plugin_slug() ), 'task-area' ), $tax_area, array( 'task' ) );
 
-		register_via_taxonomy_core(
-			array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), array(
-		    'public' => true,
-		    'show_in_rest' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
+		$tax_difficulty = $tax;
+		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tax_difficulty' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_tax_difficulty' ] ) ) {
+			$tax_difficulty[ 'rewrite' ][ 'slug' ] = $options_extra[ $this->get_plugin_slug() . '_tax_difficulty' ];
+		}
+		register_via_taxonomy_core( array( __( 'Difficulty', $this->get_plugin_slug() ), __( 'Difficulties', $this->get_plugin_slug() ), 'task-difficulty' ), $tax_difficulty, array( 'task' ) );
 
-		register_via_taxonomy_core(
-			array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), array(
-		    'public' => true,
-		    'show_in_rest' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
+		$task_team = $tax;
+		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tax_team' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_tax_team' ] ) ) {
+			$task_team[ 'rewrite' ][ 'slug' ] = $options_extra[ $this->get_plugin_slug() . '_tax_team' ];
+		}
+		register_via_taxonomy_core( array( __( 'Team', $this->get_plugin_slug() ), __( 'Teams', $this->get_plugin_slug() ), 'task-team' ), $task_team, array( 'task' ) );
 
-		register_via_taxonomy_core(
-			array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), array(
-		    'public' => true,
-		    'show_in_rest' => true,
-		    'capabilities' => array(
-			'assign_terms' => 'edit_posts',
-		    )
-			), array( 'task' )
-		);
+		$task_minute = $tax;
+		if ( isset( $options_extra[ $this->get_plugin_slug() . '_tax_minute' ] ) && !empty( $options_extra[ $this->get_plugin_slug() . '_tax_minute' ] ) ) {
+			$task_minute[ 'rewrite' ][ 'slug' ] = $options_extra[ $this->get_plugin_slug() . '_tax_minute' ];
+		}
+		register_via_taxonomy_core( array( __( 'Estimated minute', $this->get_plugin_slug() ), __( 'Estimated minutes', $this->get_plugin_slug() ), 'task-minute' ), $task_minute, array( 'task' ) );
 	}
 
 	/**
