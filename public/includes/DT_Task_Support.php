@@ -138,9 +138,25 @@ class DT_Task_Support {
 				$befores_split = explode( ',', str_replace( ' ', '', $befores ) );
 				$befores_ids = new WP_Query( array(
 				    'post_type' => 'task',
-				    'post__in' => $befores_split ) );
+				    'post__in' => $befores_split,
+				    'posts_per_page' => -1 ) );
+				if ( is_user_logged_in() ) {
+					$get_task_done_by_user = get_tasks_by_user( get_current_user_id() );
+				}
 				foreach ( $befores_ids->posts as $post ) {
-					$befores_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
+					$befores_task_temp = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+					if ( is_user_logged_in() ) {
+						if ( isset( $get_task_done_by_user[ $post->ID ] ) ) {
+							$befores_task_temp = $befores_task_temp . ' <i class="fa fa-check"></i>';
+						} else {
+							$befores_task_temp = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_temp . '</i>';
+						}
+					}
+					// Get last post
+					if ( $befores_ids->posts[ count( $befores_ids->posts ) - 1 ]->ID !== $post->ID ) {
+						$befores_task_temp .= ', ';
+					}
+					$befores_task .= $befores_task_temp;
 				}
 				wp_reset_postdata();
 				$content .= $befores_task;
@@ -183,9 +199,14 @@ class DT_Task_Support {
 				$content .= '<div class="panel-content">';
 				$mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
 				foreach ( $mentors_split as $user ) {
-					$user = get_user_by( 'id', $user );
+					$user_id = $user;
+					$user = get_user_by( 'id', $user_id );
 					$name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
-					$content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>, ';
+					$content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>';
+					// Get last user
+					if ( $mentors_split[ count( $mentors_split ) - 1 ] !== $user_id ) {
+						$content .= ', ';
+					}
 				}
 				$content .= '</div>';
 				$content .= '</div>';
@@ -201,9 +222,14 @@ class DT_Task_Support {
 				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
 				$nexts_ids = new WP_Query( array(
 				    'post_type' => 'task',
-				    'post__in' => $nexts_split ) );
+				    'post__in' => $nexts_split,
+				    'posts_per_page' => -1 ) );
 				foreach ( $nexts_ids->posts as $post ) {
-					$next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>, ';
+					$next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+					// Get last post
+					if ( $nexts_ids->posts[ count( $nexts_ids->posts ) - 1 ]->ID !== $post->ID ) {
+						$next_task .= ', ';
+					}
 				}
 				wp_reset_postdata();
 				$content .= $next_task;
@@ -216,7 +242,11 @@ class DT_Task_Support {
 				$content .= '<div class="panel panel-default">';
 				$content .= '<div class="panel-content">';
 				foreach ( $users as $user => $value ) {
-					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>, ';
+					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>';
+					// Get last user
+					if ( key( array_slice( $users, -1, 1, TRUE ) ) !== $user ) {
+						$content .= ', ';
+					}
 				}
 				$content .= '</div>';
 				$content .= '</div>';
