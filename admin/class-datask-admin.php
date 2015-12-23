@@ -25,14 +25,6 @@ class DaTask_Admin {
 	protected static $instance = null;
 
 	/**
-	 * Slug of the plugin screen.
-	 *
-	 * @var      string
-	 * @since    1.0.0
-	 */
-	protected $plugin_screen_hook_suffix = null;
-
-	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
 	 * settings page and menu.
 	 *
@@ -138,21 +130,18 @@ class DaTask_Admin {
 	 * @return    null    Return early if no settings page is registered.
 	 */
 	public function enqueue_admin_files() {
-		if ( !isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
 		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id || strpos( $_SERVER[ 'REQUEST_URI' ], 'index.php' ) || strpos( $_SERVER[ 'REQUEST_URI' ], get_bloginfo( 'wpurl' ) . '/wp-admin/' ) ) {
+		if ( strpos( $screen->base, $this->plugin_slug ) !== false || strpos( $_SERVER[ 'REQUEST_URI' ], 'index.php' ) || strpos( $_SERVER[ 'REQUEST_URI' ], get_bloginfo( 'wpurl' ) . '/wp-admin/' ) ) {
 			wp_enqueue_style( $this->plugin_slug . '-admin-styles', plugins_url( 'assets/css/admin.css', __FILE__ ), array( 'dashicons' ), DaTask::VERSION );
 		}
-		if ( 'task' === $screen->id && ($screen->action === 'add' || $_GET[ 'action' ] === 'edit' ) ) {
+		if ( strpos( $screen->base, $this->plugin_slug ) !== false && ($screen->action === 'add' || (isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'edit' )) ) {
 			wp_enqueue_script( $this->plugin_slug . '-task-admin-script', plugins_url( 'assets/js/task.js', __FILE__ ), array( 'jquery' ), DaTask::VERSION );
 			wp_localize_script( $this->plugin_slug . '-task-admin-script', 'dt_js_admin_vars', array(
 			    'alert' => __( 'You have not selected a taxonomy!', $this->plugin_slug ),
 				)
 			);
 		}
-		if ( $this->plugin_screen_hook_suffix === $screen->id ) {
+		if ( strpos( $screen->base, $this->plugin_slug ) !== false ) {
 			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), DaTask::VERSION );
 		}
 	}
@@ -163,11 +152,8 @@ class DaTask_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-		/*
-		 * Settings page in the menu
-		 */
-
-		$this->plugin_screen_hook_suffix = add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_options', $this->plugin_slug, array( $this, 'display_plugin_admin_page' ), 'dashicons-hammer', 90 );
+		$this->plugin_screen_hook_suffix = add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_options', $this->plugin_slug . '-settings', array( $this, 'display_plugin_admin_page' ), 'dashicons-yes', 90 );
+		add_submenu_page( $this->plugin_slug . '-settings', __( 'Report', $this->plugin_slug ), __( 'Report', $this->plugin_slug ), 'manage_options', $this->plugin_slug . '-report', array( $this, 'display_plugin_report_page' ) );
 	}
 
 	/**
@@ -177,6 +163,15 @@ class DaTask_Admin {
 	 */
 	public function display_plugin_admin_page() {
 		include_once( 'views/admin.php' );
+	}
+
+	/**
+	 * Render the report page 
+	 *
+	 * @since    1.1.0
+	 */
+	public function display_plugin_report_page() {
+		include_once( 'views/report.php' );
 	}
 
 	/**
