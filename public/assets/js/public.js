@@ -15,9 +15,9 @@
 		  url: dt_js_vars.ajaxurl,
 		  success: function (value) {
 			jQuery('html, body').animate({scrollTop: jQuery('#respond').offset().top}, 'slow', function () {
-			  jQuery('#respond').animate({'margin-left': '-=30px', 'margin-right': '+=30px'}, 200, function () {
-				jQuery('#respond').animate({'margin-left': '+=60px', 'margin-right': '-=30px'}, 200, function () {
-				  jQuery('#respond').animate({'margin-left': '-=30px', 'margin-right': '+=30px'}, 200);
+			  jQuery('#respond').animate({'margin-left': '-=30px', 'margin-right': '+=30px'}, 150, function () {
+				jQuery('#respond').animate({'margin-left': '+=60px', 'margin-right': '-=30px'}, 150, function () {
+				  jQuery('#respond').animate({'margin-left': '-=30px', 'margin-right': '+=30px'}, 150);
 				});
 			  });
 			});
