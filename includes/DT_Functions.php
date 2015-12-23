@@ -42,6 +42,10 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 		unset( $tasks_later_of_user[ $task_id ] );
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
+	
+	if ( class_exists( 'BadgeOS' ) ) {
+		do_action( 'datask_badgeos_trigger' );
+	}
 
 	/*
 	 * Fires before the end of function `dt_set_completed_task_for_user_id`

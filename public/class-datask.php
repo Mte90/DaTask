@@ -121,6 +121,10 @@ class DaTask {
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Task_Support.php' );
 		// Support for API Rest
 		require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_API.php' );
+		// BadgeOS support
+		if ( class_exists( 'BadgeOS' ) ) {
+			require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_BadgeOS.php' );
+		}
 	}
 
 	/**

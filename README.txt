@@ -82,6 +82,13 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 
 == Changelog ==
 
+= 1.1.0 =
+* [Add] Support for BadgeOS
+* [Add] Support in readonly for WP REST API v2
+* [Add] Custom Taxonomies slug settings
+* [Improvement] Requreiste task now are marked if done in task
+* [BugFix] Improved inline documentation!
+
 = 1.0.3 =
 * [Add] Czech Translation
 * [Add] Scroll to comment area after Task Done
