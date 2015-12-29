@@ -26,6 +26,13 @@ class DT_Frontend_Profile {
 		    'post_content' => 'content'
 			)
 		);
+		new Fake_Page(
+			array(
+		    'slug' => 'member-feed',
+		    'post_title' => __( 'Member Feed', $plugin->get_plugin_slug() ),
+		    'post_content' => 'content'
+			)
+		);
 		add_filter( 'query_vars', array( $this, 'add_member_permalink' ) );
 		add_filter( 'init', array( $this, 'rewrite_rule' ) );
 		add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
@@ -42,6 +49,7 @@ class DT_Frontend_Profile {
 	 */
 	public function add_member_permalink( $vars ) {
 		$vars[] = 'member';
+		$vars[] = 'member-feed';
 		return $vars;
 	}
 
@@ -55,6 +63,10 @@ class DT_Frontend_Profile {
 		add_rewrite_rule(
 			'^member/([^/]*)/?', 'index.php?member=$matches[1]', 'top'
 		);
+		add_rewrite_tag( '%member-feed%', '([^&]+)' );
+		add_rewrite_rule(
+			'^member-feed/([^/]*)/?', 'index.php?member-feed=$matches[1]', 'top'
+		);
 	}
 
 	/**
@@ -67,6 +79,13 @@ class DT_Frontend_Profile {
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
 				dt_get_template_part( 'user', 'profile', true );
+				exit;
+			} else {
+				$wp_query->set_404();
+			}
+		} elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
+			if ( get_user_of_profile() !== NULL ) {
+				dt_get_template_part( 'user', 'feed', true );
 				exit;
 			} else {
 				$wp_query->set_404();

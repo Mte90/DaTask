@@ -92,6 +92,7 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 * [Add] New shortcode [datask-badge]
 * [Add] Support in readonly for WP REST API v2
 * [Add] Custom Taxonomies slug settings
+* [Add] Save the date of done/later task
 * [Improvement] Required task now are marked if done in task
 * [BugFix] Improved inline documentation!
 

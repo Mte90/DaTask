@@ -275,6 +275,9 @@ function get_user_of_profile() {
 		$current_user = wp_get_current_user();
 		return $current_user->user_login;
 		// Else null
+	}elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member-feed' ] ) ) {
+		return $wp_query->query[ 'member-feed' ];
+		// If the url don't have the nick get the actual
 	} else {
 		return NULL;
 	}
