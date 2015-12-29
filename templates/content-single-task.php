@@ -23,7 +23,7 @@ if ( !defined( 'ABSPATH' ) ) {
 	</header>
 	<div class="entry-content">
 		<?php	
-		do_action('dt-task-info');
+		do_action('dt_task_info');
 		the_content();	
 		do_shortcode('[datask-badge]');
 		datask_buttons();

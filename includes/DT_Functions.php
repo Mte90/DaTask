@@ -34,7 +34,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 	update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
 	$tasks_of_user = get_tasks_by_user( $user_id );
 	if ( !isset( $tasks_of_user[ $task_id ] ) ) {
-		$tasks_of_user[ $task_id ] = true;
+		$tasks_of_user[ $task_id ] = time();
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
 	}
 	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
@@ -52,7 +52,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 	 *
 	 * @since 1.0.0
 	 */
-	do_action( 'dt-set-completed-task' );
+	do_action( 'dt_set_completed_task' );
 	return true;
 }
 
@@ -68,7 +68,7 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 	$plugin = DaTask::get_instance();
 	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
 	if ( !isset( $tasks_later_of_user[ $task_id ] ) ) {
-		$tasks_later_of_user[ $task_id ] = true;
+		$tasks_later_of_user[ $task_id ] = time();
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
 
@@ -77,7 +77,7 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 	 *
 	 * @since 1.0.0
 	 */
-	do_action( 'dt-set-task-later' );
+	do_action( 'dt_set_task_later' );
 	return true;
 }
 
@@ -114,7 +114,7 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
 	 *
 	 * @since 1.0.0
 	 */
-	do_action( 'dt-remove-complete-task' );
+	do_action( 'dt_remove_complete_task' );
 	return true;
 }
 
@@ -133,6 +133,7 @@ function dt_get_tasks_completed() {
 		$user_id = $user_id->data->ID;
 		$tasks_user = get_tasks_by_user( $user_id );
 		if ( !empty( $tasks_user ) ) {
+			$tasks_user = array_reverse( $tasks_user, true );
 			$print = '<div class="panel panel-success">';
 			$print .= '<div class="panel-heading">';
 			$print .= sprintf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
@@ -142,10 +143,16 @@ function dt_get_tasks_completed() {
 			$tasks = new WP_Query( array(
 			    'post_type' => 'task',
 			    'post__in' => $task_implode,
+			    'orderby' => 'post__in',
 			    'posts_per_page' => -1 ) );
 			$print .= '<ul>';
 			foreach ( $tasks->posts as $task ) {
-				$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
+				$date = '';
+				if ( strlen( $tasks_user[ $task->ID ] ) > 2 ) {
+					$date = ' - ' . date_i18n( get_option( 'date_format' ), $tasks_user[ $task->ID ] );
+				}
+
+				$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a>' . $date . '</li>';
 			}
 			$print .= '</ul>';
 			$print .= '</div>';
@@ -159,7 +166,7 @@ function dt_get_tasks_completed() {
 			 *
 			 * @param string $html the html output
 			 */
-			$print = apply_filters( 'dt-get-completed-task', $print );
+			$print = apply_filters( 'dt_get_completed_task', $print );
 		} else {
 			$print .= '<h5>';
 			$print .= __( 'Nothing task done :(', $plugin->get_plugin_slug() );
@@ -199,18 +206,20 @@ function dt_get_tasks_later( $user = NULL ) {
 			$plugin = DaTask::get_instance();
 			$user_id = get_user_by( 'login', $user );
 			$user_id = $user_id->data->ID;
-			$tasks_later_user = get_tasks_later_by_user( $user_id );
+			$tasks_later_user = array_reverse( get_tasks_later_by_user( $user_id ), true );
 			$print = '<div class="panel panel-danger">';
 			$print .= '<div class="panel-heading">';
 			$print .= __( 'Tasks in progress', $plugin->get_plugin_slug() );
 			$print .= '</div>';
 			$print .= '<div class="panel-content">';
 			if ( !empty( $tasks_later_user ) ) {
+				$tasks_later_user = array_reverse($tasks_later_user, true );
 				$task_implode = array_keys( $tasks_later_user );
 				$tasks = new WP_Query( array(
 				    'post_type' => 'task',
 				    'post__in' => $task_implode,
-				    'posts_per_page' => -1) );
+				    'orderby' => 'post__in',
+				    'posts_per_page' => -1 ) );
 				$print .= '<ul>';
 				foreach ( $tasks->posts as $task ) {
 					$area = get_the_terms( $task->ID, 'task-area' );
@@ -226,7 +235,7 @@ function dt_get_tasks_later( $user = NULL ) {
 				 *
 				 * @param string $html the html output
 				 */
-				$print = apply_filters( 'dt-get-task-later', $print );
+				$print = apply_filters( 'dt_get_task_later', $print );
 			} else {
 				$print .= __( "You don't have any task to do! Pick one!", $plugin->get_plugin_slug() );
 			}
