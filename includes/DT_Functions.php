@@ -42,7 +42,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 		unset( $tasks_later_of_user[ $task_id ] );
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
-	
+
 	if ( class_exists( 'BadgeOS' ) ) {
 		do_action( 'datask_badgeos_trigger' );
 	}
@@ -141,7 +141,8 @@ function dt_get_tasks_completed() {
 			$task_implode = array_keys( $tasks_user );
 			$tasks = new WP_Query( array(
 			    'post_type' => 'task',
-			    'post__in' => $task_implode ) );
+			    'post__in' => $task_implode,
+			    'posts_per_page' => -1 ) );
 			$print .= '<ul>';
 			foreach ( $tasks->posts as $task ) {
 				$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a></li>';
@@ -208,7 +209,8 @@ function dt_get_tasks_later( $user = NULL ) {
 				$task_implode = array_keys( $tasks_later_user );
 				$tasks = new WP_Query( array(
 				    'post_type' => 'task',
-				    'post__in' => $task_implode ) );
+				    'post__in' => $task_implode,
+				    'posts_per_page' => -1) );
 				$print .= '<ul>';
 				foreach ( $tasks->posts as $task ) {
 					$area = get_the_terms( $task->ID, 'task-area' );
