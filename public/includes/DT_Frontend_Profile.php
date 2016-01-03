@@ -115,10 +115,13 @@ class DT_Frontend_Profile {
 	public function member_wp_title( $title, $sep, $seplocation ) {
 		$plugin = DaTask::get_instance();
 		global $wp_query;
-		$username = wp_get_current_user();
-		if ( (isset( $wp_query->query[ 'member' ] ) && $wp_query->query[ 'member' ] === $username->data->user_login ) ) {
-			return __( 'Your profile', $plugin->get_plugin_slug() ) . ' ' . $sep;
-		} elseif ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+		if ( is_user_logged_in() ) {
+			$username = wp_get_current_user();
+			if ( (isset( $wp_query->query[ 'member' ] ) && $wp_query->query[ 'member' ] === $username->data->user_login ) ) {
+				return __( 'Your profile', $plugin->get_plugin_slug() ) . ' ' . $sep;
+			}
+		}
+		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
 				$user = get_user_by( 'login', get_user_of_profile() );
 				$page = sprintf( __( "%s's Profile", $plugin->get_plugin_slug() ), $user->display_name );
