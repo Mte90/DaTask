@@ -28,6 +28,7 @@ class DT_MostDone extends WP_List_Table {
 		    'plural' => __( 'Tasks', $plugin->get_plugin_slug() ),
 		    'ajax' => false
 		] );
+		$this->maybe_download();
 	}
 
 	/**
@@ -93,7 +94,11 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	function column_title( $item ) {
 		$title = '<strong>' . $item[ 'title' ] . '</strong>';
-		return $title;
+		$actions = [
+		    'edit' => '<a href="post.php?post=' . $item[ 'ID' ] . '&action=edit">' . __( 'Edit' ) . '</a>',
+		    'show' => '<a href="' . get_permalink( $item[ 'ID' ] ) . '">' . __( 'Show' ) . '</a>'
+		];
+		return $title . $this->row_actions( $actions );
 	}
 
 	/**
@@ -136,6 +141,41 @@ class DT_MostDone extends WP_List_Table {
 		    'per_page' => $per_page
 		] );
 		$this->items = self::get_tasks( $per_page, $current_page );
+	}
+
+	public function maybe_download() {
+		if ( empty( $_POST[ 'action' ] ) || 'export-report-done' !== $_POST[ 'action' ] ) {
+			return;
+		}
+
+		if ( !current_user_can( 'manage_options' ) ) {
+			wp_die( '' );
+		}
+		$plugin = DaTask::get_instance();
+		check_admin_referer( $plugin->get_plugin_slug() . '-export-report', $plugin->get_plugin_slug() . '_once' );
+
+		$sitename = sanitize_key( get_bloginfo( 'name' ) );
+		if ( !empty( $sitename ) ) {
+			$sitename .= '.';
+		}
+		$filename = $sitename . 'datask-report.' . date( 'Y-m-d' ) . '.csv';
+
+		header( 'Content-Description: File Transfer' );
+		header( 'Content-Disposition: attachment; filename=' . $filename );
+		header( 'Content-Type: application/csv; charset=' . get_option( 'blog_charset' ), true );
+
+		$array = $this->get_tasks( 50 );
+		$temp_memory = fopen( 'php://memory', 'w' );
+		fputcsv( $temp_memory, array( __( 'Title' ), __( 'Done', $plugin->get_plugin_slug() ) ), ',' );
+		foreach ( $array as $line ) {
+			if ( empty( $line[ 'done' ] ) || !isset( $line[ 'done' ] ) ) {
+				$line[ 'done' ] = 0;
+			}
+			fputcsv( $temp_memory, array_slice( $line, 1 ), ',' );
+		}
+		fseek( $temp_memory, 0 );
+		fpassthru( $temp_memory );
+		die();
 	}
 
 }
