@@ -10,7 +10,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 if ( !defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -37,6 +36,7 @@ get_header();
 		<?php if ( !empty( $user->user_url ) ) { ?>
 			<p><?php _e( 'Website', $plugin->get_plugin_slug() ) ?>: <a href="<?php echo $user->user_url; ?>"><?php echo $user->user_url; ?></a></p>
 		<?php } ?>
+		<p><a href="<?php echo get_bloginfo( 'url' ) . '/member-feed/' . $user->user_login; ?>"><?php _e( 'RSS Feed Activity', $plugin->get_plugin_slug() ) ?></a></p>
 		<?php if ( !empty( $user->description ) ) { ?>
 			<div class="description"><?php echo wpautop( the_author_meta( 'description', $user->ID ) ); ?></div>
 		<?php } ?>

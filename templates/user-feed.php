@@ -55,7 +55,7 @@ echo '<?xml version="1.0" encoding="' . get_option( 'blog_charset' ) . '"?' . '>
 		    $date = '';
 		    if ( strlen( $tasks_user[ get_the_ID() ] ) > 2 ) {
 			    ?>
-			    <pubDate><?php echo date( 'Y-m-d H:i:s', $tasks_user[ get_the_ID() ] )/* get_post_time( 'Y-m-d H:i:s', true ) */; ?></pubDate>
+			    <pubDate><?php echo date( 'D, d M Y H:i:s T', $tasks_user[ get_the_ID() ] )/* get_post_time( 'Y-m-d H:i:s', true ) */; ?></pubDate>
 			    <?php
 		    }
 		    ?>
