@@ -50,6 +50,7 @@ get_header();
 	</div>
 	<h2 class="alert alert-warning"><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h2>
 	<?php
+	datask_badgeos_user_achievements( $user->ID );
 	dt_tasks_later();
 	dt_tasks_completed();
 	datask_user_form();

@@ -85,3 +85,17 @@
 	background-color: #c3ff88;
 	border-color: #8dff1c !important;
 }
+
+.badge-users {
+	ul {
+		overflow: hidden;
+		padding-left:0px;
+	}
+	li {
+		width: 100px;
+		height:100px;
+		float: left;
+		margin-right:10px;
+		list-style:none;
+	}
+}

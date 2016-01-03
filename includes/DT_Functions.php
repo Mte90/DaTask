@@ -213,7 +213,7 @@ function dt_get_tasks_later( $user = NULL ) {
 			$print .= '</div>';
 			$print .= '<div class="panel-content">';
 			if ( !empty( $tasks_later_user ) ) {
-				$tasks_later_user = array_reverse($tasks_later_user, true );
+				$tasks_later_user = array_reverse( $tasks_later_user, true );
 				$task_implode = array_keys( $tasks_later_user );
 				$tasks = new WP_Query( array(
 				    'post_type' => 'task',
@@ -275,7 +275,7 @@ function get_user_of_profile() {
 		$current_user = wp_get_current_user();
 		return $current_user->user_login;
 		// Else null
-	}elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member-feed' ] ) ) {
+	} elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member-feed' ] ) ) {
 		return $wp_query->query[ 'member-feed' ];
 		// If the url don't have the nick get the actual
 	} else {
@@ -366,5 +366,38 @@ function has_later_task( $task_id, $user_id = NULL ) {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+/**
+ * Get list of Badge of BadgeOS 
+ * Based on https://gist.github.com/tw2113/6c31366d094eee6d5151
+ *
+ * @since     1.1.0
+ * 
+ * @param     integer $user ID of the user.
+ *
+ * @return    string
+ */
+function datask_badgeos_user_achievements( $user ) {
+	if ( class_exists( 'BadgeOS' ) ) {
+		$plugin = DaTask::get_instance();
+		$output = '';
+		$achievements = array_unique( badgeos_get_user_earned_achievement_ids( $user, '' ) );
+		$output = '<div class="panel panel-info badge-users">';
+		$output .= '<div class="panel-heading">';
+		$output .= __( 'Badge Earned by the user', $plugin->get_plugin_slug() );
+		$output .= '</div>';
+		$output .= '<div class="panel-content">';
+		if ( !empty( $achievements ) ) {
+			$output .= '<ul>';
+			foreach ( $achievements as $achievement_id ) {
+				$output .= '<li><a href="' . get_permalink( $achievement_id ) . '">' . badgeos_get_achievement_post_thumbnail( $achievement_id ) . '</a></li>';
+			}
+			$output .= '</ul>';
+		}
+		$output .= '</div>';
+		$output .= '</div>';
+		echo $output;
 	}
 }

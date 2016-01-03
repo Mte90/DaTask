@@ -68,7 +68,7 @@ class DT_BadgeOS {
 	 */
 	public function requirements( $requirements, $step_id ) {
 		$plugin = DaTask::get_instance();
-		$requirements[ 'datask_done' ] = get_post_meta( $step_id, '_badgeos_datask_trigger', true ); 
+		$requirements[ 'datask_done' ] = get_post_meta( $step_id, '_badgeos_datask_trigger', true );
 		return $requirements;
 	}
 
@@ -133,7 +133,7 @@ class DT_BadgeOS {
 	public function save_step( $title, $step_id, $step_data ) {
 		if ( 'datask_badgeos_trigger' == $step_data[ 'trigger_type' ] ) {
 			update_post_meta( $step_id, '_badgeos_datask_trigger', $step_data[ 'datask_badgeos_trigger' ] );
-			update_post_meta( $step_data[ 'datask_badgeos_trigger' ], 'badgeos_datask', $step_data['datask_badgeos_task'] );
+			update_post_meta( $step_data[ 'datask_badgeos_trigger' ], 'badgeos_datask', $step_data[ 'datask_badgeos_task' ] );
 		}
 	}
 
