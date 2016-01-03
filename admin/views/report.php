@@ -15,21 +15,21 @@
 
 <div class="wrap">
 
-    <h2><?php echo esc_html( get_admin_page_title() ); ?> - <?php _e( 'Report', $this->plugin_slug ); ?></h2>
+    <h2>DaTask - <?php _e( 'Report', $this->plugin_slug ); ?></h2>
 
     <div id="tabs" class="settings-tab">
 	<ul>
-	    <li><a href="#tabs-1"><?php _e( 'General', $this->plugin_slug ); ?></a></li>
+	    <li><a href="#tabs-1"><?php _e( 'Most Done', $this->plugin_slug ); ?></a></li>
 	    <li><a href="#tabs-2"><?php _e( 'Extra', $this->plugin_slug ); ?></a></li>
-	    <li><a href="#tabs-3"><?php _e( 'Import/Export', $this->plugin_slug ); ?></a></li>
 	</ul>
 	<div id="tabs-1" class="wrap">
+	    <?php
+	    $GLOBALS[ 'datask_report_done' ]->prepare_items();
+	    $GLOBALS[ 'datask_report_done' ]->display();
+	    ?>
 	</div>
 	<div id="tabs-2" class="wrap">
-	   
-	</div>
-	<div id="tabs-3" class="metabox-holder">
-
+	    2
 	</div>
     </div>
 
