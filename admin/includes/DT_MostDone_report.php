@@ -19,7 +19,7 @@ class DT_MostDone extends WP_List_Table {
 	/**
 	 * Initialize the class with all the hooks
 	 *
-	 * @since     1.0.0
+	 * @since     1.1.0
 	 */
 	public function __construct() {
 		$plugin = DaTask::get_instance();
@@ -34,11 +34,11 @@ class DT_MostDone extends WP_List_Table {
 	/**
 	 * Return a list of tasks done
 	 * 
-	 * @since     1.0.0
+	 * @since     1.1.0
 	 *
-	 * @param  array   $per_page The actions to display for this user row.
-	 * @param  WP_User $page_number    The user object displayed in this row.
-	 * @return array The actions to display for this user row.
+	 * @param  integer $per_page Posts per page.
+	 * @param  integer $page_number The page number.
+	 * @return array The posts.
 	 */
 	public function get_tasks( $per_page = 5, $page_number = 1 ) {
 		$plugin = DaTask::get_instance();
@@ -56,15 +56,25 @@ class DT_MostDone extends WP_List_Table {
 		return $results;
 	}
 
+	/**
+	 * Returns the count of records in the database.
+	 *
+	 * @return null|string
+	 */
 	public function record_count() {
 		global $wpdb;
 		$sql = "SELECT COUNT(*) FROM $wpdb->posts WHERE 1=1 AND $wpdb->posts.post_type = 'task' AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')";
 		return $wpdb->get_var( $sql );
 	}
 
+	/**
+	 * Print the string for no posts avalaible
+	 *
+	 * @return null|string
+	 */
 	public function no_items() {
 		$plugin = DaTask::get_instance();
-		_e( 'No tasks avaliable.', $plugin->get_plugin_slug() );
+		_e( 'No tasks avalaible.', $plugin->get_plugin_slug() );
 	}
 
 	/**
@@ -86,10 +96,9 @@ class DT_MostDone extends WP_List_Table {
 	}
 
 	/**
-	 * Method for name column
+	 * Method for title column
 	 *
 	 * @param array $item an array of DB data
-	 *
 	 * @return string
 	 */
 	function column_title( $item ) {
@@ -133,6 +142,7 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	public function prepare_items() {
 		$this->_column_headers = $this->get_column_info();
+		//Read the screen option value
 		$per_page = $this->get_items_per_page( 'tasks_per_page', 5 );
 		$current_page = $this->get_pagenum();
 		$total_items = self::record_count();
@@ -143,6 +153,9 @@ class DT_MostDone extends WP_List_Table {
 		$this->items = self::get_tasks( $per_page, $current_page );
 	}
 
+	/**
+	 * Export the list table as CSV using the same settings of the view
+	 */
 	public function maybe_download() {
 		if ( empty( $_POST[ 'action' ] ) || 'export-report-done' !== $_POST[ 'action' ] ) {
 			return;
@@ -158,19 +171,24 @@ class DT_MostDone extends WP_List_Table {
 		if ( !empty( $sitename ) ) {
 			$sitename .= '.';
 		}
-		$filename = $sitename . 'datask-report.' . date( 'Y-m-d' ) . '.csv';
+		$filename = $sitename . '_datask-report_' . date( 'Y-m-d' ) . '.csv';
 
 		header( 'Content-Description: File Transfer' );
 		header( 'Content-Disposition: attachment; filename=' . $filename );
 		header( 'Content-Type: application/csv; charset=' . get_option( 'blog_charset' ), true );
 
+		//Load the tasks
 		$array = $this->get_tasks( 50 );
+		//Convert the array in csv using the php methods
 		$temp_memory = fopen( 'php://memory', 'w' );
+		//First row
 		fputcsv( $temp_memory, array( __( 'Title' ), __( 'Done', $plugin->get_plugin_slug() ) ), ',' );
 		foreach ( $array as $line ) {
+			//If there is no value add a defult value
 			if ( empty( $line[ 'done' ] ) || !isset( $line[ 'done' ] ) ) {
 				$line[ 'done' ] = 0;
 			}
+			//The array_slice remove the first column that contain the ID of the task
 			fputcsv( $temp_memory, array_slice( $line, 1 ), ',' );
 		}
 		fseek( $temp_memory, 0 );

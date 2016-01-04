@@ -50,8 +50,9 @@ class DaTask_Admin {
 		// Activity Dashboard widget for your cpts
 		add_filter( 'dashboard_recent_posts_query_args', array( $this, 'cpt_activity_dashboard_support' ), 10, 1 );
 
-		// Add the options page and menu item.
+		//Add the option for the report page, TODO load only on that page
 		add_filter( 'set-screen-option', array( $this, 'set_screen' ), 10, 3 );
+		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
 
 		// Add an action link pointing to the options page.
@@ -155,7 +156,8 @@ class DaTask_Admin {
 	public function add_plugin_admin_menu() {
 		$this->plugin_screen_hook_suffix = add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_options', $this->plugin_slug . '-settings', array( $this, 'display_plugin_admin_page' ), 'dashicons-yes', 90 );
 		$hook = add_submenu_page( $this->plugin_slug . '-settings', __( 'Report', $this->plugin_slug ), __( 'Report', $this->plugin_slug ), 'manage_options', $this->plugin_slug . '-report', array( $this, 'display_plugin_report_page' ) );
-		add_action( "load-$hook", array( $this, 'report_screen_option' ) );
+		//Call the report screen option only on the correct page
+		add_action( 'load-' . $hook, array( $this, 'report_screen_option' ) );
 	}
 
 	/**
@@ -176,6 +178,11 @@ class DaTask_Admin {
 		include_once( 'views/report.php' );
 	}
 
+	/**
+	 * Add the screen option for the report page
+	 *
+	 * @since    1.1.0
+	 */
 	public function report_screen_option() {
 		$option = 'per_page';
 		$args = [
@@ -185,9 +192,14 @@ class DaTask_Admin {
 		];
 		add_screen_option( $option, $args );
 		require_once(plugin_dir_path( __FILE__ ) . '/includes/DT_MostDone_report.php');
-		$GLOBALS['datask_report_done'] = new DT_MostDone();
+		$GLOBALS[ 'datask_report_done' ] = new DT_MostDone();
 	}
-	
+
+	/**
+	 * Return the value of the screen option
+	 *
+	 * @since    1.1.0
+	 */
 	public function set_screen( $status, $option, $value ) {
 		return $value;
 	}
