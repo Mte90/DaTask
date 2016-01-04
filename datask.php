@@ -11,7 +11,7 @@
  * Plugin Name:       DaTask
  * Plugin URI:        https://github.com/Mte90/DaTask
  * Description:       Task Management system inspired to Mozilla OneAndDone project
- * Version:           1.0.3
+ * Version:           1.1.0
  * Author:            Mte90
  * Author URI:        http://mte90.net
  * Text Domain:       datask
