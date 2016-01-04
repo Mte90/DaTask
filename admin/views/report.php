@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Represents the report view for the administration dashboard.
  *
@@ -11,8 +12,32 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
+function dt_table_tax( $slug, $name, $tax ) {
+	?>
+	<table class="widefat fixed">
+	    <thead>
+		<tr>
+		    <td><?php _e( $name, $slug ); ?></td>
+		</tr>
+	    </thead>
+	    <tbody>
+		<tr>
+		    <td><?php
+			$terms = get_terms( $tax, array( 'orderby' => 'count', 'order' => 'DESC' ) );
+			if ( !empty( $terms ) && !is_wp_error( $terms ) ) {
+				echo '<ul class="list-grid">';
+				foreach ( $terms as $term ) {
+					echo '<li><a href="edit-tags.php?action=edit&taxonomy=$tax&tag_ID=' . $term->term_id . '&post_type=task">' . $term->name . '</a> (<b>' . $term->count . '</b> ' . __( 'Tasks', $slug ) . ')</li>';
+				}
+				echo '</ul>';
+			}
+			?></td>
+		</tr>
+	    </tbody>
+	</table>
+	<?php
+}
 ?>
-
 <div class="wrap">
 
     <h2>DaTask - <?php _e( 'Report', $this->plugin_slug ); ?></h2>
@@ -34,7 +59,12 @@
 	    ?>
 	</div>
 	<div id="tabs-2" class="wrap">
-	    2
+	    <?php
+	    dt_table_tax( $this->plugin_slug, 'Estimated minutes', 'task-minute' );
+	    dt_table_tax( $this->plugin_slug, 'Difficulties', 'task-difficulty' );
+	    dt_table_tax( $this->plugin_slug, 'Teams', 'task-team' );
+	    dt_table_tax( $this->plugin_slug, 'Areas', 'task-area' );
+	    ?>
 	</div>
     </div>
 

@@ -61,3 +61,13 @@
 #dashboard_right_now a.task-count:before {
 	content: "\f133";
 }
+
+ul.list-grid {
+	column-count: 3;
+    column-gap: 1.75em;
+    box-sizing: border-box;
+	li {
+		display: inline-block;
+		width:200px;
+    }
+}

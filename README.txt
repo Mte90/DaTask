@@ -1,6 +1,6 @@
 === DaTask ===
 Contributors: Mte90
-Tags: task, task management, activity, learning, badgeos, badge,
+Tags: task, task management, activity, learning, badgeos, badge, csv
 Requires at least: 4.2
 Tested up to: 4.1
 Stable tag: 1.0.3
@@ -32,6 +32,8 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 * New post type with 4 taxonomy: Team, Area, Difficulty and Estimated minute
 * Support for [WP REST API v1 & v2] in readonly(https://github.com/Mte90/DaTask/wiki/API-Rest)
 * Support for badge with BadgeOS
+* Report/Statistics system with CSV exporter
+* User RSS for activity
 
 == Installation ==
 
@@ -93,8 +95,10 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 * [Add] Support in readonly for WP REST API v2
 * [Add] Custom Taxonomies slug settings
 * [Add] Save the date of done/later task
-* [Improvement] Required task now are marked if done in task
+* [Add] Report page for admin with stats and exporter
+* [Improvement] Required task now are marked in frontend if done in task
 * [BugFix] Improved inline documentation!
+* [BugFix] Improved internal WP_Query
 
 = 1.0.3 =
 * [Add] Czech Translation
