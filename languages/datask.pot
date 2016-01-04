@@ -5,14 +5,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: TODO 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-10-15 19:15+0200\n"
+"POT-Creation-Date: 2016-01-04 14:23+0100\n"
 "PO-Revision-Date: 2014-07-07 18:52+0100\n"
 "Last-Translator: Mte90 <mte90net@gmail.com>\n"
 "Language-Team: LANGUAGE <translations@example.com >\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 "Plural-Forms: nplurals=2; plural=n == 1 ? 0 : 1;\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__;esc_attr_e;esc_attr__;"
 "_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c\n"
@@ -29,79 +29,110 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-7: admin/includes/cmb2_user_search_field.php\n"
 "X-Poedit-SearchPathExcluded-8: node_modules\n"
 
-#: admin/class-datask-admin.php:95
+#: admin/class-datask-admin.php:88 admin/includes/DT_MostDone_report.php:122
+#: admin/includes/DT_MostDone_report.php:185
 msgid "Done"
 msgstr ""
 
-#: admin/class-datask-admin.php:106
+#: admin/class-datask-admin.php:100
 msgid "Author"
 msgstr ""
 
-#: admin/class-datask-admin.php:151
+#: admin/class-datask-admin.php:142
 msgid "You have not selected a taxonomy!"
 msgstr ""
 
-#: admin/class-datask-admin.php:194
+#: admin/class-datask-admin.php:158 admin/views/report.php:43
+msgid "Report"
+msgstr ""
+
+#: admin/class-datask-admin.php:217
 msgid "Settings"
 msgstr ""
 
-#: admin/class-datask-admin.php:195
+#: admin/class-datask-admin.php:218
 msgid "Donate"
 msgstr ""
 
-#: admin/class-datask-admin.php:261
+#: admin/class-datask-admin.php:283
 msgid "Task Info"
 msgstr ""
 
-#: admin/class-datask-admin.php:269
+#: admin/class-datask-admin.php:291
 msgid "Subtitle"
 msgstr ""
 
-#: admin/class-datask-admin.php:270
+#: admin/class-datask-admin.php:292
 msgid "Description in a row"
 msgstr ""
 
-#: admin/class-datask-admin.php:276
+#: admin/class-datask-admin.php:298
 msgid "Required or Suggested Tasks"
 msgstr ""
 
-#: admin/class-datask-admin.php:283 public/includes/DT_Task_Support.php:158
+#: admin/class-datask-admin.php:305 public/includes/DT_Task_Support.php:168
 msgid "Prerequisites"
 msgstr ""
 
-#: admin/class-datask-admin.php:290 public/includes/DT_Task_Support.php:163
+#: admin/class-datask-admin.php:312 public/includes/DT_Task_Support.php:173
 msgid "Why this matters"
 msgstr ""
 
-#: admin/class-datask-admin.php:297 public/includes/DT_Task_Support.php:168
+#: admin/class-datask-admin.php:319 public/includes/DT_Task_Support.php:178
 msgid "Steps"
 msgstr ""
 
-#: admin/class-datask-admin.php:304 public/includes/DT_Task_Support.php:173
+#: admin/class-datask-admin.php:326 public/includes/DT_Task_Support.php:183
 msgid "Need Help?"
 msgstr ""
 
-#: admin/class-datask-admin.php:311 public/includes/DT_Task_Support.php:179
+#: admin/class-datask-admin.php:333 public/includes/DT_Task_Support.php:189
 msgid "Completion"
 msgstr ""
 
-#: admin/class-datask-admin.php:318 public/includes/DT_Task_Support.php:187
+#: admin/class-datask-admin.php:340 public/includes/DT_Task_Support.php:197
 msgid "Mentor(s)"
 msgstr ""
 
-#: admin/class-datask-admin.php:325
+#: admin/class-datask-admin.php:347
 msgid "Good next tasks"
 msgstr ""
 
-#: admin/class-datask-admin.php:338
+#: admin/class-datask-admin.php:366
 msgid "Task Completed"
+msgstr ""
+
+#: admin/includes/DT_MostDone_report.php:27 public/class-datask.php:389
+msgid "Task"
+msgstr ""
+
+#: admin/includes/DT_MostDone_report.php:28 admin/views/report.php:30
+#: public/class-datask.php:389
+msgid "Tasks"
+msgstr ""
+
+#: admin/includes/DT_MostDone_report.php:77
+msgid "No tasks avalaible."
+msgstr ""
+
+#: admin/includes/DT_MostDone_report.php:107
+msgid "Edit"
+msgstr ""
+
+#: admin/includes/DT_MostDone_report.php:108
+msgid "Show"
+msgstr ""
+
+#: admin/includes/DT_MostDone_report.php:121
+#: admin/includes/DT_MostDone_report.php:185
+msgid "Title"
 msgstr ""
 
 #: admin/includes/DT_User_Backend.php:44
 msgid "Reset Task in Progress"
 msgstr ""
 
-#: admin/includes/DT_User_Backend.php:46 templates/user-edit.php:13
+#: admin/includes/DT_User_Backend.php:46 templates/user-edit.php:25
 msgid "View Public Profile"
 msgstr ""
 
@@ -110,11 +141,11 @@ msgstr ""
 msgid "Task in progress reset for <b>%s</b> done!"
 msgstr ""
 
-#: admin/includes/impexp.php:73
+#: admin/includes/impexp.php:76
 msgid "Please upload a valid .json file"
 msgstr ""
 
-#: admin/includes/impexp.php:77
+#: admin/includes/impexp.php:80
 msgid "Please upload a file to import"
 msgstr ""
 
@@ -122,7 +153,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: admin/views/admin.php:23
+#: admin/views/admin.php:23 admin/views/report.php:48
 msgid "Extra"
 msgstr ""
 
@@ -154,418 +185,471 @@ msgstr ""
 msgid "Slug of the Post Type"
 msgstr ""
 
-#: admin/views/admin.php:76
+#: admin/views/admin.php:68
+msgid "Slug of the Task Area taxonomy"
+msgstr ""
+
+#: admin/views/admin.php:74
+msgid "Slug of the Task Difficulty taxonomy"
+msgstr ""
+
+#: admin/views/admin.php:80
+msgid "Slug of the Task Team taxonomy"
+msgstr ""
+
+#: admin/views/admin.php:86
+msgid "Slug of the Task Minute Estimated taxonomy"
+msgstr ""
+
+#: admin/views/admin.php:100
 msgid "Export Settings"
 msgstr ""
 
-#: admin/views/admin.php:78
+#: admin/views/admin.php:102
 msgid ""
 "Export the plugin settings for this site as a .json file. This allows you to "
 "easily import the configuration into another site."
 msgstr ""
 
-#: admin/views/admin.php:83
+#: admin/views/admin.php:107
 msgid "Export"
 msgstr ""
 
-#: admin/views/admin.php:90
+#: admin/views/admin.php:114
 msgid "Import Settings"
 msgstr ""
 
-#: admin/views/admin.php:92
+#: admin/views/admin.php:116
 msgid ""
 "Import the plugin settings from a .json file. This file can be obtained by "
 "exporting the settings on another site using the form above."
 msgstr ""
 
-#: admin/views/admin.php:100
+#: admin/views/admin.php:124
 msgid "Import"
 msgstr ""
 
-#: admin/views/admin.php:109
+#: admin/views/admin.php:133
 msgid "DaTask"
 msgstr ""
 
-#: includes/DT_Functions.php:120
+#: admin/views/report.php:47
+msgid "Most Done"
+msgstr ""
+
+#: admin/views/report.php:54
+msgid "Download CSV"
+msgstr ""
+
+#: includes/DT_Functions.php:139
 #, php-format
 msgid "%d Tasks Completed"
 msgstr ""
 
-#: includes/DT_Functions.php:146
+#: includes/DT_Functions.php:172
 msgid "Nothing task done :("
 msgstr ""
 
-#: includes/DT_Functions.php:150 includes/DT_Functions.php:213
+#: includes/DT_Functions.php:176 includes/DT_Functions.php:246
 msgid "This profile not exist!"
 msgstr ""
 
-#: includes/DT_Functions.php:187
+#: includes/DT_Functions.php:212
 msgid "Tasks in progress"
 msgstr ""
 
-#: includes/template.php:85
-msgid "Complete this task"
+#: includes/DT_Functions.php:227
+msgid "minute estimated"
+msgstr ""
+
+#: includes/DT_Functions.php:240
+msgid "You don't have any task to do! Pick one!"
+msgstr ""
+
+#: includes/DT_Functions.php:389
+msgid "Badge Earned by the user"
 msgstr ""
 
 #: includes/template.php:95
-msgid "Save for later"
-msgstr ""
-
-#: includes/template.php:100
-msgid "Remove complete task"
+msgid "Complete this task"
 msgstr ""
 
 #: includes/template.php:105
+msgid "Save for later"
+msgstr ""
+
+#: includes/template.php:110
+msgid "Remove complete task"
+msgstr ""
+
+#: includes/template.php:115
 msgid "Save your history of tasks done or in progress with a free account!"
 msgstr ""
 
-#: includes/template.php:123
+#: includes/template.php:133
 msgid "Contact"
 msgstr ""
 
-#: includes/template.php:128
+#: includes/template.php:138
 msgid "Sent"
 msgstr ""
 
-#: includes/widgets/most-task-done.php:11
-#: includes/widgets/most-task-done.php:12
-#: includes/widgets/most-task-done.php:17
-#: includes/widgets/most-task-done.php:21
+#: includes/widgets/most-task-done.php:19
+#: includes/widgets/most-task-done.php:20
+#: includes/widgets/most-task-done.php:25
+#: includes/widgets/most-task-done.php:29
 msgid "Most Tasks Done"
 msgstr ""
 
-#: includes/widgets/most-task-done.php:26 includes/widgets/recents-tasks.php:26
+#: includes/widgets/most-task-done.php:34 includes/widgets/recents-tasks.php:34
 msgid "Task showed"
 msgstr ""
 
-#: includes/widgets/recents-tasks.php:11 includes/widgets/recents-tasks.php:17
-#: includes/widgets/recents-tasks.php:21
+#: includes/widgets/recents-tasks.php:19 includes/widgets/recents-tasks.php:25
+#: includes/widgets/recents-tasks.php:29
 msgid "Recents Tasks"
 msgstr ""
 
-#: includes/widgets/recents-tasks.php:12
+#: includes/widgets/recents-tasks.php:20
 msgid "Recent Tasks in the system"
 msgstr ""
 
-#: public/class-datask.php:391
-msgid "Task"
-msgstr ""
-
-#: public/class-datask.php:391
-msgid "Tasks"
-msgstr ""
-
-#: public/class-datask.php:393
+#: public/class-datask.php:400
 msgid "Area"
 msgstr ""
 
-#: public/class-datask.php:393
+#: public/class-datask.php:400
 msgid "Areas"
 msgstr ""
 
-#: public/class-datask.php:402 public/includes/DT_Task_Support.php:100
+#: public/class-datask.php:406 public/includes/DT_Task_Support.php:96
 msgid "Difficulty"
 msgstr ""
 
-#: public/class-datask.php:402
+#: public/class-datask.php:406
 msgid "Difficulties"
 msgstr ""
 
-#: public/class-datask.php:411 public/includes/DT_Task_Support.php:80
+#: public/class-datask.php:412 public/includes/DT_Task_Support.php:76
 msgid "Team"
 msgstr ""
 
-#: public/class-datask.php:411
+#: public/class-datask.php:412
 msgid "Teams"
 msgstr ""
 
-#: public/class-datask.php:420
+#: public/class-datask.php:418
 msgid "Estimated minute"
 msgstr ""
 
-#: public/class-datask.php:420
+#: public/class-datask.php:418
 msgid "Estimated minutes"
 msgstr ""
 
-#: public/class-datask.php:463
+#: public/class-datask.php:455
 msgid "Search to see results"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:121
+#: public/includes/DT_AJAX_Filter.php:120
 msgid "Read More"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:129
+#: public/includes/DT_AJAX_Filter.php:128
 msgid "No Results found :("
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:237
-#: public/includes/DT_AJAX_Filter.php:309
+#: public/includes/DT_AJAX_Filter.php:234
+#: public/includes/DT_AJAX_Filter.php:306
 msgid "Search"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:305
+#: public/includes/DT_AJAX_Filter.php:302
 msgid "There are no tasks!"
 msgstr ""
 
-#: public/includes/DT_AJAX_Filter.php:310
+#: public/includes/DT_AJAX_Filter.php:307
 msgid "Clear"
 msgstr ""
 
-#: public/includes/DT_AJAX_Task.php:146 public/includes/DT_AJAX_Task.php:153
+#: public/includes/DT_AJAX_Task.php:142 public/includes/DT_AJAX_Task.php:149
 #, php-format
 msgid "Contact from %s by %s"
 msgstr ""
 
-#: public/includes/DT_AJAX_Task.php:147
+#: public/includes/DT_AJAX_Task.php:143
 msgid "Profile"
+msgstr ""
+
+#: public/includes/DT_BadgeOS.php:37
+msgid "DaTask Done Task"
+msgstr ""
+
+#: public/includes/DT_BadgeOS.php:54
+msgid "Select the task"
+msgstr ""
+
+#: public/includes/DT_BadgeOS.php:112
+#, php-format
+msgid "%1$s triggered %2$s (%3$dx)"
+msgstr ""
+
+#: public/includes/DT_BadgeOS.php:112
+msgid "Task Done"
 msgstr ""
 
 #: public/includes/DT_Comment.php:42
 msgid "Insert URL of the Tweet"
 msgstr ""
 
-#: public/includes/DT_Comment.php:82 public/includes/DT_Comment.php:115
+#: public/includes/DT_Comment.php:79 public/includes/DT_Comment.php:111
 msgid "URL of the Tweet"
 msgstr ""
 
-#: public/includes/DT_Comment.php:97
+#: public/includes/DT_Comment.php:94
 msgid "Task Feedback Data"
 msgstr ""
 
-#: public/includes/DT_Frontend_Login.php:26 templates/log-in.php:60
-#: templates/log-in.php:73
+#: public/includes/DT_Frontend_Login.php:25 templates/log-in.php:72
+#: templates/log-in.php:85
 msgid "Login"
 msgstr ""
 
-#: public/includes/DT_Frontend_Login.php:33
+#: public/includes/DT_Frontend_Login.php:32
 #: public/includes/DT_Frontend_Login.php:303
 #: public/includes/DT_Frontend_Login.php:304
 msgid "Logout"
 msgstr ""
 
-#: public/includes/DT_Frontend_Login.php:40
+#: public/includes/DT_Frontend_Login.php:39
 msgid "Edit Profile"
 msgstr ""
 
-#: public/includes/DT_Frontend_Profile.php:26
-#: public/includes/DT_Frontend_Profile.php:104
-#: public/includes/DT_Frontend_Profile.php:134
+#: public/includes/DT_Frontend_Profile.php:25
+#: public/includes/DT_Frontend_Profile.php:121
+#: public/includes/DT_Frontend_Profile.php:151
 msgid "Your profile"
 msgstr ""
 
-#: public/includes/DT_Frontend_Profile.php:108 templates/user-profile.php:13
+#: public/includes/DT_Frontend_Profile.php:32
+msgid "Member Feed"
+msgstr ""
+
+#: public/includes/DT_Frontend_Profile.php:127 templates/user-profile.php:24
 #, php-format
 msgid "%s's Profile"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:75
+#: public/includes/DT_Task_Support.php:71
 msgid "Last edit: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:90
+#: public/includes/DT_Task_Support.php:86
 msgid "Project"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:110
+#: public/includes/DT_Task_Support.php:106
 msgid "Estimated time"
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:140
+#: public/includes/DT_Task_Support.php:134
 msgid "Required or Suggested tasks: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:203
+#: public/includes/DT_Task_Support.php:218
 msgid "Good next tasks: "
 msgstr ""
 
-#: public/includes/DT_Task_Support.php:221
+#: public/includes/DT_Task_Support.php:241
 msgid "List of users who completed this task"
 msgstr ""
 
-#: templates/log-in.php:17
+#: templates/log-in.php:29
 msgid "Success!"
 msgstr ""
 
-#: templates/log-in.php:20
+#: templates/log-in.php:32
 msgid "Check your email for the password and then return to log in."
 msgstr ""
 
-#: templates/log-in.php:26 templates/log-in.php:155
+#: templates/log-in.php:38 templates/log-in.php:167
 msgid "Password recovery"
 msgstr ""
 
-#: templates/log-in.php:29
+#: templates/log-in.php:41
 msgid "Check your email for the instructions to get a new password."
 msgstr ""
 
-#: templates/log-in.php:35
+#: templates/log-in.php:47
 msgid "Password reset"
 msgstr ""
 
-#: templates/log-in.php:38
+#: templates/log-in.php:50
 msgid ""
 "Your password has been updated. <a href=\"/login/\">Proceed to login</a>."
 msgstr ""
 
-#: templates/log-in.php:52
+#: templates/log-in.php:64
 msgid "Invalid username or password. Please try again."
 msgstr ""
 
-#: templates/log-in.php:65 templates/log-in.php:114 templates/user-edit.php:22
+#: templates/log-in.php:77 templates/log-in.php:126 templates/user-edit.php:34
 msgid "Username"
 msgstr ""
 
-#: templates/log-in.php:69
+#: templates/log-in.php:81
 msgid "Password"
 msgstr ""
 
-#: templates/log-in.php:93
+#: templates/log-in.php:105
 msgid ""
 "Username can only contain alphanumerical characters, \"_\" and \"-\". Please "
 "choose another username."
 msgstr ""
 
-#: templates/log-in.php:95
+#: templates/log-in.php:107
 msgid "Username already in use."
 msgstr ""
 
-#: templates/log-in.php:97
+#: templates/log-in.php:109
 msgid "E-mail already in use. Maybe you are already registered?"
 msgstr ""
 
-#: templates/log-in.php:99
+#: templates/log-in.php:111
 msgid "All fields are required."
 msgstr ""
 
-#: templates/log-in.php:101
+#: templates/log-in.php:113
 msgid "An error occurred while registering the new user. Please try again."
 msgstr ""
 
-#: templates/log-in.php:109 templates/log-in.php:128
+#: templates/log-in.php:121 templates/log-in.php:140
 msgid "Register"
 msgstr ""
 
-#: templates/log-in.php:118 templates/user-edit.php:73
+#: templates/log-in.php:130 templates/user-edit.php:85
 msgid "E-mail"
 msgstr ""
 
-#: templates/log-in.php:122
+#: templates/log-in.php:134
 msgid "Confirm E-mail"
 msgstr ""
 
-#: templates/log-in.php:124
+#: templates/log-in.php:136
 msgid "A password will be e-mailed to you."
 msgstr ""
 
-#: templates/log-in.php:141
+#: templates/log-in.php:153
 msgid ""
 "The reset key is wrong or expired. Please check that you used the right "
 "reset link or request a new one."
 msgstr ""
 
-#: templates/log-in.php:143
+#: templates/log-in.php:155
 msgid "Sorry, we couldn't find any user with that username or email."
 msgstr ""
 
-#: templates/log-in.php:158
+#: templates/log-in.php:170
 msgid ""
 "Please enter your username or email address. You will receive a link to "
 "create a new password."
 msgstr ""
 
-#: templates/log-in.php:161
+#: templates/log-in.php:173
 msgid "Username or E-mail:"
 msgstr ""
 
-#: templates/log-in.php:165 templates/log-in.php:201
+#: templates/log-in.php:177 templates/log-in.php:213
 msgid "Get New Password"
 msgstr ""
 
-#: templates/log-in.php:173
+#: templates/log-in.php:185
 msgid "The passwords don't match. Please try again."
 msgstr ""
 
-#: templates/log-in.php:179
+#: templates/log-in.php:191
 msgid "Reset password"
 msgstr ""
 
-#: templates/log-in.php:182
+#: templates/log-in.php:194
 msgid "Create a new password for your account."
 msgstr ""
 
-#: templates/log-in.php:185 templates/user-edit.php:87
+#: templates/log-in.php:197 templates/user-edit.php:99
 msgid "New Password"
 msgstr ""
 
-#: templates/log-in.php:189
+#: templates/log-in.php:201
 msgid "Confirm Password"
 msgstr ""
 
-#: templates/user-edit.php:23
+#: templates/user-edit.php:35
 msgid "Usernames cannot be changed."
 msgstr ""
 
-#: templates/user-edit.php:26
+#: templates/user-edit.php:38
 msgid "First Name"
 msgstr ""
 
-#: templates/user-edit.php:31
+#: templates/user-edit.php:43
 msgid "Last Name"
 msgstr ""
 
-#: templates/user-edit.php:36
+#: templates/user-edit.php:48
 msgid "Nickname"
 msgstr ""
 
-#: templates/user-edit.php:36 templates/user-edit.php:73
+#: templates/user-edit.php:48 templates/user-edit.php:85
 msgid "(required)"
 msgstr ""
 
-#: templates/user-edit.php:41
+#: templates/user-edit.php:53
 msgid "Display to Public as"
 msgstr ""
 
-#: templates/user-edit.php:79 templates/user-profile.php:26
+#: templates/user-edit.php:91 templates/user-profile.php:37
 msgid "Website"
 msgstr ""
 
-#: templates/user-edit.php:83
+#: templates/user-edit.php:95
 msgid "Biographical Info"
 msgstr ""
 
-#: templates/user-edit.php:84
+#: templates/user-edit.php:96
 msgid ""
 "Share a little biographical information to fill out your profile. This may "
 "be shown publicly."
 msgstr ""
 
-#: templates/user-edit.php:87
+#: templates/user-edit.php:99
 msgid ""
 "If you would like to change the password type a new one. Otherwise leave "
 "this blank."
 msgstr ""
 
-#: templates/user-edit.php:91
+#: templates/user-edit.php:103
 msgid "Type your new password again."
 msgstr ""
 
-#: templates/user-edit.php:92
+#: templates/user-edit.php:104
 msgid "Strength indicator"
 msgstr ""
 
-#: templates/user-edit.php:102
+#: templates/user-edit.php:114
 msgid "Update Profile"
 msgstr ""
 
-#: templates/user-profile.php:23
+#: templates/user-profile.php:34
 msgid "Email"
 msgstr ""
 
-#: templates/user-profile.php:35
+#: templates/user-profile.php:39
+msgid "RSS Feed Activity"
+msgstr ""
+
+#: templates/user-profile.php:47
 msgid "Edit profile"
 msgstr ""
 
-#: templates/user-profile.php:39
+#: templates/user-profile.php:51
 msgid "Dashboard"
 msgstr ""
