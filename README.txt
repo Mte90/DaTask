@@ -30,7 +30,7 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 * Ajax based
 * Widgets avalaible
 * New post type with 4 taxonomy: Team, Area, Difficulty and Estimated minute
-* Support for [WP REST API v1 & v2] in readonly(https://github.com/Mte90/DaTask/wiki/API-Rest)
+* Support for [WP REST API v1 & v2](https://github.com/Mte90/DaTask/wiki/API-Rest) in readonly
 * Support for badge with BadgeOS
 * Report/Statistics system with CSV exporter
 * User RSS for activity
