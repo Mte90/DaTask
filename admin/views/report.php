@@ -17,7 +17,7 @@ function dt_table_tax( $slug, $name, $tax ) {
 	<table class="widefat fixed">
 	    <thead>
 		<tr>
-		    <td><?php _e( $name, $slug ); ?></td>
+		    <td><b><?php _e( $name, $slug ); ?></b></td>
 		</tr>
 	    </thead>
 	    <tbody>

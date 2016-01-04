@@ -154,7 +154,7 @@ class DaTask_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_plugin_admin_menu() {
-		$this->plugin_screen_hook_suffix = add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_options', $this->plugin_slug . '-settings', array( $this, 'display_plugin_admin_page' ), 'dashicons-yes', 90 );
+		$this->plugin_screen_hook_suffix = add_menu_page( $this->plugin_name, $this->plugin_name, 'manage_options', $this->plugin_slug . '-settings', array( $this, 'display_plugin_admin_page' ), 'dashicons-yes', 99 );
 		$hook = add_submenu_page( $this->plugin_slug . '-settings', __( 'Report', $this->plugin_slug ), __( 'Report', $this->plugin_slug ), 'manage_options', $this->plugin_slug . '-report', array( $this, 'display_plugin_report_page' ) );
 		//Call the report screen option only on the correct page
 		add_action( 'load-' . $hook, array( $this, 'report_screen_option' ) );
