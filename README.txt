@@ -96,6 +96,7 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 * [Add] Custom Taxonomies slug settings
 * [Add] Save the date of done/later task
 * [Add] Report page for admin with stats and exporter
+* [Add] Feed RSS of the user activities
 * [Improvement] Required task now are marked in frontend if done in task
 * [BugFix] Improved inline documentation!
 * [BugFix] Improved internal WP_Query
