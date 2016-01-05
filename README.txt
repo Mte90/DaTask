@@ -89,6 +89,9 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 
 == Changelog ==
 
+= 1.1.1 =
+* [Add] Support for BrowserID signin
+
 = 1.1.0 =
 * [Add] Support for BadgeOS
 * [Add] New shortcode [datask-badge]

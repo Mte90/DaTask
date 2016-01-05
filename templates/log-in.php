@@ -18,6 +18,11 @@ $action = !empty( $_GET[ 'action' ] ) && ($_GET[ 'action' ] === 'register' || $_
 $success = !empty( $_GET[ 'success' ] );
 $failed = !empty( $_GET[ 'failed' ] ) ? $_GET[ 'failed' ] : false;
 $plugin = DaTask::get_instance();
+$browserid = '';
+if ( class_exists( 'MozillaPersonaOptions' ) ) {
+	$browserid = get_option( 'browserid_general_options' );
+	$browserid = $browserid[ 'browserid_only_auth' ];
+}
 ?>
 
 <div id="content-main" class="main" role="main">
@@ -55,7 +60,7 @@ $plugin = DaTask::get_instance();
 			echo 'style="display:none;"';
 		}
 		?>>
-		     <?php if ( $action === 'login' && $failed ): ?>
+			 <?php if ( $action === 'login' && $failed ): ?>
 			    <div class="panel panel-danger">
 				<div class="panel-heading">
 				    <?php
@@ -72,18 +77,20 @@ $plugin = DaTask::get_instance();
 			</div>
 			<div class="panel-body">
 			    <form name="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
-				<div class="form-group">
-				    <label for="user_login"><?php _e( 'Username' ) ?></label>
-				    <input type="text" name="log" class="form-control" value="" size="20" />
-				</div>
-				<div class="form-group">
-				    <label for="user_pass"><?php _e( 'Password' ) ?></label>
-				    <input type="password" name="pwd" class="form-control" value="" size="20" />
-				</div>
-				<div class="form-group">
-				    <input type="submit" name="wp-submit" class="button btn btn-primary" value="<?php _e( 'Login' ); ?>" />
-				</div>
-				<?php
+				<?php if ( $browserid !== 'on' ) { ?>
+					<div class="form-group">
+					    <label for="user_login"><?php _e( 'Username' ) ?></label>
+					    <input type="text" name="log" id="user_login" class="form-control user_login" value="" size="20" />
+					</div>
+					<div class="form-group">
+					    <label for="user_pass"><?php _e( 'Password' ) ?></label>
+					    <input type="password" name="pwd" id="user_pass" class="form-control user_pass" value="" size="20" />
+					</div>
+					<div class="form-group">
+					    <input type="submit" name="wp-submit" id="wp-submit" class="button btn btn-primary" value="<?php _e( 'Login' ); ?>" />
+					</div>
+					<?php
+				}
 				do_action( 'login_form' );
 				?>
 			    </form>
@@ -96,7 +103,7 @@ $plugin = DaTask::get_instance();
 				echo 'style="display:none;"';
 			}
 			?>>
-			     <?php if ( $action === 'register' && $failed ): ?>
+				 <?php if ( $action === 'register' && $failed ): ?>
 				    <div class="panel panel-danger">
 					<div class="panel-heading">
 					    <?php
@@ -120,24 +127,28 @@ $plugin = DaTask::get_instance();
 				    <?php _e( 'Register', $plugin->get_plugin_slug() ); ?>
 				</div>
 				<div class="panel-body">
-				    <form action="<?php echo site_url( 'wp-login.php?action=register', 'login_post' ) ?>" method="post">
+				    <form action="<?php echo site_url( 'wp-login.php?action=register', 'login_post' ) ?>" id="registerform" method="post">
 					<div class="form-group">
 					    <label for="user_login"><?php _e( 'Username', $plugin->get_plugin_slug() ); ?></label>
-					    <input type="text" name="user_login" id="user_login" class="form-control" value="">
+					    <input type="text" name="user_login" id="user_login" class="form-control user_login" value="">
 					</div>
-					<div class="form-group">
-					    <label for="user_email"><?php _e( 'E-mail', $plugin->get_plugin_slug() ); ?></label>
-					    <input type="text" name="user_email" id="user_email" class="form-control" value="">
-					</div>
-					<div class="form-group">
-					    <label for="confirm_email"><?php _e( 'Confirm E-mail', $plugin->get_plugin_slug() ); ?></label>
-					    <input type="text" name="confirm_email" class="form-control" value="">
-					    <p class="help-block"><?php _e( 'A password will be e-mailed to you.', $plugin->get_plugin_slug() ); ?></p>
-					</div>
-					<div class="form-group">
+					<?php if ( $browserid !== 'on' ) { ?>
+						<div class="form-group">
+						    <label for="user_email"><?php _e( 'E-mail', $plugin->get_plugin_slug() ); ?></label>
+						    <input type="text" name="user_email" id="user_email" class="form-control user_email" value="">
+						</div>
+						<div class="form-group">
+						    <label for="confirm_email"><?php _e( 'Confirm E-mail', $plugin->get_plugin_slug() ); ?></label>
+						    <input type="text" name="confirm_email" class="form-control" id="reg_passmail" value="">
+						    <p class="help-block"><?php _e( 'A password will be e-mailed to you.', $plugin->get_plugin_slug() ); ?></p>
+						</div>
+						<div class="form-group">
+					    <?php } ?>
 					    <input type="hidden" name="redirect_to" value="/login/?action=register&amp;success=1" />
 					    <input type="submit" name="wp-submit" id="wp-submit" class="button btn btn-primary" value="<?php _e( 'Register', $plugin->get_plugin_slug() ); ?>" />
-					</div>
+					    <?php if ( $browserid !== 'on' ) { ?>
+						</div>
+					<?php } ?>
 					<?php do_action( 'register_form' ); ?>
 				    </form>
 				</div>
