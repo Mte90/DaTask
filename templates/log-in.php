@@ -10,7 +10,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 if ( !defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
@@ -56,7 +55,7 @@ $plugin = DaTask::get_instance();
 			echo 'style="display:none;"';
 		}
 		?>>
-			 <?php if ( $action === 'login' && $failed ): ?>
+		     <?php if ( $action === 'login' && $failed ): ?>
 			    <div class="panel panel-danger">
 				<div class="panel-heading">
 				    <?php
@@ -97,7 +96,7 @@ $plugin = DaTask::get_instance();
 				echo 'style="display:none;"';
 			}
 			?>>
-				 <?php if ( $action === 'register' && $failed ): ?>
+			     <?php if ( $action === 'register' && $failed ): ?>
 				    <div class="panel panel-danger">
 					<div class="panel-heading">
 					    <?php
@@ -124,11 +123,11 @@ $plugin = DaTask::get_instance();
 				    <form action="<?php echo site_url( 'wp-login.php?action=register', 'login_post' ) ?>" method="post">
 					<div class="form-group">
 					    <label for="user_login"><?php _e( 'Username', $plugin->get_plugin_slug() ); ?></label>
-					    <input type="text" name="user_login" class="form-control" value="">
+					    <input type="text" name="user_login" id="user_login" class="form-control" value="">
 					</div>
 					<div class="form-group">
 					    <label for="user_email"><?php _e( 'E-mail', $plugin->get_plugin_slug() ); ?></label>
-					    <input type="text" name="user_email" class="form-control" value="">
+					    <input type="text" name="user_email" id="user_email" class="form-control" value="">
 					</div>
 					<div class="form-group">
 					    <label for="confirm_email"><?php _e( 'Confirm E-mail', $plugin->get_plugin_slug() ); ?></label>
@@ -139,6 +138,7 @@ $plugin = DaTask::get_instance();
 					    <input type="hidden" name="redirect_to" value="/login/?action=register&amp;success=1" />
 					    <input type="submit" name="wp-submit" id="wp-submit" class="button btn btn-primary" value="<?php _e( 'Register', $plugin->get_plugin_slug() ); ?>" />
 					</div>
+					<?php do_action( 'register_form' ); ?>
 				    </form>
 				</div>
 			    </div>
