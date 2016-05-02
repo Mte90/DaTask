@@ -2,8 +2,8 @@
 Contributors: Mte90
 Tags: task, task management, activity, learning, badgeos, badge, csv
 Requires at least: 4.2
-Tested up to: 4.4
-Stable tag: 1.1.0
+Tested up to: 4.5
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,7 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 
 = 1.1.1 =
 * [Add] Support for BrowserID signin
+* [BugFix] Fix uninstall
 
 = 1.1.0 =
 * [Add] Support for BadgeOS

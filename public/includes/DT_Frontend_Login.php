@@ -55,7 +55,6 @@ class DT_Frontend_Login {
 		add_filter( 'the_content', array( $this, 'login_page' ) );
 		// Switch login to logout for logged users
 		add_filter( 'wp_nav_menu_objects', array( $this, 'login_to_logout' ) );
-		add_filter( 'body_class', array( $this, 'add_dt_class' ), 10, 3 );
 	}
 
 	/**

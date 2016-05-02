@@ -11,73 +11,72 @@
  */
 // If uninstall not called from WordPress, then exit
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	exit;
+  exit;
 }
 
 global $wpdb, $wp_roles;
 
 $plugin_roles = array(
     'administrator' => array(
-	'edit_tasks' => true,
-	'edit_others_tasks' => true,
+	  'edit_tasks' => true,
+	  'edit_others_tasks' => true,
     ), 'editor' => array(
-	'edit_demo' => true,
-	'edit_others_demo' => true,
+	  'edit_demo' => true,
+	  'edit_others_demo' => true,
     ), 'author' => array(
-	'edit_demo' => true,
-	'edit_others_demo' => false,
+	  'edit_demo' => true,
+	  'edit_others_demo' => false,
     ), 'subscriber' => array(
-	'edit_demo' => false,
-	'edit_others_demo' => false,
+	  'edit_demo' => false,
+	  'edit_others_demo' => false,
     ),
 );
 
 if ( is_multisite() ) {
-	$blogs = $wpdb->get_results( "SELECT blog_id FROM {$wpdb->blogs}", ARRAY_A );
+  $blogs = $wpdb->get_results( "SELECT blog_id FROM {$wpdb->blogs}", ARRAY_A );
 
-	if ( $blogs ) {
+  if ( $blogs ) {
+    foreach ( $blogs as $blog ) {
+	switch_to_blog( $blog[ 'blog_id' ] );
 
-		foreach ( $blogs as $blog ) {
-			switch_to_blog( $blog[ 'blog_id' ] );
-
-			if ( !isset( $wp_roles ) ) {
-				$wp_roles = new WP_Roles;
-			}
-
-			foreach ( $wp_roles->role_names as $role => $label ) {
-				// If the role is a standard role, map the default caps, otherwise, map as a subscriber
-				$caps = ( array_key_exists( $role, $plugin_roles ) ) ? $plugin_roles[ $role ] : $plugin_roles[ 'subscriber' ];
-
-				// Loop and assign
-				foreach ( $caps as $cap => $grant ) {
-					// Check to see if the user already has this capability, if so, don't re-add as that would override grant
-					if ( !isset( $wp_roles->roles[ $role ][ 'capabilities' ][ $cap ] ) ) {
-						$wp_roles->remove_cap( $cap );
-					}
-				}
-			}
-
-			restore_current_blog();
-		}
-	}
-} else {
 	if ( !isset( $wp_roles ) ) {
-		$wp_roles = new WP_Roles;
+	  $wp_roles = new WP_Roles;
 	}
 
 	foreach ( $wp_roles->role_names as $role => $label ) {
-		// If the role is a standard role, map the default caps, otherwise, map as a subscriber
-		$caps = ( array_key_exists( $role, $plugin_roles ) ) ? $plugin_roles[ $role ] : $plugin_roles[ 'subscriber' ];
+	  // If the role is a standard role, map the default caps, otherwise, map as a subscriber
+	  $caps = ( array_key_exists( $role, $plugin_roles ) ) ? $plugin_roles[ $role ] : $plugin_roles[ 'subscriber' ];
 
-		// Loop and assign
-		foreach ( $caps as $cap => $grant ) {
-			// Check to see if the user already has this capability, if so, don't re-add as that would override grant
-			if ( !isset( $wp_roles->roles[ $role ][ 'capabilities' ][ $cap ] ) ) {
-				$wp_roles->remove_cap( $cap );
-			}
-		}
+	  // Loop and assign
+	  foreach ( $caps as $cap => $grant ) {
+	    // Check to see if the user already has this capability, if so, don't re-add as that would override grant
+	    if ( !isset( $wp_roles->roles[ $role ][ 'capabilities' ][ $cap ] ) ) {
+		$wp_roles->remove_cap( $role, $cap );
+	    }
+	  }
 	}
+
+	restore_current_blog();
+    }
+  }
+} else {
+  if ( !isset( $wp_roles ) ) {
+    $wp_roles = new WP_Roles;
+  }
+
+  foreach ( $wp_roles->role_names as $role => $label ) {
+    // If the role is a standard role, map the default caps, otherwise, map as a subscriber
+    $caps = ( array_key_exists( $role, $plugin_roles ) ) ? $plugin_roles[ $role ] : $plugin_roles[ 'subscriber' ];
+
+    // Loop and assign
+    foreach ( $caps as $cap => $grant ) {
+	// Check to see if the user already has this capability, if so, don't re-add as that would override grant
+	if ( !isset( $wp_roles->roles[ $role ][ 'capabilities' ][ $cap ] ) ) {
+	  $wp_roles->remove_cap( $role, $cap );
+	}
+    }
+  }
 }
 
-delete_option( $this->plugin_slug . '-settings' );
-delete_option( $this->plugin_slug . '-settings-extra' );
+delete_option( 'datask-settings' );
+delete_option( 'datask-settings-extra' );

@@ -18,8 +18,11 @@ if ( !defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 
-<div id="content-main" class="main" role="main">
-    <div class="col-md-8">
+<div class="container">
+	<div class="row">
+
+		<div id="primary" class="col-md-9">
+			<main id="main" class="site-main" role="main">
 	<?php while ( have_posts() ) : the_post(); ?>
 		<?php
 		include(dt_get_template_part( 'content', 'single-task', false ));
