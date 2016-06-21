@@ -171,13 +171,13 @@ class DT_AJAX_Filter {
 			// Print position 1
 			if ( $page_number >= 1 ) {
 				if ( 1 === $page_number ) {
-					$active = ' class="active"';
+					$active = ' active';
 				} else {
 					$active = '';
 				}
 				if ( $page_number !== 2 ) {
 					?>
-					<li<?php echo $active ?>><a href='#' class='pagelink-1 pagelink' rel="1">1</a></li>
+					<li class="page-item<?php echo $active ?>"><a href='#' class='page-link pagelink-1 pagelink' rel="1">1</a></li>
 					<?php
 				}
 				if ( $page_number > 3 ) {
@@ -189,25 +189,25 @@ class DT_AJAX_Filter {
 			// Print 3 page
 			if ( $page_number - 1 !== 0 ) {
 				?>
-				<li class="minus"><a href="#" class="pagelink-<?php echo ($page_number - 1); ?> pagelink" rel="<?php echo ($page_number - 1); ?>"><?php echo ($page_number - 1); ?></a></li>
+				<li class="minus page-item"><a href="#" class="page-link pagelink-<?php echo ($page_number - 1); ?> pagelink" rel="<?php echo ($page_number - 1); ?>"><?php echo ($page_number - 1); ?></a></li>
 				<?php
 			}
 			if ( $page_number !== 1 ) {
 				?>
-				<li class="active"><a href="#" class="pagelink-<?php echo $page_number; ?> pagelink" rel="<?php echo $page_number; ?>"><?php echo $page_number; ?></a></li>
+				<li class="active page-item"><a href="#" class="page-link pagelink-<?php echo $page_number; ?> pagelink" rel="<?php echo $page_number; ?>"><?php echo $page_number; ?></a></li>
 				<?php
 			}
 			if ( $page_number !== $pages ) {
 				?>
-				<li class="plus"><a href="#" class="pagelink-<?php echo ($page_number + 1); ?> pagelink" rel="<?php echo ($page_number + 1); ?>"><?php echo ($page_number + 1); ?></a></li>
+				<li class="plus page-item"><a href="#" class="page-link pagelink-<?php echo ($page_number + 1); ?> pagelink" rel="<?php echo ($page_number + 1); ?>"><?php echo ($page_number + 1); ?></a></li>
 				<?php
 			}
 
 			// If the current page is less than the last page minus $posts_per_page pages divided by 2 
 			if ( $page_number < ( $pages - floor( $posts_per_page / 2 ) ) ) {
 				?>
-				<li><a>...</a></li>
-				<li><a href='#' class="pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a></li>
+				<li class="page-item"><a href='#' class="page-link">...</a></li>
+				<li class="page-item"><a href='#' class="page-link pagelink-<?php echo $pages; ?> pagelink" rel="<?php echo $pages; ?>"><?php echo $pages; ?></a></li>
 				<?php
 			}
 			?>
@@ -303,8 +303,8 @@ class DT_AJAX_Filter {
 			} else {
 				?>
 				<div class="search-form-button">
-				    <input type="submit" id="go" class="go filter btn btn-primary" value="<?php _e( "Search" ); ?>" />
-				    <input type="reset" id="reset" class="reset btn btn-primary" value="<?php _e( "Clear" ); ?>" />
+				    <input type="submit" id="go" class="go filter btn btn-info" value="<?php _e( "Search" ); ?>" />
+				    <input type="reset" id="reset" class="reset btn btn-info" value="<?php _e( "Clear" ); ?>" />
 				</div>
 				<?php
 			}

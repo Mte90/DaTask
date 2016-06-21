@@ -18,8 +18,8 @@ if ( !defined( 'ABSPATH' ) ) {
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 	<header class="entry-header jumbotron">
-		<h2 class="entry-title"><?php the_title(); ?></h2>
-		<h3><?php the_task_subtitle(); ?></h3>
+		<h5 class="entry-title"><?php the_title(); ?></h5>
+		<h6><?php the_task_subtitle(); ?></h6>
 	</header>
 	<div class="entry-content">
 		<?php	

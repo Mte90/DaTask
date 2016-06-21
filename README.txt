@@ -89,6 +89,10 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 
 == Changelog ==
 
+== 2.0.0 ==
+
+* [BugFix] Fix username profile with space in the name
+
 = 1.1.1 =
 * [Add] Support for BrowserID signin
 * [BugFix] Fix uninstall

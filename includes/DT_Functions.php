@@ -134,11 +134,12 @@ function dt_get_tasks_completed() {
     $tasks_user = get_tasks_by_user( $user_id );
     if ( !empty( $tasks_user ) ) {
 	$tasks_user = array_reverse( $tasks_user, true );
-	$print = '<div class="panel panel-success">';
-	$print .= '<div class="panel-heading">';
+	$print = '<div class="card card-inverse card-success panel panel-success">';
+	$print .= '<div class="card-block">';
+	$print .= '<h4 class="card-title panel-heading">';
 	$print .= sprintf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
-	$print .= '</div>';
-	$print .= '<div class="panel-content">';
+	$print .= '</h4>';
+	$print .= '<div class="card-text panel-content">';
 	$task_implode = array_keys( $tasks_user );
 	$tasks = new WP_Query( array(
 	    'post_type' => 'task',
@@ -155,6 +156,7 @@ function dt_get_tasks_completed() {
 	  $print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a>' . $date . '</li>';
 	}
 	$print .= '</ul>';
+	$print .= '</div>';
 	$print .= '</div>';
 	$print .= '</div>';
 	wp_reset_postdata();
@@ -209,11 +211,12 @@ function dt_get_tasks_later( $user = NULL ) {
 	$tasks_later_user = get_tasks_later_by_user( $user_id );
 	if ( is_array( $tasks_later_user ) ) {
 	  $tasks_later_user = array_reverse( $tasks_later_user, true );
-	  $print = '<div class="panel panel-danger">';
-	  $print .= '<div class="panel-heading">';
+	  $print = '<div class="card card-inverse card-danger panel panel-danger">';
+	  $print .= '<div class="card-block">';
+	  $print .= '<h4 class="card-title panel-heading">';
 	  $print .= __( 'Tasks in progress', $plugin->get_plugin_slug() );
-	  $print .= '</div>';
-	  $print .= '<div class="panel-content">';
+	  $print .= '</h4>';
+	  $print .= '<div class="card-text panel-content">';
 	  if ( !empty( $tasks_later_user ) ) {
 	    $tasks_later_user = array_reverse( $tasks_later_user, true );
 	    $task_implode = array_keys( $tasks_later_user );
@@ -241,6 +244,7 @@ function dt_get_tasks_later( $user = NULL ) {
 	  } else {
 	    $print .= __( "You don't have any task to do! Pick one!", $plugin->get_plugin_slug() );
 	  }
+	  $print .= '</div>';
 	  $print .= '</div>';
 	  $print .= '</div>';
 	}

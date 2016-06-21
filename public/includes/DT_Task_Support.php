@@ -238,7 +238,7 @@ class DT_Task_Support {
 			}
 			$users = unserialize( get_post_meta( get_the_ID(), $plugin->get_fields( 'users_of_task' ), true ) );
 			if ( !empty( $users ) ) {
-				$content .= '<h2>' . __( 'List of users who completed this task', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h4>' . __( 'List of users who completed this task', $plugin->get_plugin_slug() ) . '</h4>';
 				$content .= '<div class="panel panel-default">';
 				$content .= '<div class="panel-content">';
 				foreach ( $users as $user => $value ) {
