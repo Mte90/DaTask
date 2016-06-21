@@ -271,15 +271,25 @@ function dt_tasks_later( $user = NULL ) {
 function get_user_of_profile() {
   global $wp_query;
   // Get nick from the url of the page
-  if ( array_key_exists( 'member', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member' ] ) ) {
-    return $wp_query->query[ 'member' ];
+  if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+    $username = str_replace( '%20', ' ', $wp_query->query[ 'member' ] );
+    if ( username_exists( $username ) ) {
+	return $username;
+    } else {
+	return NULL;
+    }
     // If the url don't have the nick get the actual
   } elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
     $current_user = wp_get_current_user();
     return $current_user->user_login;
     // Else null
-  } elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) && username_exists( $wp_query->query[ 'member-feed' ] ) ) {
-    return $wp_query->query[ 'member-feed' ];
+  } elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
+    $username = str_replace( '%20', ' ', $wp_query->query[ 'member-feed' ] );
+    if ( username_exists( $username ) ) {
+	return $username;
+    } else {
+	return NULL;
+    }
     // If the url don't have the nick get the actual
   } else {
     return NULL;
