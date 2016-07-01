@@ -401,11 +401,12 @@ function datask_badgeos_user_achievements( $user ) {
     $plugin = DaTask::get_instance();
     $output = '';
     $achievements = array_unique( badgeos_get_user_earned_achievement_ids( $user, '' ) );
-    $output = '<div class="panel panel-info badge-users">';
-    $output .= '<div class="panel-heading">';
+    $output = '<div class="card card-inverse card-info panel panel-info badge-users">';
+    $output = '<div class="card-block">';
+    $output .= '<div class="panel-heading card-title">';
     $output .= __( 'Badge Earned by the user', $plugin->get_plugin_slug() );
     $output .= '</div>';
-    $output .= '<div class="panel-content">';
+    $output .= '<div class="card-text panel-content">';
     if ( !empty( $achievements ) ) {
 	$output .= '<ul>';
 	foreach ( $achievements as $achievement_id ) {
@@ -413,6 +414,7 @@ function datask_badgeos_user_achievements( $user ) {
 	}
 	$output .= '</ul>';
     }
+    $output .= '</div>';
     $output .= '</div>';
     $output .= '</div>';
     echo $output;

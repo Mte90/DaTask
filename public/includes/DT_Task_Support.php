@@ -129,11 +129,12 @@ class DT_Task_Support {
 		if ( is_singular( 'task' ) ) {
 			$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
 			if ( !empty( $befores ) ) {
-				$content .= '<div class="panel panel-danger">';
-				$content .= '<div class="panel-heading">';
+				$content .= '<div class="card card-inverse card-danger panel panel-danger">';
+				$content .= '<div class="card-block">';
+				$content .= '<div class="card-title panel-heading">';
 				$content .= __( 'Required or Suggested tasks: ', $plugin->get_plugin_slug() );
 				$content .= '</div>';
-				$content .= '<div class="panel-content">';
+				$content .= '<div class="card-text panel-content">';
 				$befores_task = '';
 				$befores_split = explode( ',', str_replace( ' ', '', $befores ) );
 				$befores_ids = new WP_Query( array(
@@ -162,41 +163,43 @@ class DT_Task_Support {
 				$content .= $befores_task;
 				$content .= '</div>';
 				$content .= '</div>';
+				$content .= '</div>';
 			}
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 			}
 			$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $matters ) ) ) );
 			}
 			$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
 			if ( !empty( $steps ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Steps', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Steps', $plugin->get_plugin_slug() ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $steps ) ) ) );
 			}
 			$help = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_help' ), true );
 			if ( !empty( $help ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Need Help?', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Need Help?', $plugin->get_plugin_slug() ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $help ) ) ) );
 				$content .= '<br><br>';
 			}
 			$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 			if ( !empty( $completion ) ) {
-				$content .= '<h2 class="alert alert-success">' . __( 'Completion', $plugin->get_plugin_slug() ) . '</h2>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Completion', $plugin->get_plugin_slug() ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 				$content .= '<br><br>';
 			}
 			$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
 			if ( !empty( $mentors ) ) {
-				$content .= '<div class="panel panel-warning">';
-				$content .= '<div class="panel-heading">';
+				$content .= '<div class="card card-inverse card-danger panel panel-warning">';
+				$content .= '<div class="card-block">';
+				$content .= '<div class="card-title panel-heading">';
 				$content .= __( 'Mentor(s)', $plugin->get_plugin_slug() );
 				$content .= ': </div>';
-				$content .= '<div class="panel-content">';
+				$content .= '<div class="card-text panel-content">';
 				$mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
 				foreach ( $mentors_split as $user ) {
 					$user_id = $user;
@@ -210,14 +213,16 @@ class DT_Task_Support {
 				}
 				$content .= '</div>';
 				$content .= '</div>';
+				$content .= '</div>';
 			}
 			$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
 			if ( !empty( $nexts ) ) {
-				$content .= '<div class="panel panel-danger">';
-				$content .= '<div class="panel-heading">';
+				$content .= '<div class="card card-inverse card-danger panel panel-danger">';
+				$content .= '<div class="card-block">';
+				$content .= '<div class="card-title panel-heading">';
 				$content .= __( 'Good next tasks: ', $plugin->get_plugin_slug() );
 				$content .= '</div>';
-				$content .= '<div class="panel-content">';
+				$content .= '<div class="card-text panel-content">';
 				$next_task = '';
 				$nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
 				$nexts_ids = new WP_Query( array(
@@ -235,12 +240,14 @@ class DT_Task_Support {
 				$content .= $next_task;
 				$content .= '</div>';
 				$content .= '</div>';
+				$content .= '</div>';
 			}
 			$users = unserialize( get_post_meta( get_the_ID(), $plugin->get_fields( 'users_of_task' ), true ) );
 			if ( !empty( $users ) ) {
 				$content .= '<h4>' . __( 'List of users who completed this task', $plugin->get_plugin_slug() ) . '</h4>';
-				$content .= '<div class="panel panel-default">';
-				$content .= '<div class="panel-content">';
+				$content .= '<div class="card card-inverse panel panel-default">';
+				$content .= '<div class="card-block">';
+				$content .= '<div class="card-text panel-content">';
 				foreach ( $users as $user => $value ) {
 					$content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>';
 					// Get last user
@@ -248,6 +255,7 @@ class DT_Task_Support {
 						$content .= ', ';
 					}
 				}
+				$content .= '</div>';
 				$content .= '</div>';
 				$content .= '</div>';
 			}

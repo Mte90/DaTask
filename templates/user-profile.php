@@ -48,7 +48,7 @@ get_header();
 		<?php } ?>
 	    </div>
 	</div>
-	<h2 class="alert alert-warning"><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h2>
+	<h4 class="alert alert-warning"><?php _e( 'Dashboard', $plugin->get_plugin_slug() ); ?></h4>
 	<?php
 	datask_badgeos_user_achievements( $user->ID );
 	dt_tasks_later();

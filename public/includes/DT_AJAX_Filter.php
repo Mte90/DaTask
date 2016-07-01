@@ -115,7 +115,7 @@ class DT_AJAX_Filter {
 				$dt_ajax_filter_wp_query->the_post();
 				?>
 				<article class="ajax-loaded">
-				    <h3><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h3>
+				    <h4><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h4>
 				    <p><?php the_excerpt(); ?></p>
 				    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( "Read More", $plugin->get_plugin_slug() ); ?></a>
 				</article>
@@ -284,7 +284,7 @@ class DT_AJAX_Filter {
 						case "list";
 						default;
 							echo '<div class="filter-' . $taxonomy . ' filter-selected">';
-							echo '<h3>' . $the_tax_name . '</h3>';
+							echo '<h4>' . $the_tax_name . '</h4>';
 							echo '<ul class="list-group">';
 							foreach ( $terms as $term ) {
 								echo '<li class="list-group-item"><input class="ajax-list" type="checkbox" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '" /><label>' . $term->name . '</a></label>';
