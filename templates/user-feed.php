@@ -13,7 +13,6 @@
 if ( !defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-$plugin = DaTask::get_instance();
 $user_id = get_user_by( 'login', get_user_of_profile() );
 $user_id = $user_id->data->ID;
 $tasks_user = get_tasks_by_user( $user_id );

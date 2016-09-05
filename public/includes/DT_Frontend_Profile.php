@@ -22,14 +22,14 @@ class DT_Frontend_Profile {
 		new Fake_Page(
 			array(
 		    'slug' => 'member',
-		    'post_title' => __( 'Your profile', $plugin->get_plugin_slug() ),
+		    'post_title' => __( 'Your profile', DT_TEXTDOMAIN ),
 		    'post_content' => 'content'
 			)
 		);
 		new Fake_Page(
 			array(
 		    'slug' => 'member-feed',
-		    'post_title' => __( 'Member Feed', $plugin->get_plugin_slug() ),
+		    'post_title' => __( 'Member Feed', DT_TEXTDOMAIN ),
 		    'post_content' => 'content'
 			)
 		);
@@ -118,13 +118,13 @@ class DT_Frontend_Profile {
 		if ( is_user_logged_in() ) {
 			$username = wp_get_current_user();
 			if ( (isset( $wp_query->query[ 'member' ] ) && $wp_query->query[ 'member' ] === $username->data->user_login ) ) {
-				return __( 'Your profile', $plugin->get_plugin_slug() ) . ' ' . $sep;
+				return __( 'Your profile', DT_TEXTDOMAIN ) . ' ' . $sep;
 			}
 		}
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
 				$user = get_user_by( 'login', get_user_of_profile() );
-				$page = sprintf( __( "%s's Profile", $plugin->get_plugin_slug() ), $user->display_name );
+				$page = sprintf( __( "%s's Profile", DT_TEXTDOMAIN ), $user->display_name );
 				if ( !defined( 'WPSEO_FILE' ) ) {
 					return $page . ' ' . $sep . $title;
 				} else {
@@ -148,7 +148,7 @@ class DT_Frontend_Profile {
 		$plugin = DaTask::get_instance();
 		global $wp_query;
 		if ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-			return __( 'Your profile', $plugin->get_plugin_slug() );
+			return __( 'Your profile', DT_TEXTDOMAIN );
 		} else {
 			return $title;
 		}

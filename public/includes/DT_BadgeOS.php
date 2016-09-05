@@ -34,7 +34,7 @@ class DT_BadgeOS {
 	 */
 	public function add_trigger( $triggers ) {
 		$plugin = DaTask::get_instance();
-		$triggers[ 'datask_badgeos_trigger' ] = __( 'DaTask Done Task', $plugin->get_plugin_slug() );
+		$triggers[ 'datask_badgeos_trigger' ] = __( 'DaTask Done Task', DT_TEXTDOMAIN );
 		return $triggers;
 	}
 
@@ -51,7 +51,7 @@ class DT_BadgeOS {
 		    'post_type' => 'task',
 		    'posts_per_page' => -1 ) );
 		echo '<select name="datask_trigger" class="select-datask-trigger select-datask-trigger-' . $post_id . '" autocomplete="off">';
-		echo '<option value="">' . __( 'Select the task', $plugin->get_plugin_slug() ) . '</option>';
+		echo '<option value="">' . __( 'Select the task', DT_TEXTDOMAIN ) . '</option>';
 		$current_selection = get_post_meta( $step_id, '_badgeos_datask_trigger', true );
 		foreach ( $tasks->posts as $task ) {
 			echo '<option' . selected( $current_selection, $task->ID, false ) . ' value="' . $task->ID . '">' . $task->post_title . '</option>';
@@ -109,7 +109,7 @@ class DT_BadgeOS {
 		$new_count = badgeos_update_user_trigger_count( $userID, $this_trigger, $blog_id );
 
 		// Mark the count in the log entry
-		badgeos_post_log_entry( null, $userID, null, sprintf( __( '%1$s triggered %2$s (%3$dx)', 'badgeos' ), $user_data->user_login, __( 'Task Done', $plugin->get_plugin_slug() ), $new_count ) );
+		badgeos_post_log_entry( null, $userID, null, sprintf( __( '%1$s triggered %2$s (%3$dx)', 'badgeos' ), $user_data->user_login, __( 'Task Done', DT_TEXTDOMAIN ), $new_count ) );
 
 		// Now determine if any badges are earned based on this trigger event
 		$triggered_achievements = $wpdb->get_results( $wpdb->prepare( "

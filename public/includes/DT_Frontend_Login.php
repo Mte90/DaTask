@@ -22,21 +22,21 @@ class DT_Frontend_Login {
 		new Fake_Page(
 			array(
 		    'slug' => 'login',
-		    'post_title' => __( 'Login', $plugin->get_plugin_slug() ),
+		    'post_title' => __( 'Login', DT_TEXTDOMAIN ),
 		    'post_content' => 'content'
 			)
 		);
 		new Fake_Page(
 			array(
 		    'slug' => 'logout',
-		    'post_title' => __( 'Logout', $plugin->get_plugin_slug() ),
+		    'post_title' => __( 'Logout', DT_TEXTDOMAIN ),
 		    'post_content' => 'content'
 			)
 		);
 		new Fake_Page(
 			array(
 		    'slug' => 'profile',
-		    'post_title' => __( 'Edit Profile', $plugin->get_plugin_slug() ),
+		    'post_title' => __( 'Edit Profile', DT_TEXTDOMAIN ),
 		    'post_content' => 'content'
 			)
 		);
@@ -47,9 +47,9 @@ class DT_Frontend_Login {
 		add_filter( 'login_redirect', array( $this, 'login_redirect' ), 10, 3 );
 		add_action( 'admin_init', array( $this, 'prevent_access_backend' ) );
 		// add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
-		$options = get_option( $plugin->get_plugin_slug() . '-settings' );
+		$options = get_option( DT_TEXTDOMAIN . '-settings' );
 
-		if ( isset( $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] ) && $options[ $plugin->get_plugin_slug() . '_disable_adminbar' ] === 'on' ) {
+		if ( isset( $options[ DT_TEXTDOMAIN . '_disable_adminbar' ] ) && $options[ DT_TEXTDOMAIN . '_disable_adminbar' ] === 'on' ) {
 			add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
 		}
 		add_filter( 'the_content', array( $this, 'login_page' ) );
@@ -301,8 +301,8 @@ class DT_Frontend_Login {
 			foreach ( $items as $page => $value ) {
 				if ( $items[ $page ]->post_name === 'login' ) {
 					$items[ $page ]->post_name = 'logout';
-					$items[ $page ]->post_title = __( 'Logout', $plugin->get_plugin_slug() );
-					$items[ $page ]->title = __( 'Logout', $plugin->get_plugin_slug() );
+					$items[ $page ]->post_title = __( 'Logout', DT_TEXTDOMAIN );
+					$items[ $page ]->title = __( 'Logout', DT_TEXTDOMAIN );
 					$items[ $page ]->url = get_site_url() . '/logout';
 				}
 			}

@@ -39,9 +39,9 @@ class DT_Task_Support {
 		$plugin = DaTask::get_instance();
 		global $post;
 		if ( is_singular( 'task' ) ) {
-			$classes[] = $plugin->get_plugin_slug() . '-task';
+			$classes[] = DT_TEXTDOMAIN . '-task';
 		} elseif ( isset( $post->post_content ) && has_shortcode( $post->post_content, 'datask-search' ) ) {
-			$classes[] = $plugin->get_plugin_slug() . '-search';
+			$classes[] = DT_TEXTDOMAIN . '-search';
 		}
 		return $classes;
 	}
@@ -68,12 +68,12 @@ class DT_Task_Support {
 	 */
 	public function dt_task_info() {
 		$plugin = DaTask::get_instance();
-		echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', $plugin->get_plugin_slug() ) . '</b> ' . ucfirst( get_the_modified_date() ) . '</div>';
+		echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', DT_TEXTDOMAIN ) . '</b> ' . ucfirst( get_the_modified_date() ) . '</div>';
 		echo '<ul class="list list-inset">';
 		$team = get_the_terms( get_the_ID(), 'task-team' );
 		if ( !empty( $team ) ) {
 			echo '<li><b>';
-			_e( 'Team', $plugin->get_plugin_slug() );
+			_e( 'Team', DT_TEXTDOMAIN );
 			echo ': </b>';
 			foreach ( $team as $term ) {
 				echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
@@ -83,7 +83,7 @@ class DT_Task_Support {
 		$project = get_the_terms( get_the_ID(), 'task-area' );
 		if ( !empty( $project ) ) {
 			echo '<li><b>';
-			_e( 'Project', $plugin->get_plugin_slug() );
+			_e( 'Project', DT_TEXTDOMAIN );
 			echo ': </b>';
 			foreach ( $project as $term ) {
 				echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
@@ -93,7 +93,7 @@ class DT_Task_Support {
 		$difficulty = get_the_terms( get_the_ID(), 'task-difficulty' );
 		if ( !empty( $difficulty ) ) {
 			echo '<li><b>';
-			_e( 'Difficulty', $plugin->get_plugin_slug() );
+			_e( 'Difficulty', DT_TEXTDOMAIN );
 			echo ': </b>';
 			foreach ( $difficulty as $term ) {
 				echo '<a href="' . get_term_link( $term->slug, 'task-difficulty' ) . '">' . $term->name . '</a>, ';
@@ -103,7 +103,7 @@ class DT_Task_Support {
 		$minute = get_the_terms( get_the_ID(), 'task-minute' );
 		if ( !empty( $minute ) ) {
 			echo '<li><b>';
-			_e( 'Estimated time', $plugin->get_plugin_slug() );
+			_e( 'Estimated time', DT_TEXTDOMAIN );
 			echo ': </b>';
 			foreach ( $minute as $term ) {
 				echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
@@ -132,7 +132,7 @@ class DT_Task_Support {
 				$content .= '<div class="card card-inverse card-danger panel panel-danger">';
 				$content .= '<div class="card-block">';
 				$content .= '<div class="card-title panel-heading">';
-				$content .= __( 'Required or Suggested tasks: ', $plugin->get_plugin_slug() );
+				$content .= __( 'Required or Suggested tasks: ', DT_TEXTDOMAIN );
 				$content .= '</div>';
 				$content .= '<div class="card-text panel-content">';
 				$befores_task = '';
@@ -167,28 +167,28 @@ class DT_Task_Support {
 			}
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
-				$content .= '<h4 class="alert alert-success">' . __( 'Prerequisites', $plugin->get_plugin_slug() ) . '</h4>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Prerequisites', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 			}
 			$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
-				$content .= '<h4 class="alert alert-success">' . __( 'Why this matters', $plugin->get_plugin_slug() ) . '</h4>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Why this matters', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $matters ) ) ) );
 			}
 			$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
 			if ( !empty( $steps ) ) {
-				$content .= '<h4 class="alert alert-success">' . __( 'Steps', $plugin->get_plugin_slug() ) . '</h4>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Steps', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $steps ) ) ) );
 			}
 			$help = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_help' ), true );
 			if ( !empty( $help ) ) {
-				$content .= '<h4 class="alert alert-success">' . __( 'Need Help?', $plugin->get_plugin_slug() ) . '</h4>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Need Help?', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $help ) ) ) );
 				$content .= '<br><br>';
 			}
 			$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 			if ( !empty( $completion ) ) {
-				$content .= '<h4 class="alert alert-success">' . __( 'Completion', $plugin->get_plugin_slug() ) . '</h4>';
+				$content .= '<h4 class="alert alert-success">' . __( 'Completion', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 				$content .= '<br><br>';
 			}
@@ -197,7 +197,7 @@ class DT_Task_Support {
 				$content .= '<div class="card card-inverse card-danger panel panel-warning">';
 				$content .= '<div class="card-block">';
 				$content .= '<div class="card-title panel-heading">';
-				$content .= __( 'Mentor(s)', $plugin->get_plugin_slug() );
+				$content .= __( 'Mentor(s)', DT_TEXTDOMAIN );
 				$content .= ': </div>';
 				$content .= '<div class="card-text panel-content">';
 				$mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
@@ -220,7 +220,7 @@ class DT_Task_Support {
 				$content .= '<div class="card card-inverse card-danger panel panel-danger">';
 				$content .= '<div class="card-block">';
 				$content .= '<div class="card-title panel-heading">';
-				$content .= __( 'Good next tasks: ', $plugin->get_plugin_slug() );
+				$content .= __( 'Good next tasks: ', DT_TEXTDOMAIN );
 				$content .= '</div>';
 				$content .= '<div class="card-text panel-content">';
 				$next_task = '';
@@ -244,7 +244,7 @@ class DT_Task_Support {
 			}
 			$users = unserialize( get_post_meta( get_the_ID(), $plugin->get_fields( 'users_of_task' ), true ) );
 			if ( !empty( $users ) ) {
-				$content .= '<h4>' . __( 'List of users who completed this task', $plugin->get_plugin_slug() ) . '</h4>';
+				$content .= '<h4>' . __( 'List of users who completed this task', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= '<div class="card card-inverse panel panel-default">';
 				$content .= '<div class="card-block">';
 				$content .= '<div class="card-text panel-content">';

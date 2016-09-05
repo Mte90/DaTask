@@ -137,7 +137,7 @@ function dt_get_tasks_completed() {
 	$print = '<div class="card card-inverse card-success panel panel-success">';
 	$print .= '<div class="card-block">';
 	$print .= '<h4 class="card-title panel-heading">';
-	$print .= sprintf( __( '%d Tasks Completed', $plugin->get_plugin_slug() ), count( $tasks_user ) );
+	$print .= sprintf( __( '%d Tasks Completed', DT_TEXTDOMAIN ), count( $tasks_user ) );
 	$print .= '</h4>';
 	$print .= '<div class="card-text panel-content">';
 	$task_implode = array_keys( $tasks_user );
@@ -171,11 +171,11 @@ function dt_get_tasks_completed() {
 	$print = apply_filters( 'dt_get_completed_task', $print );
     } else {
 	$print .= '<h5>';
-	$print .= __( 'Nothing task done :(', $plugin->get_plugin_slug() );
+	$print .= __( 'Nothing task done :(', DT_TEXTDOMAIN );
 	$print .= '</h5>';
     }
   } else {
-    $print = __( "This profile not exist!", $plugin->get_plugin_slug() );
+    $print = __( "This profile not exist!", DT_TEXTDOMAIN );
   }
   return $print;
 }
@@ -214,7 +214,7 @@ function dt_get_tasks_later( $user = NULL ) {
 	  $print = '<div class="card card-inverse card-danger panel panel-danger">';
 	  $print .= '<div class="card-block">';
 	  $print .= '<h4 class="card-title panel-heading">';
-	  $print .= __( 'Tasks in progress', $plugin->get_plugin_slug() );
+	  $print .= __( 'Tasks in progress', DT_TEXTDOMAIN );
 	  $print .= '</h4>';
 	  $print .= '<div class="card-text panel-content">';
 	  if ( !empty( $tasks_later_user ) ) {
@@ -229,7 +229,7 @@ function dt_get_tasks_later( $user = NULL ) {
 	    foreach ( $tasks->posts as $task ) {
 		$area = get_the_terms( $task->ID, 'task-area' );
 		$minute = get_the_terms( $task->ID, 'task-minute' );
-		$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . $area[ 0 ]->name . ' - ' . $minute[ 0 ]->name . ' ' . __( 'minute estimated', $plugin->get_plugin_slug() ) . '</li>';
+		$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . $area[ 0 ]->name . ' - ' . $minute[ 0 ]->name . ' ' . __( 'minute estimated', DT_TEXTDOMAIN ) . '</li>';
 	    }
 	    $print .= '</ul>';
 	    wp_reset_postdata();
@@ -242,7 +242,7 @@ function dt_get_tasks_later( $user = NULL ) {
 	     */
 	    $print = apply_filters( 'dt_get_task_later', $print );
 	  } else {
-	    $print .= __( "You don't have any task to do! Pick one!", $plugin->get_plugin_slug() );
+	    $print .= __( "You don't have any task to do! Pick one!", DT_TEXTDOMAIN );
 	  }
 	  $print .= '</div>';
 	  $print .= '</div>';
@@ -250,7 +250,7 @@ function dt_get_tasks_later( $user = NULL ) {
 	}
     }
   } else {
-    $print = __( "This profile not exist!", $plugin->get_plugin_slug() );
+    $print = __( "This profile not exist!", DT_TEXTDOMAIN );
   }
   return $print;
 }
@@ -404,7 +404,7 @@ function datask_badgeos_user_achievements( $user ) {
     $output = '<div class="card card-inverse card-info panel panel-info badge-users">';
     $output = '<div class="card-block">';
     $output .= '<div class="panel-heading card-title">';
-    $output .= __( 'Badge Earned by the user', $plugin->get_plugin_slug() );
+    $output .= __( 'Badge Earned by the user', DT_TEXTDOMAIN );
     $output .= '</div>';
     $output .= '<div class="card-text panel-content">';
     if ( !empty( $achievements ) ) {
@@ -419,4 +419,138 @@ function datask_badgeos_user_achievements( $user ) {
     $output .= '</div>';
     echo $output;
   }
+}
+
+/**
+ * Echo the subtitle of the task
+ * 
+ * @param    bool $echo Print or not to print.
+ * @return   bool|string Echo or the value
+ * @since    1.0.0
+ */
+function the_task_subtitle( $echo = true ) {
+	$plugin = DaTask::get_instance();
+	if ( $echo ) {
+		echo get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
+	} else {
+		return get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
+	}
+}
+
+/**
+ * Print Task button
+ * 
+ * @since    1.0.0
+ */
+function datask_buttons() {
+	$plugin = DaTask::get_instance();
+	if ( is_user_logged_in() ) {
+		?>
+		<div class="dt-buttons">
+		    <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
+		    <button type="submit" class="button btn btn-primary complete <?php
+		    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+			    echo 'disabled';
+		    }
+		    ?>" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+			    <?php
+			    if ( has_later_task( get_the_ID() ) ) {
+				    echo '<i class="fa fa-exclamation-circle"></i>';
+			    }
+			    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+				    echo '<i class="fa fa-check"></i>';
+			    }
+			    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
+		    <button type="submit" class="button btn btn-secondary save-later <?php
+		if ( has_later_task( get_the_ID() ) ) {
+			echo 'disabled';
+		}
+			    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+			    <?php
+			    if ( has_later_task( get_the_ID() ) ) {
+				    echo '<i class="fa fa-check"></i>';
+			    }
+			    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
+		    <button type="submit" class="button btn btn-warning remove <?php
+		if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+			echo 'disabled';
+		}
+			    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
+		</div>
+		<?php
+	} else {
+		echo '<h4 class="alert alert-danger">';
+		_e( 'Save your history of tasks done or in progress with a free account!', DT_TEXTDOMAIN );
+		echo '</h4>';
+	}
+}
+
+/**
+ * User contact form
+ * 
+ * @since    1.0.0
+ */
+function datask_user_form() {
+	if ( is_user_logged_in() ) {
+		$user = get_user_by( 'login', get_user_of_profile() );
+		$current_user = wp_get_current_user();
+		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
+			$plugin = DaTask::get_instance();
+			$content = '<div class="card card-inverse card-warning panel panel-warning" id="user-contact-form">';
+			$content = '<div class="card-block">';
+			$content .= '<div class="card-title panel-heading">';
+			$content .= __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name;
+			$content .= '</div>';
+			$content .= '<div class="card-text panel-content">';
+			$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
+			$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
+			$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
+			$content .= '</div>';
+			$content .= '</div>';
+			$content .= '</div>';
+			echo $content;
+		}
+	}
+}
+
+/**
+ * Load template files of the plugin also include a filter dt_get_template_part<br>
+ * Based on WooCommerce function<br>
+ *
+ * @since 1.0.0
+ * @param string $slug The slug for the template file.
+ * @param string $name The name of the template file.
+ * @param bool $include Include the template file.
+ * @return   string|bool Name of the file or the result of include of the template
+ */
+function dt_get_template_part( $slug, $name = '', $include = true ) {
+	$template = '';
+	$path = plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . 'templates/';
+	$plugin_slug = DT_TEXTDOMAIN . '/';
+
+	// Look in yourtheme/slug-name.php and yourtheme/datask/slug-name.php
+	if ( $name ) {
+		$template = locate_template( array( "{$slug}-{$name}.php", $plugin_slug . "{$slug}-{$name}.php" ) );
+	} else {
+		$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
+	}
+
+	// Get default slug-name.php
+	if ( !$template && $name && file_exists( $path . "{$slug}-{$name}.php" ) ) {
+		$template = $path . "{$slug}-{$name}.php";
+	}
+
+	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/datask/slug.php
+	if ( !$template ) {
+		$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
+	}
+
+	// Allow 3rd party plugin filter template file from their plugin
+	$template = apply_filters( 'dt_get_template_part', $template, $slug, $name );
+
+	if ( $template && $include === true ) {
+		load_template( $template, false );
+	} else if ( $template && $include === false ) {
+		return $template;
+	}
 }

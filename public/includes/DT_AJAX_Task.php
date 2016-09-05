@@ -139,14 +139,14 @@ class DT_AJAX_Task {
 			if ( $current_user->user_login !== $user->user_login ) {
 				$plugin = DaTask::get_instance();
 				// Body
-				$message = sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
-				$message .= '<br>' . __( 'Profile', $plugin->get_plugin_slug() );
+				$message = sprintf( __( 'Contact from %s by %s', DT_TEXTDOMAIN ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
+				$message .= '<br>' . __( 'Profile', DT_TEXTDOMAIN );
 				$message .= ': <a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . home_url( '/member/' . $current_user->user_login ) . '</a>';
 				$message .= wpautop( esc_html( $_POST[ 'content' ] ) );
 				// Headers
 				$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );
 				// Send email
-				wp_mail( $user->user_email, sprintf( __( 'Contact from %s by %s', $plugin->get_plugin_slug() ), get_bloginfo( 'name' ), $current_user->user_login ), $message, $headers );
+				wp_mail( $user->user_email, sprintf( __( 'Contact from %s by %s', DT_TEXTDOMAIN ), get_bloginfo( 'name' ), $current_user->user_login ), $message, $headers );
 				wp_send_json_success();
 			}
 			wp_send_json_error();

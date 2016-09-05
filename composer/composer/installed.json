@@ -1,0 +1,594 @@
+[
+    {
+        "name": "idct/composer-custom-directory",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ideaconnect/composer-custom-directory.git",
+            "reference": "02535879a79c368f2d388949051388df10353ddd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ideaconnect/composer-custom-directory/zipball/02535879a79c368f2d388949051388df10353ddd",
+            "reference": "02535879a79c368f2d388949051388df10353ddd",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "*",
+            "php": ">=5.4"
+        },
+        "time": "2015-02-11 12:25:24",
+        "type": "composer-plugin",
+        "extra": {
+            "class": [
+                "Composer\\CustomDirectoryInstaller\\LibraryPlugin"
+            ],
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Composer\\CustomDirectoryInstaller": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Bartosz Pacholek",
+                "email": "bartosz@ideaconnect.pl"
+            }
+        ],
+        "description": "A composer plugin, to install differenty types of composer packages in custom directories outside the default composer default installation path which is in the `vendor` folder.",
+        "keywords": [
+            "composer",
+            "composer-installer",
+            "composer-plugin"
+        ]
+    },
+    {
+        "name": "composer/installers",
+        "version": "v1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/installers.git",
+            "reference": "fd18141e0c8e405f7dc482862ecc7c56a299f39c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/installers/zipball/fd18141e0c8e405f7dc482862ecc7c56a299f39c",
+            "reference": "fd18141e0c8e405f7dc482862ecc7c56a299f39c",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0"
+        },
+        "replace": {
+            "roundcube/plugin-installer": "*",
+            "shama/baton": "*"
+        },
+        "require-dev": {
+            "composer/composer": "1.0.*@dev",
+            "phpunit/phpunit": "4.1.*"
+        },
+        "time": "2016-08-18 13:35:37",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "Composer\\Installers\\Plugin",
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Composer\\Installers\\": "src/Composer/Installers"
+            }
+        },
+        "scripts": {
+            "test": [
+                "phpunit"
+            ]
+        },
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Robinson Young",
+                "email": "kyle@dontkry.com",
+                "homepage": "https://github.com/shama"
+            }
+        ],
+        "description": "A multi-framework Composer library installer",
+        "homepage": "https://composer.github.io/installers/",
+        "keywords": [
+            "AGL",
+            "Aimeos",
+            "AnnotateCms",
+            "Attogram",
+            "Bitrix",
+            "CakePHP",
+            "Chef",
+            "Cockpit",
+            "CodeIgniter",
+            "Craft",
+            "Croogo",
+            "DokuWiki",
+            "Dolibarr",
+            "Drupal",
+            "Elgg",
+            "ExpressionEngine",
+            "FuelPHP",
+            "Grav",
+            "Hurad",
+            "ImageCMS",
+            "Joomla",
+            "Kohana",
+            "Laravel",
+            "Lithium",
+            "MODULEWork",
+            "MODX Evo",
+            "Magento",
+            "Mako",
+            "Mautic",
+            "MediaWiki",
+            "Moodle",
+            "OXID",
+            "PPI",
+            "Piwik",
+            "Plentymarkets",
+            "Puppet",
+            "RadPHP",
+            "ReIndex",
+            "Roundcube",
+            "SMF",
+            "SilverStripe",
+            "TYPO3",
+            "Thelia",
+            "WolfCMS",
+            "WordPress",
+            "YAWIK",
+            "Zend",
+            "Zikula",
+            "concrete5",
+            "installer",
+            "phpBB",
+            "shopware",
+            "symfony"
+        ],
+        "support": {
+            "source": "https://github.com/WPBP/installers/tree/v1.1.0"
+        }
+    },
+    {
+        "name": "wpbp/widgets-helper",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/Widgets-Helper.git",
+            "reference": "b1624b5861b50acce864fe22aabb716ba8d2f38e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/Widgets-Helper/zipball/b1624b5861b50acce864fe22aabb716ba8d2f38e",
+            "reference": "b1624b5861b50acce864fe22aabb716ba8d2f38e",
+            "shasum": ""
+        },
+        "time": "2016-06-22 17:14:31",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "wph-widget.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Scasciafratte",
+                "email": "mte90net@gmail.com",
+                "homepage": "http://mte90.net"
+            }
+        ],
+        "description": "A class to ease creating powered Widgets on WordPress ",
+        "homepage": "https://github.com/WPBP/Widgets-Helper",
+        "keywords": [
+            "widget",
+            "widgets",
+            "wordpress"
+        ]
+    },
+    {
+        "name": "wpbp/fakepage",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/FakePage.git",
+            "reference": "c982da9f4531ce39c4aea16f2a866492bb1f5f31"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/FakePage/zipball/c982da9f4531ce39c4aea16f2a866492bb1f5f31",
+            "reference": "c982da9f4531ce39c4aea16f2a866492bb1f5f31",
+            "shasum": ""
+        },
+        "time": "2016-07-08 16:13:38",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "fake-page.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Scasciafratte",
+                "email": "mte90net@gmail.com",
+                "homepage": "http://mte90.net"
+            }
+        ],
+        "description": "Generate a fake page on the fly",
+        "homepage": "https://github.com/WPBP/FakePage",
+        "keywords": [
+            "fake",
+            "virtual",
+            "wordpress"
+        ]
+    },
+    {
+        "name": "wpbp/template",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/template.git",
+            "reference": "0af9bc17013df6f5dd02ca474491bcc7216f156d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/template/zipball/0af9bc17013df6f5dd02ca474491bcc7216f156d",
+            "reference": "0af9bc17013df6f5dd02ca474491bcc7216f156d",
+            "shasum": ""
+        },
+        "time": "2016-06-22 17:54:32",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "template.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Scasciafratte",
+                "email": "mte90net@gmail.com",
+                "homepage": "http://mte90.net"
+            }
+        ],
+        "description": "Load template files with autosearch and support for multilanguage folder for email template",
+        "homepage": "https://github.com/WPBP/Template",
+        "keywords": [
+            "email",
+            "template",
+            "wordpress"
+        ]
+    },
+    {
+        "name": "wpbp/cpt_columns",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/CPT_Columns.git",
+            "reference": "2a0ef100fd2967dc9cbbdb018005f19bb671283e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/CPT_Columns/zipball/2a0ef100fd2967dc9cbbdb018005f19bb671283e",
+            "reference": "2a0ef100fd2967dc9cbbdb018005f19bb671283e",
+            "shasum": ""
+        },
+        "time": "2016-07-01 23:11:22",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "CPT_Columns.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Scasciafratte",
+                "email": "mte90net@gmail.com",
+                "homepage": "http://mte90.net"
+            }
+        ],
+        "description": "Improve the CPT list in the backend for your CPTs",
+        "homepage": "https://github.com/WPBP/CPT_Columns",
+        "keywords": [
+            "custom post type",
+            "post",
+            "wordpress"
+        ]
+    },
+    {
+        "name": "wpbp/language",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/Language.git",
+            "reference": "c1ea3a8259579cdca0cc7e68bca1076a861711e5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/Language/zipball/c1ea3a8259579cdca0cc7e68bca1076a861711e5",
+            "reference": "c1ea3a8259579cdca0cc7e68bca1076a861711e5",
+            "shasum": ""
+        },
+        "time": "2016-06-22 17:36:59",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "language.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Scasciafratte",
+                "email": "mte90net@gmail.com",
+                "homepage": "http://mte90.net"
+            }
+        ],
+        "description": "Function wrapper for register,unregister,get language and get string for WPML, Polylang and Ceceppa Multilingua",
+        "homepage": "https://github.com/WPBP/Language",
+        "keywords": [
+            "language",
+            "locales",
+            "multilanguage",
+            "polylang",
+            "wordpress",
+            "wpml"
+        ]
+    },
+    {
+        "name": "webdevstudios/cpt-core",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WebDevStudios/CPT_Core.git",
+            "reference": "3f73135702b4331194a8e43311e940663840ead2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WebDevStudios/CPT_Core/zipball/3f73135702b4331194a8e43311e940663840ead2",
+            "reference": "3f73135702b4331194a8e43311e940663840ead2",
+            "shasum": ""
+        },
+        "suggest": {
+            "composer/installers": "~1.0"
+        },
+        "time": "2016-02-27 20:22:54",
+        "type": "wordpress-plugin",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "CPT_Core.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2"
+        ],
+        "authors": [
+            {
+                "name": "WebDevStudios",
+                "email": "contact@webdevstudios.com",
+                "homepage": "https://github.com/WebDevStudios",
+                "role": "Developer"
+            }
+        ],
+        "description": "WordPress Custom Post Type OO wrapper",
+        "homepage": "https://github.com/WebDevStudios/CPT_Core",
+        "keywords": [
+            "metabox",
+            "plugin",
+            "wordpress"
+        ]
+    },
+    {
+        "name": "webdevstudios/taxonomy_core",
+        "version": "v0.2.4",
+        "version_normalized": "0.2.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WebDevStudios/Taxonomy_Core.git",
+            "reference": "80393ecb126d24ef3940ab7fa06635fe782701d8"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WebDevStudios/Taxonomy_Core/zipball/80393ecb126d24ef3940ab7fa06635fe782701d8",
+            "reference": "80393ecb126d24ef3940ab7fa06635fe782701d8",
+            "shasum": ""
+        },
+        "time": "2016-02-27 20:21:38",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "Taxonomy_Core.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2"
+        ],
+        "authors": [
+            {
+                "name": "WebDevStudios",
+                "email": "contact@webdevstudios.com"
+            }
+        ],
+        "description": "A tool to make custom taxonomy registration just a bit simpler. Automatically registers taxonomy labels, and provides helpful methods."
+    },
+    {
+        "name": "julien731/wp-dismissible-notices-handler",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/julien731/WP-Dismissible-Notices-Handler.git",
+            "reference": "85ce1debbdfd4543e5b835dfe6670b9de99ddf6b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/julien731/WP-Dismissible-Notices-Handler/zipball/85ce1debbdfd4543e5b835dfe6670b9de99ddf6b",
+            "reference": "85ce1debbdfd4543e5b835dfe6670b9de99ddf6b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0"
+        },
+        "time": "2016-04-03 05:12:27",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "handler.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GNU GPL"
+        ],
+        "authors": [
+            {
+                "name": "Julien Liabeuf",
+                "email": "julien@liabeuf.fr",
+                "homepage": "https://julienliabeuf.com",
+                "role": "Lead Developer"
+            }
+        ],
+        "description": "A simple library to handle Ajax-dismissible admin notices for WordPress",
+        "homepage": "https://github.com/julien731/WP-Dismissible-Notices-Handler"
+    },
+    {
+        "name": "julien731/wp-review-me",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/julien731/WP-Review-Me.git",
+            "reference": "f55e83a0e5a95a0ab7798f4d7791ab3af83e99a3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/julien731/WP-Review-Me/zipball/f55e83a0e5a95a0ab7798f4d7791ab3af83e99a3",
+            "reference": "f55e83a0e5a95a0ab7798f4d7791ab3af83e99a3",
+            "shasum": ""
+        },
+        "require": {
+            "julien731/wp-dismissible-notices-handler": "1.*",
+            "php": ">=5.5.0"
+        },
+        "time": "2016-04-20 12:37:05",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "review.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GNU GPL"
+        ],
+        "authors": [
+            {
+                "name": "Julien Liabeuf",
+                "email": "julien@liabeuf.fr",
+                "homepage": "https://julienliabeuf.com",
+                "role": "Lead Developer"
+            }
+        ],
+        "description": "A lightweight library to help you get more reviews for your WordPress theme/plugin",
+        "homepage": "https://github.com/julien731/WP-Review-Me"
+    },
+    {
+        "name": "webdevstudios/cmb2",
+        "version": "v2.2.2.1",
+        "version_normalized": "2.2.2.1",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WebDevStudios/CMB2.git",
+            "reference": "17d60c71f9f6b27f0e1ab2bbbaae2e5da2ffa7b9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WebDevStudios/CMB2/zipball/17d60c71f9f6b27f0e1ab2bbbaae2e5da2ffa7b9",
+            "reference": "17d60c71f9f6b27f0e1ab2bbbaae2e5da2ffa7b9",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">5.2.4"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*"
+        },
+        "suggest": {
+            "composer/installers": "~1.0"
+        },
+        "time": "2016-06-28 01:27:39",
+        "type": "wordpress-plugin",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0+"
+        ],
+        "authors": [
+            {
+                "name": "WebDevStudios",
+                "email": "contact@webdevstudios.com",
+                "homepage": "https://github.com/WebDevStudios",
+                "role": "Developer"
+            }
+        ],
+        "description": "CMB2 is a metabox, custom fields, and forms library for WordPress that will blow your mind.",
+        "homepage": "https://github.com/WebDevStudios/CMB2",
+        "keywords": [
+            "metabox",
+            "plugin",
+            "wordpress"
+        ]
+    }
+]

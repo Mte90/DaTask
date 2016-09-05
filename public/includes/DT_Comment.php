@@ -39,7 +39,7 @@ class DT_Comment {
 		if ( get_post_type( $post->ID ) === 'task' ) {
 			?>
 			<div class="form-group comment-form-tweet">
-			    <label for="tweet_url"><?php _e( 'Insert URL of the Tweet', $plugin->get_plugin_slug() ); ?></label>
+			    <label for="tweet_url"><?php _e( 'Insert URL of the Tweet', DT_TEXTDOMAIN ); ?></label>
 			    <input type="text" name="tweet_url" id="tweet_url" class="form-control" />
 			    <a href="https://twitter.com/share" class="twitter-share-button" data-via="Mte90net" data-hashtags="datask">Tweet</a>
 			    <script>!function(d, s, id){var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location)?'http':'https'; if (!d.getElementById(id)){js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }}(document, 'script', 'twitter-wjs');</script>
@@ -76,7 +76,7 @@ class DT_Comment {
 			$tweet = get_comment_meta( $comment->comment_ID, 'tweet_url', true );
 			if ( $tweet ) {
 				$plugin = DaTask::get_instance();
-				$tweet = __( 'URL of the Tweet', $plugin->get_plugin_slug() ) . ': <a href="' . esc_attr( $tweet ) . '">' . esc_attr( $tweet ) . '</a>';
+				$tweet = __( 'URL of the Tweet', DT_TEXTDOMAIN ) . ': <a href="' . esc_attr( $tweet ) . '">' . esc_attr( $tweet ) . '</a>';
 				$text = $tweet . $text;
 			}
 		}
@@ -91,7 +91,7 @@ class DT_Comment {
 	 */
 	public function task_comment_show_metabox_data_backend() {
 		$plugin = DaTask::get_instance();
-		add_meta_box( 'task-comment', __( 'Task Feedback Data', $plugin->get_plugin_slug()  ), array( $this, 'task_comment_show_field_data_backend' ), 'comment', 'normal', 'high' );
+		add_meta_box( 'task-comment', __( 'Task Feedback Data', DT_TEXTDOMAIN  ), array( $this, 'task_comment_show_field_data_backend' ), 'comment', 'normal', 'high' );
 	}
 
 	/**
@@ -108,7 +108,7 @@ class DT_Comment {
 			wp_nonce_field( 'task_comment_nonce ', 'task_comment_nonce ', false );
 			?>
 			<p>
-			    <label for="tweet_url"><?php _e( 'URL of the Tweet', $plugin->get_plugin_slug() ); ?></label>
+			    <label for="tweet_url"><?php _e( 'URL of the Tweet', DT_TEXTDOMAIN ); ?></label>
 			    <input type="text" name="tweet_url" value="<?php echo esc_attr( $tweet ); ?>" class="widefat" />
 			</p>
 			<?php
