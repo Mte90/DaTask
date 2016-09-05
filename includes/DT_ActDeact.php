@@ -129,7 +129,6 @@ class DT_ActDeact {
    */
   private static function single_activate() {
     $plugin = DaTask::get_instance();
-    $plugin_slug = $plugin->get_plugin_slug();
         $plugin_roles = $plugin->get_plugin_roles();
             // @TODO: Define activation functionality here
         // add_role( 'advanced', __( 'Advanced' ) ); //Add a custom roles

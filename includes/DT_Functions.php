@@ -126,7 +126,6 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
  * @return    @string html
  */
 function dt_get_tasks_completed() {
-  $plugin = DaTask::get_instance();
   $print = '';
   if ( username_exists( get_user_of_profile() ) ) {
     $user_id = get_user_by( 'login', get_user_of_profile() );
@@ -398,7 +397,6 @@ function has_later_task( $task_id, $user_id = NULL ) {
  */
 function datask_badgeos_user_achievements( $user ) {
   if ( class_exists( 'BadgeOS' ) ) {
-    $plugin = DaTask::get_instance();
     $output = '';
     $achievements = array_unique( badgeos_get_user_earned_achievement_ids( $user, '' ) );
     $output = '<div class="card card-inverse card-info panel panel-info badge-users">';
@@ -443,7 +441,6 @@ function the_task_subtitle( $echo = true ) {
  * @since    1.0.0
  */
 function datask_buttons() {
-	$plugin = DaTask::get_instance();
 	if ( is_user_logged_in() ) {
 		?>
 		<div class="dt-buttons">
@@ -510,47 +507,5 @@ function datask_user_form() {
 			$content .= '</div>';
 			echo $content;
 		}
-	}
-}
-
-/**
- * Load template files of the plugin also include a filter dt_get_template_part<br>
- * Based on WooCommerce function<br>
- *
- * @since 1.0.0
- * @param string $slug The slug for the template file.
- * @param string $name The name of the template file.
- * @param bool $include Include the template file.
- * @return   string|bool Name of the file or the result of include of the template
- */
-function dt_get_template_part( $slug, $name = '', $include = true ) {
-	$template = '';
-	$path = plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . 'templates/';
-	$plugin_slug = DT_TEXTDOMAIN . '/';
-
-	// Look in yourtheme/slug-name.php and yourtheme/datask/slug-name.php
-	if ( $name ) {
-		$template = locate_template( array( "{$slug}-{$name}.php", $plugin_slug . "{$slug}-{$name}.php" ) );
-	} else {
-		$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
-	}
-
-	// Get default slug-name.php
-	if ( !$template && $name && file_exists( $path . "{$slug}-{$name}.php" ) ) {
-		$template = $path . "{$slug}-{$name}.php";
-	}
-
-	// If template file doesn't exist, look in yourtheme/slug.php and yourtheme/datask/slug.php
-	if ( !$template ) {
-		$template = locate_template( array( "{$slug}.php", $plugin_slug . "{$slug}.php" ) );
-	}
-
-	// Allow 3rd party plugin filter template file from their plugin
-	$template = apply_filters( 'dt_get_template_part', $template, $slug, $name );
-
-	if ( $template && $include === true ) {
-		load_template( $template, false );
-	} else if ( $template && $include === false ) {
-		return $template;
 	}
 }

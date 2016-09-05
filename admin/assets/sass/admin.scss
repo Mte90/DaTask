@@ -46,12 +46,27 @@
 }
 
 .settings-tab {
-	float:left;
+	width:65%;
+float:left;
 }
 
 .right-column-settings-page {
 	max-width:270px;
 	float:right;
+	padding: 10px;
+}
+
+.right-column-settings-page .hndle {
+	margin:0;
+	padding-bottom:5px;
+}
+
+.right-column-settings-page .inside {
+	padding:0;
+}
+
+.postbox h3 {
+	padding-left: 10px;
 }
 
 // Dashboard

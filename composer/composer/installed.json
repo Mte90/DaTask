@@ -252,48 +252,6 @@
         ]
     },
     {
-        "name": "wpbp/template",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/WPBP/template.git",
-            "reference": "0af9bc17013df6f5dd02ca474491bcc7216f156d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/WPBP/template/zipball/0af9bc17013df6f5dd02ca474491bcc7216f156d",
-            "reference": "0af9bc17013df6f5dd02ca474491bcc7216f156d",
-            "shasum": ""
-        },
-        "time": "2016-06-22 17:54:32",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "template.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Daniele Scasciafratte",
-                "email": "mte90net@gmail.com",
-                "homepage": "http://mte90.net"
-            }
-        ],
-        "description": "Load template files with autosearch and support for multilanguage folder for email template",
-        "homepage": "https://github.com/WPBP/Template",
-        "keywords": [
-            "email",
-            "template",
-            "wordpress"
-        ]
-    },
-    {
         "name": "wpbp/cpt_columns",
         "version": "1.0.0",
         "version_normalized": "1.0.0.0",
@@ -588,6 +546,48 @@
         "keywords": [
             "metabox",
             "plugin",
+            "wordpress"
+        ]
+    },
+    {
+        "name": "wpbp/template",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/WPBP/template.git",
+            "reference": "60ce10ea1121d5f0fd9692c4c06f484def8e3ecf"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/WPBP/template/zipball/60ce10ea1121d5f0fd9692c4c06f484def8e3ecf",
+            "reference": "60ce10ea1121d5f0fd9692c4c06f484def8e3ecf",
+            "shasum": ""
+        },
+        "time": "2016-09-05 16:57:22",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "files": [
+                "template.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Scasciafratte",
+                "email": "mte90net@gmail.com",
+                "homepage": "http://mte90.net"
+            }
+        ],
+        "description": "Load template files with autosearch and support for multilanguage folder for email template",
+        "homepage": "https://github.com/WPBP/Template",
+        "keywords": [
+            "email",
+            "template",
             "wordpress"
         ]
     }

@@ -41,9 +41,9 @@ class DT_User_Backend {
 			    'action' => 'reset_task_later_user',
 			    'user_id' => $user->ID,
 					), 'users.php' ), 'reset_task_later_user_' . $user->ID );
-			$actions[ 'reset_task_later_user' ] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Reset Task in Progress', $plugin->get_plugin_slug() ) . '</a>';
+			$actions[ 'reset_task_later_user' ] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Reset Task in Progress', DT_TEXTDOMAIN ) . '</a>';
 		}
-		$actions[ 'member_profile' ] = '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . esc_html__( 'View Public Profile', $plugin->get_plugin_slug() ) . '</a>';
+		$actions[ 'member_profile' ] = '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . esc_html__( 'View Public Profile', DT_TEXTDOMAIN ) . '</a>';
 
 		return $actions;
 	}
@@ -60,7 +60,7 @@ class DT_User_Backend {
 			$plugin = DaTask::get_instance();
 			update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( '' ) );
 			$user = get_user_by( 'id', $user_id );
-			New WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', $plugin->get_plugin_slug() ), $user->data->user_login ), 'updated' );
+			New WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', DT_TEXTDOMAIN ), $user->data->user_login ), 'updated' );
 		}
 	}
 

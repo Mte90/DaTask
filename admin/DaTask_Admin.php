@@ -73,7 +73,7 @@ class DaTask_Admin {
 	  'type' => 'plugin',
 	  'slug' => DT_TEXTDOMAIN,
 	  'rating' => 5,
-	  'message' => __( 'Do you like DaTask? Review me! or ignore that message!', DT_TEXTDOMAIN ),
+	  'message' => __( 'Do you like DaTask? Review me or ignore that message!', DT_TEXTDOMAIN ),
 	  'link_label' => __( 'Click here!', DT_TEXTDOMAIN )
 		) );
     //Add the option for the report page, TODO load only on that page

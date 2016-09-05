@@ -17,7 +17,6 @@ class DT_Frontend_Login {
 	 * @since     1.0.0
 	 */
 	public function __construct() {
-		$plugin = DaTask::get_instance();
 		// Initialize the fake page for the login system
 		new Fake_Page(
 			array(
@@ -240,7 +239,7 @@ class DT_Frontend_Login {
 		if ( is_page( 'login' ) ) {
 			if ( !is_user_logged_in() ) {
 				ob_start();
-				dt_get_template_part( 'log', 'in', true );
+				wpbp_get_template_part( DT_TEXTDOMAIN, 'log', 'in', true );
 				$template = ob_get_contents();
 				ob_end_clean();
 				return $template;
@@ -266,7 +265,7 @@ class DT_Frontend_Login {
 					}
 				}
 				ob_start();
-				dt_get_template_part( 'user', 'edit', true );
+				wpbp_get_template_part( DT_TEXTDOMAIN, 'user', 'edit', true );
 				$template = ob_get_contents();
 				ob_end_clean();
 				return $template;
@@ -297,7 +296,6 @@ class DT_Frontend_Login {
 	 */
 	function login_to_logout( $items ) {
 		if ( is_user_logged_in() ) {
-			$plugin = DaTask::get_instance();
 			foreach ( $items as $page => $value ) {
 				if ( $items[ $page ]->post_name === 'login' ) {
 					$items[ $page ]->post_name = 'logout';

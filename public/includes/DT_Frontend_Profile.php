@@ -17,7 +17,6 @@ class DT_Frontend_Profile {
 	 * @since     1.0.0
 	 */
 	public function __construct() {
-		$plugin = DaTask::get_instance();
 		// Create Fake Page for members profile
 		new Fake_Page(
 			array(
@@ -78,14 +77,14 @@ class DT_Frontend_Profile {
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
-				dt_get_template_part( 'user', 'profile', true );
+			  wpbp_get_template_part( DT_TEXTDOMAIN, 'user', 'profile', true );
 				exit;
 			} else {
 				$wp_query->set_404();
 			}
 		} elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
 			if ( get_user_of_profile() !== NULL ) {
-				dt_get_template_part( 'user', 'feed', true );
+			  wpbp_get_template_part( DT_TEXTDOMAIN, 'user', 'feed', true );
 				exit;
 			} else {
 				$wp_query->set_404();
