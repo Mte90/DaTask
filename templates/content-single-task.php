@@ -10,24 +10,31 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-
 if ( !defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+  exit; // Exit if accessed directly
 }
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<header class="entry-header jumbotron">
-		<h5 class="entry-title"><?php the_title(); ?></h5>
-		<h6><?php the_task_subtitle(); ?></h6>
-	</header>
-	<div class="entry-content">
-		<?php	
-		do_action('dt_task_info');
-		the_content();	
-		do_shortcode('[datask-badge]');
-		datask_buttons();
-		comments_template();
-		?>
-	</div>
+    <header class="entry-header jumbotron">
+	  <h5 class="entry-title"><?php
+		if ( get_post_status( get_the_ID() ) === 'archived' ) {
+		  _e( 'Archived', DT_TEXTDOMAIN );
+		} the_title();
+		?></h5>
+	  <h6><?php the_task_subtitle(); ?></h6>
+    </header>
+    <div class="entry-content">
+	  <?php
+	  do_action( 'dt_task_info' );
+	  the_content();
+	  do_shortcode( '[datask-badge]' );
+	  if ( get_post_status( get_the_ID() ) === 'archive' ) {
+	    _e( 'This task is archived, you can only read it.', DT_TEXTDOMAIN );
+	  } else {
+	    datask_buttons();
+	  }
+	  comments_template();
+	  ?>
+    </div>
 </article>

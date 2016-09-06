@@ -48,7 +48,7 @@ class DT_Frontend_Login {
 		// add_filter( 'registration_errors', array( $this, 'registration_redirect' ), 10, 3 );
 		$options = get_option( DT_TEXTDOMAIN . '-settings' );
 
-		if ( isset( $options[ DT_TEXTDOMAIN . '_disable_adminbar' ] ) && $options[ DT_TEXTDOMAIN . '_disable_adminbar' ] === 'on' ) {
+		if ( isset( $options[ 'disable_adminbar' ] ) && $options[  'disable_adminbar' ] === 'on' ) {
 			add_action( 'after_setup_theme', array( $this, 'remove_admin_bar' ) );
 		}
 		add_filter( 'the_content', array( $this, 'login_page' ) );

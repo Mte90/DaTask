@@ -32,9 +32,9 @@ class DaTask {
 
   /**
    * Array of capabilities by roles
-   * 
+   *
    * @var array
-   * 
+   *
    * @since 1.0.0
    */
   protected static $plugin_roles = array(
@@ -76,13 +76,13 @@ class DaTask {
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Task.php' );
     // Search Shortcode
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Filter.php' );
-    if ( isset( $options[ DT_TEXTDOMAIN . '_enable_frontend' ] ) && $options[ DT_TEXTDOMAIN . '_enable_frontend' ] === 'on' ) {
+    if ( isset( $options[ 'enable_frontend' ] ) && $options[ 'enable_frontend' ] === 'on' ) {
 	// Frontend login system
 	require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Frontend_Login.php' );
     }
     // Frontend Profile page
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Frontend_Profile.php' );
-    if ( isset( $options_extra[ DT_TEXTDOMAIN . '_tweet_comments' ] ) && $options_extra[ DT_TEXTDOMAIN . '_tweet_comments' ] === 'on' ) {
+    if ( isset( $options_extra[ 'tweet_comments' ] ) && $options_extra[ 'tweet_comments' ] === 'on' ) {
 	// Comment support for task
 	require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Comment.php' );
     }
@@ -93,6 +93,9 @@ class DaTask {
     // BadgeOS support
     if ( class_exists( 'BadgeOS' ) ) {
 	require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_BadgeOS.php' );
+    }
+    if ( defined( 'ARCHIVED_POST_STATUS_PLUGIN' ) && isset( $options[ 'archived_frontend' ] ) && $options[ 'archived_frontend' ] === 'on' ) {
+	require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Archived.php' );
     }
     require_once( plugin_dir_path( __FILE__ ) . 'widgets/recents-tasks.php' );
     require_once( plugin_dir_path( __FILE__ ) . 'widgets/most-task-done.php' );
@@ -129,7 +132,7 @@ class DaTask {
    */
   public static function get_instance() {
     // If the single instance hasn't been set, set it now.
-    if ( null == self::$instance ) {
+    if ( null === self::$instance ) {
 	self::$instance = new self();
     }
 
@@ -141,7 +144,7 @@ class DaTask {
    *
    * @since    1.0.0
    * @param object $query WP_Query object.
-   * @return object WP_Query object with task post type  
+   * @return object WP_Query object with task post type.
    */
   public function filter_search( $query ) {
     if ( $query->is_search && !is_admin() ) {
@@ -160,7 +163,7 @@ class DaTask {
    * @since    1.0.0
    *
    * @param array $value Key for get the real field key.
-   * 
+   *
    * @return    array String of fields.
    */
   public function get_fields( $value = '' ) {
@@ -204,8 +207,8 @@ class DaTask {
 	  'show_in_rest' => true,
 	  'menu_icon' => 'dashicons-welcome-add-page',
     );
-    if ( isset( $options_extra[ DT_TEXTDOMAIN . '_cpt_slug' ] ) && !empty( $options_extra[ DT_TEXTDOMAIN . '_cpt_slug' ] ) ) {
-	$task_post_type[ 'rewrite' ][ 'slug' ] = $options_extra[ DT_TEXTDOMAIN . '_cpt_slug' ];
+    if ( isset( $options_extra[ 'cpt_slug' ] ) && !empty( $options_extra[ 'cpt_slug' ] ) ) {
+	$task_post_type[ 'rewrite' ][ 'slug' ] = $options_extra[ 'cpt_slug' ];
     }
     register_via_cpt_core( array( __( 'Task', DT_TEXTDOMAIN ), __( 'Tasks', DT_TEXTDOMAIN ), 'task' ), $task_post_type );
     $tax = array(
@@ -215,26 +218,26 @@ class DaTask {
 		'assign_terms' => 'edit_posts',
 	  ) );
     $tax_area = $tax;
-    if ( isset( $options_extra[ DT_TEXTDOMAIN . '_tax_area' ] ) && !empty( $options_extra[ DT_TEXTDOMAIN . '_tax_area' ] ) ) {
-	$tax_area[ 'rewrite' ][ 'slug' ] = $options_extra[ DT_TEXTDOMAIN . '_tax_area' ];
+    if ( isset( $options_extra[ 'tax_area' ] ) && !empty( $options_extra[ 'tax_area' ] ) ) {
+	$tax_area[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_area' ];
     }
     register_via_taxonomy_core( array( __( 'Area', DT_TEXTDOMAIN ), __( 'Areas', DT_TEXTDOMAIN ), 'task-area' ), $tax_area, array( 'task' ) );
 
     $tax_difficulty = $tax;
-    if ( isset( $options_extra[ DT_TEXTDOMAIN . '_tax_difficulty' ] ) && !empty( $options_extra[ DT_TEXTDOMAIN . '_tax_difficulty' ] ) ) {
-	$tax_difficulty[ 'rewrite' ][ 'slug' ] = $options_extra[ DT_TEXTDOMAIN . '_tax_difficulty' ];
+    if ( isset( $options_extra[ 'tax_difficulty' ] ) && !empty( $options_extra[ 'tax_difficulty' ] ) ) {
+	$tax_difficulty[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_difficulty' ];
     }
     register_via_taxonomy_core( array( __( 'Difficulty', DT_TEXTDOMAIN ), __( 'Difficulties', DT_TEXTDOMAIN ), 'task-difficulty' ), $tax_difficulty, array( 'task' ) );
 
     $task_team = $tax;
-    if ( isset( $options_extra[ DT_TEXTDOMAIN . '_tax_team' ] ) && !empty( $options_extra[ DT_TEXTDOMAIN . '_tax_team' ] ) ) {
-	$task_team[ 'rewrite' ][ 'slug' ] = $options_extra[ DT_TEXTDOMAIN . '_tax_team' ];
+    if ( isset( $options_extra[ 'tax_team' ] ) && !empty( $options_extra[ 'tax_team' ] ) ) {
+	$task_team[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_team' ];
     }
     register_via_taxonomy_core( array( __( 'Team', DT_TEXTDOMAIN ), __( 'Teams', DT_TEXTDOMAIN ), 'task-team' ), $task_team, array( 'task' ) );
 
     $task_minute = $tax;
-    if ( isset( $options_extra[ DT_TEXTDOMAIN . '_tax_minute' ] ) && !empty( $options_extra[ DT_TEXTDOMAIN . '_tax_minute' ] ) ) {
-	$task_minute[ 'rewrite' ][ 'slug' ] = $options_extra[ DT_TEXTDOMAIN . '_tax_minute' ];
+    if ( isset( $options_extra[ 'tax_minute' ] ) && !empty( $options_extra[ 'tax_minute' ] ) ) {
+	$task_minute[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_minute' ];
     }
     register_via_taxonomy_core( array( __( 'Estimated minute', DT_TEXTDOMAIN ), __( 'Estimated minutes', DT_TEXTDOMAIN ), 'task-minute' ), $task_minute, array( 'task' ) );
   }

@@ -36,7 +36,6 @@ class DT_Task_Support {
    * @return array $classes Classes of the body
    */
   public function add_dt_class( $classes ) {
-    $plugin = DaTask::get_instance();
     global $post;
     if ( is_singular( 'task' ) ) {
 	$classes[] = DT_TEXTDOMAIN . '-task';
