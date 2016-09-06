@@ -5,14 +5,15 @@
     "composer\/installers": "1.1.0",
     "wpbp\/widgets-helper": "1.0.0",
     "wpbp\/fakepage": "1.0.0",
-    "wpbp\/template": "1.0.1",
+    "wpbp/template": "^1.0",
     "wpbp\/cpt_columns": "1.0.0",
     "wpbp\/language": "1.0.0",
     "webdevstudios\/cmb2": "2.2.2.1",
     "webdevstudios\/cpt-core": "1.0.1",
     "webdevstudios\/taxonomy_core": "0.2.4",
     "julien731\/wp-dismissible-notices-handler": "1.0.0",
-    "julien731\/wp-review-me": "2.0.0"
+    "julien731\/wp-review-me": "2.0.0",
+    "voceconnect/voce-post-expiration": "^0.3.0"
   },
   "repositories": [
     {
@@ -30,13 +31,14 @@
   "minimum-stability": "dev",
   "extra": {
     "installer-paths": {
-      ".\/includes\/lib\/{$name|F}": {
-        "0": "webdevstudios\/cpt-core",
-        "1": "wpbp\/language",
-        "3": "wpbp\/fakepage",
-        "4": "wpbp\/template",
-        "7": "webdevstudios\/taxonomy_core"
-      },
+      ".\/includes\/lib\/{$name|F}": [
+        "webdevstudios\/cpt-core",
+        "wpbp\/language",
+        "wpbp\/fakepage",
+        "wpbp\/template",
+        "webdevstudios\/taxonomy_core",
+        "voceconnect/voce-post-expiration"
+      ],
       ".\/public\/includes\/lib\/{$name|F}": [
         "wpbp\/widgets-helper"
       ],

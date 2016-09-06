@@ -1,0 +1,16 @@
+{
+    "name": "voceconnect/voce-post-expiration",
+    "description": "Set expirations on posts",
+    "keywords": ["wordpress", "expiration"],
+    "license": "GPLv2+",
+    "authors": [
+        {
+            "name": "Kevin Langley Jr",
+            "email": "klangley@voceconnect.com"
+        }
+    ],
+    "type": "library",
+    "autoload": {
+        "files": ["voce-post-expiration.php"]
+    }
+}

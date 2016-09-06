@@ -4,3 +4,7 @@ node_modules
 .sass-cache
 .netbeans.xml
 nbproject
+composer.lock
+/composer/
+/admin/includes/lib
+/public/includes/lib

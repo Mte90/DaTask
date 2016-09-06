@@ -63,8 +63,7 @@ class DaTask {
    * @since     1.0.0
    */
   private function __construct() {
-    // Load plugin text domain
-    add_action( 'init', array( $this, 'load_cpt_taxonomy' ), 4 );
+    require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_CPT.php' );
     add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
     $options = get_option( DT_TEXTDOMAIN . '-settings' );
     $options_extra = get_option( DT_TEXTDOMAIN . '-settings-extra' );
@@ -188,58 +187,6 @@ class DaTask {
     } elseif ( empty( $value ) ) {
 	return $fields;
     }
-  }
-
-  /**
-   * Load the CPT and Taxonomy
-   *
-   * @since    1.0.0
-   */
-  public function load_cpt_taxonomy() {
-    $options_extra = get_option( DT_TEXTDOMAIN . '-settings-extra' );
-    $task_post_type = array(
-	  'supports' => array( 'title', 'comments' ),
-	  'capabilities' => array(
-		'edit_post' => 'edit_tasks',
-		'edit_others_posts' => 'edit_others_tasks',
-	  ),
-	  'map_meta_cap' => true,
-	  'show_in_rest' => true,
-	  'menu_icon' => 'dashicons-welcome-add-page',
-    );
-    if ( isset( $options_extra[ 'cpt_slug' ] ) && !empty( $options_extra[ 'cpt_slug' ] ) ) {
-	$task_post_type[ 'rewrite' ][ 'slug' ] = $options_extra[ 'cpt_slug' ];
-    }
-    register_via_cpt_core( array( __( 'Task', DT_TEXTDOMAIN ), __( 'Tasks', DT_TEXTDOMAIN ), 'task' ), $task_post_type );
-    $tax = array(
-	  'public' => true,
-	  'show_in_rest' => true,
-	  'capabilities' => array(
-		'assign_terms' => 'edit_posts',
-	  ) );
-    $tax_area = $tax;
-    if ( isset( $options_extra[ 'tax_area' ] ) && !empty( $options_extra[ 'tax_area' ] ) ) {
-	$tax_area[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_area' ];
-    }
-    register_via_taxonomy_core( array( __( 'Area', DT_TEXTDOMAIN ), __( 'Areas', DT_TEXTDOMAIN ), 'task-area' ), $tax_area, array( 'task' ) );
-
-    $tax_difficulty = $tax;
-    if ( isset( $options_extra[ 'tax_difficulty' ] ) && !empty( $options_extra[ 'tax_difficulty' ] ) ) {
-	$tax_difficulty[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_difficulty' ];
-    }
-    register_via_taxonomy_core( array( __( 'Difficulty', DT_TEXTDOMAIN ), __( 'Difficulties', DT_TEXTDOMAIN ), 'task-difficulty' ), $tax_difficulty, array( 'task' ) );
-
-    $task_team = $tax;
-    if ( isset( $options_extra[ 'tax_team' ] ) && !empty( $options_extra[ 'tax_team' ] ) ) {
-	$task_team[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_team' ];
-    }
-    register_via_taxonomy_core( array( __( 'Team', DT_TEXTDOMAIN ), __( 'Teams', DT_TEXTDOMAIN ), 'task-team' ), $task_team, array( 'task' ) );
-
-    $task_minute = $tax;
-    if ( isset( $options_extra[ 'tax_minute' ] ) && !empty( $options_extra[ 'tax_minute' ] ) ) {
-	$task_minute[ 'rewrite' ][ 'slug' ] = $options_extra[ 'tax_minute' ];
-    }
-    register_via_taxonomy_core( array( __( 'Estimated minute', DT_TEXTDOMAIN ), __( 'Estimated minutes', DT_TEXTDOMAIN ), 'task-minute' ), $task_minute, array( 'task' ) );
   }
 
   /**
