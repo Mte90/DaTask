@@ -19,6 +19,7 @@ class DT_Log {
   public function __construct() {
     add_filter( 'wds_log_post_user_can_see', array( $this, 'enable_editors' ) );
     add_filter( 'wds_log_post_log_types', array( $this, 'datask_label' ) );
+    add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
   }
 
   public function enable_editors( $user_can_see ) {
@@ -29,11 +30,19 @@ class DT_Log {
     if ( !isset( $terms[ 'DaTask' ] ) ) {
 	$terms[ 'DaTask' ] = array(
 	    'slug' => 'datask',
-	    'description' => 'background-color: #00ee00',
+	    'description' => 'background-color: #00ee00; color:black; font-weight:bold;',
 	);
     }
-
     return $terms;
+  }
+
+  public function change_post_menu_label() {
+    global $menu;
+    foreach ( $menu as $key => $value ) {
+	if ( $menu[ $key ][ 0 ] === 'WDS Logs' ) {
+	  $menu[ $key ][ 0 ] = 'DT Logs';
+	}
+    }
   }
 
 }

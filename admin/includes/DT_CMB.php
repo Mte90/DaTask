@@ -29,10 +29,10 @@ class DT_CMB {
    */
   public function cmb_demo_metaboxes() {
     // Start with an underscore to hide fields from custom fields list
-    $prefix = '_task_';
+    $prefix = '_';
 
     $cmb_task = new_cmb2_box( array(
-	  'id' => $prefix . 'metabox',
+	  'id' => $prefix . DT_TEXTDOMAIN . 'metabox',
 	  'title' => __( 'Task Info', DT_TEXTDOMAIN ),
 	  'object_types' => array( 'task', ),
 	  'context' => 'normal',
