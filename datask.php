@@ -39,6 +39,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'composer/autoload.php' );
 
 require_once( plugin_dir_path( __FILE__ ) . 'public/DaTask.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_FakePage.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Log.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Uninstall.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_ActDeact.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Functions.php' );

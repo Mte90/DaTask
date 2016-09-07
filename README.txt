@@ -1,9 +1,9 @@
 === DaTask ===
 Contributors: Mte90
-Tags: task, task management, activity, learning, badgeos, badge, csv
+Tags: task, task management, activity, learning, badgeos, badge, csv, metric
 Requires at least: 4.2
-Tested up to: 4.5
-Stable tag: 1.1.1
+Tested up to: 4.6
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,7 +24,7 @@ Demo site: [http://datask.mte90.net/](http://datask.mte90.net/)
 
 Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
 
-* Bootstrap class names in frontend
+* Bootstrap 3 & 4 class names in frontend
 * Template customizable (`datask` folder in your theme)
 * Frontend Login options
 * Ajax based
@@ -34,6 +34,7 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 * Support for badge with BadgeOS
 * Report/Statistics system with CSV exporter
 * User RSS for activity
+* Integration with the plugins: BadgeOS, Archived Post Status
 
 == Installation ==
 
