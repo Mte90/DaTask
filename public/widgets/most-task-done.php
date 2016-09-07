@@ -12,8 +12,6 @@
 class Most_Task_Done_Widget extends WPH_Widget {
 
 	function __construct() {
-		$plugin = DaTask::get_instance();
-
 		$args = array(
 		    'label' => __( 'Most Tasks Done', DT_TEXTDOMAIN ),
 		    'description' => __( 'Most Tasks Done', DT_TEXTDOMAIN ),

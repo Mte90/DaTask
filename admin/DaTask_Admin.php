@@ -91,21 +91,18 @@ class DaTask_Admin {
 	  'type' => 'custom_value',
 	  'callback' => array( $this, 'number_of_done' ),
 	  'sortable' => true,
-	  'prefix' => "<b>",
-	  'suffix' => "</b>",
-	  'def' => "0",
-	  'order' => "-1",
-	  'meta_key' => '_task_' . DT_TEXTDOMAIN . '_counter'
+	  'prefix' => '<b>',
+	  'suffix' => '</b>',
+	  'def' => '0',
+	  'order' => '-1',
+	  'meta_key' => '_' . DT_TEXTDOMAIN . '_counter'
 		)
     );
     $post_columns->add_column( 'Author', array(
 	  'label' => __( 'Author', DT_TEXTDOMAIN ),
 	  'type' => 'custom_value',
-	  'callback' => array( $this, 'author_of_task' ),
 	  'sortable' => true,
-	  'prefix' => "<b>",
-	  'suffix' => "</b>",
-	  'order' => "-1",
+	  'order' => '-1',
 	  'meta_key' => 'post_author'
 		)
     );
@@ -230,24 +227,12 @@ class DaTask_Admin {
    * @return   integer $counter Number of counter done of the task
    */
   public function number_of_done( $task_id ) {
-    $counter = get_post_field( '_task_' . DT_TEXTDOMAIN . '_counter', $task_id );
+    $counter = get_post_field( '_' . DT_TEXTDOMAIN . '_counter', $task_id );
     if ( empty( $counter ) ) {
 	return 0;
     } else {
 	return $counter;
     }
-  }
-
-  /**
-   * Return the author of the task
-   *
-   * @since    1.0.0
-   * @param    integer $task_id ID of the task.
-   * @return   string The HTML link to user profile backend
-   */
-  public function author_of_task( $task_id ) {
-    $author_id = get_post_field( 'post_author', $task_id );
-    return '<a href="' . admin_url() . 'edit.php?post_type=task&author=' . $author_id . '">' . get_the_author_meta( 'user_nicename', $author_id ) . '</a>';
   }
 
 }

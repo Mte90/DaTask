@@ -199,12 +199,10 @@ function dt_get_tasks_later( $user = NULL ) {
   if ( $user === NULL ) {
     $user = get_user_of_profile();
   }
-  $plugin = DaTask::get_instance();
   $print = '';
   if ( username_exists( $user ) ) {
     $current_user = wp_get_current_user();
     if ( $current_user->user_login === $user ) {
-	$plugin = DaTask::get_instance();
 	$user_id = get_user_by( 'login', $user );
 	$user_id = $user_id->data->ID;
 	$tasks_later_user = get_tasks_later_by_user( $user_id );
@@ -492,7 +490,6 @@ function datask_user_form() {
 		$user = get_user_by( 'login', get_user_of_profile() );
 		$current_user = wp_get_current_user();
 		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
-			$plugin = DaTask::get_instance();
 			$content = '<div class="card card-inverse card-warning panel panel-warning" id="user-contact-form">';
 			$content = '<div class="card-block">';
 			$content .= '<div class="card-title panel-heading">';

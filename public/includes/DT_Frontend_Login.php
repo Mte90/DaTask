@@ -59,8 +59,8 @@ class DT_Frontend_Login {
 	/**
 	 * Frontend login
 	 *
-	 * @since    1.0.0
-	 * 
+	 * @since  1.0.0
+	 *
 	 * @return void 
 	 */
 	public function frontend_login() {
@@ -71,7 +71,7 @@ class DT_Frontend_Login {
 			$action = 'reauth';
 		}
 		// Redirect to change password form
-		if ( $action == 'rp' || $action == 'resetpass' ) {
+		if ( $action === 'rp' || $action === 'resetpass' ) {
 			if ( isset( $_GET[ 'key' ] ) && isset( $_GET[ 'login' ] ) ) {
 				$rp_path = wp_unslash( home_url( '/login/' ) );
 				$rp_cookie = 'wp-resetpass-' . COOKIEHASH;
@@ -79,22 +79,22 @@ class DT_Frontend_Login {
 				setcookie( $rp_cookie, $value, 0, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
 			}
 
-			wp_redirect( home_url( '/login/?action=resetpass' ) );
+			wp_safe_redirect( home_url( '/login/?action=resetpass' ) );
 			exit;
 		}
 		// Redirect from wrong key when resetting password
-		if ( $action == 'lostpassword' && isset( $_GET[ 'error' ] ) && ( $_GET[ 'error' ] == 'expiredkey' || $_GET[ 'error' ] == 'invalidkey' ) ) {
-			wp_redirect( home_url( '/login/?action=forgot&failed=wrongkey' ) );
+		if ( $action === 'lostpassword' && isset( $_GET[ 'error' ] ) && ( $_GET[ 'error' ] === 'expiredkey' || $_GET[ 'error' ] === 'invalidkey' ) ) {
+			wp_safe_redirect( home_url( '/login/?action=forgot&failed=wrongkey' ) );
 			exit;
 		}
 		if (
-			$action == 'post-data' || // Don't mess with POST requests
-			$action == 'reauth' || // Need to reauthorize
-			$action == 'logout'       // User is logging out
+			$action === 'post-data' || // Don't mess with POST requests
+			$action === 'reauth' || // Need to reauthorize
+			$action === 'logout'       // User is logging out
 		) {
-			return NULL;
+			return null;
 		}
-		wp_redirect( home_url( '/login/' ) );
+		wp_safe_redirect( home_url( '/login/' ) );
 		exit;
 	}
 
@@ -106,16 +106,16 @@ class DT_Frontend_Login {
 	public function frontend_login_redirect() {
 		if ( is_page( 'login' ) && is_user_logged_in() ) {
 			$current_user = wp_get_current_user();
-			wp_redirect( home_url( '/member/' . $current_user->user_login ) );
+			wp_safe_redirect( home_url( '/member/' . $current_user->user_login ) );
 			exit();
 		} elseif ( is_page( 'logout' ) && is_user_logged_in() ) {
 			wp_logout();
-			wp_redirect( home_url() );
+			wp_safe_redirect( home_url() );
 			exit();
 		}
 		global $wp_query;
 		if ( array_key_exists( 'member', $wp_query->query_vars ) && !is_user_logged_in() ) {
-			wp_redirect( home_url( '/login/' ) );
+			wp_safe_redirect( home_url( '/login/' ) );
 			exit();
 		}
 	}
@@ -128,7 +128,7 @@ class DT_Frontend_Login {
 	public function prevent_access_backend() {
 		if ( current_user_can( 'subscriber' ) && !defined( 'DOING_AJAX' ) ) {
 			$current_user = wp_get_current_user();
-			wp_redirect( home_url( '/member/' . $current_user->user_login ) );
+			wp_safe_redirect( home_url( '/member/' . $current_user->user_login ) );
 			exit;
 		}
 	}
@@ -137,27 +137,27 @@ class DT_Frontend_Login {
 	 *  Redirect on registration
 	 *
 	 * @since    1.0.0
-	 * 
+	 *
 	 * @param object $errors Error generated from WordPress.
 	 * @param string $sanitized_user_login The user login sanitized.
 	 * @param string $user_email The email of the user.
-	 * 
-	 * @return object $errors 
+	 *
+	 * @return object $errors
 	 */
 	public function registration_redirect( $errors, $sanitized_user_login, $user_email ) {
 		if ( !empty( $errors->errors ) ) {
 			if ( isset( $errors->errors[ 'username_exists' ] ) ) {
-				wp_redirect( home_url( '/login/' ) . '?action=register&failed=username_exists' );
-			} else if ( isset( $errors->errors[ 'email_exists' ] ) ) {
-				wp_redirect( home_url( '/login/' ) . '?action=register&failed=email_exists' );
-			} else if ( isset( $errors->errors[ 'invalid_username' ] ) ) {
-				wp_redirect( home_url( '/login/' ) . '?action=register&failed=invalid_username' );
-			} else if ( isset( $errors->errors[ 'invalid_email' ] ) ) {
-				wp_redirect( home_url( '/login/' ) . '?action=register&failed=invalid_email' );
-			} else if ( isset( $errors->errors[ 'empty_username' ] ) || isset( $errors->errors[ 'empty_email' ] ) ) {
-				wp_redirect( home_url( '/login/' ) . '?action=register&failed=empty' );
+				wp_safe_redirect( home_url( '/login/' ) . '?action=register&failed=username_exists' );
+			} elseif ( isset( $errors->errors[ 'email_exists' ] ) ) {
+				wp_safe_redirect( home_url( '/login/' ) . '?action=register&failed=email_exists' );
+			} elseif ( isset( $errors->errors[ 'invalid_username' ] ) ) {
+				wp_safe_redirect( home_url( '/login/' ) . '?action=register&failed=invalid_username' );
+			} elseif ( isset( $errors->errors[ 'invalid_email' ] ) ) {
+				wp_safe_redirect( home_url( '/login/' ) . '?action=register&failed=invalid_email' );
+			} elseif ( isset( $errors->errors[ 'empty_username' ] ) || isset( $errors->errors[ 'empty_email' ] ) ) {
+				wp_safe_redirect( home_url( '/login/' ) . '?action=register&failed=empty' );
 			} else {
-				wp_redirect( home_url( '/login/' ) . '?action=register&failed=generic' );
+				wp_safe_redirect( home_url( '/login/' ) . '?action=register&failed=generic' );
 			}
 			exit;
 		}
@@ -168,16 +168,16 @@ class DT_Frontend_Login {
 	 * Redirect after login
 	 *
 	 * @since    1.0.0
-	 * 
-	 * @param string $redirect_to URL
-	 * @param string $url another url
-	 * @param object $user The WP User object
+	 *
+	 * @param string $redirect_to URL.
+	 * @param string $url another url.
+	 * @param object $user The WP User object.
 	 */
 	public function login_redirect( $redirect_to, $url, $user ) {
 		if ( !isset( $user->errors ) ) {
 			return $redirect_to;
 		}
-		wp_redirect( home_url( '/login/' ) . '?action=login&failed=1' );
+		wp_safe_redirect( home_url( '/login/' ) . '?action=login&failed=1' );
 		exit;
 	}
 
@@ -196,7 +196,7 @@ class DT_Frontend_Login {
 			}
 		}
 		if ( empty( $user_data ) ) {
-			wp_redirect( home_url( '/login/' ) . '?action=forgot&failed=1' );
+			wp_safe_redirect( home_url( '/login/' ) . '?action=forgot&failed=1' );
 			exit;
 		}
 	}
@@ -205,24 +205,24 @@ class DT_Frontend_Login {
 	 * Validate the password in frontend
 	 *
 	 * @since    1.0.0
-	 * 
+	 *
 	 * @param object $errors Error object.
 	 * @param object $user The WP User object.
 	 */
 	public function frontend_validate_password_reset( $errors, $user ) {
 		// Passwords don't match
 		if ( $errors->get_error_code() ) {
-			wp_redirect( home_url( '/login/?action=resetpass&failed=nomatch' ) );
+			wp_safe_redirect( home_url( '/login/?action=resetpass&failed=nomatch' ) );
 			exit;
 		}
 		// wp-login already checked if the password is valid, so no further check is needed
 		if ( !empty( $_POST[ 'pass1' ] ) ) {
 			reset_password( $user, $_POST[ 'pass1' ] );
-			wp_redirect( home_url( '/login/?action=resetpass&success=1' ) );
+			wp_safe_redirect( home_url( '/login/?action=resetpass&success=1' ) );
 			exit;
 		}
 		// Redirect to change password form
-		wp_redirect( home_url( '/login/?action=resetpass' ) );
+		wp_safe_redirect( home_url( '/login/?action=resetpass' ) );
 		exit;
 	}
 
@@ -230,7 +230,7 @@ class DT_Frontend_Login {
 	 * Load login page
 	 *
 	 * @since    1.0.0
-	 * 
+	 *
 	 * @param string $content HTML from WordPress.
 	 * @return string The HTML of the login page
 	 */
@@ -260,7 +260,7 @@ class DT_Frontend_Login {
 					$user_id = $current_user->ID;
 					$errors = new WP_Error();
 					do_action( 'personal_options_update', $user_id );
-					if ( !isset( $errors ) || ( isset( $errors ) && is_object( $errors ) && false == $errors->get_error_codes() ) ) {
+					if ( !isset( $errors ) || ( isset( $errors ) && is_object( $errors ) && false === $errors->get_error_codes() ) ) {
 						$errors = edit_user( $user_id );
 					}
 				}
@@ -270,7 +270,7 @@ class DT_Frontend_Login {
 				ob_end_clean();
 				return $template;
 			} else {
-				wp_redirect( home_url( '/login/' ) );
+				wp_safe_redirect( home_url( '/login/' ) );
 			}
 		} else {
 			return $content;
@@ -291,7 +291,7 @@ class DT_Frontend_Login {
 	/**
 	 * Transform Login to Logout for logged users
 	 *
-	 * @return  $items
+	 * @return  $items array Menu.
 	 * @since    1.0.0
 	 */
 	function login_to_logout( $items ) {

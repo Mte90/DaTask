@@ -44,13 +44,12 @@ class DT_AJAX_Task {
 	  die( '-1' );
 	}
     }
-    $current_user = wp_get_current_user();
     if ( is_user_logged_in() ) {
 	dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
-	DT_Log::log_message( $_GET[ 'ID' ], get_the_title( $_GET[ 'ID' ] ) . ' ' . __( 'by', DT_TEXTDOMAIN ) . ' ' . $current_user->user_login );
+	DT_Log::log_message( $_GET[ 'ID' ], get_the_title( $_GET[ 'ID' ] ) );
 	wp_send_json_success();
     } else {
-	DT_Log::log_message( $_GET[ 'ID' ], get_the_title( $_GET[ 'ID' ] ) . ' ' . __( 'by', DT_TEXTDOMAIN ) . ' ' . $current_user->user_login, array( 'DaTask', 'error' ) );
+	DT_Log::log_message( $_GET[ 'ID' ], get_the_title( $_GET[ 'ID' ] ) , array( 'DaTask', 'error' ) );
 	wp_send_json_error();
     }
   }

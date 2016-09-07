@@ -20,6 +20,19 @@ class DT_Log {
     add_filter( 'wds_log_post_user_can_see', array( $this, 'enable_editors' ) );
     add_filter( 'wds_log_post_log_types', array( $this, 'datask_label' ) );
     add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
+
+    $log_columns = new CPT_columns( 'wdslp-wds-log' );
+    $log_columns->add_column( 'Di', array(
+	  'label' => __( 'Di', DT_TEXTDOMAIN ),
+	  'type' => 'custom_value',
+	  'callback' => array( $this, 'author_of_log' ),
+	  'sortable' => true,
+	  'prefix' => '<b>',
+	  'suffix' => '</b>',
+	  'order' => '-1',
+	  'meta_key' => 'post_author'
+		)
+    );
   }
 
   public function enable_editors( $user_can_see ) {
@@ -49,9 +62,21 @@ class DT_Log {
     if ( empty( $label ) ) {
 	$label = 'DaTask';
     }
-    $id = WDS_Log_Post::log_message( $message, '', $label );
-    update_post_meta( $id, 'datask_id', $id );
-    update_post_meta( $id, 'datask_user', get_current_user_id() );
+    $id_log = WDS_Log_Post::log_message( $message, '', $label );
+    update_post_meta( $id_log, DT_TEXTDOMAIN . '_id', $id );
+  }
+
+  /**
+   * Return the author of the task
+   *
+   * @since    1.0.0
+   * @param    integer $log_id ID of the task.
+   * @return   string The HTML link to user profile backend
+   */
+  public function author_of_log( $log_id ) {
+    $author_id = get_post_field( 'post_author', $log_id );
+    $current_user = get_userdata( $author_id );
+    return '<a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . $current_user->first_name . ' ' . $current_user->last_name . '</a>';
   }
 
 }

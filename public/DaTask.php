@@ -171,7 +171,7 @@ class DaTask {
    */
   public function get_fields( $value = '' ) {
     $fields = array();
-    $prefix = '_task_';
+    $prefix = '_';
     $fields[ 'users_of_task' ] = $prefix . DT_TEXTDOMAIN . '_users';
     $fields[ 'tasks_counter' ] = $prefix . DT_TEXTDOMAIN . '_counter';
     $fields[ 'tasks_done_of_user' ] = $prefix . DT_TEXTDOMAIN . '_tasks_done';
