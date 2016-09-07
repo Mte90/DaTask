@@ -18,19 +18,16 @@ class DT_Extras {
     $plugin = DaTask::get_instance();
     $this->cpts = $plugin->get_cpts();
 
-        // At Glance Dashboard widget for your cpts
+    // At Glance Dashboard widget for your cpts
     add_filter( 'dashboard_glance_items', array( $this, 'cpt_glance_dashboard_support' ), 10, 1 );
-            // Activity Dashboard widget for your cpts
+    // Activity Dashboard widget for your cpts
     add_filter( 'dashboard_recent_posts_query_args', array( $this, 'cpt_activity_dashboard_support' ), 10, 1 );
-            // Add bubble notification for cpt pending
+    // Add bubble notification for cpt pending
     add_action( 'admin_menu', array( $this, 'pending_cpt_bubble' ), 999 );
-      }
+  }
 
-    /**
-   * Add the counter of your CPTs in At Glance widget in the dashboard<br>
-   * NOTE: add in $post_types your cpts, remember to edit the css style (admin/assets/css/admin.css) for change the dashicon<br>
-   *
-   *        Reference:  http://wpsnipp.com/index.php/functions-php/wordpress-post-types-dashboard-at-glance-widget/
+  /**
+   * Add the counter of your CPTs in At Glance widget in the dashboard
    *
    * @since    1.0.0
    * @param array $items The content of the widget.
@@ -58,9 +55,8 @@ class DT_Extras {
     return $items;
   }
 
-      /**
-   * Add the recents post type in the activity widget<br>
-   * NOTE: add in $post_types your cpts
+  /**
+   * Add the recents post type in the activity widget
    *
    * @since    1.0.0
    * @param array $query_args The content of the widget.
@@ -75,7 +71,7 @@ class DT_Extras {
     return $query_args;
   }
 
-      /**
+  /**
    * Bubble Notification for pending cpt<br>
    * NOTE: add in $post_types your cpts<br>
    *
@@ -136,7 +132,7 @@ class DT_Extras {
     return false;
   }
 
-        /**
+  /**
    * Send a Push notification on the users browser using the Web Push plugin for WordPress
    * 
    * D_Extras->web_push_notification( 'Title', 'Content', 'http://domain.tld');
@@ -161,6 +157,6 @@ class DT_Extras {
     return true;
   }
 
-  }
+}
 
 new DT_Extras();

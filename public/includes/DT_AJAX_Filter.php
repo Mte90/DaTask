@@ -25,20 +25,19 @@ class DT_AJAX_Filter {
 
   /**
    * Build the filtered element on the search results page
-   * 
+   *
    * @since       1.0.0
    * @param       integer $posts_per_page
-   * 
    */
   public function create_filtered_section( $posts_per_page = 10 ) {
     $plugin = DaTask::get_instance();
     $filters = array();
-    // Post data passed, so update values 
+    // Post data passed, so update values
     if ( $_GET ) {
-	// Secure with a nonce 
+	// Secure with a nonce
 	check_ajax_referer( 'filternonce' );
 
-	// Grab post data 
+	// Grab post data
 	$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
 
 	if ( isset( $_GET[ 'postsperpage' ] ) ) {
@@ -49,33 +48,33 @@ class DT_AJAX_Filter {
     // Counter 
     $c = 0;
 
-    if ( isset( $_GET_filters ) && $_GET_filters[ 0 ] != "" ) { // Check that the array isn't blank
-	// This while loop puts the filters in a usable array 
+    if ( isset( $_GET_filters ) && $_GET_filters[ 0 ] !== '' ) { // Check that the array isn't blank
+	// This while loop puts the filters in a usable array
 	while ( $c < count( $_GET_filters ) ) {
-	  // Explode string to array 
+	  // Explode string to array
 	  $string = explode( '=', $_GET_filters[ $c ] );
 
-	  // Check if each item is an array - or caste 
+	  // Check if each item is an array - or caste
 	  if ( !isset( $filters[ $string[ 0 ] ] ) || !is_array( $filters[ $string[ 0 ] ] ) ) {
 	    $filters[ $string[ 0 ] ] = array();
 	  }
-	  // Add items to array 
+	  // Add items to array
 	  array_push( $filters[ $string[ 0 ] ], $string[ 1 ] );
 
-	  // Clean up empty items 
+	  // Clean up empty items
 	  array_filter( $filters );
 
-	  // Iterate 
+	  // Iterate
 	  $c++;
 	}
     }
 
-    // Build args list 
+    // Build args list
     $args = array(
 	  "post_type" => 'task', "posts_per_page" => ( int ) $posts_per_page, "tax_query" => array(), "orderby" => 'date', "order" => 'DESC', "post_status" => "publish"
     );
 
-    // Check if paging value passed, if so add to the query 
+    // Check if paging value passed, if so add to the query
     if ( isset( $_GET[ 'paged' ] ) ) {
 	$args[ 'paged' ] = $_GET[ 'paged' ];
     } else {
@@ -83,7 +82,7 @@ class DT_AJAX_Filter {
     }
 
     if ( isset( $filters ) && !empty( $filters ) ) {
-	// Add all the filters to tax_query 
+	// Add all the filters to tax_query
 	foreach ( $filters as $taxonomy => $ids ) {
 	  if ( $taxonomy !== 'search' ) {
 	    foreach ( $ids as $id ) {
@@ -101,13 +100,13 @@ class DT_AJAX_Filter {
 	$args[ 'tax_query' ][ 'relation' ] = 'AND';
     }
 
-    // Counter 
+    // Counter
     $i = 0;
 
-    // New WP_Query 
+    // New WP_Query
     $dt_ajax_filter_wp_query = new WP_Query();
 
-    // Parse args 
+    // Parse args
     $dt_ajax_filter_wp_query->query( $args );
     if ( $dt_ajax_filter_wp_query->have_posts() ) {
 	while ( $dt_ajax_filter_wp_query->have_posts() ) {
@@ -116,7 +115,7 @@ class DT_AJAX_Filter {
 	  <article class="ajax-loaded">
 	      <h4><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h4>
 	      <p><?php the_excerpt(); ?></p>
-	      <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( "Read More", DT_TEXTDOMAIN ); ?></a>
+	      <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php _e( 'Read More', DT_TEXTDOMAIN ); ?></a>
 	  </article>
 	  <?php
 	  $i++;
@@ -124,26 +123,26 @@ class DT_AJAX_Filter {
 	$this->pagination( $dt_ajax_filter_wp_query->found_posts, $posts_per_page );
     } else {
 	echo "<p class='no-results'>";
-	_e( "No Results found :(", DT_TEXTDOMAIN );
-	echo "</p>";
+	_e( 'No Results found :(', DT_TEXTDOMAIN );
+	echo '</p>';
     }
 
-    // Reset global post object 
-    wp_reset_query();
+    // Reset global post object
+    wp_reset_postdata();
 
-    // Called from ajax - so needs to die 
+    // Called from ajax - so needs to die
     if ( $_GET ) {
 	die();
     }
   }
 
   /**
-   * Buid pagination 
-   * 
+   * Buid pagination
+   *
    * @since 1.0.0
    * @param integer $total_posts Post totali.
    * @param integer $posts_per_page Post per pagina.
-   * 
+   *
    */
   public function pagination( $total_posts, $posts_per_page ) {
     ?>
@@ -202,7 +201,7 @@ class DT_AJAX_Filter {
 		  <?php
 		}
 
-		// If the current page is less than the last page minus $posts_per_page pages divided by 2 
+		// If the current page is less than the last page minus $posts_per_page pages divided by 2
 		if ( $page_number < ( $pages - floor( $posts_per_page / 2 ) ) ) {
 		  ?>
 		  <li class="page-item"><a href='#' class="page-link">...</a></li>
@@ -217,20 +216,20 @@ class DT_AJAX_Filter {
 
   /**
    * Build list of terms to filter by
-   * 
+   *
    * @since 1.0.0
-   * @param string $filter_type List or select.
+   * @param string  $filter_type List or select.
    * @param integer $show_count Show the post.
-   * 
+   *
    */
   public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
     $taxonomies = array( 'task-team', 'task-area', 'task-difficulty', 'task-minute' );
     $plugin = DaTask::get_instance();
-    $searcher = isset( $_GET[ "s" ] ) ? $_GET[ "s" ] : "";
+    $searcher = isset( $_GET[ 's' ] ) ? $_GET[ 's' ] : '';
     ?>
     <div id="ajax-filters" class="ajax-filters">
         <div class="form-group">
-    	  <input type="text" value="<?php echo $searcher; ?>" name="searcher" id="searcher" placeholder="<?php _e( "Search" ); ?>" class="filter-selected form-control" />
+    	  <input type="text" value="<?php echo $searcher; ?>" name="searcher" id="searcher" placeholder="<?php _e( 'Search' ); ?>" class="filter-selected form-control" />
         </div>
         <div class="form-inline">
     	  <div class="form-group" style="width: 100%;">
@@ -254,21 +253,21 @@ class DT_AJAX_Filter {
 			  reset( $terms );
 			  $first_key = key( $terms );
 
-			  // Nothing cooking in this taxonomy 
+			  // Nothing cooking in this taxonomy
 			  if ( !$terms[ $first_key ] ) {
 			    continue;
 			  }
 
-			  // Get tax name 
+			  // Get tax name
 			  $the_tax = get_taxonomy( $terms[ $first_key ]->taxonomy );
 			  $the_tax_name = $the_tax->labels->singular_name;
 
-			  // Select or list items ? 
+			  // Select or list items ?
 			  switch ( $filter_type ) {
-			    // Build selects for changing values 
-			    case "select";
+			    // Build selects for changing values
+			    case 'select';
 				echo '<select class="filter-' . $taxonomy . ' ajax-select form-control">';
-				echo "<option value=\"\" class=\"default\">" . $the_tax_name . "</option>";
+				echo '<option value="" class="default">' . $the_tax_name . '</option>';
 				foreach ( $terms as $term ) {
 				  echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '"> - ';
 				  echo $term->name;
@@ -280,8 +279,8 @@ class DT_AJAX_Filter {
 				echo '</select>';
 				break;
 
-			    // Build list items for changing values 
-			    case "list";
+			    // Build list items for changing values
+			    case 'list';
 			    default;
 				echo '<div class="filter-' . $taxonomy . ' filter-selected">';
 				echo '<h4>' . $the_tax_name . '</h4>';
@@ -303,8 +302,8 @@ class DT_AJAX_Filter {
 		    } else {
 			?>
 			<div class="search-form-button" style="float: right;">
-			    <input type="submit" id="go" class="go filter btn btn-info" value="<?php _e( "Search" ); ?>" />
-			    <input type="reset" id="reset" class="reset btn btn-info" value="<?php _e( "Clear" ); ?>" />
+			    <input type="submit" id="go" class="go filter btn btn-info" value="<?php _e( 'Search' ); ?>" />
+			    <input type="reset" id="reset" class="reset btn btn-info" value="<?php _e( 'Clear' ); ?>" />
 			</div>
 			<?php
 		    }
@@ -317,7 +316,7 @@ class DT_AJAX_Filter {
 
   /**
    * Write the shortcode
-   * 
+   *
    * @since       1.0.0
    * @param array $atts The values from the shortcode.
    * @return string THe HTML code

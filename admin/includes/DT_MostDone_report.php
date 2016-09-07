@@ -1,5 +1,9 @@
 <?php
 
+if ( !class_exists( 'WP_List_Table' ) ) {
+	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+}
+
 /**
  * This class generate the list for the statistics
  *
@@ -10,10 +14,6 @@
  * @link      http://mte90.net
  * @copyright 2015 GPL
  */
-if ( !class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-}
-
 class DT_MostDone extends WP_List_Table {
 
 	/**
@@ -22,7 +22,6 @@ class DT_MostDone extends WP_List_Table {
 	 * @since     1.1.0
 	 */
 	public function __construct() {
-		$plugin = DaTask::get_instance();
 		parent::__construct( [
 		    'singular' => __( 'Task', DT_TEXTDOMAIN ),
 		    'plural' => __( 'Tasks', DT_TEXTDOMAIN ),
@@ -33,7 +32,7 @@ class DT_MostDone extends WP_List_Table {
 
 	/**
 	 * Return a list of tasks done
-	 * 
+	 *
 	 * @since     1.1.0
 	 *
 	 * @param  integer $per_page Posts per page.
@@ -41,11 +40,10 @@ class DT_MostDone extends WP_List_Table {
 	 * @return array The posts.
 	 */
 	public function get_tasks( $per_page = 5, $page_number = 1 ) {
-		$plugin = DaTask::get_instance();
 		global $wpdb;
-		$sql = "SELECT SQL_CALC_FOUND_ROWS " . $wpdb->posts . ".ID," . $wpdb->posts . ".post_title as title, done_task.meta_value as done";
+		$sql = 'SELECT SQL_CALC_FOUND_ROWS ' . $wpdb->posts . '.ID,' . $wpdb->posts . '.post_title as title, done_task.meta_value as done';
 		$sql .= " FROM wp_posts LEFT JOIN $wpdb->postmeta as done_task ON (" . $wpdb->posts . ".ID = done_task.post_id AND done_task.meta_key='_task_" . DT_TEXTDOMAIN . "_counter') WHERE 1=1";
-		$sql .= " AND " . $wpdb->posts . ".post_type = 'task' AND (" . $wpdb->posts . ".post_status = 'publish' OR " . $wpdb->posts . ".post_status = 'private')";
+		$sql .= ' AND ' . $wpdb->posts . ".post_type = 'task' AND (" . $wpdb->posts . ".post_status = 'publish' OR " . $wpdb->posts . ".post_status = 'private')";
 		if ( !empty( $_REQUEST[ 'orderby' ] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST[ 'orderby' ] );
 			$sql .=!empty( $_REQUEST[ 'order' ] ) ? ' ' . esc_sql( $_REQUEST[ 'order' ] ) : ' ASC';
@@ -73,15 +71,14 @@ class DT_MostDone extends WP_List_Table {
 	 * @return null|string
 	 */
 	public function no_items() {
-		$plugin = DaTask::get_instance();
 		_e( 'No tasks avalaible.', DT_TEXTDOMAIN );
 	}
 
 	/**
 	 * Render a column when no column specific method exist.
 	 *
-	 * @param array $item
-	 * @param string $column_name
+	 * @param array  $item Column.
+	 * @param string $column_name Name.
 	 *
 	 * @return mixed
 	 */
@@ -116,7 +113,6 @@ class DT_MostDone extends WP_List_Table {
 	 * @return array
 	 */
 	function get_columns() {
-		$plugin = DaTask::get_instance();
 		$columns = [
 		    'title' => __( 'Title', DT_TEXTDOMAIN ),
 		    'done' => __( 'Done', DT_TEXTDOMAIN ),

@@ -29,8 +29,8 @@ class DT_API {
 	 * Add fields to api for tasks
 	 *
 	 * @param array $_post Details of current post.
-	 * @param array $post
-	 * @param array $context
+	 * @param array $post Details post.
+	 * @param array $context Contenuto del post.
 	 * @since 1.0.0
 	 * @return mixed
 	 */
@@ -106,8 +106,8 @@ class DT_API {
 	/**
 	 * Get the value of the "starship" field
 	 *
-	 * @param array $object Details of current post.
-	 * @param string $field Name of field.
+	 * @param array           $object Details of current post.
+	 * @param string          $field Name of field.
 	 * @param WP_REST_Request $request Current request.
 	 *
 	 * @return mixed
@@ -128,7 +128,7 @@ class DT_API {
 				wp_reset_postdata();
 			}
 			return array( 'ids' => $befores, 'rendered' => $befores_task );
-		} else if ( 'task_mentor' === $field ) {
+		} elseif ( 'task_mentor' === $field ) {
 			$mentors = get_post_meta( $object[ 'id' ], $plugin->get_fields( 'task_mentor' ), true );
 			$mentors_task = '';
 			if ( !empty( $mentors ) ) {
@@ -140,7 +140,7 @@ class DT_API {
 				}
 			}
 			return array( 'ids' => $mentors, 'rendered' => $mentors_task );
-		} else if ( 'task_next' === $field ) {
+		} elseif ( 'task_next' === $field ) {
 			$nexts = get_post_meta( $object[ 'id' ], $plugin->get_fields( 'task_next' ), true );
 			$next_task = '';
 			if ( !empty( $nexts ) ) {

@@ -27,7 +27,7 @@ class DT_User_Backend {
 
 	/**
 	 * Adds a 'Switch To' link to each list of user actions on the Users screen.
-	 * 
+	 *
 	 * @since     1.0.0
 	 *
 	 * @param  array   $actions The actions to display for this user row.
@@ -35,7 +35,6 @@ class DT_User_Backend {
 	 * @return array The actions to display for this user row.
 	 */
 	public function filter_user_row_actions( array $actions, WP_User $user ) {
-		$plugin = DaTask::get_instance();
 		if ( is_admin() ) {
 			$link = wp_nonce_url( add_query_arg( array(
 			    'action' => 'reset_task_later_user',
@@ -50,7 +49,7 @@ class DT_User_Backend {
 
 	/**
 	 * Load localisation files and route actions depending on the 'action' query var.
-	 * 
+	 *
 	 * @since     1.0.0
 	 */
 	public function action_init() {
@@ -60,7 +59,7 @@ class DT_User_Backend {
 			$plugin = DaTask::get_instance();
 			update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( '' ) );
 			$user = get_user_by( 'id', $user_id );
-			New WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', DT_TEXTDOMAIN ), $user->data->user_login ), 'updated' );
+			new WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', DT_TEXTDOMAIN ), $user->data->user_login ), 'updated' );
 		}
 	}
 

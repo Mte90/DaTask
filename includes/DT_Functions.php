@@ -195,8 +195,8 @@ function dt_tasks_completed() {
  * @param     string $user ID of the user.
  * @return    string html
  */
-function dt_get_tasks_later( $user = NULL ) {
-  if ( $user === NULL ) {
+function dt_get_tasks_later( $user = null ) {
+  if ( $user === null ) {
     $user = get_user_of_profile();
   }
   $print = '';
@@ -258,7 +258,7 @@ function dt_get_tasks_later( $user = NULL ) {
  * @since     1.0.0
  * @param     string $user ID of the user.
  */
-function dt_tasks_later( $user = NULL ) {
+function dt_tasks_later( $user = null ) {
   echo dt_get_tasks_later( $user );
 }
 
@@ -267,7 +267,7 @@ function dt_tasks_later( $user = NULL ) {
  *
  * @since     1.0.0
  *
- * @return    @string|NULL value Nick of the user
+ * @return    @string|null value Nick of the user
  */
 function get_user_of_profile() {
   global $wp_query;
@@ -277,7 +277,7 @@ function get_user_of_profile() {
     if ( username_exists( $username ) ) {
 	return $username;
     } else {
-	return NULL;
+	return null;
     }
     // If the url don't have the nick get the actual
   } elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
@@ -289,11 +289,11 @@ function get_user_of_profile() {
     if ( username_exists( $username ) ) {
 	return $username;
     } else {
-	return NULL;
+	return null;
     }
     // If the url don't have the nick get the actual
   } else {
-    return NULL;
+    return null;
   }
 }
 
@@ -349,8 +349,8 @@ function get_users_by_task( $task_id ) {
  *
  * @return    boolean
  */
-function has_task( $task_id, $user_id = NULL ) {
-  if ( $user_id === NULL ) {
+function has_task( $task_id, $user_id = null ) {
+  if ( $user_id === null ) {
     $user_id = get_current_user_id();
   }
   $tasks = get_tasks_by_user( $user_id );
@@ -371,8 +371,8 @@ function has_task( $task_id, $user_id = NULL ) {
  *
  * @return    boolean
  */
-function has_later_task( $task_id, $user_id = NULL ) {
-  if ( $user_id === NULL ) {
+function has_later_task( $task_id, $user_id = null ) {
+  if ( $user_id === null ) {
     $user_id = get_current_user_id();
   }
   $tasks = get_tasks_later_by_user( $user_id );

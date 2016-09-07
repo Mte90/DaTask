@@ -33,7 +33,6 @@ class DT_BadgeOS {
 	 * @return array $triggers The new triggers.
 	 */
 	public function add_trigger( $triggers ) {
-		$plugin = DaTask::get_instance();
 		$triggers[ 'datask_badgeos_trigger' ] = __( 'DaTask Done Task', DT_TEXTDOMAIN );
 		return $triggers;
 	}
@@ -46,7 +45,6 @@ class DT_BadgeOS {
 	 * @param integer $post_id The post id.
 	 */
 	public function task_list( $step_id, $post_id ) {
-		$plugin = DaTask::get_instance();
 		$tasks = new WP_Query( array(
 		    'post_type' => 'task',
 		    'posts_per_page' => -1 ) );
@@ -67,7 +65,6 @@ class DT_BadgeOS {
 	 * @return array $requirements The new requirements.
 	 */
 	public function requirements( $requirements, $step_id ) {
-		$plugin = DaTask::get_instance();
 		$requirements[ 'datask_done' ] = get_post_meta( $step_id, '_badgeos_datask_trigger', true );
 		return $requirements;
 	}
@@ -76,27 +73,23 @@ class DT_BadgeOS {
 	 * Save the task associated
 	 *
 	 * @since    1.1.0
-	 * @param array $title The title.
-	 * @param array $step_id The step id.
-	 * @param array $step_data The data sent.
 	 */
 	public function trigger_event() {
 		global $blog_id, $wpdb;
-		$plugin = DaTask::get_instance();
 		// Setup args
 		$args = func_get_args();
 
-		$userID = get_current_user_id();
+		$user_id = get_current_user_id();
 
 		if ( is_array( $args ) && isset( $args[ 0 ] ) && isset( $args[ 0 ][ 'created_by' ] ) ) {
-			$userID = ( int ) $args[ 0 ][ 'created_by' ];
+			$user_id = ( int ) $args[ 0 ][ 'created_by' ];
 		}
 
-		if ( empty( $userID ) ) {
+		if ( empty( $user_id ) ) {
 			return;
 		}
 
-		$user_data = get_user_by( 'id', $userID );
+		$user_data = get_user_by( 'id', $user_id );
 
 		if ( empty( $user_data ) ) {
 			return;
@@ -106,10 +99,10 @@ class DT_BadgeOS {
 		$this_trigger = current_filter();
 
 		// Update hook count for this user
-		$new_count = badgeos_update_user_trigger_count( $userID, $this_trigger, $blog_id );
+		$new_count = badgeos_update_user_trigger_count( $user_id, $this_trigger, $blog_id );
 
 		// Mark the count in the log entry
-		badgeos_post_log_entry( null, $userID, null, sprintf( __( '%1$s triggered %2$s (%3$dx)', 'badgeos' ), $user_data->user_login, __( 'Task Done', DT_TEXTDOMAIN ), $new_count ) );
+		badgeos_post_log_entry( null, $user_id, null, sprintf( __( '%1$s triggered %2$s (%3$dx)', 'badgeos' ), $user_data->user_login, __( 'Task Done', DT_TEXTDOMAIN ), $new_count ) );
 
 		// Now determine if any badges are earned based on this trigger event
 		$triggered_achievements = $wpdb->get_results( $wpdb->prepare( "
@@ -119,7 +112,7 @@ class DT_BadgeOS {
 				AND meta_value = %s
 		", $this_trigger ) );
 		foreach ( $triggered_achievements as $achievement ) {
-			badgeos_maybe_award_achievement_to_user( $achievement->post_id, $userID, $this_trigger, $blog_id, $args );
+			badgeos_maybe_award_achievement_to_user( $achievement->post_id, $user_id, $this_trigger, $blog_id, $args );
 		}
 	}
 
@@ -127,8 +120,9 @@ class DT_BadgeOS {
 	 * Add the trigger
 	 *
 	 * @since    1.0.0
-	 * @param array $triggers The triggers.
-	 * @return array $triggers The new triggers.
+	 * @param array $title The triggers.
+	 * @param array $step_id The ID.
+	 * @param array $step_data The data.
 	 */
 	public function save_step( $title, $step_id, $step_data ) {
 		if ( 'datask_badgeos_trigger' == $step_data[ 'trigger_type' ] ) {
