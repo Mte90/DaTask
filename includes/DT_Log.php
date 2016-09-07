@@ -45,6 +45,15 @@ class DT_Log {
     }
   }
 
+  public static function log_message( $id, $message, $label = '' ) {
+    if ( empty( $label ) ) {
+	$label = 'DaTask';
+    }
+    $id = WDS_Log_Post::log_message( $message, '', $label );
+    update_post_meta( $id, 'datask_id', $id );
+    update_post_meta( $id, 'datask_user', get_current_user_id() );
+  }
+
 }
 
 new DT_Log();

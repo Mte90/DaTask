@@ -64,13 +64,17 @@ class DaTask {
    */
   private function __construct() {
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_CPT.php' );
-    add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
     $options = get_option( DT_TEXTDOMAIN . '-settings' );
     $options_extra = get_option( DT_TEXTDOMAIN . '-settings-extra' );
+    if ( isset( $options[ DT_TEXTDOMAIN . '_disable_adminbar' ] ) ) {
+	require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Upgrade.php' );
+    }
     // Load public-facing style sheet and JavaScript.
     add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
     add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
+    
+    add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
     // Ajax frontend
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Task.php' );
     // Search Shortcode

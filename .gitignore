@@ -8,3 +8,4 @@ composer.lock
 /composer/
 /admin/includes/lib
 /public/includes/lib
+/includes/lib

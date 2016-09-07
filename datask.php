@@ -37,10 +37,6 @@ add_action( 'plugins_loaded', 'd_load_plugin_textdomain', 1 );
 require_once( plugin_dir_path( __FILE__ ) . 'composer/autoload.php' );
 
 require_once( plugin_dir_path( __FILE__ ) . 'public/DaTask.php' );
-$dt_options = get_option( 'datask-settings' );
-if ( isset( $dt_options[ DT_TEXTDOMAIN . '_disable_adminbar' ] ) ) {
-  require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Upgrade.php' );
-}
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_FakePage.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Log.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Uninstall.php' );
