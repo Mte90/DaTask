@@ -73,7 +73,7 @@ class DaTask {
     add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
     add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_js_vars' ) );
-    
+
     add_filter( 'pre_get_posts', array( $this, 'filter_search' ) );
     // Ajax frontend
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_AJAX_Task.php' );
@@ -93,6 +93,8 @@ class DaTask {
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Task_Support.php' );
     // Support for API Rest
     require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_API.php' );
+    // Add graphs
+    require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_Graphs.php' );
     // BadgeOS support
     if ( class_exists( 'BadgeOS' ) ) {
 	require_once( plugin_dir_path( __FILE__ ) . '/includes/DT_BadgeOS.php' );
@@ -200,6 +202,7 @@ class DaTask {
    */
   public function enqueue_styles() {
     wp_enqueue_style( DT_TEXTDOMAIN . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), DT_VERSION );
+    wp_enqueue_style( DT_TEXTDOMAIN . '-mg-styles', plugins_url( 'assets/css/metricsgraphics.css', __FILE__ ), array(), DT_VERSION );
   }
 
   /**
@@ -209,6 +212,8 @@ class DaTask {
    */
   public function enqueue_scripts() {
     wp_enqueue_script( DT_TEXTDOMAIN . '-plugin-script', plugins_url( 'assets/js/public.js', __FILE__ ), array( 'jquery' ), DT_VERSION );
+    wp_enqueue_script( DT_TEXTDOMAIN . '-d3-script', 'https://d3js.org/d3.v4.min.js', array( 'jquery' ), DT_VERSION );
+    wp_enqueue_script( DT_TEXTDOMAIN . '-mg-script', plugins_url( 'assets/js/metricsgraphics.min.js', __FILE__ ), array( DT_TEXTDOMAIN . '-d3-script' ), DT_VERSION );
   }
 
   /**
