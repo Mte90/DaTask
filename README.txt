@@ -36,6 +36,12 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 * User RSS for activity
 * Integration with the plugins: BadgeOS, Archived Post Status
 
+Shortcodes:
+
+* dt_task_number - Show the task created in the last 12 months
+* dt_task_month_activity - Show the task activity in the last 12 months
+* dt_task_daily_activity - Show the task daily activity in the this months
+
 == Installation ==
 
 = Using The WordPress Dashboard =
