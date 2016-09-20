@@ -37,6 +37,17 @@
 		    'desc' => __( 'Add register/login in the frontend', DT_TEXTDOMAIN ),
 		    'type' => 'checkbox',
 		) );
+		$pages = get_pages();
+		$options = array();
+		foreach ( $pages as $page ) {
+		  $options[ $page->ID ] = $page->post_title;
+		}
+		$cmb->add_field( array(
+		    'name' => __( 'Frontend Login - Redirect at registration', DT_TEXTDOMAIN ),
+		    'id' => 'redirect_registration',
+		    'type' => 'select',
+		    'options' => $options
+		) );
 		$cmb->add_field( array(
 		    'name' => __( 'Frontend Login - Disable Admin Bar for other users', DT_TEXTDOMAIN ),
 		    'id' => 'disable_adminbar',
