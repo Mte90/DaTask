@@ -1,5 +1,4 @@
 <?php
-
 /**
  * DaTask Functions
  *
@@ -29,7 +28,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
   if ( empty( $counter ) ) {
     $counter = 1;
   } else {
-    $counter++;
+    $counter = ( int ) $counter + 1;
   }
   update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
   $tasks_of_user = get_tasks_by_user( $user_id );
@@ -100,7 +99,7 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
   if ( empty( $counter ) ) {
     $counter = 1;
   } else {
-    $counter--;
+    $counter = ( int ) $counter - 1;
   }
   update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
   $tasks_of_user = get_tasks_by_user( $user_id );
@@ -122,7 +121,6 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
  * Get the task done from the user with html
  *
  * @since     1.0.0
- *
  * @return    @string html
  */
 function dt_get_tasks_completed() {
@@ -174,7 +172,7 @@ function dt_get_tasks_completed() {
 	$print .= '</h5>';
     }
   } else {
-    $print = __( "This profile not exist!", DT_TEXTDOMAIN );
+    $print = __( 'This profile not exist!', DT_TEXTDOMAIN );
   }
   return $print;
 }
@@ -230,6 +228,7 @@ function dt_get_tasks_later( $user = null ) {
 	    }
 	    $print .= '</ul>';
 	    wp_reset_postdata();
+
 	    /*
 	     * Filter the box with task later
 	     *
@@ -247,7 +246,7 @@ function dt_get_tasks_later( $user = null ) {
 	}
     }
   } else {
-    $print = __( "This profile not exist!", DT_TEXTDOMAIN );
+    $print = __( 'This profile not exist!', DT_TEXTDOMAIN );
   }
   return $print;
 }
@@ -266,7 +265,6 @@ function dt_tasks_later( $user = null ) {
  * Print the task later from the user with html
  *
  * @since     1.0.0
- *
  * @return    @string|null value Nick of the user
  */
 function get_user_of_profile() {
@@ -301,9 +299,7 @@ function get_user_of_profile() {
  * Return the task ids of the user
  *
  * @since     1.0.0
- * 
  * @param     integer $user_id ID of the user.
- *
  * @return    array the ids
  */
 function get_tasks_by_user( $user_id ) {
@@ -315,9 +311,7 @@ function get_tasks_by_user( $user_id ) {
  * Return the task later ids of the user
  *
  * @since     1.0.0
- * 
  * @param     integer $user_id ID of the user.
- *
  * @return    array the ids
  */
 function get_tasks_later_by_user( $user_id ) {
@@ -329,9 +323,7 @@ function get_tasks_later_by_user( $user_id ) {
  * Return the user ids by task
  *
  * @since     1.0.0
- * 
  * @param     integer $task_id ID of the user.
- *
  * @return    array the ids
  */
 function get_users_by_task( $task_id ) {
@@ -343,7 +335,6 @@ function get_users_by_task( $task_id ) {
  * Check if the user have done the task
  *
  * @since     1.0.0
- * 
  * @param     integer $task_id ID of the task.
  * @param     integer $user_id ID of the user.
  *
@@ -365,7 +356,6 @@ function has_task( $task_id, $user_id = null ) {
  * Check if the user have the task later
  *
  * @since     1.0.0
- * 
  * @param     integer $task_id ID of the task.
  * @param     integer $user_id ID of the user.
  *
@@ -384,14 +374,11 @@ function has_later_task( $task_id, $user_id = null ) {
 }
 
 /**
- * Get list of Badge of BadgeOS 
+ * Get list of Badge of BadgeOS
  * Based on https://gist.github.com/tw2113/6c31366d094eee6d5151
  *
  * @since     1.1.0
- * 
  * @param     integer $user ID of the user.
- *
- * @return    string
  */
 function datask_badgeos_user_achievements( $user ) {
   if ( class_exists( 'BadgeOS' ) ) {
@@ -419,90 +406,90 @@ function datask_badgeos_user_achievements( $user ) {
 
 /**
  * Echo the subtitle of the task
- * 
+ *
  * @param    bool $echo Print or not to print.
  * @return   bool|string Echo or the value
  * @since    1.0.0
  */
 function the_task_subtitle( $echo = true ) {
-	$plugin = DaTask::get_instance();
-	if ( $echo ) {
-		echo get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
-	} else {
-		return get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
-	}
+  $plugin = DaTask::get_instance();
+  if ( $echo ) {
+    echo get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
+  } else {
+    return get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
+  }
 }
 
 /**
  * Print Task button
- * 
+ *
  * @since    1.0.0
  */
 function datask_buttons() {
-	if ( is_user_logged_in() ) {
-		?>
-		<div class="dt-buttons">
-		    <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
-		    <button type="submit" class="button btn btn-primary complete <?php
-		    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
-			    echo 'disabled';
+  if ( is_user_logged_in() ) {
+    ?>
+    <div class="dt-buttons">
+	  <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
+        <button type="submit" class="button btn btn-primary complete <?php
+	  if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+	    echo 'disabled';
+	  }
+	  ?>" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+		    <?php
+		    if ( has_later_task( get_the_ID() ) ) {
+			echo '<i class="fa fa-exclamation-circle"></i>';
 		    }
-		    ?>" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
-			    <?php
-			    if ( has_later_task( get_the_ID() ) ) {
-				    echo '<i class="fa fa-exclamation-circle"></i>';
-			    }
-			    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
-				    echo '<i class="fa fa-check"></i>';
-			    }
-			    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
-		    <button type="submit" class="button btn btn-secondary save-later <?php
-		if ( has_later_task( get_the_ID() ) ) {
-			echo 'disabled';
-		}
-			    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
-			    <?php
-			    if ( has_later_task( get_the_ID() ) ) {
-				    echo '<i class="fa fa-check"></i>';
-			    }
-			    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
-		    <button type="submit" class="button btn btn-warning remove <?php
-		if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
-			echo 'disabled';
-		}
-			    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
-		</div>
-		<?php
-	} else {
-		echo '<h4 class="alert alert-danger">';
-		_e( 'Save your history of tasks done or in progress with a free account!', DT_TEXTDOMAIN );
-		echo '</h4>';
-	}
+		    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+			echo '<i class="fa fa-check"></i>';
+		    }
+		    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
+        <button type="submit" class="button btn btn-secondary save-later <?php
+	  if ( has_later_task( get_the_ID() ) ) {
+	    echo 'disabled';
+	  }
+	  ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+		    <?php
+		    if ( has_later_task( get_the_ID() ) ) {
+			echo '<i class="fa fa-check"></i>';
+		    }
+		    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
+        <button type="submit" class="button btn btn-warning remove <?php
+	  if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+	    echo 'disabled';
+	  }
+	  ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
+    </div>
+    <?php
+  } else {
+    echo '<h4 class="alert alert-danger">';
+    _e( 'Save your history of tasks done or in progress with a free account!', DT_TEXTDOMAIN );
+    echo '</h4>';
+  }
 }
 
 /**
  * User contact form
- * 
+ *
  * @since    1.0.0
  */
 function datask_user_form() {
-	if ( is_user_logged_in() ) {
-		$user = get_user_by( 'login', get_user_of_profile() );
-		$current_user = wp_get_current_user();
-		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
-			$content = '<div class="card card-inverse card-warning panel panel-warning" id="user-contact-form">';
-			$content = '<div class="card-block">';
-			$content .= '<div class="card-title panel-heading">';
-			$content .= __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name;
-			$content .= '</div>';
-			$content .= '<div class="card-text panel-content">';
-			$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
-			$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
-			$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
-			$content .= '</div>';
-			$content .= '</div>';
-			$content .= '</div>';
-			echo $content;
-		}
-	}
+  if ( is_user_logged_in() ) {
+    $user = get_user_by( 'login', get_user_of_profile() );
+    $current_user = wp_get_current_user();
+    if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
+	$content = '<div class="card card-inverse card-warning panel panel-warning" id="user-contact-form">';
+	$content = '<div class="card-block">';
+	$content .= '<div class="card-title panel-heading">';
+	$content .= __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name;
+	$content .= '</div>';
+	$content .= '<div class="card-text panel-content">';
+	$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
+	$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
+	$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
+	$content .= '</div>';
+	$content .= '</div>';
+	$content .= '</div>';
+	echo $content;
+    }
+  }
 }

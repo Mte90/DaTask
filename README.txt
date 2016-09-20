@@ -38,9 +38,9 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 
 Shortcodes:
 
-* dt_task_number - Show the task created in the last 12 months
-* dt_task_month_activity - Show the task activity in the last 12 months
-* dt_task_daily_activity - Show the task daily activity in the this months
+* [dt_task_number] - Show the task created in the last 12 months
+* [dt_task_month_activity list=false] - Show the task activity in the last 12 months
+* [dt_task_daily_activity list=false] - Show the task daily activity in the this months
 
 == Installation ==
 

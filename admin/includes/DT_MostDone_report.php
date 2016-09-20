@@ -42,7 +42,7 @@ class DT_MostDone extends WP_List_Table {
 	public function get_tasks( $per_page = 5, $page_number = 1 ) {
 		global $wpdb;
 		$sql = 'SELECT SQL_CALC_FOUND_ROWS ' . $wpdb->posts . '.ID,' . $wpdb->posts . '.post_title as title, done_task.meta_value as done';
-		$sql .= " FROM wp_posts LEFT JOIN $wpdb->postmeta as done_task ON (" . $wpdb->posts . ".ID = done_task.post_id AND done_task.meta_key='_task_" . DT_TEXTDOMAIN . "_counter') WHERE 1=1";
+		$sql .= " FROM wp_posts LEFT JOIN $wpdb->postmeta as done_task ON (" . $wpdb->posts . ".ID = done_task.post_id AND done_task.meta_key='_" . DT_TEXTDOMAIN . "_counter') WHERE 1=1";
 		$sql .= ' AND ' . $wpdb->posts . ".post_type = 'task' AND (" . $wpdb->posts . ".post_status = 'publish' OR " . $wpdb->posts . ".post_status = 'private')";
 		if ( !empty( $_REQUEST[ 'orderby' ] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST[ 'orderby' ] );
