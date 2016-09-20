@@ -222,9 +222,7 @@ class DT_AJAX_Filter {
    * @param integer $show_count Show the post.
    *
    */
-  public function create_filter_nav( $filter_type = 'select', $show_count = 0 ) {
-    $taxonomies = array( 'task-team', 'task-area', 'task-difficulty', 'task-minute' );
-    $plugin = DaTask::get_instance();
+  public function create_filter_nav( $filter_type = 'select', $show_count = 0, $taxonomies = null ) {
     $searcher = isset( $_GET[ 's' ] ) ? $_GET[ 's' ] : '';
     ?>
     <div id="ajax-filters" class="ajax-filters">
@@ -322,11 +320,19 @@ class DT_AJAX_Filter {
    * @return string THe HTML code
    */
   function ajax_filter( $atts ) {
-    $show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] == 1 ? 1 : 0;
+    $show_count = isset( $atts[ 'show_count' ] ) && $atts[ 'show_count' ] === 1 ? 1 : 0;
     $posts_per_page = isset( $atts[ 'posts_per_page' ] ) ? ( int ) $atts[ 'posts_per_page' ] : 10;
     $filter_type = isset( $atts[ 'filter_type' ] ) && !empty( $atts[ 'filter_type' ] ) ? $atts[ 'filter_type' ] : 'select';
+    if ( !isset( $atts[ 'taxonomies' ] ) ) {
+	$taxonomies = array( 'task-team', 'task-area', 'task-difficulty', 'task-minute' );
+    } else {
+	if ( !strpos( ',', $atts[ 'taxonomies' ] ) ) {
+	  $taxonomies = array( $atts[ 'taxonomies' ] );
+	}
+	$taxonomies = explode( ',', str_replace( ' ', '', $atts[ 'taxonomies' ] ) );
+    }
     ob_start();
-    $this->create_filter_nav( $filter_type, $show_count );
+    $this->create_filter_nav( $filter_type, $show_count, $taxonomies );
     ?>  
     <div id="ajax-content" class="r-content-wide">
         <section id="ajax-filtered-section" data-postsperpage="<?php echo $posts_per_page ?>">

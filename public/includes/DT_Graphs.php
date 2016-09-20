@@ -17,9 +17,9 @@ class DT_Graphs {
    * @since     1.0.0
    */
   public function __construct() {
-    add_shortcode( 'dt_task_number', array( $this, 'task_number' ) );
-    add_shortcode( 'dt_task_month_activity', array( $this, 'task_month_activity' ) );
-    add_shortcode( 'dt_task_daily_activity', array( $this, 'task_daily_activity' ) );
+    add_shortcode( 'datask-task-number', array( $this, 'task_number' ) );
+    add_shortcode( 'datask-task-month-activity', array( $this, 'task_month_activity' ) );
+    add_shortcode( 'datask-task-daily-activity', array( $this, 'task_daily_activity' ) );
   }
 
   /**

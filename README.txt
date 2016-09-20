@@ -38,9 +38,11 @@ Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-aja
 
 Shortcodes:
 
-* [dt_task_number] - Show the task created in the last 12 months
-* [dt_task_month_activity list=false] - Show the task activity in the last 12 months
-* [dt_task_daily_activity list=false] - Show the task daily activity in the this months
+* [datask-progress] - Show the progress of the user
+* [datask-search filter_type="select" posts_per_page="3" show_count=1 taxonomies='task-team,task-area,task-difficulty,task-minute'] - Show the search form and system
+* [datask_task_number] - Show the task created in the last 12 months
+* [datask_task_month_activity list=false] - Show the task activity in the last 12 months
+* [datask_task_daily_activity list=false] - Show the task daily activity in the this months
 
 == Installation ==
 
