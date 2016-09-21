@@ -46,6 +46,6 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Uninstall.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_ActDeact.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Functions.php' );
 
-if ( is_admin() && (!defined( 'DOING_AJAX' ) || !DOING_AJAX ) ) {
+if ( is_admin() ) {
   require_once( plugin_dir_path( __FILE__ ) . 'admin/DaTask_Admin.php' );
 }

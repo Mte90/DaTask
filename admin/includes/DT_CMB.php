@@ -41,6 +41,13 @@ class DT_CMB {
 		) );
 
     $cmb_task->add_field( array(
+	  'name' => __( 'Manual Approval', DT_TEXTDOMAIN ),
+	  'desc' => __( 'This task require a manual approval from the mentor of the task if checked. That approval can asked by a comment in the page or with a personal message via email.', DT_TEXTDOMAIN ),
+	  'id' => $prefix . DT_TEXTDOMAIN . '_approval',
+	  'type' => 'checkbox'
+    ) );
+    
+    $cmb_task->add_field( array(
 	  'name' => __( 'Subtitle', DT_TEXTDOMAIN ),
 	  'desc' => __( 'Description in a row', DT_TEXTDOMAIN ),
 	  'id' => $prefix . DT_TEXTDOMAIN . '_subtitle',
