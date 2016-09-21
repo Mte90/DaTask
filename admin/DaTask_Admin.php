@@ -122,16 +122,6 @@ class DaTask_Admin {
    * @return    object    A single instance of this class.
    */
   public static function get_instance() {
-
-    /*
-     * @TODO :
-     *
-     * - Uncomment following lines if the admin class should only be available for super admins
-      if( ! is_super_admin() ) {
-      return;
-      }
-     */
-
     // If the single instance hasn't been set, set it now.
     if ( null == self::$instance ) {
 	self::$instance = new self;
@@ -170,9 +160,11 @@ class DaTask_Admin {
    */
   public function add_plugin_admin_menu() {
     $this->plugin_screen_hook_suffix = add_menu_page( DT_TEXTDOMAIN, DT_NAME, 'manage_options', DT_TEXTDOMAIN . '-settings', array( $this, 'display_plugin_admin_page' ), 'dashicons-yes', 99 );
-    $hook = add_submenu_page( DT_TEXTDOMAIN . '-settings', __( 'Report', DT_TEXTDOMAIN ), __( 'Report', DT_TEXTDOMAIN ), 'manage_options', DT_TEXTDOMAIN . '-report', array( $this, 'display_plugin_report_page' ) );
-    //Call the report screen option only on the correct page
-    add_action( 'load-' . $hook, array( $this, 'report_screen_option' ) );
+    $hook = add_dashboard_page( __( 'DT Report', DT_TEXTDOMAIN ), __( 'DT Report', DT_TEXTDOMAIN ), 'edit_posts', DT_TEXTDOMAIN . '-report', array( $this, 'display_plugin_report_page' ) );
+    if ( !empty( $hook ) ) {
+	//Call the report screen option only on the correct page
+	add_action( 'load-' . $hook, array( $this, 'report_screen_option' ) );
+    }
   }
 
   /**

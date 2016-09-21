@@ -1,13 +1,13 @@
 === DaTask ===
 Contributors: Mte90
-Tags: task, task management, activity, learning, badgeos, badge, csv, metric
+Tags: task, task management, activity, learning, badgeos, badge, csv, metric,
 Requires at least: 4.2
 Tested up to: 4.6
 Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Task Management system inspired to Mozilla OneAndDone project
+Task Management system to help new members
 
 == Description ==
 

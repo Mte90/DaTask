@@ -30,7 +30,6 @@ class DT_AJAX_Filter {
    * @param       integer $posts_per_page
    */
   public function create_filtered_section( $posts_per_page = 10 ) {
-    $plugin = DaTask::get_instance();
     $filters = array();
     // Post data passed, so update values
     if ( $_GET ) {
@@ -38,21 +37,21 @@ class DT_AJAX_Filter {
 	check_ajax_referer( 'filternonce' );
 
 	// Grab post data
-	$_GET_filters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
+	$getfilters = isset( $_GET[ 'filters' ] ) ? explode( '&', $_GET[ 'filters' ] ) : null;
 
 	if ( isset( $_GET[ 'postsperpage' ] ) ) {
-	  $posts_per_page = $_GET[ 'postsperpage' ];
+	  $posts_per_page = ( int ) $_GET[ 'postsperpage' ];
 	}
     }
 
-    // Counter 
+    // Counter
     $c = 0;
 
-    if ( isset( $_GET_filters ) && $_GET_filters[ 0 ] !== '' ) { // Check that the array isn't blank
+    if ( isset( $getfilters ) && $getfilters[ 0 ] !== '' ) { // Check that the array isn't blank
 	// This while loop puts the filters in a usable array
-	while ( $c < count( $_GET_filters ) ) {
+	while ( $c < count( $getfilters ) ) {
 	  // Explode string to array
-	  $string = explode( '=', $_GET_filters[ $c ] );
+	  $string = explode( '=', $getfilters[ $c ] );
 
 	  // Check if each item is an array - or caste
 	  if ( !isset( $filters[ $string[ 0 ] ] ) || !is_array( $filters[ $string[ 0 ] ] ) ) {
@@ -70,9 +69,7 @@ class DT_AJAX_Filter {
     }
 
     // Build args list
-    $args = array(
-	  "post_type" => 'task', "posts_per_page" => ( int ) $posts_per_page, "tax_query" => array(), "orderby" => 'date', "order" => 'DESC', "post_status" => "publish"
-    );
+    $args = array( 'post_type' => 'task', 'posts_per_page' => ( int ) $posts_per_page, 'tax_query' => array(), 'orderby' => 'date', 'order' => 'DESC', 'post_status' => 'publish' );
 
     // Check if paging value passed, if so add to the query
     if ( isset( $_GET[ 'paged' ] ) ) {
@@ -223,7 +220,7 @@ class DT_AJAX_Filter {
    *
    */
   public function create_filter_nav( $filter_type = 'select', $show_count = 0, $taxonomies = null ) {
-    $searcher = isset( $_GET[ 's' ] ) ? $_GET[ 's' ] : '';
+    $searcher = isset( $_GET[ 's' ] ) ? wp_unslash( $_GET[ 's' ] ) : '';
     ?>
     <div id="ajax-filters" class="ajax-filters">
         <div class="form-group">

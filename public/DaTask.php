@@ -39,20 +39,20 @@ class DaTask {
    */
   protected static $plugin_roles = array(
 	'administrator' => array(
-	    'edit_demo' => true,
-	    'edit_others_demo' => true,
+	    'edit_tasks' => true,
+	    'edit_others_tasks' => true,
 	),
 	'editor' => array(
-	    'edit_demo' => true,
-	    'edit_others_demo' => true,
+	    'edit_tasks' => true,
+	    'edit_others_tasks' => true,
 	),
 	'author' => array(
-	    'edit_demo' => true,
-	    'edit_others_demo' => false,
+	    'edit_tasks' => true,
+	    'edit_others_tasks' => false,
 	),
 	'subscriber' => array(
-	    'edit_demo' => false,
-	    'edit_others_demo' => false,
+	    'edit_tasks' => false,
+	    'edit_others_tasks' => false,
 	),
   );
 

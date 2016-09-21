@@ -78,9 +78,6 @@ class DT_Graphs {
    * @param	   array $atts The attribute.
    */
   public function task_month_activity( $atts ) {
-    extract( shortcode_atts( array(
-	  'list' => true,
-			  ), $atts ) );
     $args = array(
 	  'post_type' => 'wdslp-wds-log',
 	  'posts_per_page' => -1,
@@ -137,7 +134,7 @@ class DT_Graphs {
         }
     });'
     . '</script>';
-    if ( $list ) {
+    if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	echo '<ul>';
 	foreach ( $postid as $key => $count ) {
 	  echo '<li><a href="' . get_permalink( $key ) . '" target="_blank">' . get_the_title( $key ) . '</a> ' . $count . ' ' . __( 'times', DT_TEXTDOMAIN ) . '</li>';
@@ -153,9 +150,6 @@ class DT_Graphs {
    * @param	   array $atts The attribute.
    */
   public function task_daily_activity( $atts ) {
-    extract( shortcode_atts( array(
-	  'list' => true,
-			  ), $atts ) );
     $args = array(
 	  'post_type' => 'wdslp-wds-log',
 	  'posts_per_page' => -1,
@@ -211,7 +205,7 @@ class DT_Graphs {
         }
     });'
     . '</script>';
-    if ( $list ) {
+    if ( isset($atts[ 'list' ]) && $atts[ 'list' ]  ) {
 	echo '<ul>';
 	foreach ( $postid as $key => $count ) {
 	  echo '<li><a href="' . get_permalink( $key ) . '" target="_blank">' . get_the_title( $key ) . '</a> ' . $count . ' ' . __( 'times', DT_TEXTDOMAIN ) . '</li>';
