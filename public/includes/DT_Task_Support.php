@@ -144,18 +144,20 @@ class DT_Task_Support {
 	  }
 	  foreach ( $befores_ids->posts as $post ) {
 	    $befores_task_temp = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+	    $befores_task_temp_app = '';
 	    if ( is_user_logged_in() ) {
-		if ( isset( $get_task_done_by_user[ $post->ID ] ) ) {
-		  $befores_task_temp = $befores_task_temp . ' <i class="fa fa-check"></i>';
-		} else {
-		  $befores_task_temp = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_temp . '</i>';
+		$befores_task_temp_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_temp . '</i>';
+		foreach ( $get_task_done_by_user as $task ) {
+		  if ( $task->task_ID === $post->ID ) {
+		    $befores_task_temp_app = $befores_task_temp . ' <i class="fa fa-check"></i>';
+		  }
 		}
 	    }
 	    // Get last post
 	    if ( $befores_ids->posts[ count( $befores_ids->posts ) - 1 ]->ID !== $post->ID ) {
-		$befores_task_temp .= ', ';
+		$befores_task_temp_app .= ', ';
 	    }
-	    $befores_task .= $befores_task_temp;
+	    $befores_task .= $befores_task_temp_app;
 	  }
 	  wp_reset_postdata();
 	  $content .= $befores_task;
@@ -240,18 +242,21 @@ class DT_Task_Support {
 	  $content .= '</div>';
 	  $content .= '</div>';
 	}
-	$users = unserialize( get_post_meta( get_the_ID(), $plugin->get_fields( 'users_of_task' ), true ) );
-	if ( !empty( $users ) ) {
+	$logs = get_users_by_task( get_the_ID() );
+	if ( !empty( $logs ) ) {
 	  $content .= '<h4>' . __( 'List of users who completed this task', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= '<div class="card card-inverse panel panel-default">';
 	  $content .= '<div class="card-block">';
 	  $content .= '<div class="card-text panel-content">';
-	  foreach ( $users as $user => $value ) {
-	    $content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $user ) . '">' . get_the_author_meta( 'display_name', $user ) . '</a>';
+	  $count = count($logs);
+	  $i = 1;
+	  foreach ( $logs as $log ) {
+	    $content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $log->post_author ) . '">' . get_the_author_meta( 'display_name', $log->post_author ) . '</a>';
 	    // Get last user
-	    if ( key( array_slice( $users, -1, 1, TRUE ) ) !== $user ) {
+	    if ( $count !== $i ) {
 		$content .= ', ';
 	    }
+	    $i++;
 	  }
 	  $content .= '</div>';
 	  $content .= '</div>';

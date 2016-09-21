@@ -20,6 +20,7 @@ class DT_Log {
     add_filter( 'wds_log_post_user_can_see', array( $this, 'enable_editors' ) );
     add_filter( 'wds_log_post_log_types', array( $this, 'datask_label' ) );
     add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
+    add_action( 'the_posts', array( $this, 'add_id_task' ) );
 
     $log_columns = new CPT_columns( 'wdslp-wds-log' );
     $log_columns->add_column( 'Di', array(
@@ -60,7 +61,7 @@ class DT_Log {
 
   public static function log_message( $id, $message, $label = '' ) {
     if ( empty( $label ) ) {
-	$label = 'DaTask';
+	$label = array( 'DaTask', 'General' );
     }
     $id_log = WDS_Log_Post::log_message( $message, '', $label );
     update_post_meta( $id_log, DT_TEXTDOMAIN . '_id', $id );
@@ -77,6 +78,15 @@ class DT_Log {
     $author_id = get_post_field( 'post_author', $log_id );
     $current_user = get_userdata( $author_id );
     return '<a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . $current_user->first_name . ' ' . $current_user->last_name . '</a>';
+  }
+
+  public function add_id_task( $post_object ) {
+    foreach ( $post_object as $post ) {
+	if ( $post->post_type === 'wdslp-wds-log' ) {
+	  $post->task_ID = ( int ) get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
+	}
+    }
+    return $post_object;
   }
 
 }

@@ -85,7 +85,8 @@ class DT_Graphs {
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'datask' ),
+		    'terms' => array( 'datask', 'general' ),
+		    'operator' => 'AND',
 		),
 	  ),
 	  'date_query' => array(
@@ -104,7 +105,7 @@ class DT_Graphs {
 	}
 	$postquery[ $date[ 0 ] ] += 1;
 
-	if ( $list ) {
+	if ( $attr[ 'list' ] ) {
 	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	  if ( !isset( $postid[ $id_task ] ) ) {
 	    $postid[ $id_task ] = 0;
@@ -157,7 +158,8 @@ class DT_Graphs {
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'datask' ),
+		    'terms' => array( 'datask', 'general' ),
+		    'operator' => 'AND',
 		),
 	  ),
 	  'date_query' => array(
@@ -176,7 +178,7 @@ class DT_Graphs {
 	}
 	$postquery[ $date[ 0 ] ] += 1;
 
-	if ( $list ) {
+	if ( $attr[ 'list' ] ) {
 	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	  if ( !isset( $postid[ $id_task ] ) ) {
 	    $postid[ $id_task ] = 0;
@@ -205,7 +207,7 @@ class DT_Graphs {
         }
     });'
     . '</script>';
-    if ( isset($atts[ 'list' ]) && $atts[ 'list' ]  ) {
+    if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	echo '<ul>';
 	foreach ( $postid as $key => $count ) {
 	  echo '<li><a href="' . get_permalink( $key ) . '" target="_blank">' . get_the_title( $key ) . '</a> ' . $count . ' ' . __( 'times', DT_TEXTDOMAIN ) . '</li>';

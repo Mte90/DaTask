@@ -19,11 +19,6 @@
  */
 function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
   $plugin = DaTask::get_instance();
-  $users_of_task = get_users_by_task( $task_id );
-  if ( !isset( $users_of_task[ $user_id ] ) ) {
-    $users_of_task[ $user_id ] = true;
-    update_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), serialize( $users_of_task ) );
-  }
   $counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
   if ( empty( $counter ) ) {
     $counter = 1;
@@ -31,11 +26,6 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
     $counter = ( int ) $counter + 1;
   }
   update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
-  $tasks_of_user = get_tasks_by_user( $user_id );
-  if ( !isset( $tasks_of_user[ $task_id ] ) ) {
-    $tasks_of_user[ $task_id ] = time();
-    update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
-  }
   $tasks_later_of_user = get_tasks_later_by_user( $user_id );
   if ( isset( $tasks_later_of_user[ $task_id ] ) ) {
     unset( $tasks_later_of_user[ $task_id ] );
@@ -89,12 +79,13 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
  * @return    bool true
  */
 function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
-  $plugin = DaTask::get_instance();
-  $users_of_task = get_users_by_task( $task_id );
-  if ( isset( $users_of_task[ $user_id ] ) ) {
-    unset( $users_of_task[ $user_id ] );
-    update_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), serialize( $users_of_task ) );
+  $old_task = get_tasks_by_user( $user_id );
+  foreach ( $old_task as $task ) {
+    if ( $task->task_ID === $task_id ) {
+	wp_delete_post( $task->ID );
+    }
   }
+  $plugin = DaTask::get_instance();
   $counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
   if ( empty( $counter ) ) {
     $counter = 1;
@@ -102,11 +93,6 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
     $counter = ( int ) $counter - 1;
   }
   update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
-  $tasks_of_user = get_tasks_by_user( $user_id );
-  if ( isset( $tasks_of_user[ $task_id ] ) ) {
-    unset( $tasks_of_user[ $task_id ] );
-    update_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), serialize( $tasks_of_user ) );
-  }
 
   /*
    * Fires before the end of function `dt_set_completed_task_for_user_id`
@@ -137,20 +123,9 @@ function dt_get_tasks_completed() {
 	$print .= sprintf( __( '%d Tasks Completed', DT_TEXTDOMAIN ), count( $tasks_user ) );
 	$print .= '</h4>';
 	$print .= '<div class="card-text panel-content">';
-	$task_implode = array_keys( $tasks_user );
-	$tasks = new WP_Query( array(
-	    'post_type' => 'task',
-	    'post__in' => $task_implode,
-	    'orderby' => 'post__in',
-	    'posts_per_page' => -1 ) );
 	$print .= '<ul>';
-	foreach ( $tasks->posts as $task ) {
-	  $date = '';
-	  if ( strlen( $tasks_user[ $task->ID ] ) > 2 ) {
-	    $date = ' - ' . date_i18n( get_option( 'date_format' ), $tasks_user[ $task->ID ] );
-	  }
-
-	  $print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a>' . $date . '</li>';
+	foreach ( $tasks_user as $task ) {
+	  $print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
 	}
 	$print .= '</ul>';
 	$print .= '</div>';
@@ -303,8 +278,21 @@ function get_user_of_profile() {
  * @return    array the ids
  */
 function get_tasks_by_user( $user_id ) {
-  $plugin = DaTask::get_instance();
-  return unserialize( get_user_meta( $user_id, $plugin->get_fields( 'tasks_done_of_user' ), true ) );
+  $args = array(
+	'post_type' => 'wdslp-wds-log',
+	'posts_per_page' => -1,
+	'author' => $user_id,
+	'tax_query' => array(
+	    array(
+		  'taxonomy' => 'wds_log_type',
+		  'field' => 'slug',
+		  'terms' => array( 'datask', 'general' ),
+		  'operator' => 'AND',
+	    ),
+	)
+  );
+  $query = new WP_Query( $args );
+  return $query->posts;
 }
 
 /**
@@ -327,8 +315,22 @@ function get_tasks_later_by_user( $user_id ) {
  * @return    array the ids
  */
 function get_users_by_task( $task_id ) {
-  $plugin = DaTask::get_instance();
-  return unserialize( get_post_meta( $task_id, $plugin->get_fields( 'users_of_task' ), true ) );
+  $args = array(
+	'post_type' => 'wdslp-wds-log',
+	'posts_per_page' => -1,
+	'meta_key' => DT_TEXTDOMAIN . '_id',
+	'meta_value' => $task_id,
+	'tax_query' => array(
+	    array(
+		  'taxonomy' => 'wds_log_type',
+		  'field' => 'slug',
+		  'terms' => array( 'datask', 'general' ),
+		  'operator' => 'AND',
+	    ),
+	)
+  );
+  $query = new WP_Query( $args );
+  return $query->posts;
 }
 
 /**
@@ -345,11 +347,12 @@ function has_task( $task_id, $user_id = null ) {
     $user_id = get_current_user_id();
   }
   $tasks = get_tasks_by_user( $user_id );
-  if ( isset( $tasks[ $task_id ] ) ) {
-    return true;
-  } else {
-    return false;
+  foreach ( $tasks as $task ) {
+    if ( $task->task_ID === $task_id ) {
+	return true;
+    }
   }
+  return false;
 }
 
 /**
@@ -434,7 +437,7 @@ function datask_buttons() {
 	  if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
 	    echo 'disabled';
 	  }
-	  ?>" id="complete-task" data-complete="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+	  ?>" id="complete-task" data-complete="<?php the_ID(); ?>">
 		    <?php
 		    if ( has_later_task( get_the_ID() ) ) {
 			echo '<i class="fa fa-exclamation-circle"></i>';
@@ -444,20 +447,20 @@ function datask_buttons() {
 		    }
 		    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
         <button type="submit" class="button btn btn-secondary save-later <?php
-	  if ( has_later_task( get_the_ID() ) ) {
-	    echo 'disabled';
-	  }
-	  ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+		if ( has_later_task( get_the_ID() ) ) {
+		  echo 'disabled';
+		}
+		    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
 		    <?php
 		    if ( has_later_task( get_the_ID() ) ) {
 			echo '<i class="fa fa-check"></i>';
 		    }
 		    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
         <button type="submit" class="button btn btn-warning remove <?php
-	  if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
-	    echo 'disabled';
-	  }
-	  ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
+		if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+		  echo 'disabled';
+		}
+		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
     </div>
     <?php
   } else {

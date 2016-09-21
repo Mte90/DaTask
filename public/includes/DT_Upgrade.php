@@ -30,9 +30,9 @@ class DT_Upgrade {
 	    '_task_datask_before' => '_datask_before',
 	    '_task_datask_users' => '_datask_users',
 	    '_task_datask_counter' => '_datask_counter',
-	    '_task_datask_tasks_done' => '_datask_tasks_done',
+	    '_task_datask_tasks_done' => '',
 	    '_task_datask_tasks_later' => '_datask_tasks_later',
-	    '_task_datask_counter' => '_datask_prerequisites',
+	    '_task_datask_prerequisites' => '_datask_prerequisites',
 	    '_task_datask_matters' => '_datask_matters',
 	    '_task_datask_steps' => '_datask_steps',
 	    '_task_datask_help' => '_datask_help',
@@ -41,10 +41,14 @@ class DT_Upgrade {
 	);
 
 	foreach ( $fields as $key => $newkey ) {
-	  $text = get_post_meta( $task->ID, $key, true );
-	  if ( !empty( $text ) ) {
-	    update_post_meta( $task->ID, $newkey, $text );
+	  if ( empty( $newkey ) ) {
 	    delete_post_meta( $task->ID, $key );
+	  } else {
+	    $text = get_post_meta( $task->ID, $key, true );
+	    if ( !empty( $text ) ) {
+		update_post_meta( $task->ID, $newkey, $text );
+		delete_post_meta( $task->ID, $key );
+	    }
 	  }
 	}
     endforeach;
