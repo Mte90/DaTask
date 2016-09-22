@@ -12,8 +12,6 @@
 class Recent_Tasks_Widget extends WPH_Widget {
 
 	function __construct() {
-		$plugin = DaTask::get_instance();
-
 		$args = array(
 		    'label' => __( 'Recents Tasks', DT_TEXTDOMAIN ),
 		    'description' => __( 'Recent Tasks in the system', DT_TEXTDOMAIN ),

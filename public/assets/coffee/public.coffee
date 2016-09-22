@@ -83,7 +83,7 @@
           jQuery('#user-contact-form button').removeClass 'disabled'
     
     DT_Ajax_Filter = (opts) ->
-        @init opts
+      @init opts
     
     DT_Ajax_Filter.prototype =
       selected: ->

@@ -160,7 +160,6 @@ class DT_MostDone extends WP_List_Table {
 		if ( !current_user_can( 'manage_options' ) ) {
 			wp_die( '' );
 		}
-		$plugin = DaTask::get_instance();
 		check_admin_referer( DT_TEXTDOMAIN . '-export-report', DT_TEXTDOMAIN . '_once' );
 
 		$sitename = sanitize_key( get_bloginfo( 'name' ) );

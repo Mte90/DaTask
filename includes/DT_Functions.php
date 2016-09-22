@@ -23,7 +23,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
   if ( empty( $counter ) ) {
     $counter = 1;
   } else {
-    $counter = ( int ) $counter + 1;
+    $counter = (( int ) $counter) + 1;
   }
   update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
   $tasks_later_of_user = get_tasks_later_by_user( $user_id );
@@ -447,20 +447,20 @@ function datask_buttons() {
 		    }
 		    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
         <button type="submit" class="button btn btn-secondary save-later <?php
-		if ( has_later_task( get_the_ID() ) ) {
-		  echo 'disabled';
-		}
-		    ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
+	  if ( has_later_task( get_the_ID() ) ) {
+	    echo 'disabled';
+	  }
+	  ?>" id="save-for-later" data-save-later="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i>
 		    <?php
 		    if ( has_later_task( get_the_ID() ) ) {
 			echo '<i class="fa fa-check"></i>';
 		    }
 		    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
         <button type="submit" class="button btn btn-warning remove <?php
-		if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
-		  echo 'disabled';
-		}
-		    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
+	  if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+	    echo 'disabled';
+	  }
+	  ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
     </div>
     <?php
   } else {

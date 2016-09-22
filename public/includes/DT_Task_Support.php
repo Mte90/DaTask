@@ -46,7 +46,7 @@ class DT_Task_Support {
   }
 
   /**
-   * Example for override the template system on the frontend
+   * Override the template system on the frontend
    *
    * @since    1.0.0
    * @param string $original_template The path of the template file.
@@ -140,24 +140,24 @@ class DT_Task_Support {
 		'post__in' => $befores_split,
 		'posts_per_page' => -1 ) );
 	  if ( is_user_logged_in() ) {
-	    $get_task_done_by_user = get_tasks_by_user( get_current_user_id() );
+	    $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
 	  }
 	  foreach ( $befores_ids->posts as $post ) {
-	    $befores_task_temp = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-	    $befores_task_temp_app = '';
+	    $befores_task_link = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+	    $befores_task_app = '';
 	    if ( is_user_logged_in() ) {
-		$befores_task_temp_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_temp . '</i>';
-		foreach ( $get_task_done_by_user as $task ) {
+		$befores_task_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_temp . '</i>';
+		foreach ( $get_tasks_by_user as $task ) {
 		  if ( $task->task_ID === $post->ID ) {
-		    $befores_task_temp_app = $befores_task_temp . ' <i class="fa fa-check"></i>';
+		    $befores_task_app = $befores_task_link . ' <i class="fa fa-check"></i>';
 		  }
 		}
 	    }
 	    // Get last post
 	    if ( $befores_ids->posts[ count( $befores_ids->posts ) - 1 ]->ID !== $post->ID ) {
-		$befores_task_temp_app .= ', ';
+		$befores_task_app .= ', ';
 	    }
-	    $befores_task .= $befores_task_temp_app;
+	    $befores_task .= $befores_task_app;
 	  }
 	  wp_reset_postdata();
 	  $content .= $befores_task;

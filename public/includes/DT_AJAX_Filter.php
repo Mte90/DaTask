@@ -101,13 +101,13 @@ class DT_AJAX_Filter {
     $i = 0;
 
     // New WP_Query
-    $dt_ajax_filter_wp_query = new WP_Query();
+    $ajax_post_filtered = new WP_Query();
 
     // Parse args
-    $dt_ajax_filter_wp_query->query( $args );
-    if ( $dt_ajax_filter_wp_query->have_posts() ) {
-	while ( $dt_ajax_filter_wp_query->have_posts() ) {
-	  $dt_ajax_filter_wp_query->the_post();
+    $ajax_post_filtered->query( $args );
+    if ( $ajax_post_filtered->have_posts() ) {
+	while ( $ajax_post_filtered->have_posts() ) {
+	  $ajax_post_filtered->the_post();
 	  ?>
 	  <article class="ajax-loaded">
 	      <h4><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></h4>
@@ -117,7 +117,7 @@ class DT_AJAX_Filter {
 	  <?php
 	  $i++;
 	}
-	$this->pagination( $dt_ajax_filter_wp_query->found_posts, $posts_per_page );
+	$this->pagination( $ajax_post_filtered->found_posts, $posts_per_page );
     } else {
 	echo "<p class='no-results'>";
 	_e( 'No Results found :(', DT_TEXTDOMAIN );

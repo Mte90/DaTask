@@ -105,7 +105,7 @@ class DT_Graphs {
 	}
 	$postquery[ $date[ 0 ] ] += 1;
 
-	if ( $attr[ 'list' ] ) {
+	if ( $atts[ 'list' ] ) {
 	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	  if ( !isset( $postid[ $id_task ] ) ) {
 	    $postid[ $id_task ] = 0;
@@ -178,7 +178,7 @@ class DT_Graphs {
 	}
 	$postquery[ $date[ 0 ] ] += 1;
 
-	if ( $attr[ 'list' ] ) {
+	if ( $atts[ 'list' ] ) {
 	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	  if ( !isset( $postid[ $id_task ] ) ) {
 	    $postid[ $id_task ] = 0;

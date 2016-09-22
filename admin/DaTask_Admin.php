@@ -222,9 +222,8 @@ class DaTask_Admin {
     $counter = get_post_field( '_' . DT_TEXTDOMAIN . '_counter', $task_id );
     if ( empty( $counter ) ) {
 	return 0;
-    } else {
-	return $counter;
     }
+    return $counter;
   }
 
 }
