@@ -16,8 +16,8 @@ if ( !defined( 'ABSPATH' ) ) {
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-    <header class="entry-header jumbotron">
-	  <h5 class="entry-title"><?php
+    <header class="entry-header">
+	  <h5 class="entry-title display-4"><?php
 		if ( get_post_status( get_the_ID() ) === 'archived' ) {
 		  _e( 'Archived', DT_TEXTDOMAIN );
 		} the_title();

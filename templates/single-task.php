@@ -19,15 +19,17 @@ get_header();
 
 <div class="container">
     <div class="row">
-	  <div id="primary" class="col-md-9">
+	  <div id="primary" class="col-md-8">
 		<main id="main" class="site-main" role="main">
 		    <?php while ( have_posts() ) : the_post(); ?>
 			<?php
 			wpbp_get_template_part( DT_TEXTDOMAIN, 'content', 'single-task' );
 			?>
 		    <?php endwhile; // End of the loop. ?>
+		</main>
 	  </div>
 	  <?php get_sidebar(); ?>
     </div>
-    <?php
-    get_footer();
+</div>
+<?php
+get_footer();

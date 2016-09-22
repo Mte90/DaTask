@@ -117,20 +117,14 @@ function dt_get_tasks_completed() {
     $tasks_user = get_tasks_by_user( $user_id );
     if ( !empty( $tasks_user ) ) {
 	$tasks_user = array_reverse( $tasks_user, true );
-	$print = '<div class="card card-inverse card-success panel panel-success">';
-	$print .= '<div class="card-block">';
-	$print .= '<h4 class="card-title panel-heading">';
+	$print = '<h4 class="alert alert-success">';
 	$print .= sprintf( __( '%d Tasks Completed', DT_TEXTDOMAIN ), count( $tasks_user ) );
 	$print .= '</h4>';
-	$print .= '<div class="card-text panel-content">';
 	$print .= '<ul>';
 	foreach ( $tasks_user as $task ) {
 	  $print .= '<li><a href="' . get_permalink( $task->task_ID ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
 	}
 	$print .= '</ul>';
-	$print .= '</div>';
-	$print .= '</div>';
-	$print .= '</div>';
 	wp_reset_postdata();
 
 	/*
@@ -181,12 +175,9 @@ function dt_get_tasks_later( $user = null ) {
 	$tasks_later_user = get_tasks_later_by_user( $user_id );
 	if ( is_array( $tasks_later_user ) ) {
 	  $tasks_later_user = array_reverse( $tasks_later_user, true );
-	  $print = '<div class="card card-inverse card-danger panel panel-danger">';
-	  $print .= '<div class="card-block">';
-	  $print .= '<h4 class="card-title panel-heading">';
+	  $print .= '<h4 class="alert alert-info">';
 	  $print .= __( 'Tasks in progress', DT_TEXTDOMAIN );
 	  $print .= '</h4>';
-	  $print .= '<div class="card-text panel-content">';
 	  if ( !empty( $tasks_later_user ) ) {
 	    $tasks_later_user = array_reverse( $tasks_later_user, true );
 	    $task_implode = array_keys( $tasks_later_user );
@@ -215,9 +206,6 @@ function dt_get_tasks_later( $user = null ) {
 	  } else {
 	    $print .= __( "You don't have any task to do! Pick one!", DT_TEXTDOMAIN );
 	  }
-	  $print .= '</div>';
-	  $print .= '</div>';
-	  $print .= '</div>';
 	}
     }
   } else {
@@ -387,12 +375,9 @@ function datask_badgeos_user_achievements( $user ) {
   if ( class_exists( 'BadgeOS' ) ) {
     $output = '';
     $achievements = array_unique( badgeos_get_user_earned_achievement_ids( $user, '' ) );
-    $output = '<div class="card card-inverse card-info panel panel-info badge-users">';
-    $output = '<div class="card-block">';
-    $output .= '<div class="panel-heading card-title">';
+    $output .= '<h4 class="alert alert-info">';
     $output .= __( 'Badge Earned by the user', DT_TEXTDOMAIN );
-    $output .= '</div>';
-    $output .= '<div class="card-text panel-content">';
+    $output .= '</h4>';
     if ( !empty( $achievements ) ) {
 	$output .= '<ul>';
 	foreach ( $achievements as $achievement_id ) {
@@ -400,9 +385,6 @@ function datask_badgeos_user_achievements( $user ) {
 	}
 	$output .= '</ul>';
     }
-    $output .= '</div>';
-    $output .= '</div>';
-    $output .= '</div>';
     echo $output;
   }
 }
@@ -433,7 +415,7 @@ function datask_buttons() {
     ?>
     <div class="dt-buttons">
 	  <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
-        <button type="submit" class="button btn btn-primary complete <?php
+        <button type="submit" class="btn btn-primary complete <?php
 	  if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
 	    echo 'disabled';
 	  }
@@ -446,7 +428,7 @@ function datask_buttons() {
 			echo '<i class="fa fa-check"></i>';
 		    }
 		    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
-        <button type="submit" class="button btn btn-secondary save-later <?php
+        <button type="submit" class="btn btn-secondary save-later <?php
 	  if ( has_later_task( get_the_ID() ) ) {
 	    echo 'disabled';
 	  }
@@ -456,7 +438,7 @@ function datask_buttons() {
 			echo '<i class="fa fa-check"></i>';
 		    }
 		    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
-        <button type="submit" class="button btn btn-warning remove <?php
+        <button type="submit" class="btn btn-warning remove <?php
 	  if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
 	    echo 'disabled';
 	  }
@@ -464,14 +446,14 @@ function datask_buttons() {
     </div>
     <?php
     $approval = datask_require_approval();
-    if ( $approval !== 'none' ) {
-	  echo '<h4 class="alert alert-danger">';
+    if ( !empty( $approval ) && $approval !== 'none' ) {
+	echo '<h4 class="alert alert-danger">';
 	if ( $approval === 'comment' ) {
 	  _e( 'This task require a comment for the final approval!', DT_TEXTDOMAIN );
 	} else if ( $approval === 'email' ) {
 	  _e( 'This task require to contact one of the mentors for the final approval!', DT_TEXTDOMAIN );
 	}
-	  echo '</h4>';
+	echo '</h4>';
     }
   } else {
     echo '<h4 class="alert alert-danger">';
@@ -490,19 +472,13 @@ function datask_user_form() {
     $user = get_user_by( 'login', get_user_of_profile() );
     $current_user = wp_get_current_user();
     if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
-	$content = '<div class="card card-inverse card-warning panel panel-warning" id="user-contact-form">';
-	$content = '<div class="card-block">';
-	$content .= '<div class="panel-heading card-title">';
+	$content .= '<h4 class="alert alert-warning">';
 	$content .= __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name;
-	$content .= '</div>';
-	$content .= '<div class="card-text panel-content">';
-	$content .= '<h4>'.__( 'If you are contacting him for a task don\'t forget to mention it!', DT_TEXTDOMAIN ) .'</h4>';
+	$content .= '</h4>';
+	$content .= '<h5>' . __( 'If you are contacting him for a task don\'t forget to mention it!', DT_TEXTDOMAIN ) . '</h5>';
 	$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
 	$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
 	$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
-	$content .= '</div>';
-	$content .= '</div>';
-	$content .= '</div>';
 	echo $content;
     }
   }

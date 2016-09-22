@@ -126,12 +126,10 @@ class DT_Task_Support {
     if ( is_singular( 'task' ) ) {
 	$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
 	if ( !empty( $befores ) ) {
-	  $content .= '<div class="card card-inverse card-danger panel panel-danger">';
-	  $content .= '<div class="card-block">';
-	  $content .= '<div class="card-title panel-heading">';
+	  $content .= '<h5 class="alert alert-danger">';
 	  $content .= __( 'Required or Suggested tasks: ', DT_TEXTDOMAIN );
-	  $content .= '</div>';
-	  $content .= '<div class="card-text panel-content">';
+	  $content .= '</h5>';
+	  $content .= '<p class="lead">';
 	  $befores_task = '';
 	  $befores_split = explode( ',', str_replace( ' ', '', $befores ) );
 	  $befores_ids = new WP_Query( array(
@@ -160,9 +158,7 @@ class DT_Task_Support {
 	  }
 	  wp_reset_postdata();
 	  $content .= $befores_task;
-	  $content .= '</div>';
-	  $content .= '</div>';
-	  $content .= '</div>';
+	  $content .= '</p>';
 	}
 	$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 	if ( !empty( $prerequisites ) ) {
@@ -183,22 +179,18 @@ class DT_Task_Support {
 	if ( !empty( $help ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Need Help?', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $help ) ) ) );
-	  $content .= '<br><br>';
 	}
 	$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 	if ( !empty( $completion ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Completion', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
-	  $content .= '<br><br>';
 	}
 	$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
 	if ( !empty( $nexts ) ) {
-	  $content .= '<div class="card card-inverse card-danger panel panel-danger">';
-	  $content .= '<div class="card-block">';
-	  $content .= '<div class="card-title panel-heading">';
+	  $content .= '<h5 class="alert alert-danger">';
 	  $content .= __( 'Good next tasks: ', DT_TEXTDOMAIN );
-	  $content .= '</div>';
-	  $content .= '<div class="card-text panel-content">';
+	  $content .= '</h5>';
+	  $content .= '<p class="lead">';
 	  $next_task = '';
 	  $nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
 	  $nexts_ids = new WP_Query( array(
@@ -214,18 +206,14 @@ class DT_Task_Support {
 	  }
 	  wp_reset_postdata();
 	  $content .= $next_task;
-	  $content .= '</div>';
-	  $content .= '</div>';
-	  $content .= '</div>';
+	  $content .= '</p>';
 	}
 	$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
 	if ( !empty( $mentors ) ) {
-	  $content .= '<div class="card card-inverse card-danger panel panel-warning">';
-	  $content .= '<div class="card-block">';
-	  $content .= '<div class="card-title panel-heading">';
+	  $content .= '<h5 class="alert alert-info">';
 	  $content .= __( 'Mentor(s)', DT_TEXTDOMAIN );
-	  $content .= ': </div>';
-	  $content .= '<div class="card-text panel-content">';
+	  $content .= ': </h5>';
+	  $content .= '<p class="lead">';
 	  $mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
 	  foreach ( $mentors_split as $user ) {
 	    $user_id = $user;
@@ -237,16 +225,14 @@ class DT_Task_Support {
 		$content .= ', ';
 	    }
 	  }
-	  $content .= '</div>';
-	  $content .= '</div>';
-	  $content .= '</div>';
+	  $content .= '</p>';
 	}
 	$logs = get_users_by_task( get_the_ID() );
 	if ( !empty( $logs ) ) {
-	  $content .= '<h4>' . __( 'List of users who completed this task', DT_TEXTDOMAIN ) . '</h4>';
-	  $content .= '<div class="card card-inverse panel panel-default">';
-	  $content .= '<div class="card-block">';
-	  $content .= '<div class="card-text panel-content">';
+	  $content .= '<h5 class="alert alert-warning">';
+	  $content .= __( 'List of users who completed this task', DT_TEXTDOMAIN );
+	  $content .= ': </h5>';
+	  $content .= '<p class="lead">';
 	  $count = count( $logs );
 	  $i = 1;
 	  foreach ( $logs as $log ) {
@@ -257,11 +243,8 @@ class DT_Task_Support {
 	    }
 	    $i++;
 	  }
-	  $content .= '</div>';
-	  $content .= '</div>';
-	  $content .= '</div>';
+	  $content .= '</p>';
 	}
-	$content .= '<br><br>';
     }
     return $content;
   }

@@ -17,8 +17,8 @@ get_header();
 ?>
 <div class="container">
     <div class="row">
-	  <div id="primary" class="col-md-9">
-		<h2>
+	  <div id="primary" class="col-md-8">
+		<h2 class="alert alert-info">
 		    <?php
 		    $user = get_user_by( 'login', get_user_of_profile() );
 		    printf( __( "%s's Profile", DT_TEXTDOMAIN ), $user->display_name );

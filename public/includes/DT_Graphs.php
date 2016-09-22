@@ -97,7 +97,7 @@ class DT_Graphs {
     );
     $query = new WP_Query( $args );
 
-    $postquery = array();
+    $postquery = $postid = array();
     foreach ( $query->posts as $post ) {
 	$date = explode( ' ', $post->post_date );
 	if ( !isset( $postquery[ $date[ 0 ] ] ) ) {
@@ -105,7 +105,7 @@ class DT_Graphs {
 	}
 	$postquery[ $date[ 0 ] ] += 1;
 
-	if ( $atts[ 'list' ] ) {
+	if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	  if ( !isset( $postid[ $id_task ] ) ) {
 	    $postid[ $id_task ] = 0;
@@ -178,7 +178,7 @@ class DT_Graphs {
 	}
 	$postquery[ $date[ 0 ] ] += 1;
 
-	if ( $atts[ 'list' ] ) {
+	if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	  if ( !isset( $postid[ $id_task ] ) ) {
 	    $postid[ $id_task ] = 0;
