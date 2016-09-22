@@ -54,10 +54,9 @@ class DT_Task_Support {
    */
   public function load_content_task( $original_template ) {
     if ( is_singular( 'task' ) ) {
-	wpbp_get_template_part( DT_TEXTDOMAIN, 'single', 'task', true );
-    } else {
-	return $original_template;
+	return wpbp_get_template_part( DT_TEXTDOMAIN, 'single', 'task', false );
     }
+    return $original_template;
   }
 
   /**
@@ -146,7 +145,7 @@ class DT_Task_Support {
 	    $befores_task_link = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
 	    $befores_task_app = '';
 	    if ( is_user_logged_in() ) {
-		$befores_task_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_temp . '</i>';
+		$befores_task_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_link . '</i>';
 		foreach ( $get_tasks_by_user as $task ) {
 		  if ( $task->task_ID === $post->ID ) {
 		    $befores_task_app = $befores_task_link . ' <i class="fa fa-check"></i>';
@@ -248,7 +247,7 @@ class DT_Task_Support {
 	  $content .= '<div class="card card-inverse panel panel-default">';
 	  $content .= '<div class="card-block">';
 	  $content .= '<div class="card-text panel-content">';
-	  $count = count($logs);
+	  $count = count( $logs );
 	  $i = 1;
 	  foreach ( $logs as $log ) {
 	    $content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $log->post_author ) . '">' . get_the_author_meta( 'display_name', $log->post_author ) . '</a>';

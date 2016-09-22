@@ -72,10 +72,9 @@ class DT_AJAX_Filter {
     $args = array( 'post_type' => 'task', 'posts_per_page' => ( int ) $posts_per_page, 'tax_query' => array(), 'orderby' => 'date', 'order' => 'DESC', 'post_status' => 'publish' );
 
     // Check if paging value passed, if so add to the query
+    $args[ 'paged' ] = 1;
     if ( isset( $_GET[ 'paged' ] ) ) {
 	$args[ 'paged' ] = $_GET[ 'paged' ];
-    } else {
-	$args[ 'paged' ] = 1;
     }
 
     if ( isset( $filters ) && !empty( $filters ) ) {
