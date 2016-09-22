@@ -36,7 +36,6 @@ class DT_Frontend_Profile {
     add_filter( 'init', array( $this, 'rewrite_rule' ) );
     add_action( 'template_redirect', array( $this, 'userprofile_template' ) );
     add_filter( 'wp_title', array( $this, 'member_wp_title' ), 9999, 3 );
-    add_filter( 'the_title', array( $this, 'member_title' ), 999, 2 );
   }
 
   /**
@@ -129,26 +128,8 @@ class DT_Frontend_Profile {
 	    return $page . ' ' . $sep;
 	  }
 	}
-    } else {
-	return $title;
     }
-  }
-
-  /**
-   * Add the title for the member page
-   *
-   * @since    1.0.0
-   * @param string  $title Title of the page.
-   * @param integer $id    ID of the page.
-   * @return string $title Title of the page
-   */
-  public function member_title( $title, $id ) {
-    global $wp_query;
-    if ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-	return __( 'Your profile', DT_TEXTDOMAIN );
-    } else {
-	return $title;
-    }
+    return $title;
   }
 
 }

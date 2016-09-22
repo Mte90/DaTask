@@ -44,14 +44,34 @@ class DT_CMB {
 	  'name' => __( 'Manual Approval', DT_TEXTDOMAIN ),
 	  'desc' => __( 'This task require a manual approval from the mentor of the task if checked. That approval can asked by a comment in the page or with a personal message via email.', DT_TEXTDOMAIN ),
 	  'id' => $prefix . DT_TEXTDOMAIN . '_approval',
-	  'type' => 'checkbox'
+	  'type' => 'radio',
+	  'default' => 'none',
+	  'options' => array(
+		'comment' => __( 'Ask to post a comment in the task', DT_TEXTDOMAIN ),
+		'email' => __( 'Invite the user to sent an email to the mentor', DT_TEXTDOMAIN ),
+		'none' => __( 'Disable Manual approval', DT_TEXTDOMAIN ),
+	  )
     ) );
-    
+
     $cmb_task->add_field( array(
 	  'name' => __( 'Subtitle', DT_TEXTDOMAIN ),
 	  'desc' => __( 'Description in a row', DT_TEXTDOMAIN ),
 	  'id' => $prefix . DT_TEXTDOMAIN . '_subtitle',
 	  'type' => 'text'
+    ) );
+
+    $cmb_task->add_field( array(
+	  'name' => __( 'Mentor(s)', DT_TEXTDOMAIN ),
+	  'id' => $prefix . DT_TEXTDOMAIN . '_mentor',
+	  'type' => 'user_search_text',
+	  'roles' => array( 'administrator', 'author', 'editor' )
+    ) );
+
+    $cmb_task->add_field( array(
+	  'name' => __( 'Good next tasks', DT_TEXTDOMAIN ),
+	  'id' => $prefix . DT_TEXTDOMAIN . '_next',
+	  'type' => 'post_search_text',
+	  'post_type' => 'task'
     ) );
 
     $cmb_task->add_field( array(
@@ -97,25 +117,6 @@ class DT_CMB {
     ) );
 
     $cmb_task->add_field( array(
-	  'name' => __( 'Mentor(s)', DT_TEXTDOMAIN ),
-	  'id' => $prefix . DT_TEXTDOMAIN . '_mentor',
-	  'type' => 'user_search_text',
-	  'roles' => array( 'administrator', 'author', 'editor' )
-    ) );
-
-    $cmb_task->add_field( array(
-	  'name' => __( 'Good next tasks', DT_TEXTDOMAIN ),
-	  'id' => $prefix . DT_TEXTDOMAIN . '_next',
-	  'type' => 'post_search_text',
-	  'post_type' => 'task'
-    ) );
-
-    $cmb_task->add_field( array(
-	  'id' => $prefix . DT_TEXTDOMAIN . '_users',
-	  'type' => 'hidden'
-    ) );
-
-    $cmb_task->add_field( array(
 	  'id' => $prefix . DT_TEXTDOMAIN . '_counter',
 	  'type' => 'hidden',
 	  'default' => '0'
@@ -123,7 +124,7 @@ class DT_CMB {
 
     $cmb_user_task = new_cmb2_box( array(
 	  'id' => $prefix . 'user_metabox',
-	  'title' => __( 'Task Completed', DT_TEXTDOMAIN ),
+	  'title' => __( 'Task Later', DT_TEXTDOMAIN ),
 	  'object_types' => array( 'user' ),
 	  'context' => 'normal',
 	  'priority' => 'high',
@@ -131,12 +132,7 @@ class DT_CMB {
 		) );
 
     $cmb_user_task->add_field( array(
-	  'id' => $prefix . DT_TEXTDOMAIN . '_tasks',
-	  'type' => 'hidden'
-    ) );
-
-    $cmb_user_task->add_field( array(
-	  'id' => $prefix . DT_TEXTDOMAIN . '_tasks_done',
+	  'id' => $prefix . DT_TEXTDOMAIN . '_tasks_later',
 	  'type' => 'hidden'
     ) );
   }
