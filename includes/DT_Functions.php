@@ -125,7 +125,7 @@ function dt_get_tasks_completed() {
 	$print .= '<div class="card-text panel-content">';
 	$print .= '<ul>';
 	foreach ( $tasks_user as $task ) {
-	  $print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
+	  $print .= '<li><a href="' . get_permalink( $task->task_ID ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
 	}
 	$print .= '</ul>';
 	$print .= '</div>';
@@ -463,6 +463,16 @@ function datask_buttons() {
 	  ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
     </div>
     <?php
+    $approval = datask_require_approval();
+    if ( $approval !== 'none' ) {
+	  echo '<h4 class="alert alert-danger">';
+	if ( $approval === 'comment' ) {
+	  _e( 'This task require a comment for the final approval!', DT_TEXTDOMAIN );
+	} else if ( $approval === 'email' ) {
+	  _e( 'This task require to contact one of the mentors for the final approval!', DT_TEXTDOMAIN );
+	}
+	  echo '</h4>';
+    }
   } else {
     echo '<h4 class="alert alert-danger">';
     _e( 'Save your history of tasks done or in progress with a free account!', DT_TEXTDOMAIN );
@@ -482,10 +492,11 @@ function datask_user_form() {
     if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
 	$content = '<div class="card card-inverse card-warning panel panel-warning" id="user-contact-form">';
 	$content = '<div class="card-block">';
-	$content .= '<div class="card-title panel-heading">';
+	$content .= '<div class="panel-heading card-title">';
 	$content .= __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name;
 	$content .= '</div>';
 	$content .= '<div class="card-text panel-content">';
+	$content .= '<h4>'.__( 'If you are contacting him for a task don\'t forget to mention it!', DT_TEXTDOMAIN ) .'</h4>';
 	$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
 	$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
 	$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
@@ -495,4 +506,17 @@ function datask_user_form() {
 	echo $content;
     }
   }
+}
+
+/**
+ * Check if the task require a manual approval
+ * 
+ * @param integer $task_id The Task ID.
+ * @return string
+ */
+function datask_require_approval( $task_id = '' ) {
+  if ( empty( $task_id ) ) {
+    $task_id = get_the_ID();
+  }
+  return get_post_meta( $task_id, '_datask_approval', true );
 }

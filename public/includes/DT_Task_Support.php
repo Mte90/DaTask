@@ -191,29 +191,6 @@ class DT_Task_Support {
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 	  $content .= '<br><br>';
 	}
-	$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
-	if ( !empty( $mentors ) ) {
-	  $content .= '<div class="card card-inverse card-danger panel panel-warning">';
-	  $content .= '<div class="card-block">';
-	  $content .= '<div class="card-title panel-heading">';
-	  $content .= __( 'Mentor(s)', DT_TEXTDOMAIN );
-	  $content .= ': </div>';
-	  $content .= '<div class="card-text panel-content">';
-	  $mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
-	  foreach ( $mentors_split as $user ) {
-	    $user_id = $user;
-	    $user = get_user_by( 'id', $user_id );
-	    $name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
-	    $content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>';
-	    // Get last user
-	    if ( $mentors_split[ count( $mentors_split ) - 1 ] !== $user_id ) {
-		$content .= ', ';
-	    }
-	  }
-	  $content .= '</div>';
-	  $content .= '</div>';
-	  $content .= '</div>';
-	}
 	$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
 	if ( !empty( $nexts ) ) {
 	  $content .= '<div class="card card-inverse card-danger panel panel-danger">';
@@ -237,6 +214,29 @@ class DT_Task_Support {
 	  }
 	  wp_reset_postdata();
 	  $content .= $next_task;
+	  $content .= '</div>';
+	  $content .= '</div>';
+	  $content .= '</div>';
+	}
+	$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
+	if ( !empty( $mentors ) ) {
+	  $content .= '<div class="card card-inverse card-danger panel panel-warning">';
+	  $content .= '<div class="card-block">';
+	  $content .= '<div class="card-title panel-heading">';
+	  $content .= __( 'Mentor(s)', DT_TEXTDOMAIN );
+	  $content .= ': </div>';
+	  $content .= '<div class="card-text panel-content">';
+	  $mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
+	  foreach ( $mentors_split as $user ) {
+	    $user_id = $user;
+	    $user = get_user_by( 'id', $user_id );
+	    $name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
+	    $content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>';
+	    // Get last user
+	    if ( $mentors_split[ count( $mentors_split ) - 1 ] !== $user_id ) {
+		$content .= ', ';
+	    }
+	  }
 	  $content .= '</div>';
 	  $content .= '</div>';
 	  $content .= '</div>';
