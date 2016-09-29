@@ -46,6 +46,10 @@ class DT_Log {
 	    'slug' => 'datask',
 	    'description' => 'background-color: #00ee00; color:black; font-weight:bold;',
 	);
+	$terms[ 'Pending' ] = array(
+	    'slug' => 'pending',
+	    'description' => 'background-color: #ff0000; color:black; font-weight:bold;',
+	);
     }
     return $terms;
   }

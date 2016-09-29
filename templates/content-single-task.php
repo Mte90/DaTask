@@ -20,7 +20,8 @@ if ( !defined( 'ABSPATH' ) ) {
 	  <h5 class="entry-title display-4"><?php
 		if ( get_post_status( get_the_ID() ) === 'archived' ) {
 		  _e( 'Archived', DT_TEXTDOMAIN );
-		} the_title();
+		}
+		the_title();
 		?></h5>
 	  <h6><?php the_task_subtitle(); ?></h6>
     </header>

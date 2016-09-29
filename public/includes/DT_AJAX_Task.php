@@ -42,12 +42,22 @@ class DT_AJAX_Task {
 	  wp_die( -1 );
 	}
     }
+
+    if ( get_post_status( ( int ) $_GET[ 'ID' ] ) === 'archived' ) {
+	wp_send_json_error();
+    }
+
     if ( is_user_logged_in() ) {
 	dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
-	DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ) );
+	$approval = datask_require_approval( ( int ) $_GET[ 'ID' ] );
+	if ( !empty( $approval ) && $approval !== 'none' ) {
+	  DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ), array( 'DaTask', 'Pending' ) );
+	} else {
+	  DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ) );
+	}
 	wp_send_json_success();
     } else {
-	DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ), array( 'DaTask', 'error' ) );
+	DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ), array( 'DaTask', 'Error' ) );
 	wp_send_json_error();
     }
   }
@@ -71,6 +81,11 @@ class DT_AJAX_Task {
 	  wp_die( -1 );
 	}
     }
+
+    if ( get_post_status( ( int ) $_GET[ 'ID' ] ) === 'archived' ) {
+	wp_send_json_error();
+    }
+
     if ( is_user_logged_in() ) {
 	dt_set_task_later_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 	wp_send_json_success();
@@ -98,6 +113,11 @@ class DT_AJAX_Task {
 	  wp_die( -1 );
 	}
     }
+
+    if ( get_post_status( ( int ) $_GET[ 'ID' ] ) === 'archived' ) {
+	wp_send_json_error();
+    }
+
     if ( is_user_logged_in() ) {
 	dt_remove_complete_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 	wp_send_json_success();
