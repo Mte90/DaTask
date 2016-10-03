@@ -57,7 +57,7 @@ class DT_CMB {
 	  'name' => __( 'Subtitle', DT_TEXTDOMAIN ),
 	  'desc' => __( 'Description in a row', DT_TEXTDOMAIN ),
 	  'id' => $prefix . DT_TEXTDOMAIN . '_subtitle',
-	  'type' => 'text'
+	  'type' => 'text',
     ) );
 
     $cmb_task->add_field( array(

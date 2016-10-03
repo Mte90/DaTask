@@ -14,7 +14,7 @@
     "julien731\/wp-dismissible-notices-handler": "1.0.0",
     "julien731\/wp-review-me": "2.0.1",
     "voceconnect/voce-post-expiration": "^0.3.0",
-    "webdevstudios/wds-log-post": "dev-master"
+    "mte90/wds-log-post": "dev-master"
   },
   "repositories": [
     {
@@ -24,10 +24,10 @@
     {
       "type": "package",
       "package": {
-        "name": "webdevstudios/wds-log-post",
+        "name": "mte90/wds-log-post",
         "version": "dev-master",
         "source": {
-          "url": "https://github.com/WebDevStudios/WDS-Log-Post",
+          "url": "https://github.com/Mte90/WDS-Log-Post",
           "type": "git",
           "reference": "origin/master"
         }
@@ -51,7 +51,7 @@
         "wpbp\/template",
         "webdevstudios\/taxonomy_core",
         "voceconnect/voce-post-expiration",
-        "webdevstudios/wds-log-post"
+        "mte90/wds-log-post"
       ],
       ".\/public\/includes\/lib\/{$name|F}": [
         "wpbp\/widgets-helper"

@@ -21,7 +21,7 @@ class DT_API {
     if ( defined( 'JSON_API_VERSION' ) ) {
 	add_filter( 'json_prepare_post', array( $this, 'fields_to_apiv1' ), 99, 3 );
     } elseif ( defined( 'REST_API_VERSION' ) ) {
-	add_action( 'rest_api_init', array( $this, 'fields_to_apiv2' ) );
+	//add_action( 'rest_api_init', array( $this, 'fields_to_apiv2' ) );
     }
   }
 
@@ -93,6 +93,9 @@ class DT_API {
     $args = array(
 	  'get_callback' => array( $this, 'get_meta_data' ),
     );
+    if ( !function_exists( 'register_rest_field' ) ) {
+	return false;
+    }
     register_rest_field( 'task', 'task_before', $args );
     register_rest_field( 'task', 'task_prerequisites', $args );
     register_rest_field( 'task', 'task_matters', $args );

@@ -10,19 +10,20 @@
  * @copyright 2015 GPL
  */
 class DT_Log {
-
+  protected $log = '';
   /**
    * Initialize the class with all the hooks
    *
    * @since     1.0.0
    */
   public function __construct() {
-    add_filter( 'wds_log_post_user_can_see', array( $this, 'enable_editors' ) );
+    add_filter( 'wds_log_post_types', array( $this, 'add_post_type' ) );
+    add_filter( 'wds_log_datask_log_user_can_see', array( $this, 'enable_editors' ) );
     add_filter( 'wds_log_post_log_types', array( $this, 'datask_label' ) );
-    add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
+    //add_action( 'admin_menu', array( $this, 'change_post_menu_label' ) );
     add_action( 'the_posts', array( $this, 'add_id_task' ) );
 
-    $log_columns = new CPT_columns( 'wdslp-wds-log' );
+    $log_columns = new CPT_columns( 'datask-log' );
     $log_columns->add_column( 'Di', array(
 	  'label' => __( 'Di', DT_TEXTDOMAIN ),
 	  'type' => 'custom_value',
@@ -42,10 +43,6 @@ class DT_Log {
 
   public function datask_label( $terms ) {
     if ( !isset( $terms[ 'DaTask' ] ) ) {
-	$terms[ 'DaTask' ] = array(
-	    'slug' => 'datask',
-	    'description' => 'background-color: #00ee00; color:black; font-weight:bold;',
-	);
 	$terms[ 'Pending' ] = array(
 	    'slug' => 'pending',
 	    'description' => 'background-color: #ff0000; color:black; font-weight:bold;',
@@ -53,21 +50,17 @@ class DT_Log {
     }
     return $terms;
   }
-
-  public function change_post_menu_label() {
-    global $menu;
-    foreach ( $menu as $key => $value ) {
-	if ( $menu[ $key ][ 0 ] === 'WDS Logs' ) {
-	  $menu[ $key ][ 0 ] = 'DT Logs';
-	}
-    }
+  
+  public function add_post_type( $posttypes ) {
+    $posttypes['datask-log'] =  'DT';
+    return $posttypes;
   }
 
   public static function log_message( $id, $message, $label = '' ) {
     if ( empty( $label ) ) {
-	$label = array( 'DaTask', 'General' );
+	$label = array( 'General' );
     }
-    $id_log = WDS_Log_Post::log_message( $message, '', $label );
+    $id_log = WDS_Log_Post::log_message( 'datask-log', $message, '', $label );
     update_post_meta( $id_log, DT_TEXTDOMAIN . '_id', $id );
   }
 
@@ -86,7 +79,7 @@ class DT_Log {
 
   public function add_id_task( $post_object ) {
     foreach ( $post_object as $post ) {
-	if ( $post->post_type === 'wdslp-wds-log' ) {
+	if ( $post->post_type === 'datask-log' ) {
 	  $post->task_ID = ( int ) get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	}
     }

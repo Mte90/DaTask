@@ -79,13 +79,13 @@ class DT_Graphs {
    */
   public function task_month_activity( $atts ) {
     $args = array(
-	  'post_type' => 'wdslp-wds-log',
+	  'post_type' => 'datask-log',
 	  'posts_per_page' => -1,
 	  'tax_query' => array(
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'datask', 'general' ),
+		    'terms' => array( 'general' ),
 		    'operator' => 'AND',
 		),
 	  ),
@@ -152,7 +152,7 @@ class DT_Graphs {
    */
   public function task_daily_activity( $atts ) {
     $args = array(
-	  'post_type' => 'wdslp-wds-log',
+	  'post_type' => 'datask-log',
 	  'posts_per_page' => -1,
 	  'tax_query' => array(
 		array(
