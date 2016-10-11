@@ -22,6 +22,39 @@ class DT_Graphs {
     add_shortcode( 'datask-task-daily-activity', array( $this, 'task_daily_activity' ) );
   }
 
+  public function generate_graph( $posts, $title, $id ) {
+    $postquery = array();
+    foreach ( $posts as $post ) {
+	$date = explode( ' ', $post->post_date );
+	if ( !isset( $postquery[ $date[ 0 ] ] ) ) {
+	  $postquery[ $date[ 0 ] ] = 0;
+	}
+	$postquery[ $date[ 0 ] ] += 1;
+    }
+
+    foreach ( $postquery as $key => $count ) {
+	$postcounts[] = array( 'date' => "new Date('" . $key . "T24:00:00Z')", 'value' => $count );
+    }
+    echo '<div id="' . $id . '"></div>'
+    . '<script>' .
+    'MG.data_graphic({
+        title: "' . $title . '",
+        data: ' . str_replace( ')"', ')', str_replace( '"new', 'new', wp_json_encode( $postcounts, JSON_NUMERIC_CHECK ) ) ) . ',
+        width: 800,
+        height: 400,
+        interpolate: d3.curveLinear,
+        xax_count: 4,
+        right: 40,
+        target: "#' . $id . '",
+	  mouseover: function(d, i) {
+		var df = d3.timeFormat("%d/%m/%Y");
+		var date = df(d.date);
+            d3.select("#' . $id . ' svg .mg-active-datapoint").text(date + " " + d.value + " Tasks");
+        }
+    });'
+    . '</script>';
+  }
+
   /**
    * Generate a graph of the task created
    *
@@ -38,37 +71,7 @@ class DT_Graphs {
 	  ),
     );
     $query = new WP_Query( $args );
-
-    $postquery = array();
-    foreach ( $query->posts as $post ) {
-	$date = explode( ' ', $post->post_date );
-	if ( !isset( $postquery[ $date[ 0 ] ] ) ) {
-	  $postquery[ $date[ 0 ] ] = 0;
-	}
-	$postquery[ $date[ 0 ] ] += 1;
-    }
-
-    foreach ( $postquery as $key => $count ) {
-	$postcounts[] = array( 'date' => "new Date('" . $key . "T24:00:00Z')", 'value' => $count );
-    }
-    echo '<div id="postcreated"></div>'
-    . '<script>' .
-    'MG.data_graphic({
-        title: "' . sprintf( __( 'The %s tasks created in the last 12 months', DT_TEXTDOMAIN ), count( $query->posts ) ) . '",
-        data: ' . str_replace( ')"', ')', str_replace( '"new', 'new', wp_json_encode( $postcounts, JSON_NUMERIC_CHECK ) ) ) . ',
-        width: 800,
-        height: 400,
-        interpolate: d3.curveLinear,
-        xax_count: 4,
-        right: 40,
-        target: "#postcreated",
-	  mouseover: function(d, i) {
-		var df = d3.timeFormat("%d/%m/%Y");
-		var date = df(d.date);
-            d3.select("#postcreated svg .mg-active-datapoint").text(date + " " + d.value + " Tasks");
-        }
-    });'
-    . '</script>';
+    $this->generate_graph( $query->posts, sprintf( __( 'The %s tasks created in the last 12 months', DT_TEXTDOMAIN ), count( $query->posts ) ), 'postcreated' );
   }
 
   /**
@@ -85,7 +88,7 @@ class DT_Graphs {
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'error','pending' ),
+		    'terms' => array( 'error', 'pending' ),
 		    'operator' => 'NOT',
 		),
 	  ),
@@ -96,45 +99,8 @@ class DT_Graphs {
 	  ),
     );
     $query = new WP_Query( $args );
+    $this->generate_graph( $query->posts, sprintf( __( 'The %s tasks activity of last 12 months', DT_TEXTDOMAIN ), count( $query->posts ) ), 'postactivity' );
 
-    $postquery = $postid = array();
-    foreach ( $query->posts as $post ) {
-	$date = explode( ' ', $post->post_date );
-	if ( !isset( $postquery[ $date[ 0 ] ] ) ) {
-	  $postquery[ $date[ 0 ] ] = 0;
-	}
-	$postquery[ $date[ 0 ] ] += 1;
-
-	if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
-	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
-	  if ( !isset( $postid[ $id_task ] ) ) {
-	    $postid[ $id_task ] = 0;
-	  }
-	  $postid[ $id_task ] += 1;
-	}
-    }
-
-    foreach ( $postquery as $key => $count ) {
-	$postcounts[] = array( 'date' => "new Date('" . $key . "T24:00:00Z')", 'value' => $count );
-    }
-    echo '<div id="postactivity"></div>'
-    . '<script>' .
-    'MG.data_graphic({
-        title: "' . sprintf( __( 'The %s tasks activity of last 12 months', DT_TEXTDOMAIN ), count( $query->posts ) ) . '",
-        data: ' . str_replace( ')"', ')', str_replace( '"new', 'new', wp_json_encode( $postcounts, JSON_NUMERIC_CHECK ) ) ) . ',
-        width: 800,
-        height: 400,
-        interpolate: d3.curveLinear,
-        xax_count: 4,
-        right: 40,
-        target: "#postactivity",
-	  mouseover: function(d, i) {
-		var df = d3.timeFormat("%d/%m/%Y");
-		var date = df(d.date);
-            d3.select("#postactivity svg .mg-active-datapoint").text(date + " " + d.value + " done");
-        }
-    });'
-    . '</script>';
     if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	echo '<ul>';
 	foreach ( $postid as $key => $count ) {
@@ -169,44 +135,8 @@ class DT_Graphs {
 	  ),
     );
     $query = new WP_Query( $args );
-
-    $postquery = $postid = array();
-    foreach ( $query->posts as $post ) {
-	$date = explode( ' ', $post->post_date );
-	if ( !isset( $postquery[ $date[ 0 ] ] ) ) {
-	  $postquery[ $date[ 0 ] ] = 0;
-	}
-	$postquery[ $date[ 0 ] ] += 1;
-
-	if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
-	  $id_task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
-	  if ( !isset( $postid[ $id_task ] ) ) {
-	    $postid[ $id_task ] = 0;
-	  }
-	  $postid[ $id_task ] += 1;
-	}
-    }
-
-    foreach ( $postquery as $key => $count ) {
-	$postcounts[] = array( 'date' => "new Date('" . $key . "T24:00:00Z')", 'value' => $count );
-    }
-    echo '<div id="postdailyactivity"></div><script>' .
-    'MG.data_graphic({
-        title: "' . sprintf( __( 'The %s tasks daily activity of this months', DT_TEXTDOMAIN ), count( $query->posts ) ) . '",
-        data: ' . str_replace( ')"', ')', str_replace( '"new', 'new', wp_json_encode( $postcounts, JSON_NUMERIC_CHECK ) ) ) . ',
-        width: 800,
-        height: 400,
-        interpolate: d3.curveLinear,
-        xax_count: 4,
-        right: 40,
-        target: "#postdailyactivity",
-	  mouseover: function(d, i) {
-		var df = d3.timeFormat("%d/%m/%Y");
-		var date = df(d.date);
-            d3.select("#postdailyactivity svg .mg-active-datapoint").text(date + " " + d.value + " done");
-        }
-    });'
-    . '</script>';
+$this->generate_graph( $query->posts, sprintf( __( 'The %s tasks daily activity of this months', DT_TEXTDOMAIN ), count( $query->posts ) ), 'postdailyactivity' );
+    
     if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	echo '<ul>';
 	foreach ( $postid as $key => $count ) {

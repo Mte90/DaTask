@@ -117,9 +117,7 @@ function dt_get_tasks_completed() {
     $tasks_user = get_tasks_by_user( $user_id );
     if ( !empty( $tasks_user ) ) {
 	$tasks_user = array_reverse( $tasks_user, true );
-	$print = '<h4 class="alert alert-success">';
-	$print .= sprintf( __( '%d Tasks Completed', DT_TEXTDOMAIN ), count( $tasks_user ) );
-	$print .= '</h4>';
+	$print = '<h4 class="alert alert-success">' . sprintf( __( '%d Tasks Completed', DT_TEXTDOMAIN ), count( $tasks_user ) ) . '</h4>';
 	$print .= '<ul>';
 	foreach ( $tasks_user as $task ) {
 	  $print .= '<li><a href="' . get_permalink( $task->task_ID ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
@@ -136,9 +134,7 @@ function dt_get_tasks_completed() {
 	 */
 	$print = apply_filters( 'dt_get_completed_task', $print );
     } else {
-	$print .= '<h5>';
-	$print .= __( 'Nothing task done :(', DT_TEXTDOMAIN );
-	$print .= '</h5>';
+	$print .= '<h5>' . __( 'Nothing task done :(', DT_TEXTDOMAIN ) . '</h5>';
     }
   } else {
     $print = __( 'This profile not exist!', DT_TEXTDOMAIN );
@@ -175,9 +171,7 @@ function dt_get_tasks_later( $user = null ) {
 	$tasks_later_user = get_tasks_later_by_user( $user_id );
 	if ( is_array( $tasks_later_user ) ) {
 	  $tasks_later_user = array_reverse( $tasks_later_user, true );
-	  $print .= '<h4 class="alert alert-info">';
-	  $print .= __( 'Tasks in progress', DT_TEXTDOMAIN );
-	  $print .= '</h4>';
+	  $print .= '<h4 class="alert alert-info">' . __( 'Tasks in progress', DT_TEXTDOMAIN ) . '</h4>';
 	  if ( !empty( $tasks_later_user ) ) {
 	    $tasks_later_user = array_reverse( $tasks_later_user, true );
 	    $task_implode = array_keys( $tasks_later_user );
@@ -394,9 +388,7 @@ function datask_badgeos_user_achievements( $user ) {
   if ( class_exists( 'BadgeOS' ) ) {
     $output = '';
     $achievements = array_unique( badgeos_get_user_earned_achievement_ids( $user, '' ) );
-    $output .= '<h4 class="alert alert-info">';
-    $output .= __( 'Badge Earned by the user', DT_TEXTDOMAIN );
-    $output .= '</h4>';
+    $output .= '<h4 class="alert alert-info">' . __( 'Badge Earned by the user', DT_TEXTDOMAIN ) . '</h4>';
     if ( !empty( $achievements ) ) {
 	$output .= '<ul>';
 	foreach ( $achievements as $achievement_id ) {
@@ -491,9 +483,7 @@ function datask_user_form() {
     $user = get_user_by( 'login', get_user_of_profile() );
     $current_user = wp_get_current_user();
     if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
-	$content .= '<h4 class="alert alert-warning">';
-	$content .= __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name;
-	$content .= '</h4>';
+	$content .= '<h4 class="alert alert-warning">' . __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name . '</h4>';
 	$content .= '<h5>' . __( 'If you are contacting him for a task don\'t forget to mention it!', DT_TEXTDOMAIN ) . '</h5>';
 	$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
 	$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
@@ -514,4 +504,53 @@ function datask_require_approval( $task_id = '' ) {
     $task_id = get_the_ID();
   }
   return get_post_meta( $task_id, '_datask_approval', true );
+}
+
+/**
+ * Return the task suggested before the task itself
+ * 
+ * @param integer $task_id The Task ID.
+ * @return string
+ */
+function datask_task_before( $task_id = '' ) {
+  $plugin = DaTask::get_instance();
+  if ( empty( $task_id ) ) {
+    $task_id = get_the_ID();
+  }
+  $befores = get_post_meta( $task_id, $plugin->get_fields( 'task_before' ), true );
+  if ( empty( $befores ) ) {
+    return false;
+  }
+  $befores = explode( ',', str_replace( ' ', '', $befores ) );
+  return $befores;
+}
+
+/**
+ * Return the task suggested next the task itself
+ * 
+ * @param integer $task_id The Task ID.
+ * @return string
+ */
+function datask_task_next( $task_id = '' ) {
+  $plugin = DaTask::get_instance();
+  if ( empty( $task_id ) ) {
+    $task_id = get_the_ID();
+  }
+  $next = get_post_meta( $task_id, $plugin->get_fields( 'task_next' ), true );
+  if ( empty( $next ) ) {
+    return false;
+  }
+  $next = explode( ',', str_replace( ' ', '', $next ) );
+  return $next;
+}
+
+/**
+ * Output an anchor to the profile user
+ * 
+ * @param string $username
+ * @param string $text
+ * @return string
+ */
+function dt_profile_link( $username, $text ) {
+  return '<a href="' . home_url( '/member/' . $username ) . '" target="_blank">' . $text . '</a>';
 }

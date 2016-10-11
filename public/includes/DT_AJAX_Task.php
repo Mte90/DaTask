@@ -154,7 +154,7 @@ class DT_AJAX_Task {
 	  // Body
 	  $message = sprintf( __( 'Contact from %1$s by %2$s', DT_TEXTDOMAIN ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
 	  $message .= '<br>' . __( 'Profile', DT_TEXTDOMAIN );
-	  $message .= ': <a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . home_url( '/member/' . $current_user->user_login ) . '</a>';
+	  $message .= ': ' . dt_profile_link( $current_user->user_login, home_url( '/member/' . trim( $current_user->display_name ) ? $current_user->display_name : $current_user->user_login  ) );
 	  $message .= wpautop( esc_html( $_POST[ 'content' ] ) );
 	  // Headers
 	  $headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );

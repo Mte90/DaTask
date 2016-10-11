@@ -146,7 +146,7 @@ class DT_ApprovalPending extends WP_List_Table {
     $user = get_user_by( 'id', $item[ 'user' ] );
     $title = '<strong>' . $user->user_nicename . '</strong>';
     $actions = [
-	  'show' => '<a href="' . get_home_url( '/member/' . $user->user_login ) . '">' . __( 'Show' ) . '</a>'
+	  'show' => dt_profile_link( $user->user_login, __( 'Show' ) )
     ];
     return $title . $this->row_actions( $actions );
   }

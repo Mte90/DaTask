@@ -12,56 +12,56 @@
  */
 class DT_User_Backend {
 
-	/**
-	 * Initialize the class with all the hooks
-	 *
-	 * @since     1.0.0
-	 */
-	public function __construct() {
-		add_filter( 'user_row_actions', array( $this, 'filter_user_row_actions' ), 10, 2 );
-		add_filter( 'ms_user_row_actions', array( $this, 'filter_user_row_actions' ), 10, 2 );
-		if ( is_admin() ) {
-			add_action( 'init', array( $this, 'action_init' ) );
-		}
-	}
+  /**
+   * Initialize the class with all the hooks
+   *
+   * @since     1.0.0
+   */
+  public function __construct() {
+    add_filter( 'user_row_actions', array( $this, 'filter_user_row_actions' ), 10, 2 );
+    add_filter( 'ms_user_row_actions', array( $this, 'filter_user_row_actions' ), 10, 2 );
+    if ( is_admin() ) {
+	add_action( 'init', array( $this, 'action_init' ) );
+    }
+  }
 
-	/**
-	 * Adds a 'Switch To' link to each list of user actions on the Users screen.
-	 *
-	 * @since     1.0.0
-	 *
-	 * @param  array   $actions The actions to display for this user row.
-	 * @param  WP_User $user    The user object displayed in this row.
-	 * @return array The actions to display for this user row.
-	 */
-	public function filter_user_row_actions( array $actions, WP_User $user ) {
-		if ( is_admin() ) {
-			$link = wp_nonce_url( add_query_arg( array(
-			    'action' => 'reset_task_later_user',
-			    'user_id' => $user->ID,
-					), 'users.php' ), 'reset_task_later_user_' . $user->ID );
-			$actions[ 'reset_task_later_user' ] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Reset Task in Progress', DT_TEXTDOMAIN ) . '</a>';
-		}
-		$actions[ 'member_profile' ] = '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . esc_html__( 'View Public Profile', DT_TEXTDOMAIN ) . '</a>';
+  /**
+   * Adds a 'Switch To' link to each list of user actions on the Users screen.
+   *
+   * @since     1.0.0
+   *
+   * @param  array   $actions The actions to display for this user row.
+   * @param  WP_User $user    The user object displayed in this row.
+   * @return array The actions to display for this user row.
+   */
+  public function filter_user_row_actions( array $actions, WP_User $user ) {
+    if ( is_admin() ) {
+	$link = wp_nonce_url( add_query_arg( array(
+	    'action' => 'reset_task_later_user',
+	    'user_id' => $user->ID,
+			    ), 'users.php' ), 'reset_task_later_user_' . $user->ID );
+	$actions[ 'reset_task_later_user' ] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Reset Task in Progress', DT_TEXTDOMAIN ) . '</a>';
+    }
+    $actions[ 'member_profile' ] = dt_profile_link( $user->user_login, __( 'View Public Profile', DT_TEXTDOMAIN ) );
 
-		return $actions;
-	}
+    return $actions;
+  }
 
-	/**
-	 * Load localisation files and route actions depending on the 'action' query var.
-	 *
-	 * @since     1.0.0
-	 */
-	public function action_init() {
-		if ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'reset_task_later_user' ) {
-			$user_id = absint( $_REQUEST[ 'user_id' ] );
-			check_admin_referer( 'reset_task_later_user_' . $user_id );
-			$plugin = DaTask::get_instance();
-			update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( '' ) );
-			$user = get_user_by( 'id', $user_id );
-			new WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', DT_TEXTDOMAIN ), $user->data->user_login ), 'updated' );
-		}
-	}
+  /**
+   * Load localisation files and route actions depending on the 'action' query var.
+   *
+   * @since     1.0.0
+   */
+  public function action_init() {
+    if ( isset( $_GET[ 'action' ] ) && $_GET[ 'action' ] === 'reset_task_later_user' ) {
+	$user_id = absint( $_REQUEST[ 'user_id' ] );
+	check_admin_referer( 'reset_task_later_user_' . $user_id );
+	$plugin = DaTask::get_instance();
+	update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( '' ) );
+	$user = get_user_by( 'id', $user_id );
+	new WP_Admin_Notice( sprintf( __( 'Task in progress reset for <b>%s</b> done!', DT_TEXTDOMAIN ), $user->data->user_login ), 'updated' );
+    }
+  }
 
 }
 

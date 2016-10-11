@@ -69,9 +69,7 @@ class DT_Task_Support {
     echo '<ul class="list list-inset">';
     $team = get_the_terms( get_the_ID(), 'task-team' );
     if ( !empty( $team ) ) {
-	echo '<li><b>';
-	_e( 'Team', DT_TEXTDOMAIN );
-	echo ': </b>';
+	echo '<li><b>' . __( 'Team', DT_TEXTDOMAIN ) . ': </b>';
 	foreach ( $team as $term ) {
 	  echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
 	}
@@ -79,9 +77,7 @@ class DT_Task_Support {
     }
     $project = get_the_terms( get_the_ID(), 'task-area' );
     if ( !empty( $project ) ) {
-	echo '<li><b>';
-	_e( 'Project', DT_TEXTDOMAIN );
-	echo ': </b>';
+	echo '<li><b>' . __( 'Project', DT_TEXTDOMAIN ) . ': </b>';
 	foreach ( $project as $term ) {
 	  echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
 	}
@@ -89,9 +85,7 @@ class DT_Task_Support {
     }
     $difficulty = get_the_terms( get_the_ID(), 'task-difficulty' );
     if ( !empty( $difficulty ) ) {
-	echo '<li><b>';
-	_e( 'Difficulty', DT_TEXTDOMAIN );
-	echo ': </b>';
+	echo '<li><b>' . __( 'Difficulty', DT_TEXTDOMAIN ) . ': </b>';
 	foreach ( $difficulty as $term ) {
 	  echo '<a href="' . get_term_link( $term->slug, 'task-difficulty' ) . '">' . $term->name . '</a>, ';
 	}
@@ -99,9 +93,7 @@ class DT_Task_Support {
     }
     $minute = get_the_terms( get_the_ID(), 'task-minute' );
     if ( !empty( $minute ) ) {
-	echo '<li><b>';
-	_e( 'Estimated time', DT_TEXTDOMAIN );
-	echo ': </b>';
+	echo '<li><b>' . __( 'Estimated time', DT_TEXTDOMAIN ) . ': </b>';
 	foreach ( $minute as $term ) {
 	  echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
 	}
@@ -124,23 +116,20 @@ class DT_Task_Support {
 	$content = wpautop( the_task_subtitle( false ) );
     }
     if ( is_singular( 'task' ) ) {
-	$befores = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_before' ), true );
+	$befores = datask_task_before( get_the_ID() );
 	if ( !empty( $befores ) ) {
-	  $content .= '<h5 class="alert alert-danger">';
-	  $content .= __( 'Required or Suggested tasks: ', DT_TEXTDOMAIN );
-	  $content .= '</h5>';
+	  $content .= '<h5 class="alert alert-danger">' . __( 'Required or Suggested tasks', DT_TEXTDOMAIN ) . ': </h5>';
 	  $content .= '<p class="lead">';
 	  $befores_task = '';
-	  $befores_split = explode( ',', str_replace( ' ', '', $befores ) );
 	  $befores_ids = new WP_Query( array(
 		'post_type' => 'task',
-		'post__in' => $befores_split,
+		'post__in' => $befores,
 		'posts_per_page' => -1 ) );
 	  if ( is_user_logged_in() ) {
 	    $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
 	  }
 	  foreach ( $befores_ids->posts as $post ) {
-	    $befores_task_link = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+	    $befores_task_link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
 	    $befores_task_app = '';
 	    if ( is_user_logged_in() ) {
 		$befores_task_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_link . '</i>';
@@ -185,17 +174,14 @@ class DT_Task_Support {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Completion', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 	}
-	$nexts = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_next' ), true );
+	$nexts = datask_task_next( get_the_ID() );
 	if ( !empty( $nexts ) ) {
-	  $content .= '<h5 class="alert alert-danger">';
-	  $content .= __( 'Good next tasks: ', DT_TEXTDOMAIN );
-	  $content .= '</h5>';
+	  $content .= '<h5 class="alert alert-danger">' . __( 'Good next tasks: ', DT_TEXTDOMAIN ) . '</h5>';
 	  $content .= '<p class="lead">';
 	  $next_task = '';
-	  $nexts_split = explode( ',', str_replace( ' ', '', $nexts ) );
 	  $nexts_ids = new WP_Query( array(
 		'post_type' => 'task',
-		'post__in' => $nexts_split,
+		'post__in' => $nexts,
 		'posts_per_page' => -1 ) );
 	  foreach ( $nexts_ids->posts as $post ) {
 	    $next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
@@ -210,15 +196,12 @@ class DT_Task_Support {
 	}
 	$mentors = dt_get_mentors( get_the_ID() );
 	if ( is_array( $mentors ) ) {
-	  $content .= '<h5 class="alert alert-info">';
-	  $content .= __( 'Mentor(s)', DT_TEXTDOMAIN );
-	  $content .= ': </h5>';
+	  $content .= '<h5 class="alert alert-info">' . __( 'Mentor(s)', DT_TEXTDOMAIN ) . ': </h5>';
 	  $content .= '<p class="lead">';
 	  foreach ( $mentors as $user ) {
 	    $user_id = $user;
 	    $user = get_user_by( 'id', $user_id );
-	    $name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
-	    $content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>';
+	    $content .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login  );
 	    // Get last user
 	    if ( $mentors[ count( $mentors ) - 1 ] !== $user_id ) {
 		$content .= ', ';
@@ -228,14 +211,12 @@ class DT_Task_Support {
 	}
 	$logs = get_users_by_task( get_the_ID() );
 	if ( !empty( $logs ) ) {
-	  $content .= '<h5 class="alert alert-warning">';
-	  $content .= __( 'List of users who completed this task', DT_TEXTDOMAIN );
-	  $content .= ': </h5>';
+	  $content .= '<h5 class="alert alert-warning">' . __( 'List of users who completed this task', DT_TEXTDOMAIN ) . ': </h5>';
 	  $content .= '<p class="lead">';
 	  $count = count( $logs );
 	  $i = 1;
 	  foreach ( $logs as $log ) {
-	    $content .= '<a href="' . get_home_url( '/member/' . get_the_author_meta( 'user_login', $log->post_author ) ) . '">' . get_the_author_meta( 'display_name', $log->post_author ) . '</a>';
+	    $content .= dt_profile_link( get_the_author_meta( 'user_login', $log->post_author ), get_the_author_meta( 'display_name', $log->post_author ) );
 	    // Get last user
 	    if ( $count !== $i ) {
 		$content .= ', ';

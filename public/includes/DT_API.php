@@ -62,8 +62,7 @@ class DT_API {
 	  $mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
 	  foreach ( $mentors_split as $user ) {
 	    $user = get_user_by( 'id', $user );
-	    $name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
-	    $mentors_task .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>, ';
+	    $mentors_task .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login ) . ', ';
 	  }
 	}
 	$_post[ 'content' ][ 'mentors' ] = $mentors_task;
@@ -138,8 +137,7 @@ class DT_API {
 	  $mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
 	  foreach ( $mentors_split as $user ) {
 	    $user = get_user_by( 'id', $user );
-	    $name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
-	    $mentors_task .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>, ';
+	    $mentors_task .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login ) . ', ';
 	  }
 	}
 	return array( 'ids' => $mentors, 'rendered' => $mentors_task );
