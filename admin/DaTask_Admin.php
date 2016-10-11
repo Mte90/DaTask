@@ -198,8 +198,13 @@ class DaTask_Admin {
 	  'option' => 'tasks_per_page'
     ];
     add_screen_option( $option, $args );
-    require_once(plugin_dir_path( __FILE__ ) . '/includes/DT_MostDone_report.php');
-    $GLOBALS[ 'datask_report_done' ] = new DT_MostDone();
+    if ( (isset( $_GET[ 'mostdone' ] ) && $_GET[ 'mostdone' ] === 1) || !isset( $_GET[ 'approvalpending' ] ) ) {
+	require_once(plugin_dir_path( __FILE__ ) . '/includes/DT_MostDone_report.php');
+	$GLOBALS[ 'datask_report_done' ] = new DT_MostDone();
+    } else {
+	require_once(plugin_dir_path( __FILE__ ) . '/includes/DT_ApprovalPending_report.php');
+	$GLOBALS[ 'datask_approval_pending' ] = new DT_ApprovalPending();
+    }
   }
 
   /**

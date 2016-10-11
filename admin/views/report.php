@@ -1,5 +1,7 @@
 <?php
 
+//$mostdone = add_query_arg( array( 'page' => 'datask-report', 'mostdone' => '1' ), admin_url( 'index.php' ) );
+//$approvalpending = add_query_arg( array( 'page' => 'datask-report', 'approvalpending' => '1' ), admin_url( 'index.php' ) );
 /**
  * Represents the report view for the administration dashboard.
  *
@@ -38,27 +40,42 @@ function dt_table_tax( $slug, $name, $tax ) {
   <?php
 }
 ?>
-<div class="wrap">
+<div id="tabs" class="wrap">
 
     <h2>DaTask - <?php _e( 'Report', DT_TEXTDOMAIN ); ?></h2>
 
-    <div id="tabs" class="settings-tab">
-	  <ul>
-		<li><a href="#tabs-1"><?php _e( 'Most Done', DT_TEXTDOMAIN ); ?></a></li>
-		<li><a href="#tabs-2"><?php _e( 'Extra', DT_TEXTDOMAIN ); ?></a></li>
+    <div class="report-tab">
+	  <ul class="menu">
+		<li><a href="#tabs-most" data-link="<?php echo add_query_arg( array( 'page' => 'datask-report', 'mostdone' => '1' ), admin_url( 'index.php' ) ) ?>"><?php _e( 'Task Most Done', DT_TEXTDOMAIN ); ?></a></li>
+		<li><a href="#tabs-approval" data-link="<?php echo add_query_arg( array( 'page' => 'datask-report', 'approvalpending' => '1' ), admin_url( 'index.php' ) ); ?>"><?php _e( 'Task Approval Pending', DT_TEXTDOMAIN ); ?></a></li>
+		<li><a href="#tabs-extra"><?php _e( 'Extra', DT_TEXTDOMAIN ); ?></a></li>
 	  </ul>
-	  <div id="tabs-1" class="wrap">
-		<form id="export-log-form" method="post" action="" style="margin-top: -30px;position: absolute;">
-                <input type="hidden" name="action" value="export-report-done" />
-		    <?php wp_nonce_field( DT_TEXTDOMAIN . '-export-report', DT_TEXTDOMAIN . '_once' ); ?>
-		    <?php submit_button( __( 'Download CSV', DT_TEXTDOMAIN ), 'button' ); ?>
-		</form>
-		<?php
-		$GLOBALS[ 'datask_report_done' ]->prepare_items();
-		$GLOBALS[ 'datask_report_done' ]->display();
-		?>
-	  </div>
-	  <div id="tabs-2" class="wrap">
+	  <?php if ( (isset( $_GET[ 'mostdone' ] ) && $_GET[ 'mostdone' ] === 1) || !isset( $_GET[ 'approvalpending' ] ) ) { ?>
+  	  <div id="tabs-most" class="wrap">
+  		<form id="export-log-form" method="post" action="" style="margin-top: -30px;position: absolute;">
+  		    <input type="hidden" name="action" value="export-report-done" />
+			<?php wp_nonce_field( DT_TEXTDOMAIN . '-export-report', DT_TEXTDOMAIN . '_once' ); ?>
+			<?php submit_button( __( 'Download CSV', DT_TEXTDOMAIN ), 'button' ); ?>
+  		</form>
+		  <?php
+		  $GLOBALS[ 'datask_report_done' ]->prepare_items();
+		  $GLOBALS[ 'datask_report_done' ]->display();
+		  ?>
+  	  </div>
+	  <?php } else { ?>
+  	  <div id="tabs-approval" class="wrap">
+  		<form id="export-log-form" method="post" action="" style="margin-top: -30px;position: absolute;">
+                  <input type="hidden" name="action" value="export-approval-done" />
+			<?php wp_nonce_field( DT_TEXTDOMAIN . '-export-approval', DT_TEXTDOMAIN . '_once' ); ?>
+			<?php submit_button( __( 'Download CSV', DT_TEXTDOMAIN ), 'button' ); ?>
+  		</form>
+		  <?php
+		  $GLOBALS[ 'datask_approval_pending' ]->prepare_items();
+		  $GLOBALS[ 'datask_approval_pending' ]->display();
+		  ?>
+  	  </div>
+	  <?php } ?>
+	  <div id="tabs-extra" class="wrap">
 		<?php
 		dt_table_tax( DT_TEXTDOMAIN, 'Estimated minutes', 'task-minute' );
 		dt_table_tax( DT_TEXTDOMAIN, 'Difficulties', 'task-difficulty' );

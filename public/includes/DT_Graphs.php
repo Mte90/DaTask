@@ -158,7 +158,7 @@ class DT_Graphs {
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'datask', 'general' ),
+		    'terms' => array( 'general' ),
 		    'operator' => 'AND',
 		),
 	  ),
