@@ -267,15 +267,15 @@ function get_user_of_profile() {
  */
 function get_tasks_by_user( $user_id ) {
   $args = array(
-	'post_type' => 'wdslp-wds-log',
+	'post_type' => 'datask-log',
 	'posts_per_page' => -1,
 	'author' => $user_id,
 	'tax_query' => array(
 	    array(
 		  'taxonomy' => 'wds_log_type',
 		  'field' => 'slug',
-		  'terms' => array( 'datask', 'general' ),
-		  'operator' => 'AND',
+		  'terms' => array( 'remove' ),
+		  'operator' => 'NOT',
 	    ),
 	)
   );

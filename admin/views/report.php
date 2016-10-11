@@ -69,6 +69,7 @@ function dt_table_tax( $slug, $name, $tax ) {
 			<?php wp_nonce_field( DT_TEXTDOMAIN . '-export-approval', DT_TEXTDOMAIN . '_once' ); ?>
 			<?php submit_button( __( 'Download CSV', DT_TEXTDOMAIN ), 'button' ); ?>
   		</form>
+		<?php wp_nonce_field( 'dt-task-admin-action', 'dt-task-admin-nonce' ); ?>
 		  <?php
 		  $GLOBALS[ 'datask_approval_pending' ]->prepare_items();
 		  $GLOBALS[ 'datask_approval_pending' ]->display();

@@ -60,6 +60,17 @@ class DT_ApprovalPending extends WP_List_Table {
     $query = new WP_Query( $args );
     $items = array();
     foreach ( $query->posts as $post ) {
+	$task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
+	$mentors = get_post_meta( $task, '_datask_mentor', true );
+	if ( !empty( $mentors ) || current_user_can( 'manage_options' ) ) {
+	  error_log( print_r( $mentors, true ) );
+	  if ( $mentors ) {
+	    
+	  }
+	} else {
+	  continue;
+	}
+	$items[ $post->ID ][ 'task' ] = $task;
 	$items[ $post->ID ][ 'title' ] = $post->post_title;
 	$items[ $post->ID ][ 'ID' ] = $post->ID;
 	$items[ $post->ID ][ 'user' ] = $post->post_author;
@@ -114,7 +125,7 @@ class DT_ApprovalPending extends WP_List_Table {
   function column_title( $item ) {
     $title = '<strong>' . $item[ 'title' ] . '</strong>';
     $actions = [
-	  'show' => '<a href="' . get_permalink( get_post_meta( $item[ 'ID' ], DT_TEXTDOMAIN . '_id', true ) ) . '">' . __( 'Show' ) . '</a>'
+	  'show' => '<a href="' . get_permalink( $item[ 'task' ] ) . '">' . __( 'Show' ) . '</a>'
     ];
     return $title . $this->row_actions( $actions );
   }
@@ -129,7 +140,7 @@ class DT_ApprovalPending extends WP_List_Table {
     $user = get_user_by( 'id', $item[ 'user' ] );
     $title = '<strong>' . $user->user_nicename . '</strong>';
     $actions = [
-	  'show' => '<a href="' . get_home_url() . '/member/' . $user->user_login . '">' . __( 'Show' ) . '</a>'
+	  'show' => '<a href="' . get_home_url( '/member/' . $user->user_login ) . '">' . __( 'Show' ) . '</a>'
     ];
     return $title . $this->row_actions( $actions );
   }
@@ -141,7 +152,7 @@ class DT_ApprovalPending extends WP_List_Table {
    * @return string
    */
   function column_approve_log( $item ) {
-    $title = '<button class="button" data-id="' . $item[ 'ID' ] . '">' . __( 'Approve', DT_TEXTDOMAIN ) . '</button>';
+    $title = '<button class="button button-primary dt-approve-task" data-id="' . $item[ 'ID' ] . '">' . __( 'Approve', DT_TEXTDOMAIN ) . '</button>';
     return $title;
   }
 

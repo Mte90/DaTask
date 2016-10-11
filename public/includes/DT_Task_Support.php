@@ -236,7 +236,7 @@ class DT_Task_Support {
 	  $count = count( $logs );
 	  $i = 1;
 	  foreach ( $logs as $log ) {
-	    $content .= '<a href="' . get_home_url() . '/member/' . get_the_author_meta( 'user_login', $log->post_author ) . '">' . get_the_author_meta( 'display_name', $log->post_author ) . '</a>';
+	    $content .= '<a href="' . get_home_url( '/member/' . get_the_author_meta( 'user_login', $log->post_author ) ) . '">' . get_the_author_meta( 'display_name', $log->post_author ) . '</a>';
 	    // Get last user
 	    if ( $count !== $i ) {
 		$content .= ', ';

@@ -110,6 +110,7 @@ class DaTask_Admin {
      * All the extras functions
      */
     require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Extras.php' );
+    require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_AJAX_Admin.php' );
     require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );
     require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_user_search_field.php' );
   }
