@@ -85,8 +85,8 @@ class DT_Graphs {
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'general' ),
-		    'operator' => 'AND',
+		    'terms' => array( 'error','pending' ),
+		    'operator' => 'NOT',
 		),
 	  ),
 	  'date_query' => array(
@@ -158,8 +158,8 @@ class DT_Graphs {
 		array(
 		    'taxonomy' => 'wds_log_type',
 		    'field' => 'slug',
-		    'terms' => array( 'general' ),
-		    'operator' => 'AND',
+		    'terms' => array( 'error', 'pending' ),
+		    'operator' => 'NOT',
 		),
 	  ),
 	  'date_query' => array(

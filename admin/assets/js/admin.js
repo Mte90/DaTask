@@ -23,11 +23,10 @@
         url: ajaxurl,
         success: function(value) {
           return jQuery(button).parent().parent().remove();
-        },
-        error: function(value) {}
+        }
       });
     });
-    return jQuery('.dt-remove-task').on('click', function() {
+    jQuery('.dt-remove-task').on('click', function() {
       var button;
       button = this;
       return jQuery.ajax({
@@ -40,9 +39,42 @@
         url: ajaxurl,
         success: function(value) {
           return jQuery(button).parent().parent().remove();
-        },
-        error: function(value) {}
+        }
       });
+    });
+    jQuery('.dt-remove-log-task').unbind('click').on('click', function(e) {
+      var button;
+      button = this;
+      jQuery.ajax({
+        type: 'GET',
+        data: {
+          action: 'dt_remove_log',
+          ID: jQuery(this).attr('data-id')
+        },
+        url: ajaxurl,
+        success: function(value) {
+          return jQuery(button).parent().parent().find('.button').remove();
+        }
+      });
+      e.preventDefault();
+      return event.stopPropagation();
+    });
+    return jQuery('.dt-mark-remove-task').unbind('click').on('click', function(e) {
+      var button;
+      button = this;
+      jQuery.ajax({
+        type: 'GET',
+        data: {
+          action: 'dt_mark_remove',
+          ID: jQuery(this).attr('data-id')
+        },
+        url: ajaxurl,
+        success: function(value) {
+          return jQuery(button).parent().parent().find('.button').remove();
+        }
+      });
+      e.preventDefault();
+      return event.stopPropagation();
     });
   });
 })(jQuery);

@@ -149,7 +149,7 @@ class DaTask_Admin {
 		  )
 	);
     }
-    if ( strpos( $screen->base, DT_TEXTDOMAIN ) !== false ) {
+    if ( strpos( $screen->base, DT_TEXTDOMAIN ) !== false || $screen->post_type === 'datask-log' ) {
 	wp_enqueue_script( DT_TEXTDOMAIN . '-admin-script', plugins_url( 'assets/js/admin.js', __FILE__ ), array( 'jquery', 'jquery-ui-tabs' ), DT_VERSION );
     }
   }

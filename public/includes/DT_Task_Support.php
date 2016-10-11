@@ -208,20 +208,19 @@ class DT_Task_Support {
 	  $content .= $next_task;
 	  $content .= '</p>';
 	}
-	$mentors = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_mentor' ), true );
-	if ( !empty( $mentors ) ) {
+	$mentors = dt_get_mentors( get_the_ID() );
+	if ( is_array( $mentors ) ) {
 	  $content .= '<h5 class="alert alert-info">';
 	  $content .= __( 'Mentor(s)', DT_TEXTDOMAIN );
 	  $content .= ': </h5>';
 	  $content .= '<p class="lead">';
-	  $mentors_split = explode( ',', str_replace( ' ', '', $mentors ) );
-	  foreach ( $mentors_split as $user ) {
+	  foreach ( $mentors as $user ) {
 	    $user_id = $user;
 	    $user = get_user_by( 'id', $user_id );
 	    $name = trim( $user->display_name ) ? $user->display_name : $user->user_login;
 	    $content .= '<a href="' . home_url( '/member/' . $user->user_login ) . '">' . $name . '</a>';
 	    // Get last user
-	    if ( $mentors_split[ count( $mentors_split ) - 1 ] !== $user_id ) {
+	    if ( $mentors[ count( $mentors ) - 1 ] !== $user_id ) {
 		$content .= ', ';
 	    }
 	  }

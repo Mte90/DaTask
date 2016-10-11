@@ -215,6 +215,25 @@ function dt_get_tasks_later( $user = null ) {
 }
 
 /**
+ * Get the mentors of the task
+ *
+ * @since     1.0.0
+ * @return    array html
+ */
+function dt_get_mentors( $id = '' ) {
+  if ( empty( $id ) ) {
+    $id = get_the_ID();
+  }
+  $plugin = DaTask::get_instance();
+  $mentors = get_post_meta( $id, $plugin->get_fields( 'task_mentor' ), true );
+  if ( empty( $mentors ) ) {
+    return false;
+  }
+  $mentors = explode( ',', str_replace( ' ', '', $mentors ) );
+  return $mentors;
+}
+
+/**
  * Print the task later from the user with html
  *
  * @since     1.0.0

@@ -10,7 +10,9 @@
  * @copyright 2015 GPL
  */
 class DT_Log {
+
   protected $log = '';
+
   /**
    * Initialize the class with all the hooks
    *
@@ -24,8 +26,8 @@ class DT_Log {
     add_action( 'the_posts', array( $this, 'add_id_task' ) );
 
     $log_columns = new CPT_columns( 'datask-log' );
-    $log_columns->add_column( 'Di', array(
-	  'label' => __( 'Di', DT_TEXTDOMAIN ),
+    $log_columns->add_column( 'By', array(
+	  'label' => __( 'By', DT_TEXTDOMAIN ),
 	  'type' => 'custom_value',
 	  'callback' => array( $this, 'author_of_log' ),
 	  'sortable' => true,
@@ -33,6 +35,25 @@ class DT_Log {
 	  'suffix' => '</b>',
 	  'order' => '-1',
 	  'meta_key' => 'post_author'
+		)
+    );
+    $log_columns->add_column( 'Approver', array(
+	  'label' => __( 'Approver', DT_TEXTDOMAIN ),
+	  'type' => 'custom_value',
+	  'callback' => array( $this, 'approver' ),
+	  'sortable' => true,
+	  'prefix' => '<b>',
+	  'suffix' => '</b>',
+	  'order' => '-1',
+	  'meta_key' => DT_TEXTDOMAIN . '_approver'
+		)
+    );
+    
+    $log_columns->add_column( 'Delete', array(
+	  'label' => __( 'Delete', DT_TEXTDOMAIN ),
+	  'type' => 'custom_value',
+	  'callback' => array( $this, 'delete' ),
+	  'order' => '-1',
 		)
     );
   }
@@ -47,23 +68,20 @@ class DT_Log {
 	    'slug' => 'pending',
 	    'description' => 'background-color: #ff0000; color:black; font-weight:bold;',
 	);
-	$terms[ 'Removed' ] = array(
-	    'slug' => 'removed',
+	$terms[ 'Remove' ] = array(
+	    'slug' => 'remove',
 	    'description' => 'background-color: #0000ff; color:white; font-weight:bold;',
 	);
     }
     return $terms;
   }
-  
+
   public function add_post_type( $posttypes ) {
-    $posttypes['datask-log'] =  'DT';
+    $posttypes[ 'datask-log' ] = 'DT';
     return $posttypes;
   }
 
-  public static function log_message( $id, $message, $label = '' ) {
-    if ( empty( $label ) ) {
-	$label = array( 'General' );
-    }
+  public static function log_message( $id, $message, $label = array() ) {
     $id_log = WDS_Log_Post::log_message( 'datask-log', $message, '', $label );
     update_post_meta( $id_log, DT_TEXTDOMAIN . '_id', $id );
   }
@@ -79,6 +97,33 @@ class DT_Log {
     $author_id = get_post_field( 'post_author', $log_id );
     $current_user = get_userdata( $author_id );
     return '<a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . $current_user->first_name . ' ' . $current_user->last_name . '</a>';
+  }
+
+  /**
+   * Return the approver of the task
+   *
+   * @since    1.0.0
+   * @param    integer $log_id ID of the task.
+   * @return   string The HTML link to user profile backend
+   */
+  public function approver( $log_id ) {
+    $author_id = get_post_meta( $log_id, DT_TEXTDOMAIN . '_approver', true );
+    if ( !empty( $author_id ) ) {
+	$current_user = get_userdata( $author_id );
+	return '<a href="' . home_url( '/member/' . $current_user->user_login ) . '">' . $current_user->first_name . ' ' . $current_user->last_name . '</a>';
+    }
+    return '';
+  }
+
+  /**
+   * Return the approver of the task
+   *
+   * @since    1.0.0
+   * @param    integer $log_id ID of the task.
+   * @return   string The HTML link to user profile backend
+   */
+  public function delete( $log_id ) {
+    return '<button class="button dt-mark-remove-task" data-id="' . $log_id . '">' . __( 'Mark as Removed', DT_TEXTDOMAIN ) . '</button><button class="button dt-remove-log-task" data-id="' . $log_id . '">' . __( 'Remove', DT_TEXTDOMAIN ) . '</button>';
   }
 
   public function add_id_task( $post_object ) {

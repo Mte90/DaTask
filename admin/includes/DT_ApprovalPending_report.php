@@ -61,14 +61,22 @@ class DT_ApprovalPending extends WP_List_Table {
     $items = array();
     foreach ( $query->posts as $post ) {
 	$task = get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
-	$mentors = get_post_meta( $task, '_datask_mentor', true );
-	if ( !empty( $mentors ) || current_user_can( 'manage_options' ) ) {
-	  error_log( print_r( $mentors, true ) );
-	  if ( $mentors ) {
-	    
+	$mentors = dt_get_mentors( $task );
+	$is_mentor = false;
+	if ( !current_user_can( 'manage_options' ) ) {
+	  if ( is_array( $mentors ) ) {
+	    foreach ( $mentors as $key => $user ) {
+		if ( $user === ( string ) get_current_user_id() ) {
+		  $is_mentor = true;
+		  break;
+		}
+	    }
+	    if ( !$is_mentor ) {
+		continue;
+	    }
+	  } else {
+	    continue;
 	  }
-	} else {
-	  continue;
 	}
 	$items[ $post->ID ][ 'task' ] = $task;
 	$items[ $post->ID ][ 'title' ] = $post->post_title;
@@ -84,9 +92,7 @@ class DT_ApprovalPending extends WP_List_Table {
    * @return null|string
    */
   public function record_count() {
-    global $wpdb;
-    $sql = "SELECT COUNT(*) FROM $wpdb->posts WHERE 1=1 AND $wpdb->posts.post_type = 'datask-log' AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')";
-    return $wpdb->get_var( $sql );
+    return count( $this->get_tasks() );
   }
 
   /**
