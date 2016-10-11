@@ -274,7 +274,7 @@ function get_tasks_by_user( $user_id ) {
 	    array(
 		  'taxonomy' => 'wds_log_type',
 		  'field' => 'slug',
-		  'terms' => array( 'remove' ),
+		  'terms' => array( 'error', 'remove' ),
 		  'operator' => 'NOT',
 	    ),
 	)
@@ -304,7 +304,7 @@ function get_tasks_later_by_user( $user_id ) {
  */
 function get_users_by_task( $task_id ) {
   $args = array(
-	'post_type' => 'wdslp-wds-log',
+	'post_type' => 'datask-log',
 	'posts_per_page' => -1,
 	'meta_key' => DT_TEXTDOMAIN . '_id',
 	'meta_value' => $task_id,
@@ -312,8 +312,8 @@ function get_users_by_task( $task_id ) {
 	    array(
 		  'taxonomy' => 'wds_log_type',
 		  'field' => 'slug',
-		  'terms' => array( 'datask', 'general' ),
-		  'operator' => 'AND',
+		  'terms' => array( 'error', 'remove' ),
+		  'operator' => 'NOT',
 	    ),
 	)
   );

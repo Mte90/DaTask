@@ -152,7 +152,7 @@ class DT_ApprovalPending extends WP_List_Table {
    * @return string
    */
   function column_approve_log( $item ) {
-    $title = '<button class="button button-primary dt-approve-task" data-id="' . $item[ 'ID' ] . '">' . __( 'Approve', DT_TEXTDOMAIN ) . '</button>';
+    $title = '<button class="button button-primary dt-approve-task" data-id="' . $item[ 'ID' ] . '">' . __( 'Approve', DT_TEXTDOMAIN ) . '</button><button class="button dt-remove-task" data-id="' . $item[ 'ID' ] . '">' . __( 'Remove', DT_TEXTDOMAIN ) . '</button>';
     return $title;
   }
 

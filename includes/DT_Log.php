@@ -47,6 +47,10 @@ class DT_Log {
 	    'slug' => 'pending',
 	    'description' => 'background-color: #ff0000; color:black; font-weight:bold;',
 	);
+	$terms[ 'Removed' ] = array(
+	    'slug' => 'removed',
+	    'description' => 'background-color: #0000ff; color:white; font-weight:bold;',
+	);
     }
     return $terms;
   }
