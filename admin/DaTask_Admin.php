@@ -113,6 +113,17 @@ class DaTask_Admin {
     require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_AJAX_Admin.php' );
     require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_post_search_field.php' );
     require_once( plugin_dir_path( __FILE__ ) . '/includes/cmb2_user_search_field.php' );
+
+    new yoast_i18n(
+		array(
+	  'textdomain' => 'datask',
+	  'plugin_name' => 'DaTask',
+	  'hook' => 'dt_settings_header',
+	  'wordpressorg' => true,
+	  'glotpress_name' => 'Translating WordPress',
+	  'glotpress_logo' => true
+		)
+    );
   }
 
   /**

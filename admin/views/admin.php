@@ -14,6 +14,8 @@
 
     <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
+    <?php do_action( 'dt_settings_header' ); ?>
+    
     <div id="tabs" class="settings-tab">
 	  <ul>
 		<li><a href="#tabs-1"><?php _e( 'General', DT_TEXTDOMAIN ); ?></a></li>
