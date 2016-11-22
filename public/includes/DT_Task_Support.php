@@ -59,6 +59,128 @@ class DT_Task_Support {
     return $original_template;
   }
 
+  public function taxonomy_as_list_comma( $taxonomy, $id = '' ) {
+    $html = '';
+    if ( empty( $id ) ) {
+	$id = get_the_ID();
+    }
+    $terms = get_the_terms( $id, $taxonomy );
+    foreach ( $terms as $term ) {
+	$html .= '<a href="' . get_term_link( $term->slug, $taxonomy ) . '">' . $term->name . '</a>, ';
+    }
+    return rtrim( $html, ', ' );
+  }
+
+  public function task_as_list( $ids, $label ) {
+    $content = '<h5 class="alert alert-danger">' . $label . ': </h5>';
+    $content .= '<p class="lead">';
+    $html = '';
+    $ids = new WP_Query( array(
+	  'post_type' => 'task',
+	  'post__in' => $ids,
+	  'posts_per_page' => -1 ) );
+    if ( is_user_logged_in() ) {
+	$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+    }
+    foreach ( $ids->posts as $post ) {
+	$link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
+	$final_html = '';
+	if ( is_user_logged_in() ) {
+	  $final_html = '<i class="fa fa-exclamation"></i> <i>' . $link . '</i>';
+	  foreach ( $get_tasks_by_user as $task ) {
+	    if ( $task->task_ID === $post->ID ) {
+		$final_html = $link . ' <i class="fa fa-check"></i>';
+	    }
+	  }
+	}
+	// Get last post
+	if ( $ids->posts[ count( $ids->posts ) - 1 ]->ID !== $post->ID ) {
+	  $final_html .= ', ';
+	}
+	$html .= $final_html;
+    }
+    wp_reset_postdata();
+    $content .= $html;
+    $content .= '</p>';
+    return $content;
+  }
+
+  public function prev_next_task_as_list( $what, $label, $id = '' ) {
+    if ( class_exists( 'SortablePosts' ) ) {
+	if ( $what === 'prev' ) {
+	  $what = '<';
+	} elseif ( $what === 'next' ) {
+	  $what = '>';
+	}
+
+	if ( empty( $id ) ) {
+	  $id = get_the_ID();
+	}
+
+	$project = get_the_terms( $id, 'task-area' );
+	$project = $project[ 0 ];
+	$tasks = new WP_Query( array(
+	    'post_status' => 'publish',
+	    'post_type' => 'task',
+	    'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
+	    'orderby' => 'meta_value_num',
+	    'order' => 'DESC',
+	    'meta_query' => array(
+		  'relation' => 'AND',
+		  array(
+			'key' => '_sortable_posts_order_task-area_' . $project->slug,
+			'compare' => $what,
+			'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
+		  )
+	    )
+		  ) );
+	if ( !empty( $tasks ) ) {
+	  $content = '<h4 class="alert alert-danger">' . $label . ': </h5>';
+	  $content .= '<p class="lead">';
+	  $html = '';
+	  if ( is_user_logged_in() ) {
+	    $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+	  }
+	  foreach ( $tasks->posts as $post ) {
+	    $link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
+	    $final_html = '';
+	    if ( is_user_logged_in() ) {
+		$final_html = '<i class="fa fa-exclamation"></i> <i>' . $link . '</i>';
+		foreach ( $get_tasks_by_user as $task ) {
+		  if ( $task->task_ID === $post->ID ) {
+		    $final_html = $link . ' <i class="fa fa-check"></i>';
+		  }
+		}
+	    }
+	    // Get last post
+	    if ( $tasks->posts[ count( $tasks->posts ) - 1 ]->ID !== $post->ID ) {
+		$final_html .= ', ';
+	    }
+	    $html .= $final_html;
+	  }
+	  wp_reset_postdata();
+	  $content .= $html;
+	  $content .= '</p>';
+	}
+    }
+    return $content;
+  }
+
+  public function users_as_list( $ids, $label ) {
+    $content = '<h5 class="alert alert-info">' . $label . ': </h5>';
+    $content .= '<p class="lead">';
+    foreach ( $ids as $user_id ) {
+	$user = get_user_by( 'id', $user_id );
+	$content .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login );
+	// Get last user
+	if ( $ids[ count( $ids ) - 1 ] !== $user_id ) {
+	  $content .= ', ';
+	}
+    }
+    $content .= '</p>';
+    return $content;
+  }
+
   /**
    * Echo the data about the task
    *
@@ -67,37 +189,17 @@ class DT_Task_Support {
   public function dt_task_info() {
     echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', DT_TEXTDOMAIN ) . '</b> ' . ucfirst( get_the_modified_date() ) . '</div>';
     echo '<ul class="list list-inset">';
-    $team = get_the_terms( get_the_ID(), 'task-team' );
-    if ( !empty( $team ) ) {
-	echo '<li><b>' . __( 'Team', DT_TEXTDOMAIN ) . ': </b>';
-	foreach ( $team as $term ) {
-	  echo '<a href="' . get_term_link( $term->slug, 'task-team' ) . '">' . $term->name . '</a>, ';
+    $taxonomies[ 'task-team' ] = __( 'Team', DT_TEXTDOMAIN );
+    $taxonomies[ 'task-area' ] = __( 'Project', DT_TEXTDOMAIN );
+    $taxonomies[ 'task-difficulty' ] = __( 'Difficulty', DT_TEXTDOMAIN );
+    $taxonomies[ 'task-minute' ] = __( 'Estimated time', DT_TEXTDOMAIN );
+    foreach ( $taxonomies as $tax => $label ) {
+	$print = $this->taxonomy_as_list_comma( $tax );
+	if ( !empty( $print ) ) {
+	  echo '<li><b>' . $label . ': </b>';
+	  echo $print;
+	  echo '</li>';
 	}
-	echo '</li>';
-    }
-    $project = get_the_terms( get_the_ID(), 'task-area' );
-    if ( !empty( $project ) ) {
-	echo '<li><b>' . __( 'Project', DT_TEXTDOMAIN ) . ': </b>';
-	foreach ( $project as $term ) {
-	  echo '<a href="' . get_term_link( $term->slug, 'task-area' ) . '">' . $term->name . '</a>, ';
-	}
-	echo '</li>';
-    }
-    $difficulty = get_the_terms( get_the_ID(), 'task-difficulty' );
-    if ( !empty( $difficulty ) ) {
-	echo '<li><b>' . __( 'Difficulty', DT_TEXTDOMAIN ) . ': </b>';
-	foreach ( $difficulty as $term ) {
-	  echo '<a href="' . get_term_link( $term->slug, 'task-difficulty' ) . '">' . $term->name . '</a>, ';
-	}
-	echo '</li>';
-    }
-    $minute = get_the_terms( get_the_ID(), 'task-minute' );
-    if ( !empty( $minute ) ) {
-	echo '<li><b>' . __( 'Estimated time', DT_TEXTDOMAIN ) . ': </b>';
-	foreach ( $minute as $term ) {
-	  echo '<a href="' . get_term_link( $term->slug, 'task-minute' ) . '">' . $term->name . '</a>, ';
-	}
-	echo '</li>';
     }
     echo '</ul>';
   }
@@ -116,202 +218,59 @@ class DT_Task_Support {
 	$content = wpautop( the_task_subtitle( false ) );
     }
     if ( is_singular( 'task' ) ) {
-	$befores = datask_task_before( get_the_ID() );
-	if ( !empty( $befores ) ) {
-	  $content .= '<h5 class="alert alert-danger">' . __( 'Required or Suggested tasks', DT_TEXTDOMAIN ) . ': </h5>';
-	  $content .= '<p class="lead">';
-	  $befores_task = '';
-	  $befores_ids = new WP_Query( array(
-		'post_type' => 'task',
-		'post__in' => $befores,
-		'posts_per_page' => -1 ) );
-	  if ( is_user_logged_in() ) {
-	    $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-	  }
-	  foreach ( $befores_ids->posts as $post ) {
-	    $befores_task_link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
-	    $befores_task_app = '';
-	    if ( is_user_logged_in() ) {
-		$befores_task_app = '<i class="fa fa-exclamation"></i> <i>' . $befores_task_link . '</i>';
-		foreach ( $get_tasks_by_user as $task ) {
-		  if ( $task->task_ID === $post->ID ) {
-		    $befores_task_app = $befores_task_link . ' <i class="fa fa-check"></i>';
-		  }
-		}
-	    }
-	    // Get last post
-	    if ( $befores_ids->posts[ count( $befores_ids->posts ) - 1 ]->ID !== $post->ID ) {
-		$befores_task_app .= ', ';
-	    }
-	    $befores_task .= $befores_task_app;
-	  }
-	  wp_reset_postdata();
-	  $content .= $befores_task;
-	  $content .= '</p>';
+	//Required task
+	$required = datask_task_before( get_the_ID() );
+	if ( !empty( $required ) ) {
+	  $content .= $this->task_as_list( $required, __( 'Required or Suggested tasks', DT_TEXTDOMAIN ) );
 	}
+	//Prerequisites field
 	$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 	if ( !empty( $prerequisites ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Prerequisites', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 	}
-	if ( class_exists( 'SortablePosts' ) ) {
-	  $project = get_the_terms( get_the_ID(), 'task-area' );
-	  $project = $project[ 0 ];
-	  $previous = new WP_Query( array(
-		'post_status' => 'publish',
-		'post_type' => 'task',
-		'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
-		'orderby' => 'meta_value_num',
-		'order' => 'DESC',
-		'meta_query' => array(
-		    'relation' => 'AND',
-		    array(
-			  'key' => '_sortable_posts_order_task-area_' . $project->slug,
-			  'compare' => '<',
-			  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
-		    )
-		)
-		    ) );
-	  if ( !empty( $previous ) ) {
-	    $content .= '<h4 class="alert alert-warning">' . __( 'Previous', DT_TEXTDOMAIN ) . '</h4>';
-	    $content .= '<p class="lead">';
-	    $previous_task = '';
-	    foreach ( $previous->posts as $post ) {
-		$previous_task_link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
-		$previous_task_app = '';
-		if ( is_user_logged_in() ) {
-		  $previous_task_app = '<i class="fa fa-exclamation"></i> <i>' . $previous_task_link . '</i>';
-		  foreach ( $get_tasks_by_user as $task ) {
-		    if ( $task->task_ID === $post->ID ) {
-			$previous_task_app = $previous_task_link . ' <i class="fa fa-check"></i>';
-		    }
-		  }
-		}
-		// Get last post
-		if ( $previous->posts[ count( $previous->posts ) - 1 ]->ID !== $post->ID ) {
-		  $previous_task_app .= ', ';
-		}
-		$previous_task .= $previous_task_app;
-	    }
-	    wp_reset_postdata();
-	    $content .= $previous_task;
-	    $content .= '</p>';
-	  }
-	}
+	//Previous task
+	$content .= $this->prev_next_task_as_list( "prev", __( 'Previous', DT_TEXTDOMAIN ) );
+	//Matters field
 	$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 	if ( !empty( $matters ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Why this matters', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $matters ) ) ) );
 	}
+	//Steps field
 	$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
 	if ( !empty( $steps ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Steps', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $steps ) ) ) );
 	}
+	//Help field
 	$help = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_help' ), true );
 	if ( !empty( $help ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Need Help?', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $help ) ) ) );
 	}
+	//Completion field
 	$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 	if ( !empty( $completion ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Completion', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 	}
-	$nexts = datask_task_next( get_the_ID() );
-	if ( !empty( $nexts ) ) {
-	  $content .= '<h5 class="alert alert-danger">' . __( 'Good next tasks: ', DT_TEXTDOMAIN ) . '</h5>';
-	  $content .= '<p class="lead">';
-	  $next_task = '';
-	  $nexts_ids = new WP_Query( array(
-		'post_type' => 'task',
-		'post__in' => $nexts,
-		'posts_per_page' => -1 ) );
-	  foreach ( $nexts_ids->posts as $post ) {
-	    $next_task .= '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-	    // Get last post
-	    if ( $nexts_ids->posts[ count( $nexts_ids->posts ) - 1 ]->ID !== $post->ID ) {
-		$next_task .= ', ';
-	    }
-	  }
-	  wp_reset_postdata();
-	  $content .= $next_task;
-	  $content .= '</p>';
+	//Next task
+	$next = datask_task_before( get_the_ID() );
+	if ( !empty( $next ) ) {
+	  $content .= $this->task_as_list( $next, __( 'Good next tasks', DT_TEXTDOMAIN ) );
 	}
-	if ( class_exists( 'SortablePosts' ) ) {
-	  $project = get_the_terms( get_the_ID(), 'task-area' );
-	  $project = $project[ 0 ];
-	  $previous = new WP_Query( array(
-		'post_status' => 'publish',
-		'post_type' => 'task',
-		'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
-		'orderby' => 'meta_value_num',
-		'order' => 'DESC',
-		'meta_query' => array(
-		    'relation' => 'AND',
-		    array(
-			  'key' => '_sortable_posts_order_task-area_' . $project->slug,
-			  'compare' => '>',
-			  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
-		    )
-		)
-		    ) );
-	  if ( !empty( $previous ) ) {
-	    $content .= '<h4 class="alert alert-warning">' . __( 'Next', DT_TEXTDOMAIN ) . '</h4>';
-	    $content .= '<p class="lead">';
-	    $previous_task = '';
-	    foreach ( $previous->posts as $post ) {
-		$previous_task_link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
-		$previous_task_app = '';
-		if ( is_user_logged_in() ) {
-		  $previous_task_app = '<i class="fa fa-exclamation"></i> <i>' . $previous_task_link . '</i>';
-		  foreach ( $get_tasks_by_user as $task ) {
-		    if ( $task->task_ID === $post->ID ) {
-			$previous_task_app = $previous_task_link . ' <i class="fa fa-check"></i>';
-		    }
-		  }
-		}
-		// Get last post
-		if ( $previous->posts[ count( $previous->posts ) - 1 ]->ID !== $post->ID ) {
-		  $previous_task_app .= ', ';
-		}
-		$previous_task .= $previous_task_app;
-	    }
-	    wp_reset_postdata();
-	    $content .= $previous_task;
-	    $content .= '</p>';
-	  }
-	}
+	//Previous task
+	$content .= $this->prev_next_task_as_list( "next", __( 'Next', DT_TEXTDOMAIN ) );
+	//Mentors
 	$mentors = dt_get_mentors( get_the_ID() );
 	if ( is_array( $mentors ) ) {
-	  $content .= '<h5 class="alert alert-info">' . __( 'Mentor(s)', DT_TEXTDOMAIN ) . ': </h5>';
-	  $content .= '<p class="lead">';
-	  foreach ( $mentors as $user ) {
-	    $user_id = $user;
-	    $user = get_user_by( 'id', $user_id );
-	    $content .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login );
-	    // Get last user
-	    if ( $mentors[ count( $mentors ) - 1 ] !== $user_id ) {
-		$content .= ', ';
-	    }
-	  }
-	  $content .= '</p>';
+	  $content .= $this->users_as_list( $mentors, __( 'Mentor(s)', DT_TEXTDOMAIN ) );
 	}
+	//Log of users
 	$logs = get_users_by_task( get_the_ID() );
-	if ( !empty( $logs ) ) {
-	  $content .= '<h5 class="alert alert-warning">' . __( 'List of users who completed this task', DT_TEXTDOMAIN ) . ': </h5>';
-	  $content .= '<p class="lead">';
-	  $count = count( $logs );
-	  $i = 1;
-	  foreach ( $logs as $log ) {
-	    $content .= dt_profile_link( get_the_author_meta( 'user_login', $log->post_author ), get_the_author_meta( 'display_name', $log->post_author ) );
-	    // Get last user
-	    if ( $count !== $i ) {
-		$content .= ', ';
-	    }
-	    $i++;
-	  }
-	  $content .= '</p>';
+	if ( is_array( $logs ) ) {
+	  $content .= $this->users_as_list( $logs, __( 'List of users who completed this task', DT_TEXTDOMAIN ) );
 	}
     }
     return $content;

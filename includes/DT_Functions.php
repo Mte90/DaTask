@@ -293,7 +293,10 @@ function get_tasks_by_user( $user_id ) {
 	)
   );
   $query = new WP_Query( $args );
-  return $query->posts;
+  if ( count( $query->posts ) > 0 ) {
+    return $query->posts;
+  }
+  return false;
 }
 
 /**
@@ -331,7 +334,10 @@ function get_users_by_task( $task_id ) {
 	)
   );
   $query = new WP_Query( $args );
-  return $query->posts;
+  if ( count( $query->posts ) > 0 ) {
+    return $query->posts;
+  }
+  return false;
 }
 
 /**
