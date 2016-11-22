@@ -154,6 +154,50 @@ class DT_Task_Support {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Prerequisites', DT_TEXTDOMAIN ) . '</h4>';
 	  $content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 	}
+	if ( class_exists( 'SortablePosts' ) ) {
+	  $project = get_the_terms( get_the_ID(), 'task-area' );
+	  $project = $project[ 0 ];
+	  $previous = new WP_Query( array(
+		'post_status' => 'publish',
+		'post_type' => 'task',
+		'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
+		'orderby' => 'meta_value_num',
+		'order' => 'DESC',
+		'meta_query' => array(
+		    'relation' => 'AND',
+		    array(
+			  'key' => '_sortable_posts_order_task-area_' . $project->slug,
+			  'compare' => '<',
+			  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
+		    )
+		)
+		    ) );
+	  if ( !empty( $previous ) ) {
+	    $content .= '<h4 class="alert alert-warning">' . __( 'Previous', DT_TEXTDOMAIN ) . '</h4>';
+	    $content .= '<p class="lead">';
+	    $previous_task = '';
+	    foreach ( $previous->posts as $post ) {
+		$previous_task_link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
+		$previous_task_app = '';
+		if ( is_user_logged_in() ) {
+		  $previous_task_app = '<i class="fa fa-exclamation"></i> <i>' . $previous_task_link . '</i>';
+		  foreach ( $get_tasks_by_user as $task ) {
+		    if ( $task->task_ID === $post->ID ) {
+			$previous_task_app = $previous_task_link . ' <i class="fa fa-check"></i>';
+		    }
+		  }
+		}
+		// Get last post
+		if ( $previous->posts[ count( $previous->posts ) - 1 ]->ID !== $post->ID ) {
+		  $previous_task_app .= ', ';
+		}
+		$previous_task .= $previous_task_app;
+	    }
+	    wp_reset_postdata();
+	    $content .= $previous_task;
+	    $content .= '</p>';
+	  }
+	}
 	$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 	if ( !empty( $matters ) ) {
 	  $content .= '<h4 class="alert alert-success">' . __( 'Why this matters', DT_TEXTDOMAIN ) . '</h4>';
@@ -194,6 +238,50 @@ class DT_Task_Support {
 	  $content .= $next_task;
 	  $content .= '</p>';
 	}
+	if ( class_exists( 'SortablePosts' ) ) {
+	  $project = get_the_terms( get_the_ID(), 'task-area' );
+	  $project = $project[ 0 ];
+	  $previous = new WP_Query( array(
+		'post_status' => 'publish',
+		'post_type' => 'task',
+		'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
+		'orderby' => 'meta_value_num',
+		'order' => 'DESC',
+		'meta_query' => array(
+		    'relation' => 'AND',
+		    array(
+			  'key' => '_sortable_posts_order_task-area_' . $project->slug,
+			  'compare' => '>',
+			  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
+		    )
+		)
+		    ) );
+	  if ( !empty( $previous ) ) {
+	    $content .= '<h4 class="alert alert-warning">' . __( 'Next', DT_TEXTDOMAIN ) . '</h4>';
+	    $content .= '<p class="lead">';
+	    $previous_task = '';
+	    foreach ( $previous->posts as $post ) {
+		$previous_task_link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
+		$previous_task_app = '';
+		if ( is_user_logged_in() ) {
+		  $previous_task_app = '<i class="fa fa-exclamation"></i> <i>' . $previous_task_link . '</i>';
+		  foreach ( $get_tasks_by_user as $task ) {
+		    if ( $task->task_ID === $post->ID ) {
+			$previous_task_app = $previous_task_link . ' <i class="fa fa-check"></i>';
+		    }
+		  }
+		}
+		// Get last post
+		if ( $previous->posts[ count( $previous->posts ) - 1 ]->ID !== $post->ID ) {
+		  $previous_task_app .= ', ';
+		}
+		$previous_task .= $previous_task_app;
+	    }
+	    wp_reset_postdata();
+	    $content .= $previous_task;
+	    $content .= '</p>';
+	  }
+	}
 	$mentors = dt_get_mentors( get_the_ID() );
 	if ( is_array( $mentors ) ) {
 	  $content .= '<h5 class="alert alert-info">' . __( 'Mentor(s)', DT_TEXTDOMAIN ) . ': </h5>';
@@ -201,7 +289,7 @@ class DT_Task_Support {
 	  foreach ( $mentors as $user ) {
 	    $user_id = $user;
 	    $user = get_user_by( 'id', $user_id );
-	    $content .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login  );
+	    $content .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login );
 	    // Get last user
 	    if ( $mentors[ count( $mentors ) - 1 ] !== $user_id ) {
 		$content .= ', ';
