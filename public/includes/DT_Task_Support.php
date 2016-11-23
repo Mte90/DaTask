@@ -144,7 +144,7 @@ class DT_Task_Support {
 	  return '';
 	}
 
-	$content = '<h4 class="alert alert-danger">' . $label . ': </h5>';
+	$content = '<h4 class="alert alert-danger">' . $label . ': </h4>';
 	$content .= '<p class="lead">';
 	$html = '';
 	if ( is_user_logged_in() ) {
@@ -174,10 +174,13 @@ class DT_Task_Support {
     return $content;
   }
 
-  public function users_as_list( $ids, $label ) {
+  public function users_as_list( $ids, $label, $use_author = false ) {
     $content = '<h5 class="alert alert-info">' . $label . ': </h5>';
     $content .= '<p class="lead">';
     foreach ( $ids as $user_id ) {
+	if ( $use_author ) {
+	  $user_id = $user_id->post_author;
+	}
 	$user = get_user_by( 'id', $user_id );
 	$content .= dt_profile_link( $user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login );
 	// Get last user
@@ -185,6 +188,7 @@ class DT_Task_Support {
 	  $content .= ', ';
 	}
     }
+    $content = rtrim( $content, ', ' );
     $content .= '</p>';
     return $content;
   }
@@ -210,6 +214,9 @@ class DT_Task_Support {
 	}
     }
     echo '</ul>';
+    if ( is_user_logged_in() && !is_the_prev_task_done() ) {
+	echo '<div class="alert alert-danger"><b>' . __( 'You need to do the previous task before this one', DT_TEXTDOMAIN ) . '</b> </div>';
+    }
   }
 
   /**
@@ -278,7 +285,7 @@ class DT_Task_Support {
 	//Log of users
 	$logs = get_users_by_task( get_the_ID() );
 	if ( is_array( $logs ) ) {
-	  $content .= $this->users_as_list( $logs, __( 'List of users who completed this task', DT_TEXTDOMAIN ) );
+	  $content .= $this->users_as_list( $logs, __( 'List of users who completed this task', DT_TEXTDOMAIN ), true );
 	}
     }
     return $content;

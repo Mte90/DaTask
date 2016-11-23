@@ -431,20 +431,26 @@ function datask_buttons() {
   if ( is_user_logged_in() ) {
     ?>
     <div class="dt-buttons">
-	  <?php wp_nonce_field( 'dt-task-action', 'dt-task-nonce' ); ?>
-        <button type="submit" class="btn btn-primary complete <?php
-	  if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
-	    echo 'disabled';
+	  <?php
+	  wp_nonce_field( 'dt-task-action', 'dt-task-nonce' );
+	  if ( is_the_prev_task_done() ) {
+	    ?>
+	    <button type="submit" class="btn btn-primary complete <?php
+	    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+		echo 'disabled';
+	    }
+	    ?>" id="complete-task" data-complete="<?php the_ID(); ?>">
+			<?php
+			if ( has_later_task( get_the_ID() ) ) {
+			  echo '<i class="fa fa-exclamation-circle"></i>';
+			}
+			if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
+			  echo '<i class="fa fa-check"></i>';
+			}
+			?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
+	    <?php
 	  }
-	  ?>" id="complete-task" data-complete="<?php the_ID(); ?>">
-		    <?php
-		    if ( has_later_task( get_the_ID() ) ) {
-			echo '<i class="fa fa-exclamation-circle"></i>';
-		    }
-		    if ( has_task( get_the_ID() ) && !has_later_task( get_the_ID() ) ) {
-			echo '<i class="fa fa-check"></i>';
-		    }
-		    ?><?php _e( 'Complete this task', DT_TEXTDOMAIN ); ?></button>
+	  ?>
         <button type="submit" class="btn btn-secondary save-later <?php
 	  if ( has_later_task( get_the_ID() ) ) {
 	    echo 'disabled';
@@ -455,11 +461,17 @@ function datask_buttons() {
 			echo '<i class="fa fa-check"></i>';
 		    }
 		    ?><?php _e( 'Save for later', DT_TEXTDOMAIN ); ?></button>
-        <button type="submit" class="btn btn-warning remove <?php
-	  if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
-	    echo 'disabled';
-	  }
-	  ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
+	  <?php
+	  if ( is_the_prev_task_done() ) {
+	    ?>
+	    <button type="submit" class="btn btn-warning remove <?php
+	    if ( has_task( get_the_ID() ) && has_later_task( get_the_ID() ) ) {
+		echo 'disabled';
+	    }
+	    ?>" id="remove-task" data-remove="<?php the_ID(); ?>"><i class="dt-refresh-hide fa fa-refresh"></i><?php _e( 'Remove complete task', DT_TEXTDOMAIN ); ?></button>
+		  <?php
+		}
+		?>
     </div>
     <?php
     $approval = datask_require_approval();
@@ -559,4 +571,41 @@ function datask_task_next( $task_id = '' ) {
  */
 function dt_profile_link( $username, $text ) {
   return '<a href="' . home_url( '/member/' . $username ) . '" target="_blank">' . $text . '</a>';
+}
+
+function is_the_prev_task_done( $id = '' ) {
+  if ( !is_user_logged_in() ) {
+    return true;
+  }
+
+  if ( empty( $id ) ) {
+    $id = get_the_ID();
+  }
+  $terms = get_the_terms( $id, 'task-area' );
+  $project = $terms[ 0 ];
+  $prev = new WP_Query( array(
+	'post_type' => 'task',
+	'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
+	'orderby' => 'meta_value_num',
+	'order' => 'ASC',
+	'meta_query' => array(
+	    'relation' => 'AND',
+	    array(
+		  'key' => '_sortable_posts_order_task-area_' . $project->slug,
+		  'compare' => '<',
+		  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
+	    )
+	)
+	    ) );
+  if ( empty( $prev->posts ) ) {
+    return true;
+  }
+  $prev = $prev->posts[ count( $prev->posts ) - 1 ];
+  $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+  foreach ( $get_tasks_by_user as $task ) {
+    if ( $task->task_ID === $prev->ID ) {
+	return true;
+    }
+  }
+  return false;
 }

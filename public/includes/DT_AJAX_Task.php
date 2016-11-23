@@ -48,6 +48,9 @@ class DT_AJAX_Task {
     }
 
     if ( is_user_logged_in() ) {
+	if ( !is_the_prev_task_done( ( int ) $_GET[ 'ID' ] ) ) {
+	  wp_send_json_error('You need to do the previous task');
+	}
 	dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 	$approval = datask_require_approval( ( int ) $_GET[ 'ID' ] );
 	if ( !empty( $approval ) && $approval !== 'none' ) {
@@ -154,7 +157,7 @@ class DT_AJAX_Task {
 	  // Body
 	  $message = sprintf( __( 'Contact from %1$s by %2$s', DT_TEXTDOMAIN ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
 	  $message .= '<br>' . __( 'Profile', DT_TEXTDOMAIN );
-	  $message .= ': ' . dt_profile_link( $current_user->user_login, home_url( '/member/' . trim( $current_user->display_name ) ? $current_user->display_name : $current_user->user_login  ) );
+	  $message .= ': ' . dt_profile_link( $current_user->user_login, home_url( '/member/' . trim( $current_user->display_name ) ? $current_user->display_name : $current_user->user_login ) );
 	  $message .= wpautop( esc_html( $_POST[ 'content' ] ) );
 	  // Headers
 	  $headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );
