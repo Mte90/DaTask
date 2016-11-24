@@ -46,6 +46,7 @@ require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Sortable_Posts.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Uninstall.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_ActDeact.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Functions.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_myCred_Init.php' );
 
 if ( is_admin() ) {
   require_once( plugin_dir_path( __FILE__ ) . 'admin/DaTask_Admin.php' );

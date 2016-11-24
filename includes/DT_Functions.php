@@ -41,7 +41,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
    *
    * @since 1.0.0
    */
-  do_action( 'dt_set_completed_task' );
+  do_action( 'dt_set_completed_task', $user_id, $task_id );
   return true;
 }
 
