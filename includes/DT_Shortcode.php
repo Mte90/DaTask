@@ -59,12 +59,15 @@ class DT_Shortcode {
 
   public function dots() {
     $terms = get_terms( 'task-area', array( 'hide_empty' => false ) );
-    $html = '';
+    $html = '<div class="datask-dots">';
     $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
     foreach ( $terms as $term ) {
 	$i = 0;
 	$html .= '<a href="' . get_term_link( $term->term_id, 'task-area' ) . '">';
-	$html .= '<img src="' . get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true ) . '">';
+	$image = get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true );
+	if ( !empty( $image ) ) {
+	  $html .= '<img src="' . get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true ) . '">';
+	}
 	$done = new WP_Query( array(
 	    'post_type' => 'task',
 	    'meta_key' => '_sortable_posts_order_task-area_' . $term->slug,
@@ -84,9 +87,10 @@ class DT_Shortcode {
 	} else {
 	  $percentage = ($i / count( $done->posts )) * 100;
 	}
-	$html .= '<span style="border:1px solid black;display:block;height:20px;width:' . $percentage . '%"></span>';
+	$html .= '<progress class="progress" value="' . $percentage . '" max="100"></div>';
 	$html .= '</a><br>';
     }
+    $html .= '</div>';
     return $html;
   }
 
