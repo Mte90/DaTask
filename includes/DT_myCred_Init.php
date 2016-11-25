@@ -13,7 +13,7 @@ class DT_myCred_Init {
   }
 
   public function register_hook( $installed ) {
-    $installed[ 'datask_task_done_mycred' ] = array(
+    $installed[ 'task_done' ] = array(
 	  'title' => __( 'Task done', DT_TEXTDOMAIN ),
 	  'description' => __( 'Add points on every task done', DT_TEXTDOMAIN ),
 	  'callback' => array( 'DaTask_myCred' )

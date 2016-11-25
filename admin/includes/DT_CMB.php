@@ -17,17 +17,17 @@ class DT_CMB {
    * @since     1.0.0
    */
   public function __construct() {
-    add_action( 'cmb2_init', array( $this, 'cmb_demo_metaboxes' ) );
+    add_action( 'cmb2_init', array( $this, 'fields' ) );
   }
 
   /**
-   * NOTE:     Your metabox on Demo CPT
+   * CMB fields
    *
    * @since    1.0.0
    * 
    * @return void
    */
-  public function cmb_demo_metaboxes() {
+  public function fields() {
     // Start with an underscore to hide fields from custom fields list
     $prefix = '_';
 
@@ -134,6 +134,20 @@ class DT_CMB {
     $cmb_user_task->add_field( array(
 	  'id' => $prefix . DT_TEXTDOMAIN . '_tasks_later',
 	  'type' => 'hidden'
+    ) );
+
+    $cmb_term = new_cmb2_box( array(
+	  'id' => $prefix . DT_TEXTDOMAIN . 'area',
+	  'title' => __( 'Featured Image', DT_TEXTDOMAIN ),
+	  'object_types' => array( 'term' ),
+	  'taxonomies' => array( 'task-area' ),
+	  'new_term_section' => true,
+		) );
+
+    $cmb_term->add_field( array(
+	  'name' => __( 'Featured Image', DT_TEXTDOMAIN ),
+	  'id' => $prefix . DT_TEXTDOMAIN . '_featured',
+	  'type' => 'file',
     ) );
   }
 
