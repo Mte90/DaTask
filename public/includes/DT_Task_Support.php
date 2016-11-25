@@ -24,8 +24,6 @@ class DT_Task_Support {
     add_action( 'dt_task_info', array( $this, 'dt_task_info' ) );
     add_filter( 'the_content', array( $this, 'dt_task_content' ) );
     add_filter( 'the_excerpt', array( $this, 'dt_task_excerpt' ) );
-    add_shortcode( 'datask-progress', array( $this, 'datask_progress' ) );
-    add_shortcode( 'datask-badge', array( $this, 'datask_badgeos' ) );
   }
 
   /**
@@ -303,41 +301,6 @@ class DT_Task_Support {
 	$content = the_task_subtitle( false );
     }
     return $content;
-  }
-
-  /**
-   * 
-   * The shortcode show the task in progress
-   * 
-   * @since    1.0.0
-   * @return string The HTML of the Box of task in progress
-   */
-  public function datask_progress() {
-    if ( is_user_logged_in() ) {
-	$current_user = wp_get_current_user();
-	return dt_get_tasks_later( $current_user->user_login );
-    }
-  }
-
-  /**
-   * 
-   * The shortcode show the badge associated of the task
-   * 
-   * @since    1.1.0
-   * @return string The HTML from BadgeOS
-   */
-  public function datask_badgeos() {
-    if ( class_exists( 'BadgeOS' ) ) {
-	$plugin = DaTask::get_instance();
-	global $post;
-	if ( get_post_type( $post->ID ) === 'task' ) {
-	  $badge = get_post_meta( get_the_ID(), $plugin->get_fields( 'badgeos' ), true );
-	  if ( $badge ) {
-	    $html = badgeos_achievement_shortcode( array( 'id' => $badge ) );
-	    echo $html;
-	  }
-	}
-    }
   }
 
 }
