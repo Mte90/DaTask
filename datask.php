@@ -28,13 +28,6 @@ define( 'DT_VERSION', '2.0.0' );
 define( 'DT_TEXTDOMAIN', 'datask' );
 define( 'DT_NAME', 'DaTask' );
 
-/**
- * Load the language files for the plugin
- */
-function dt_load_plugin_textdomain() {
-  load_plugin_textdomain( DT_TEXTDOMAIN, false, basename( plugin_dir_path( dirname( __FILE__ ) ) ) . '/languages/' );
-}
-
 add_action( 'plugins_loaded', 'dt_load_plugin_textdomain', 1 );
 
 require_once( plugin_dir_path( __FILE__ ) . 'composer/autoload.php' );
