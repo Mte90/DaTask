@@ -30,12 +30,12 @@ class DT_Sortable_Posts {
   }
 
   public function add_sortable_to_area( $taxes ) {
-    $taxes = array_merge( $taxes, array( 'task-area' ) );
+    $taxes = array_merge( $taxes, array( 'task-team' ) );
     return $taxes;
   }
 
   public function add_sortable_by_meta( $array ) {
-    $array[] = array( 'post_type' => 'task', 'taxonomy' => 'task-area' );
+    $array[] = array( 'post_type' => 'task', 'taxonomy' => 'task-team' );
     return $array;
   }
 

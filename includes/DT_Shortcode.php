@@ -50,8 +50,7 @@ class DT_Shortcode {
 	if ( get_post_type( $post->ID ) === 'task' ) {
 	  $badge = get_post_meta( get_the_ID(), $plugin->get_fields( 'badgeos' ), true );
 	  if ( $badge ) {
-	    $html = badgeos_achievement_shortcode( array( 'id' => $badge ) );
-	    echo $html;
+	    echo badgeos_achievement_shortcode( array( 'id' => $badge ) );
 	  }
 	}
     }
@@ -64,11 +63,11 @@ class DT_Shortcode {
     $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
     $terms = array();
     if ( $type === 'archive' ) {
-	$terms = get_terms( 'task-area', array( 'hide_empty' => false ) );
+	$terms = get_terms( 'task-team', array( 'hide_empty' => false ) );
     } elseif ( $type === 'user' ) {
 	if ( !empty( $get_tasks_by_user ) ) {
 	  foreach ( $get_tasks_by_user as $task_user ) {
-	    $find_term = wp_get_post_terms( $task_user->task_ID, 'task-area' );
+	    $find_term = wp_get_post_terms( $task_user->task_ID, 'task-team' );
 	    $terms[ $find_term[ 0 ]->term_id ] = $find_term[ 0 ];
 	  }
 	}
@@ -80,13 +79,13 @@ class DT_Shortcode {
     foreach ( $terms as $term ) {
 	$i = 0;
 	$html .= '<li>';
-	$html .= '<a href="' . get_term_link( $term->term_id, 'task-area' ) . '">';
+	$html .= '<a href="' . get_term_link( $term->term_id, 'task-team' ) . '">';
 	$image = get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true );
 	$done = new WP_Query( array(
 	    'post_type' => 'task',
 	    'tax_query' => array(
 		  array(
-			'taxonomy' => 'task-area',
+			'taxonomy' => 'task-team',
 			'terms' => $term->slug,
 			'field' => 'slug',
 		  ),

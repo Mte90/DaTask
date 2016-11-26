@@ -102,20 +102,20 @@ class DT_Task_Support {
 	  $id = get_the_ID();
 	}
 
-	$project = get_the_terms( $id, 'task-area' );
+	$project = get_the_terms( $id, 'task-team' );
 	$project = $project[ 0 ];
 	$tasks = new WP_Query( array(
 	    'post_status' => 'publish',
 	    'post_type' => 'task',
-	    'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
+	    'meta_key' => '_sortable_posts_order_task-team_' . $project->slug,
 	    'orderby' => 'meta_value_num',
 	    'order' => 'ASC',
 	    'meta_query' => array(
 		  'relation' => 'AND',
 		  array(
-			'key' => '_sortable_posts_order_task-area_' . $project->slug,
+			'key' => '_sortable_posts_order_task-team_' . $project->slug,
 			'compare' => $what,
-			'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
+			'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-team_' . $project->slug, true )
 		  )
 	    )
 		  ) );
@@ -160,7 +160,7 @@ class DT_Task_Support {
     echo '<div class="alert alert-warning"><b>' . __( 'Last edit: ', DT_TEXTDOMAIN ) . '</b> ' . ucfirst( get_the_modified_date() ) . '</div>';
     echo '<ul class="list list-inset">';
     $taxonomies[ 'task-team' ] = __( 'Team', DT_TEXTDOMAIN );
-    $taxonomies[ 'task-area' ] = __( 'Project', DT_TEXTDOMAIN );
+    $taxonomies[ 'task-area' ] = __( 'Area', DT_TEXTDOMAIN );
     $taxonomies[ 'task-difficulty' ] = __( 'Difficulty', DT_TEXTDOMAIN );
     $taxonomies[ 'task-minute' ] = __( 'Estimated time', DT_TEXTDOMAIN );
     foreach ( $taxonomies as $tax => $label ) {

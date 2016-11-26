@@ -583,19 +583,19 @@ function is_the_prev_task_done( $id = '' ) {
   if ( empty( $id ) ) {
     $id = get_the_ID();
   }
-  $terms = get_the_terms( $id, 'task-area' );
+  $terms = get_the_terms( $id, 'task-team' );
   $project = $terms[ 0 ];
   $prev = new WP_Query( array(
 	'post_type' => 'task',
-	'meta_key' => '_sortable_posts_order_task-area_' . $project->slug,
+	'meta_key' => '_sortable_posts_order_task-team_' . $project->slug,
 	'orderby' => 'meta_value_num',
 	'order' => 'ASC',
 	'meta_query' => array(
 	    'relation' => 'AND',
 	    array(
-		  'key' => '_sortable_posts_order_task-area_' . $project->slug,
+		  'key' => '_sortable_posts_order_task-team_' . $project->slug,
 		  'compare' => '<',
-		  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-area_' . $project->slug, true )
+		  'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-team_' . $project->slug, true )
 	    )
 	)
 	    ) );

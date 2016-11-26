@@ -140,7 +140,7 @@ class DT_CMB {
 	  'id' => $prefix . DT_TEXTDOMAIN . 'area',
 	  'title' => __( 'Featured Image', DT_TEXTDOMAIN ),
 	  'object_types' => array( 'term' ),
-	  'taxonomies' => array( 'task-area' ),
+	  'taxonomies' => array( 'task-team' ),
 	  'new_term_section' => true,
 		) );
 
