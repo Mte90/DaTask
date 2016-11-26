@@ -102,12 +102,7 @@ class DT_Graphs {
     $this->generate_graph( $query->posts, sprintf( __( 'The %s tasks activity of last 12 months', DT_TEXTDOMAIN ), count( $query->posts ) ), 'postactivity' );
 
     if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
-	echo '<ul>';
-	
-	foreach ( $query->posts as $post ) {
-	  echo '<li><a href="' . get_permalink( $post->ID ) . '" target="_blank">' . get_the_title( $post->ID ) . '</a></li>';
-	}
-	echo '</ul>';
+	$this->generate_task_list( $query );
     }
   }
 
@@ -136,15 +131,19 @@ class DT_Graphs {
 	  ),
     );
     $query = new WP_Query( $args );
-$this->generate_graph( $query->posts, sprintf( __( 'The %s tasks daily activity of this months', DT_TEXTDOMAIN ), count( $query->posts ) ), 'postdailyactivity' );
-    
+    $this->generate_graph( $query->posts, sprintf( __( 'The %s tasks daily activity of this months', DT_TEXTDOMAIN ), count( $query->posts ) ), 'postdailyactivity' );
+
     if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
-	echo '<ul>';
-	foreach ( $postid as $key => $count ) {
-	  echo '<li><a href="' . get_permalink( $key ) . '" target="_blank">' . get_the_title( $key ) . '</a> ' . $count . ' ' . __( 'times', DT_TEXTDOMAIN ) . '</li>';
-	}
-	echo '</ul>';
+	$this->generate_task_list( $query );
     }
+  }
+
+  public function generate_task_list( $query ) {
+    echo '<ul>';
+    foreach ( $query->posts as $post ) {
+	echo '<li><a href="' . get_permalink( $post->ID ) . '" target="_blank">' . get_the_title( $post->ID ) . '</a></li>';
+    }
+    echo '</ul>';
   }
 
 }
