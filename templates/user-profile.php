@@ -35,12 +35,19 @@ get_header();
 			  <?php } ?>
 			  <?php if ( !empty( $user->user_url ) ) { ?>
   			  <p><?php _e( 'Website', DT_TEXTDOMAIN ) ?>: <a href="<?php echo $user->user_url; ?>"><?php echo $user->user_url; ?></a></p>
-			  <?php } ?>
+			    <?php
+			  }
+			  if ( class_exists( 'myCRED_Core' ) ) {
+			    ?>
+  			  <p><?php printf( __( 'User points: %s', DT_TEXTDOMAIN ), do_shortcode( '[mycred_my_balance user_id="' . $user->ID . '" wrapper=0 title_el="" balance_el=""]' ) ); ?></p>
+			    <?php
+			  }
+			  ?>
 			  <p><a href="<?php echo get_bloginfo( 'url' ) . '/member-feed/' . $user->user_login; ?>"><?php _e( 'RSS Feed Activity', DT_TEXTDOMAIN ) ?></a></p>
 			  <?php if ( !empty( $user->description ) ) { ?>
   			  <div class="description"><?php echo wpautop( the_author_meta( 'description', $user->ID ) ); ?></div>
-			  <?php } ?>
-			  <?php
+			    <?php
+			  }
 			  $current_user = wp_get_current_user();
 			  if ( get_user_of_profile() === $current_user->user_login ) {
 			    ?>
