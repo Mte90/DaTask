@@ -6,3 +6,19 @@
 		margin-bottom:20px;
 	}
 }
+.datask-dots {
+	margin: 0 auto;
+    text-align: center;
+	li {
+		display: inline-block;
+		vertical-align: top;
+	}
+	img {
+		border-radius: 50%;
+		transition: filter .4s linear;
+		filter: grayscale(1);
+	}
+	.datask-image-done:hover {
+		filter: none;
+	}
+}

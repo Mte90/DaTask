@@ -59,38 +59,51 @@ class DT_Shortcode {
 
   public function dots() {
     $terms = get_terms( 'task-area', array( 'hide_empty' => false ) );
-    $html = '<div class="datask-dots">';
+    $html = '<ul class="datask-dots">';
     $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
     foreach ( $terms as $term ) {
 	$i = 0;
+	$html .= '<li>';
 	$html .= '<a href="' . get_term_link( $term->term_id, 'task-area' ) . '">';
 	$image = get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true );
-	if ( !empty( $image ) ) {
-	  $html .= '<img src="' . get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true ) . '">';
-	}
 	$done = new WP_Query( array(
 	    'post_type' => 'task',
-	    'meta_key' => '_sortable_posts_order_task-area_' . $term->slug,
-	    'orderby' => 'meta_value_num',
+	    'tax_query' => array(
+		  array(
+			'taxonomy' => 'task-area',
+			'terms' => $term->slug,
+			'field' => 'slug',
+		  ),
+	    ),
 	    'order' => 'ASC'
 		  ) );
 	foreach ( $done->posts as $task ) {
-	  error_log( print_r( $task, true ) );
 	  foreach ( $get_tasks_by_user as $task_user ) {
 	    if ( $task_user->task_ID === $task->ID ) {
 		$i++;
 	    }
 	  }
 	}
+	$class = '';
 	if ( $i === 0 ) {
 	  $percentage = 0;
 	} else {
 	  $percentage = ($i / count( $done->posts )) * 100;
 	}
-	$html .= '<progress class="progress" value="' . $percentage . '" max="100"></div>';
-	$html .= '</a><br>';
+	if ( $percentage === 100 ) {
+	  $class = ' class="datask-image-done"';
+	}
+	if ( !empty( $image ) ) {
+	  $attachment = wp_get_attachment_image_src( datask_get_id_image_term( $image ), 'thumbnail' );
+	  $html .= '<img src="' . $attachment[ 0 ] . '"' . $class . '>';
+	} else {
+	  $html .= $term->name;
+	}
+	$html .= '<progress class="progress" value="' . $percentage . '" max="100"></progress>';
+	$html .= '</a>';
+	$html .= '</li>';
     }
-    $html .= '</div>';
+    $html .= '</ul>';
     return $html;
   }
 

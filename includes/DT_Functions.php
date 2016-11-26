@@ -609,3 +609,9 @@ function is_the_prev_task_done( $id = '' ) {
   }
   return false;
 }
+
+function datask_get_id_image_term( $image_url ) {
+  global $wpdb;
+  $attachment = $wpdb->get_col( $wpdb->prepare( 'SELECT ID FROM ' . $wpdb->posts . " WHERE guid='%s';", esc_sql( $image_url ) ) );
+  return $attachment[ 0 ];
+}
