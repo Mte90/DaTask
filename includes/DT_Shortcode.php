@@ -61,6 +61,7 @@ class DT_Shortcode {
 	  'type' => 'archive',
 			  ), $atts ) );
     $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+    
     $terms = array();
     if ( $type === 'archive' ) {
 	$terms = get_terms( 'task-team', array( 'hide_empty' => false ) );

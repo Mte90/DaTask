@@ -112,16 +112,11 @@ class DT_Frontend_Login {
   public function frontend_login_redirect() {
     if ( is_page( 'login' ) && is_user_logged_in() ) {
 	$current_user = wp_get_current_user();
-	wp_safe_redirect( home_url( '/member/' . $current_user->user_login ) );
+	wp_safe_redirect( home_url( '/author/' . $current_user->user_login ) );
 	exit();
     } elseif ( is_page( 'logout' ) && is_user_logged_in() ) {
 	wp_logout();
 	wp_safe_redirect( home_url() );
-	exit();
-    }
-    global $wp_query;
-    if ( array_key_exists( 'member', $wp_query->query_vars ) && !is_user_logged_in() ) {
-	wp_safe_redirect( home_url( '/login/' ) );
 	exit();
     }
   }
@@ -134,7 +129,7 @@ class DT_Frontend_Login {
   public function prevent_access_backend() {
     if ( current_user_can( 'subscriber' ) && !defined( 'DOING_AJAX' ) ) {
 	$current_user = wp_get_current_user();
-	wp_safe_redirect( home_url( '/member/' . $current_user->user_login ) );
+	wp_safe_redirect( home_url( '/author/' . $current_user->user_login ) );
 	exit;
     }
   }

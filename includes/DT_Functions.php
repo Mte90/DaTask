@@ -246,21 +246,12 @@ function dt_tasks_later( $user = null ) {
 function get_user_of_profile() {
   global $wp_query;
   // Get nick from the url of the page
-  if ( array_key_exists( 'member', $wp_query->query_vars ) || is_author() ) {
-    if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
-	$username = str_replace( '%20', ' ', $wp_query->query[ 'member' ] );
-    } else if ( is_author() ) {
+  if ( is_author() ) {
 	$username = $wp_query->query_vars[ 'author_name' ];
-    }
     if ( username_exists( $username ) ) {
 	return $username;
     }
-    // If the url don't have the nick get the actual
-  } elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
-    $current_user = wp_get_current_user();
-    return $current_user->user_login;
-    // Else null
-  } elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
+  }  elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
     $username = str_replace( '%20', ' ', $wp_query->query[ 'member-feed' ] );
     if ( username_exists( $username ) ) {
 	return $username;
@@ -279,6 +270,9 @@ function get_user_of_profile() {
  * @return    array the ids
  */
 function get_tasks_by_user( $user_id ) {
+  if( $user_id === 0 ) {
+    return false;
+  }
   $args = array(
 	'post_type' => 'datask-log',
 	'posts_per_page' => -1,
@@ -572,7 +566,7 @@ function datask_task_next( $task_id = '' ) {
  * @return string
  */
 function dt_profile_link( $username, $text ) {
-  return '<a href="' . home_url( '/member/' . $username ) . '" target="_blank">' . $text . '</a>';
+  return '<a href="' . home_url( '/author/' . $username ) . '" target="_blank">' . $text . '</a>';
 }
 
 function is_the_prev_task_done( $id = '' ) {
@@ -621,5 +615,5 @@ function datask_get_id_image_term( $image_url ) {
 }
 
 function datask_course_user() {
-  do_shortcode( '[datask-dots type="user"]' );
+  echo do_shortcode( '[datask-dots type="user"]' );
 }
