@@ -57,15 +57,20 @@ class DT_Shortcode {
     }
   }
 
-  public function dots( $type = 'archive' ) {
+  public function dots( $atts ) {
+    extract( shortcode_atts( array(
+	  'type' => 'archive',
+			  ), $atts ) );
     $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
     $terms = array();
-    if ( empty( $type ) || $type === 'archive' ) {
+    if ( $type === 'archive' ) {
 	$terms = get_terms( 'task-area', array( 'hide_empty' => false ) );
     } elseif ( $type === 'user' ) {
-	foreach ( $get_tasks_by_user as $task_user ) {
-	  $find_term = wp_get_post_terms( $task_user->task_ID, 'task-area' );
-	  $terms[ $find_term[ 0 ]->term_id ] = $find_term[ 0 ];
+	if ( !empty( $get_tasks_by_user ) ) {
+	  foreach ( $get_tasks_by_user as $task_user ) {
+	    $find_term = wp_get_post_terms( $task_user->task_ID, 'task-area' );
+	    $terms[ $find_term[ 0 ]->term_id ] = $find_term[ 0 ];
+	  }
 	}
     }
     if ( empty( $terms ) ) {

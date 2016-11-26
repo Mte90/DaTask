@@ -246,12 +246,14 @@ function dt_tasks_later( $user = null ) {
 function get_user_of_profile() {
   global $wp_query;
   // Get nick from the url of the page
-  if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
-    $username = str_replace( '%20', ' ', $wp_query->query[ 'member' ] );
+  if ( array_key_exists( 'member', $wp_query->query_vars ) || is_author() ) {
+    if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+	$username = str_replace( '%20', ' ', $wp_query->query[ 'member' ] );
+    } else if ( is_author() ) {
+	$username = $wp_query->query_vars[ 'author_name' ];
+    }
     if ( username_exists( $username ) ) {
 	return $username;
-    } else {
-	return null;
     }
     // If the url don't have the nick get the actual
   } elseif ( (isset( $wp_query->query[ 'name' ] ) && $wp_query->query[ 'name' ] === 'member') || (isset( $wp_query->query[ 'pagename' ] ) && $wp_query->query[ 'pagename' ] === 'member') ) {
@@ -262,8 +264,6 @@ function get_user_of_profile() {
     $username = str_replace( '%20', ' ', $wp_query->query[ 'member-feed' ] );
     if ( username_exists( $username ) ) {
 	return $username;
-    } else {
-	return null;
     }
     // If the url don't have the nick get the actual
   } else {
@@ -604,9 +604,11 @@ function is_the_prev_task_done( $id = '' ) {
   }
   $prev = $prev->posts[ count( $prev->posts ) - 1 ];
   $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-  foreach ( $get_tasks_by_user as $task ) {
-    if ( $task->task_ID === $prev->ID ) {
-	return true;
+  if ( !empty( $get_tasks_by_user ) ) {
+    foreach ( $get_tasks_by_user as $task ) {
+	if ( $task->task_ID === $prev->ID ) {
+	  return true;
+	}
     }
   }
   return false;
@@ -619,5 +621,5 @@ function datask_get_id_image_term( $image_url ) {
 }
 
 function datask_course_user() {
-  echo DT_Shortcode::dots( 'user' );
+  do_shortcode( '[datask-dots type="user"]' );
 }

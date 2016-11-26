@@ -91,9 +91,11 @@ class DT_Task_Support {
 	$final_html = '';
 	if ( is_user_logged_in() ) {
 	  $final_html = '<i class="fa fa-exclamation"></i> <i>' . $link . '</i>';
-	  foreach ( $get_tasks_by_user as $task ) {
-	    if ( $task->task_ID === $post->ID ) {
-		$final_html = $link . ' <i class="fa fa-check"></i>';
+	  if ( !empty( $get_tasks_by_user ) ) {
+	    foreach ( $get_tasks_by_user as $task ) {
+		if ( $task->task_ID === $post->ID ) {
+		  $final_html = $link . ' <i class="fa fa-check"></i>';
+		}
 	    }
 	  }
 	}
@@ -153,9 +155,11 @@ class DT_Task_Support {
 	  $final_html = '';
 	  if ( is_user_logged_in() ) {
 	    $final_html = '<i class="fa fa-exclamation"></i> <i>' . $link . '</i>';
-	    foreach ( $get_tasks_by_user as $task ) {
-		if ( $task->task_ID === $post->ID ) {
-		  $final_html = $link . ' <i class="fa fa-check"></i>';
+	    if ( !empty( $get_tasks_by_user ) ) {
+		foreach ( $get_tasks_by_user as $task ) {
+		  if ( $task->task_ID === $post->ID ) {
+		    $final_html = $link . ' <i class="fa fa-check"></i>';
+		  }
 		}
 	    }
 	  }

@@ -74,7 +74,7 @@ class DT_Frontend_Profile {
    */
   public function userprofile_template() {
     global $wp_query;
-    if ( array_key_exists( 'member', $wp_query->query_vars ) ) {
+    if ( array_key_exists( 'member', $wp_query->query_vars ) || is_author() ) {
 	if ( get_user_of_profile() !== null ) {
 	  wpbp_get_template_part( DT_TEXTDOMAIN, 'user', 'profile', true );
 	  exit;
