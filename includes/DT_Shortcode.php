@@ -59,13 +59,17 @@ class DT_Shortcode {
 
   public function dots( $type = 'archive' ) {
     $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-    if ( $type === 'archive' ) {
+    $terms = array();
+    if ( empty( $type ) || $type === 'archive' ) {
 	$terms = get_terms( 'task-area', array( 'hide_empty' => false ) );
     } elseif ( $type === 'user' ) {
 	foreach ( $get_tasks_by_user as $task_user ) {
 	  $find_term = wp_get_post_terms( $task_user->task_ID, 'task-area' );
 	  $terms[ $find_term[ 0 ]->term_id ] = $find_term[ 0 ];
 	}
+    }
+    if ( empty( $terms ) ) {
+	return false;
     }
     $html = '<ul class="datask-dots">';
     foreach ( $terms as $term ) {
@@ -84,10 +88,12 @@ class DT_Shortcode {
 	    ),
 	    'order' => 'ASC'
 		  ) );
-	foreach ( $done->posts as $task ) {
-	  foreach ( $get_tasks_by_user as $task_user ) {
-	    if ( $task_user->task_ID === $task->ID ) {
-		$i++;
+	if ( !empty( $get_tasks_by_user ) ) {
+	  foreach ( $done->posts as $task ) {
+	    foreach ( $get_tasks_by_user as $task_user ) {
+		if ( $task_user->task_ID === $task->ID ) {
+		  $i++;
+		}
 	    }
 	  }
 	}

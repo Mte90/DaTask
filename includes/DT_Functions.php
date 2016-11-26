@@ -354,9 +354,11 @@ function has_task( $task_id, $user_id = null ) {
     $user_id = get_current_user_id();
   }
   $tasks = get_tasks_by_user( $user_id );
-  foreach ( $tasks as $task ) {
-    if ( $task->task_ID === $task_id ) {
-	return true;
+  if ( !empty( $tasks ) ) {
+    foreach ( $tasks as $task ) {
+	if ( $task->task_ID === $task_id ) {
+	  return true;
+	}
     }
   }
   return false;
