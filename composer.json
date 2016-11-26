@@ -14,7 +14,8 @@
     "julien731\/wp-dismissible-notices-handler": "1.0.0",
     "julien731\/wp-review-me": "2.0.1",
     "voceconnect/voce-post-expiration": "^0.3.0",
-    "mte90/wds-log-post": "dev-master"
+    "mte90/i18n-module": "dev-master",
+    "webdevstudios/wds-log-post": "dev-master"
   },
   "repositories": [
     {
@@ -24,12 +25,24 @@
     {
       "type": "package",
       "package": {
-        "name": "mte90/wds-log-post",
+        "name": "webdevstudios/wds-log-post",
         "version": "dev-master",
         "source": {
-          "url": "https://github.com/Mte90/WDS-Log-Post",
+          "url": "https://github.com/webdevstudios/WDS-Log-Post",
           "type": "git",
           "reference": "origin/master"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "mte90/i18n-module",
+        "version": "dev-master",
+        "source": {
+          "url": "https://github.com/Mte90/i18n-module",
+          "type": "git",
+          "reference": "origin/patch-2"
         }
       }
     },
@@ -51,7 +64,8 @@
         "wpbp\/template",
         "webdevstudios\/taxonomy_core",
         "voceconnect/voce-post-expiration",
-        "mte90/wds-log-post"
+        "webdevstudios/wds-log-post",
+        "mte90/i18n-module"
       ],
       ".\/public\/includes\/lib\/{$name|F}": [
         "wpbp\/widgets-helper"
@@ -67,7 +81,8 @@
   "autoload": {
     "files": [
       ".\/admin\/includes\/lib\/Cmb2\/init.php",
-      ".\/includes\/lib\/Wds-log-post\/wds-log-post.php"
+      ".\/includes\/lib\/Wds-log-post\/wds-log-post.php",
+      ".\/includes\/lib\/I18n-module\/i18n-module.php"
     ]
   }
 }

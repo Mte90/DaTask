@@ -39,8 +39,8 @@ add_action( 'plugins_loaded', 'dt_load_plugin_textdomain', 1 );
 
 require_once( plugin_dir_path( __FILE__ ) . 'composer/autoload.php' );
 
-require_once( plugin_dir_path( __FILE__ ) . 'public/DaTask.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Shortcode.php' );
+require_once( plugin_dir_path( __FILE__ ) . 'public/DaTask.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_FakePage.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Log.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Sortable_Posts.php' );

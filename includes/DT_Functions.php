@@ -615,3 +615,7 @@ function datask_get_id_image_term( $image_url ) {
   $attachment = $wpdb->get_col( $wpdb->prepare( 'SELECT ID FROM ' . $wpdb->posts . " WHERE guid='%s';", esc_sql( $image_url ) ) );
   return $attachment[ 0 ];
 }
+
+function datask_course_user() {
+  echo DT_Shortcode::dots( 'user' );
+}

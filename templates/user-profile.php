@@ -51,6 +51,7 @@ get_header();
 		<h4 class="alert alert-warning"><?php _e( 'Dashboard', DT_TEXTDOMAIN ); ?></h4>
 		<?php
 		datask_badgeos_user_achievements( $user->ID );
+		datask_course_user();
 		dt_tasks_later();
 		dt_tasks_completed();
 		datask_user_form();
