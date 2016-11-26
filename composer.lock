@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ae252c256a71710a5e1b905842537b19",
-    "content-hash": "d00000cb9282c07a3a3459d13a26390e",
+    "hash": "23fab43e80e1c3b1111708646db8fe83",
+    "content-hash": "50b0710209be6cf3a2d615693d8e6f83",
     "packages": [
         {
             "name": "composer/installers",
@@ -212,16 +212,16 @@
         },
         {
             "name": "julien731/wp-review-me",
-            "version": "2.0.0",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/julien731/WP-Review-Me.git",
-                "reference": "f55e83a0e5a95a0ab7798f4d7791ab3af83e99a3"
+                "reference": "cb43e768e0dc1e2eb8e1a3a96ffa3dfd9f890602"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/julien731/WP-Review-Me/zipball/f55e83a0e5a95a0ab7798f4d7791ab3af83e99a3",
-                "reference": "f55e83a0e5a95a0ab7798f4d7791ab3af83e99a3",
+                "url": "https://api.github.com/repos/julien731/WP-Review-Me/zipball/cb43e768e0dc1e2eb8e1a3a96ffa3dfd9f890602",
+                "reference": "cb43e768e0dc1e2eb8e1a3a96ffa3dfd9f890602",
                 "shasum": ""
             },
             "require": {
@@ -248,7 +248,55 @@
             ],
             "description": "A lightweight library to help you get more reviews for your WordPress theme/plugin",
             "homepage": "https://github.com/julien731/WP-Review-Me",
-            "time": "2016-04-20 12:37:05"
+            "time": "2016-09-27 04:04:50"
+        },
+        {
+            "name": "mte90/i18n-module",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mte90/i18n-module",
+                "reference": "origin/patch-2"
+            },
+            "type": "library",
+            "time": "2016-10-11 21:23:26"
+        },
+        {
+            "name": "voceconnect/voce-post-expiration",
+            "version": "0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/voceconnect/voce-post-expiration.git",
+                "reference": "cda60712688a23f6960cd6dd96ef4054e9d73e92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/voceconnect/voce-post-expiration/zipball/cda60712688a23f6960cd6dd96ef4054e9d73e92",
+                "reference": "cda60712688a23f6960cd6dd96ef4054e9d73e92",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "voce-post-expiration.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv2+"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Langley Jr",
+                    "email": "klangley@voceconnect.com"
+                }
+            ],
+            "description": "Set expirations on posts",
+            "keywords": [
+                "expiration",
+                "wordpress"
+            ],
+            "time": "2014-04-29 15:42:58"
         },
         {
             "name": "webdevstudios/cmb2",
@@ -371,6 +419,17 @@
             ],
             "description": "A tool to make custom taxonomy registration just a bit simpler. Automatically registers taxonomy labels, and provides helpful methods.",
             "time": "2016-02-27 20:21:38"
+        },
+        {
+            "name": "webdevstudios/wds-log-post",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webdevstudios/WDS-Log-Post",
+                "reference": "origin/master"
+            },
+            "type": "library",
+            "time": "2016-10-03 16:39:57"
         },
         {
             "name": "wpbp/cpt_columns",
@@ -497,16 +556,16 @@
         },
         {
             "name": "wpbp/template",
-            "version": "dev-master",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WPBP/template.git",
-                "reference": "60ce10ea1121d5f0fd9692c4c06f484def8e3ecf"
+                "reference": "e6cc25821adeb0d2770b09b3c1a5c9a25bdb98bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WPBP/template/zipball/60ce10ea1121d5f0fd9692c4c06f484def8e3ecf",
-                "reference": "60ce10ea1121d5f0fd9692c4c06f484def8e3ecf",
+                "url": "https://api.github.com/repos/WPBP/template/zipball/e6cc25821adeb0d2770b09b3c1a5c9a25bdb98bf",
+                "reference": "e6cc25821adeb0d2770b09b3c1a5c9a25bdb98bf",
                 "shasum": ""
             },
             "type": "library",
@@ -533,7 +592,7 @@
                 "template",
                 "wordpress"
             ],
-            "time": "2016-09-05 16:57:22"
+            "time": "2016-09-05 17:34:02"
         },
         {
             "name": "wpbp/widgets-helper",
@@ -581,7 +640,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "idct/composer-custom-directory": 20,
-        "wpbp/template": 20
+        "mte90/i18n-module": 20,
+        "webdevstudios/wds-log-post": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

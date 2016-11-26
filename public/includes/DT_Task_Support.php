@@ -83,31 +83,10 @@ class DT_Task_Support {
     if ( empty( $ids->posts ) ) {
 	return '';
     }
-    if ( is_user_logged_in() ) {
-	$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-    }
-    foreach ( $ids->posts as $post ) {
-	$link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
-	$final_html = '';
-	if ( is_user_logged_in() ) {
-	  $final_html = '<i class="fa fa-exclamation"></i> <i>' . $link . '</i>';
-	  if ( !empty( $get_tasks_by_user ) ) {
-	    foreach ( $get_tasks_by_user as $task ) {
-		if ( $task->task_ID === $post->ID ) {
-		  $final_html = $link . ' <i class="fa fa-check"></i>';
-		}
-	    }
-	  }
-	}
-	// Get last post
-	if ( $ids->posts[ count( $ids->posts ) - 1 ]->ID !== $post->ID ) {
-	  $final_html .= ', ';
-	}
-	$html .= $final_html;
-    }
+
+    $html .= $this->get_list_task( $ids->posts );
     wp_reset_postdata();
-    $content .= $html;
-    $content .= '</p>';
+    $content .= $html . '</p>';
     return $content;
   }
 
@@ -146,32 +125,9 @@ class DT_Task_Support {
 
 	$content = '<h4 class="alert alert-danger">' . $label . ': </h4>';
 	$content .= '<p class="lead">';
-	$html = '';
-	if ( is_user_logged_in() ) {
-	  $get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-	}
-	foreach ( $tasks->posts as $post ) {
-	  $link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
-	  $final_html = '';
-	  if ( is_user_logged_in() ) {
-	    $final_html = '<i class="fa fa-exclamation"></i> <i>' . $link . '</i>';
-	    if ( !empty( $get_tasks_by_user ) ) {
-		foreach ( $get_tasks_by_user as $task ) {
-		  if ( $task->task_ID === $post->ID ) {
-		    $final_html = $link . ' <i class="fa fa-check"></i>';
-		  }
-		}
-	    }
-	  }
-	  // Get last post
-	  if ( $tasks->posts[ count( $tasks->posts ) - 1 ]->ID !== $post->ID ) {
-	    $final_html .= ', ';
-	  }
-	  $html .= $final_html;
-	}
+	$html = $this->get_list_task( $tasks->posts );
 	wp_reset_postdata();
-	$content .= $html;
-	$content .= '</p>';
+	$content .= $html . '</p>';
     }
     return $content;
   }
@@ -305,6 +261,31 @@ class DT_Task_Support {
 	$content = the_task_subtitle( false );
     }
     return $content;
+  }
+
+  public function get_task_check( $get_tasks_by_user, $id ) {
+    if ( !empty( $get_tasks_by_user ) ) {
+	foreach ( $get_tasks_by_user as $task ) {
+	  if ( $task->task_ID === $id ) {
+	    return ' <i class="fa fa-check"></i>';
+	  }
+	}
+    }
+    return '<i class="fa fa-exclamation"></i>';
+  }
+
+  public function get_list_task( $ids ) {
+    if ( is_user_logged_in() ) {
+	$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+    }
+    $html = '';
+    foreach ( $ids as $post ) {
+	$link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
+	if ( is_user_logged_in() ) {
+	  $html .= $this->get_task_check( $get_tasks_by_user, $post->ID ) . ' <i>' . $link . '</i>, ';
+	}
+    }
+    return rtrim( $html, ', ' );
   }
 
 }

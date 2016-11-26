@@ -103,9 +103,8 @@ class DT_Shortcode {
 	  }
 	}
 	$class = '';
-	if ( $i === 0 ) {
-	  $percentage = 0;
-	} else {
+	$percentage = 0;
+	if ( $i !== 0 ) {
 	  $percentage = ($i / count( $done->posts )) * 100;
 	}
 	if ( $percentage === 100 ) {

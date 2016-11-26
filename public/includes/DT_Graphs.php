@@ -103,8 +103,9 @@ class DT_Graphs {
 
     if ( isset( $atts[ 'list' ] ) && $atts[ 'list' ] ) {
 	echo '<ul>';
-	foreach ( $postid as $key => $count ) {
-	  echo '<li><a href="' . get_permalink( $key ) . '" target="_blank">' . get_the_title( $key ) . '</a> ' . $count . ' ' . __( 'times', DT_TEXTDOMAIN ) . '</li>';
+	
+	foreach ( $query->posts as $post ) {
+	  echo '<li><a href="' . get_permalink( $post->ID ) . '" target="_blank">' . get_the_title( $post->ID ) . '</a></li>';
 	}
 	echo '</ul>';
     }
