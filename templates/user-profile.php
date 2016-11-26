@@ -20,7 +20,7 @@ get_header();
 	  <div id="primary" class="col-md-8">
 		<h2 class="alert alert-info">
 		    <?php
-		    $user = get_user_by( 'login', get_user_of_profile() );
+		    $user = get_user_by( 'id', get_user_of_profile( true ) );
 		    printf( __( "%s's Profile", DT_TEXTDOMAIN ), $user->display_name );
 		    ?>
 		</h2>

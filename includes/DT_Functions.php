@@ -111,8 +111,12 @@ function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
  */
 function dt_get_tasks_completed() {
   $print = '';
-  if ( username_exists( get_user_of_profile() ) ) {
+  if ( is_author() ) {
+    $user_id = get_user_by( 'id', get_user_of_profile( true ) );
+  } else {
     $user_id = get_user_by( 'login', get_user_of_profile() );
+  }
+  if ( !empty( $user_id ) ) {
     $user_id = $user_id->data->ID;
     $tasks_user = get_tasks_by_user( $user_id );
     if ( !empty( $tasks_user ) ) {
@@ -159,15 +163,18 @@ function dt_tasks_completed() {
  * @return    string html
  */
 function dt_get_tasks_later( $user = null ) {
-  if ( $user === null ) {
-    $user = get_user_of_profile();
-  }
   $print = '';
-  if ( username_exists( $user ) ) {
+  if ( $user === null ) {
+    if ( is_author() ) {
+	$user = get_user_by( 'id', get_user_of_profile( true ) );
+    } else {
+	$user = get_user_by( 'login', get_user_of_profile() );
+    }
+  }
+  if ( !empty( $user ) ) {
     $current_user = wp_get_current_user();
-    if ( $current_user->user_login === $user ) {
-	$user_id = get_user_by( 'login', $user );
-	$user_id = $user_id->data->ID;
+    if ( $current_user->user_nicename === $user->user_nicename ) {
+	$user_id = $user->data->ID;
 	$tasks_later_user = get_tasks_later_by_user( $user_id );
 	if ( is_array( $tasks_later_user ) ) {
 	  $tasks_later_user = array_reverse( $tasks_later_user, true );
@@ -243,15 +250,22 @@ function dt_tasks_later( $user = null ) {
  * @since     1.0.0
  * @return    @string|null value Nick of the user
  */
-function get_user_of_profile() {
+function get_user_of_profile( $id = false ) {
   global $wp_query;
   // Get nick from the url of the page
   if ( is_author() ) {
-	$username = $wp_query->query_vars[ 'author_name' ];
+    $username = $wp_query->query_vars[ 'author_name' ];
+    if ( $id ) {
+	$user_id = $wp_query->query_vars[ 'author' ];
+	$user = get_userdata( $user_id );
+	if ( $user ) {
+	  return $user_id;
+	}
+    }
     if ( username_exists( $username ) ) {
 	return $username;
     }
-  }  elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
+  } elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
     $username = str_replace( '%20', ' ', $wp_query->query[ 'member-feed' ] );
     if ( username_exists( $username ) ) {
 	return $username;
@@ -270,7 +284,7 @@ function get_user_of_profile() {
  * @return    array the ids
  */
 function get_tasks_by_user( $user_id ) {
-  if( $user_id === 0 ) {
+  if ( $user_id === 0 ) {
     return false;
   }
   $args = array(
@@ -494,7 +508,7 @@ function datask_buttons() {
  */
 function datask_user_form() {
   if ( is_user_logged_in() ) {
-    $user = get_user_by( 'login', get_user_of_profile() );
+    $user = get_user_by( 'id', get_user_of_profile( true ) );
     $current_user = wp_get_current_user();
     if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
 	$content .= '<h4 class="alert alert-warning">' . __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name . '</h4>';

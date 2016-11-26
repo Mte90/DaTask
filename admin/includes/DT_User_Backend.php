@@ -42,7 +42,7 @@ class DT_User_Backend {
 			    ), 'users.php' ), 'reset_task_later_user_' . $user->ID );
 	$actions[ 'reset_task_later_user' ] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Reset Task in Progress', DT_TEXTDOMAIN ) . '</a>';
     }
-    $actions[ 'member_profile' ] = dt_profile_link( $user->user_login, __( 'View Public Profile', DT_TEXTDOMAIN ) );
+    $actions[ 'member_profile' ] = dt_profile_link( $user->user_nicename, __( 'View Public Profile', DT_TEXTDOMAIN ) );
 
     return $actions;
   }

@@ -11,7 +11,7 @@ class DaTask_myCred extends myCRED_Hook {
   function __construct( $hook_prefs, $type = 'mycred_default' ) {
     parent::__construct( array(
 	  'id' => 'datask_task_done_mycred',
-	  'defaults' => array( 'creds' => '25', 'log' => '%plural% for task done' )
+	  'defaults' => array( 'creds' => '25', 'log' => '<b>%post_title%</b> done' )
 		), $hook_prefs, $type );
   }
 
@@ -20,12 +20,20 @@ class DaTask_myCred extends myCRED_Hook {
    */
   public function run() {
     add_action( 'dt_set_completed_task', array( $this, 'add_point' ), 99999, 2 );
+    add_action( 'dt_remove_complete_task', array( $this, 'remove_point' ), 99999, 2 );
   }
 
   public function add_point( $user_id, $task_id ) {
     $prefs = $this->prefs;
     $this->core->add_creds(
 		'datask_task_done_mycred', $user_id, $prefs[ 'creds' ], $prefs[ 'log' ], $task_id
+    );
+  }
+
+  public function remove_point( $user_id, $task_id ) {
+    $prefs = $this->prefs;
+    $this->core->add_creds(
+		'datask_task_done_mycred', $user_id, - $prefs[ 'creds' ], $prefs[ 'log' ], $task_id
     );
   }
 

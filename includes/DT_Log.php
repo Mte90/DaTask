@@ -96,7 +96,7 @@ class DT_Log {
   public function author_of_log( $log_id ) {
     $author_id = get_post_field( 'post_author', $log_id );
     $user = get_userdata( $author_id );
-    return dt_profile_link($user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login);
+    return dt_profile_link($user->user_nicename, trim( $user->display_name ) ? $user->display_name : $user->user_nicename);
   }
 
   /**
@@ -110,7 +110,7 @@ class DT_Log {
     $author_id = get_post_meta( $log_id, DT_TEXTDOMAIN . '_approver', true );
     if ( !empty( $author_id ) ) {
 	$user = get_userdata( $author_id );
-	return dt_profile_link($user->user_login, trim( $user->display_name ) ? $user->display_name : $user->user_login);
+	return dt_profile_link($user->user_nicename, trim( $user->display_name ) ? $user->display_name : $user->user_nicename);
     }
     return '';
   }
