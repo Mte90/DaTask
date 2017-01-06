@@ -28,8 +28,6 @@ define( 'DT_VERSION', '2.0.0' );
 define( 'DT_TEXTDOMAIN', 'datask' );
 define( 'DT_NAME', 'DaTask' );
 
-add_action( 'plugins_loaded', 'dt_load_plugin_textdomain', 1 );
-
 require_once( plugin_dir_path( __FILE__ ) . 'composer/autoload.php' );
 
 require_once( plugin_dir_path( __FILE__ ) . 'includes/DT_Shortcode.php' );

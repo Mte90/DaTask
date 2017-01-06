@@ -10,6 +10,7 @@ class DT_myCred_Init {
   public function __construct() {
     add_filter( 'mycred_setup_hooks', array( $this, 'register_hook' ) );
     add_filter( 'mycred_init', array( $this, 'load_hooks' ) );
+    add_filter( 'mycred_users_profile_url', array( $this, 'adjust_user_profile_url' ), 10, 2 );
   }
 
   public function register_hook( $installed ) {
@@ -23,6 +24,10 @@ class DT_myCred_Init {
 
   public function load_hooks() {
     require_once( plugin_dir_path( __FILE__ ) . 'DT_myCred.php' );
+  }
+
+  function adjust_user_profile_url( $url, $user ) {
+    return home_url( '/author/' . $user->user_nicename );
   }
 
 }
