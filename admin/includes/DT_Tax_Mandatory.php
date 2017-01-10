@@ -122,29 +122,24 @@ class DT_Tax_Mandatory {
 	 * @since 3.1.0
 	 */
 	public function wp_ajax_find_tax() {
-
 		$s = wp_unslash( $_POST[ 'ps' ] );
-		$users = array();
-		$user_query = new WP_User_Query( array(
-			'orderby' => 'display_name',
-			'search' => '*' . $s . '*',
-			'search_columns' => array( 'user_login', 'user_email', 'user_nicename', 'display_name' )
-				) );
-
-		$users = $user_query->get_results();
-		if ( !$users ) {
+		$taxs = get_terms( 'task-team', array(
+			'orderby' => 'count',
+			'hide_empty' => 0,
+			'name__like' => $s
+		) );
+		if ( !$taxs ) {
 			wp_send_json_error( __( 'No items found.' ) );
 		}
 
-		$html = '<table class="widefat"><thead><tr><th class="found-radio"><br /></th><th>' . __( 'Name' ) . '</th><th class="no-break">' . __( 'Email' ) . '</th></tr></thead><tbody>';
+		$html = '<table class="widefat"><thead><tr><th class="found-radio"><br /></th><th>' . __( 'Name' ) . '</th></tr></thead><tbody>';
 		$alt = '';
-
-		foreach ( $users as $user ) {
-			$title = $user->display_name ? $user->display_name : $user->user_login;
+		foreach ( $taxs as $tax ) {
+			$title = $tax->name;
 			$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
 
-			$html .= '<tr class="' . trim( 'found-users ' . $alt ) . '"><td class="found-radio"><input type="radio" id="found-' . $user->ID . '" name="found_post_id" value="' . esc_attr( $user->ID ) . '"></td>';
-			$html .= '<td><label for="found-' . $user->ID . '">' . esc_html( $title ) . '</label></td><td>' . $user->user_email . '</td></tr>' . "\n\n";
+			$html .= '<tr class="' . trim( 'found-tax-task ' . $alt ) . '"><td class="found-checkbox"><input type="checkbox" id="found-' . $tax->slug . '" name="found_tax_task" value="' . esc_attr( $tax->slug ) . '"></td>';
+			$html .= '<td><label for="found-' . $tax->slug . '">' . esc_html( $title ) . '</label></td></tr>' . "\n\n";
 		}
 
 		$html .= '</tbody></table>';

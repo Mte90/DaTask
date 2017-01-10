@@ -1,7 +1,6 @@
 jQuery(document).ready ($) ->
     SearchViewDaTaskUsers = window.Backbone.View.extend(
       el: '#find-datask-tax',
-      overlaySet: false,
       overlay: false,
       open: ->
         @$response.html ''
@@ -39,23 +38,36 @@ jQuery(document).ready ($) ->
       close: ->
         @$overlay.hide()
         @$el.hide()
-      escClose: ->
+      escClose: (evt)->
         if evt.which and 27 == evt.which
           @close()
-      maybeStartSearch: ->
+      maybeStartSearch: (evt)->
         if 13 == evt.which
           @send()
+      selectPost: (evt)->
+        evt.preventDefault()
+        @$checked = $('#find-datask-tax-response input[name="found_tax_task"]:checked')
+        checked = @$checked.map(->
+          @value
+        ).get()
+        if !checked.length
+          @close()
+          return
+        label = []
+        $.each checked, (index, value) ->
+          label.push $('#find-datask-tax-response input#found-' + value).attr 'value'
+          return
+        console.log label.join(', ')
+        @close()
       events: ->
         {
           'keypress .find-box-search :input': 'maybeStartSearch'
           'keyup #find-datask-tax-input': 'escClose'
-#          'click #find-datask-tax-submit': 'selectPost'
+          'click #find-datask-tax-submit': 'selectPost'
           'click #find-datask-tax-search': 'send'
           'click #find-datask-tax-close': 'close'
         }
       initialize: ->
-        @$spinner = @$el.find('.find-box-search .spinner')
-        @$input = @$el.find('#find-datask-tax-input')
         @$response = @$el.find('#find-datask-tax-response')
         @$overlay = $('#find-datask-tax-ui-find-overlay')
         @listenTo this, 'open', @open
@@ -64,9 +76,6 @@ jQuery(document).ready ($) ->
     
     openModalAssign = (e) ->
       window.searchdataskusers = new SearchViewDaTaskUsers()
-#      search.$idInput = $(evt.currentTarget).parents('.cmb-type-post-search-text.cmb2-id-').find('.cmb-td input[type="text"]')
-#      search.postType = search.$idInput.data('posttype')
-#      search.selectType = if 'radio' == search.$idInput.data('selecttype') then 'radio' else 'checkbox'
       window.searchdataskusers.trigger 'open'
 
     $('.modal-datask-assign').on 'click', openModalAssign

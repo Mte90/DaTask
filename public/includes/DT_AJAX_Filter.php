@@ -265,7 +265,7 @@ class DT_AJAX_Filter {
 				foreach ( $terms as $term ) {
 				  echo '<option class="filter-selected" value="' . $term->term_id . '" data-tax="' . $term->term_id . '" data-slug="' . $taxonomy . '"> - ';
 				  echo $term->name;
-				  if ( $show_count == 1 ) {
+				  if ( $show_count === 1 ) {
 				    echo ' (' . $term->count . ')';
 				  }
 				  echo '</option>';

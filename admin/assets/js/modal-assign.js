@@ -2,7 +2,6 @@ jQuery(document).ready(function($) {
   var SearchViewDaTaskUsers, openModalAssign;
   SearchViewDaTaskUsers = window.Backbone.View.extend({
     el: '#find-datask-tax',
-    overlaySet: false,
     overlay: false,
     open: function() {
       this.$response.html('');
@@ -47,27 +46,44 @@ jQuery(document).ready(function($) {
       this.$overlay.hide();
       return this.$el.hide();
     },
-    escClose: function() {
+    escClose: function(evt) {
       if (evt.which && 27 === evt.which) {
         return this.close();
       }
     },
-    maybeStartSearch: function() {
+    maybeStartSearch: function(evt) {
       if (13 === evt.which) {
         return this.send();
       }
+    },
+    selectPost: function(evt) {
+      var checked, label;
+      evt.preventDefault();
+      this.$checked = $('#find-datask-tax-response input[name="found_tax_task"]:checked');
+      checked = this.$checked.map(function() {
+        return this.value;
+      }).get();
+      if (!checked.length) {
+        this.close();
+        return;
+      }
+      label = [];
+      $.each(checked, function(index, value) {
+        label.push($('#find-datask-tax-response input#found-' + value).attr('value'));
+      });
+      console.log(label.join(', '));
+      return this.close();
     },
     events: function() {
       return {
         'keypress .find-box-search :input': 'maybeStartSearch',
         'keyup #find-datask-tax-input': 'escClose',
+        'click #find-datask-tax-submit': 'selectPost',
         'click #find-datask-tax-search': 'send',
         'click #find-datask-tax-close': 'close'
       };
     },
     initialize: function() {
-      this.$spinner = this.$el.find('.find-box-search .spinner');
-      this.$input = this.$el.find('#find-datask-tax-input');
       this.$response = this.$el.find('#find-datask-tax-response');
       this.$overlay = $('#find-datask-tax-ui-find-overlay');
       this.listenTo(this, 'open', this.open);
