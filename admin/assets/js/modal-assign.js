@@ -8,8 +8,8 @@ jQuery(document).ready(function($) {
       this.$el.show();
       this.$input.focus();
       if (!this.$overlay.length) {
-        $('body').append('<div id="find-posts-ui-find-overlay" class="ui-find-overlay"></div>');
-        this.$overlay = $('#find-posts-ui-find-overlay');
+        $('body').append('<div id="find-datask-tax-ui-find-overlay" class="ui-find-overlay"></div>');
+        this.$overlay = $('#find-datask-tax-ui-find-overlay');
       }
       this.$overlay.show();
       return this.send();
@@ -52,9 +52,7 @@ jQuery(document).ready(function($) {
       }
     },
     maybeStartSearch: function(evt) {
-      if (13 === evt.which) {
-        return this.send();
-      }
+      return this.send();
     },
     selectPost: function(evt) {
       var checked, label;
@@ -76,7 +74,7 @@ jQuery(document).ready(function($) {
     },
     events: function() {
       return {
-        'keypress .find-box-search :input': 'maybeStartSearch',
+        'keypress #find-datask-tax-input': 'maybeStartSearch',
         'keyup #find-datask-tax-input': 'escClose',
         'click #find-datask-tax-submit': 'selectPost',
         'click #find-datask-tax-search': 'send',
@@ -86,6 +84,8 @@ jQuery(document).ready(function($) {
     initialize: function() {
       this.$response = this.$el.find('#find-datask-tax-response');
       this.$overlay = $('#find-datask-tax-ui-find-overlay');
+      this.$input = this.$el.find('#find-datask-tax-input');
+      this.$spinner = this.$el.find('.find-datask-tax .spinner');
       this.listenTo(this, 'open', this.open);
       return this.listenTo(this, 'close', this.close);
     }
@@ -96,5 +96,3 @@ jQuery(document).ready(function($) {
   };
   return $('.modal-datask-assign').on('click', openModalAssign);
 });
-
-//# sourceMappingURL=modal-assign.js.map

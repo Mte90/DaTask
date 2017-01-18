@@ -7,8 +7,8 @@ jQuery(document).ready ($) ->
         @$el.show()
         @$input.focus()
         if !@$overlay.length
-          $('body').append '<div id="find-posts-ui-find-overlay" class="ui-find-overlay"></div>'
-          @$overlay = $('#find-posts-ui-find-overlay')
+          $('body').append '<div id="find-datask-tax-ui-find-overlay" class="ui-find-overlay"></div>'
+          @$overlay = $('#find-datask-tax-ui-find-overlay')
         @$overlay.show()
         # Pull some results up by default
         @send()
@@ -42,8 +42,7 @@ jQuery(document).ready ($) ->
         if evt.which and 27 == evt.which
           @close()
       maybeStartSearch: (evt)->
-        if 13 == evt.which
-          @send()
+        @send()
       selectPost: (evt)->
         evt.preventDefault()
         @$checked = $('#find-datask-tax-response input[name="found_tax_task"]:checked')
@@ -61,7 +60,7 @@ jQuery(document).ready ($) ->
         @close()
       events: ->
         {
-          'keypress .find-box-search :input': 'maybeStartSearch'
+          'keypress #find-datask-tax-input': 'maybeStartSearch'
           'keyup #find-datask-tax-input': 'escClose'
           'click #find-datask-tax-submit': 'selectPost'
           'click #find-datask-tax-search': 'send'
@@ -70,6 +69,8 @@ jQuery(document).ready ($) ->
       initialize: ->
         @$response = @$el.find('#find-datask-tax-response')
         @$overlay = $('#find-datask-tax-ui-find-overlay')
+        @$input = @$el.find('#find-datask-tax-input')
+        @$spinner = @$el.find('.find-datask-tax .spinner');
         @listenTo this, 'open', @open
         @listenTo this, 'close', @close
     )
@@ -79,4 +80,3 @@ jQuery(document).ready ($) ->
       window.searchdataskusers.trigger 'open'
 
     $('.modal-datask-assign').on 'click', openModalAssign
-

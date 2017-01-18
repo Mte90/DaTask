@@ -49,6 +49,9 @@ class DT_Tax_Mandatory {
 		return $value;
 	}
 
+	/**
+	 * Append the modal
+	 */
 	public function append_resource_modal() {
 		$screen = get_current_screen();
 		if ( $screen->base === 'users' ) {
@@ -122,11 +125,10 @@ class DT_Tax_Mandatory {
 	 * @since 3.1.0
 	 */
 	public function wp_ajax_find_tax() {
-		$s = wp_unslash( $_POST[ 'ps' ] );
 		$taxs = get_terms( 'task-team', array(
 			'orderby' => 'count',
 			'hide_empty' => 0,
-			'name__like' => $s
+			'name__like' => wp_unslash( $_POST[ 'ps' ] )
 		) );
 		if ( !$taxs ) {
 			wp_send_json_error( __( 'No items found.' ) );
@@ -135,11 +137,10 @@ class DT_Tax_Mandatory {
 		$html = '<table class="widefat"><thead><tr><th class="found-radio"><br /></th><th>' . __( 'Name' ) . '</th></tr></thead><tbody>';
 		$alt = '';
 		foreach ( $taxs as $tax ) {
-			$title = $tax->name;
 			$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
 
 			$html .= '<tr class="' . trim( 'found-tax-task ' . $alt ) . '"><td class="found-checkbox"><input type="checkbox" id="found-' . $tax->slug . '" name="found_tax_task" value="' . esc_attr( $tax->slug ) . '"></td>';
-			$html .= '<td><label for="found-' . $tax->slug . '">' . esc_html( $title ) . '</label></td></tr>' . "\n\n";
+			$html .= '<td><label for="found-' . $tax->slug . '">' . esc_html( $tax->name ) . '</label></td></tr>' . "\n\n";
 		}
 
 		$html .= '</tbody></table>';
