@@ -24,6 +24,7 @@ jQuery(document).ready(function($) {
         data: {
           ps: search.$input.val(),
           action: 'find_datask_tax',
+          user: window.dataskuserid,
           _ajax_nonce: $('#find-datask-tax #_ajax_nonce').val()
         }
       }).always(function() {
@@ -55,7 +56,8 @@ jQuery(document).ready(function($) {
       return this.send();
     },
     selectPost: function(evt) {
-      var checked, label;
+      var checked, label, search;
+      search = this;
       evt.preventDefault();
       this.$checked = $('#find-datask-tax-response input[name="found_tax_task"]:checked');
       checked = this.$checked.map(function() {
@@ -69,7 +71,20 @@ jQuery(document).ready(function($) {
       $.each(checked, function(index, value) {
         label.push($('#find-datask-tax-response input#found-' + value).attr('value'));
       });
-      console.log(label.join(', '));
+      $.ajax(ajaxurl, {
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          taxs: label.join(', '),
+          user: window.dataskuserid,
+          action: 'add_datask_tax',
+          _ajax_nonce: $('#find-datask-tax #_ajax_nonce').val()
+        }
+      }).always(function() {
+        search.$spinner.hide();
+      }).fail(function() {
+        search.$response.text('Error');
+      });
       return this.close();
     },
     events: function() {
@@ -91,8 +106,10 @@ jQuery(document).ready(function($) {
     }
   });
   openModalAssign = function(e) {
-    window.searchdataskusers = new SearchViewDaTaskUsers();
-    return window.searchdataskusers.trigger('open');
+    var searchdataskusers;
+    window.dataskuserid = jQuery(this).data('user-id');
+    searchdataskusers = new SearchViewDaTaskUsers();
+    return searchdataskusers.trigger('open');
   };
   return $('.modal-datask-assign').on('click', openModalAssign);
 });

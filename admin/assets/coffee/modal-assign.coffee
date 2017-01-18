@@ -21,6 +21,7 @@ jQuery(document).ready ($) ->
           data:
             ps: search.$input.val()
             action: 'find_datask_tax'
+            user: window.dataskuserid
             _ajax_nonce: $('#find-datask-tax #_ajax_nonce').val()).always(->
           search.$spinner.hide()
           return
@@ -44,6 +45,7 @@ jQuery(document).ready ($) ->
       maybeStartSearch: (evt)->
         @send()
       selectPost: (evt)->
+        search = this
         evt.preventDefault()
         @$checked = $('#find-datask-tax-response input[name="found_tax_task"]:checked')
         checked = @$checked.map(->
@@ -56,7 +58,19 @@ jQuery(document).ready ($) ->
         $.each checked, (index, value) ->
           label.push $('#find-datask-tax-response input#found-' + value).attr 'value'
           return
-        console.log label.join(', ')
+        $.ajax(ajaxurl,
+          type: 'POST'
+          dataType: 'json'
+          data:
+            taxs: label.join(', ')
+            user: window.dataskuserid
+            action: 'add_datask_tax'
+            _ajax_nonce: $('#find-datask-tax #_ajax_nonce').val()).always(->
+          search.$spinner.hide()
+          return
+        ).fail ->
+          search.$response.text 'Error'
+          return
         @close()
       events: ->
         {
@@ -76,7 +90,8 @@ jQuery(document).ready ($) ->
     )
     
     openModalAssign = (e) ->
-      window.searchdataskusers = new SearchViewDaTaskUsers()
-      window.searchdataskusers.trigger 'open'
+      window.dataskuserid = jQuery(this).data('user-id')
+      searchdataskusers = new SearchViewDaTaskUsers()
+      searchdataskusers.trigger 'open'
 
     $('.modal-datask-assign').on 'click', openModalAssign

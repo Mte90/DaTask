@@ -21,6 +21,7 @@ class DT_Tax_Mandatory {
 		add_action( 'manage_users_custom_column', array( $this, 'btn_tax_assign' ), 10, 3 );
 		add_action( 'admin_head', array( $this, 'append_resource_modal' ) );
 		add_action( 'wp_ajax_find_datask_tax', array( $this, 'wp_ajax_find_tax' ) );
+		add_action( 'wp_ajax_add_datask_tax', array( $this, 'wp_ajax_add_tax' ) );
 		add_action( 'admin_footer', array( $this, 'append_modal' ) );
 	}
 
@@ -129,7 +130,9 @@ class DT_Tax_Mandatory {
 			'orderby' => 'count',
 			'hide_empty' => 0,
 			'name__like' => wp_unslash( $_POST[ 'ps' ] )
-		) );
+				) );
+		$user_taxs = explode( ', ', get_user_meta( wp_unslash( $_POST[ 'user' ] ), 'datask_category_to_do', true ) );
+		
 		if ( !$taxs ) {
 			wp_send_json_error( __( 'No items found.' ) );
 		}
@@ -137,15 +140,33 @@ class DT_Tax_Mandatory {
 		$html = '<table class="widefat"><thead><tr><th class="found-radio"><br /></th><th>' . __( 'Name' ) . '</th></tr></thead><tbody>';
 		$alt = '';
 		foreach ( $taxs as $tax ) {
+			$checked = '';
+			foreach ( $user_taxs as $key => $user_tax ) {
+				if ( $user_tax === $tax->slug ) {
+					$checked = ' checked="checked"';
+					unset( $user_taxs[ $key ] );
+				}
+			}
 			$alt = ( 'alternate' == $alt ) ? '' : 'alternate';
 
-			$html .= '<tr class="' . trim( 'found-tax-task ' . $alt ) . '"><td class="found-checkbox"><input type="checkbox" id="found-' . $tax->slug . '" name="found_tax_task" value="' . esc_attr( $tax->slug ) . '"></td>';
+			$html .= '<tr class="' . trim( 'found-tax-task ' . $alt ) . '"><td class="found-checkbox"><input type="checkbox" id="found-' . $tax->slug . '" name="found_tax_task" value="' . esc_attr( $tax->slug ) . '"' . $checked . '></td>';
 			$html .= '<td><label for="found-' . $tax->slug . '">' . esc_html( $tax->name ) . '</label></td></tr>' . "\n\n";
 		}
 
 		$html .= '</tbody></table>';
 
 		wp_send_json_success( $html );
+	}
+
+	/**
+	 * Add taxonomy to the user
+	 */
+	public function wp_ajax_add_tax() {
+		$user = wp_unslash( $_POST[ 'user' ] );
+		$taxs = wp_unslash( $_POST[ 'taxs' ] );
+		update_user_meta( $user, 'datask_category_to_do', $taxs );
+
+		wp_send_json_success();
 	}
 
 }
