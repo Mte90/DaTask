@@ -56,6 +56,7 @@ class DT_Shortcode {
 	}
 
 	public function dots( $atts ) {
+		$plugin = DaTask::get_instance();
 		extract( shortcode_atts( array(
 			'type' => 'archive',
 						), $atts ) );
@@ -77,35 +78,11 @@ class DT_Shortcode {
 		}
 		$html = '<ul class="datask-dots">';
 		foreach ( $terms as $term ) {
-			$i = 0;
 			$html .= '<li>';
 			$html .= '<a href="' . get_term_link( $term->term_id, 'task-team' ) . '">';
-			$image = get_term_meta( $term->term_id, '_' . DT_TEXTDOMAIN . '_featured', true );
-			$done = new WP_Query( array(
-				'post_type' => 'task',
-				'tax_query' => array(
-					array(
-						'taxonomy' => 'task-team',
-						'terms' => $term->slug,
-						'field' => 'slug',
-					),
-				),
-				'order' => 'ASC'
-					) );
-			if ( !empty( $get_tasks_by_user ) ) {
-				foreach ( $done->posts as $task ) {
-					foreach ( $get_tasks_by_user as $task_user ) {
-						if ( $task_user->task_ID === $task->ID ) {
-							$i++;
-						}
-					}
-				}
-			}
+			$image = get_term_meta( $term->term_id, $plugin->get_fields( 'category_featured_image' ), true );
 			$class = '';
-			$percentage = 0;
-			if ( $i !== 0 ) {
-				$percentage = ($i / count( $done->posts )) * 100;
-			}
+			$percentage = datask_category_status( $term->slug, true );
 			if ( $percentage === 100 ) {
 				$class = ' class="datask-image-done"';
 			}

@@ -191,56 +191,56 @@ class DT_Task_Support {
 			$content = wpautop( the_task_subtitle( false ) );
 		}
 		if ( is_singular( 'task' ) ) {
-			//Required task
+			// Required task
 			$required = datask_task_before( get_the_ID() );
 			if ( !empty( $required ) ) {
 				$content .= $this->task_as_list( $required, __( 'Required or Suggested tasks', DT_TEXTDOMAIN ) );
 			}
-			//Prerequisites field
+			// Prerequisites field
 			$prerequisites = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_prerequisites' ), true );
 			if ( !empty( $prerequisites ) ) {
 				$content .= '<h4 class="alert alert-success">' . __( 'Prerequisites', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $prerequisites ) ) ) );
 			}
-			//Previous task
-			$content .= $this->prev_next_task_as_list( "prev", __( 'Previous', DT_TEXTDOMAIN ) );
-			//Matters field
+			// Previous task
+			$content .= $this->prev_next_task_as_list( 'prev', __( 'Previous', DT_TEXTDOMAIN ) );
+			// Matters field
 			$matters = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_matters' ), true );
 			if ( !empty( $matters ) ) {
 				$content .= '<h4 class="alert alert-success">' . __( 'Why this matters', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $matters ) ) ) );
 			}
-			//Steps field
+			// Steps field
 			$steps = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_steps' ), true );
 			if ( !empty( $steps ) ) {
 				$content .= '<h4 class="alert alert-success">' . __( 'Steps', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $steps ) ) ) );
 			}
-			//Help field
+			// Help field
 			$help = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_help' ), true );
 			if ( !empty( $help ) ) {
 				$content .= '<h4 class="alert alert-success">' . __( 'Need Help?', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $help ) ) ) );
 			}
-			//Completion field
+			// Completion field
 			$completion = get_post_meta( get_the_ID(), $plugin->get_fields( 'task_completion' ), true );
 			if ( !empty( $completion ) ) {
 				$content .= '<h4 class="alert alert-success">' . __( 'Completion', DT_TEXTDOMAIN ) . '</h4>';
 				$content .= wpautop( do_shortcode( $wp_embed->autoembed( $wp_embed->run_shortcode( $completion ) ) ) );
 			}
-			//Next task
+			// Good Next task
 			$next = datask_task_before( get_the_ID() );
 			if ( !empty( $next ) ) {
 				$content .= $this->task_as_list( $next, __( 'Good next tasks', DT_TEXTDOMAIN ) );
 			}
-			//Next task
-			$content .= $this->prev_next_task_as_list( "next", __( 'Next', DT_TEXTDOMAIN ) );
-			//Mentors
+			// Next task
+			$content .= $this->prev_next_task_as_list( 'next', __( 'Next', DT_TEXTDOMAIN ) );
+			// Mentors
 			$mentors = dt_get_mentors( get_the_ID() );
 			if ( is_array( $mentors ) ) {
 				$content .= $this->users_as_list( $mentors, __( 'Mentor(s)', DT_TEXTDOMAIN ) );
 			}
-			//Log of users
+			// Log of users
 			$logs = get_users_by_task( get_the_ID() );
 			if ( is_array( $logs ) ) {
 				$content .= $this->users_as_list( $logs, __( 'List of users who completed this task', DT_TEXTDOMAIN ), true );

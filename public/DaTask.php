@@ -177,6 +177,7 @@ class DaTask {
 		$fields[ 'tasks_counter' ] = $prefix . DT_TEXTDOMAIN . '_counter';
 		$fields[ 'tasks_later_of_user' ] = $prefix . DT_TEXTDOMAIN . '_tasks_later';
 		$fields[ 'category_to_do' ] = $prefix . DT_TEXTDOMAIN . '_category_to_do';
+		$fields[ 'category_featured_image' ] = $prefix . DT_TEXTDOMAIN . '_featured';
 		$fields[ 'task_before' ] = $prefix . DT_TEXTDOMAIN . '_before';
 		$fields[ 'task_prerequisites' ] = $prefix . DT_TEXTDOMAIN . '_prerequisites';
 		$fields[ 'task_matters' ] = $prefix . DT_TEXTDOMAIN . '_matters';

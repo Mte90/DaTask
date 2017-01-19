@@ -33,6 +33,8 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
 	}
 
+	datask_update_category_to_do( $user_id, $task_id );
+
 	if ( class_exists( 'BadgeOS' ) ) {
 		do_action( 'datask_badgeos_trigger' );
 	}
@@ -444,17 +446,33 @@ function datask_buttons() {
 		echo '</h4>';
 		return;
 	}
-	$user_taxs = explode( ', ', get_user_meta( get_current_user_id(), $plugin->get_fields( 'category_to_do' ), true ) );
-	if ( !empty( $user_taxs ) ) {
-		echo '<h4 class="alert alert-danger">';
-		_e( 'This task can be unlocked when you finish to do the task of:', DT_TEXTDOMAIN );
-		foreach ( $user_taxs as $user_tax ) {
-			echo ' <a href="' . esc_url( get_term_link( $user_tax, 'task-team' ) ) . '">' . ucfirst( $user_tax ) . '</a>,';
-		}
-		echo '</h4>';
-		return;
-	}
 	if ( is_user_logged_in() ) {
+		$user_taxs = explode( ', ', get_user_meta( get_current_user_id(), $plugin->get_fields( 'category_to_do' ), true ) );
+		if ( is_array( $user_taxs ) ) {
+			$alert = '';
+			$terms = get_the_terms( get_the_ID(), 'task-team' );
+			foreach ( $user_taxs as $user_tax ) {
+				if ( empty( $user_tax ) ) {
+					break;
+				}
+				$alert .= ' <a href="' . esc_url( get_term_link( $user_tax, 'task-team' ) ) . '">' . ucfirst( $user_tax ) . '</a>,';
+				if ( is_array( $terms ) ) {
+					foreach ( $terms as $term ) {
+						if ( $term->slug === $user_tax ) {
+							$alert = '';
+							break 2;
+						}
+					}
+				}
+			}
+			if ( !empty( $alert ) ) {
+				echo '<h4 class="alert alert-danger">';
+				_e( 'This task can be unlocked when you finish to do the task of:', DT_TEXTDOMAIN );
+				echo $alert;
+				echo '</h4>';
+				return;
+			}
+		}
 		?>
 		<div class="dt-buttons">
 			<?php
@@ -608,34 +626,37 @@ function is_the_prev_task_done( $id = '' ) {
 		$id = get_the_ID();
 	}
 	$terms = get_the_terms( $id, 'task-team' );
-	$project = $terms[ 0 ];
-	$prev = new WP_Query( array(
-		'post_type' => 'task',
-		'meta_key' => '_sortable_posts_order_task-team_' . $project->slug,
-		'orderby' => 'meta_value_num',
-		'order' => 'ASC',
-		'meta_query' => array(
-			'relation' => 'AND',
-			array(
-				'key' => '_sortable_posts_order_task-team_' . $project->slug,
-				'compare' => '<',
-				'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-team_' . $project->slug, true )
+	if ( is_array( $terms ) ) {
+		$project = $terms[ 0 ];
+		$prev = new WP_Query( array(
+			'post_type' => 'task',
+			'meta_key' => '_sortable_posts_order_task-team_' . $project->slug,
+			'orderby' => 'meta_value_num',
+			'order' => 'ASC',
+			'meta_query' => array(
+				'relation' => 'AND',
+				array(
+					'key' => '_sortable_posts_order_task-team_' . $project->slug,
+					'compare' => '<',
+					'value' => get_post_meta( get_the_ID(), '_sortable_posts_order_task-team_' . $project->slug, true )
+				)
 			)
-		)
-			) );
-	if ( empty( $prev->posts ) ) {
-		return true;
-	}
-	$prev = $prev->posts[ count( $prev->posts ) - 1 ];
-	$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-	if ( !empty( $get_tasks_by_user ) ) {
-		foreach ( $get_tasks_by_user as $task ) {
-			if ( $task->task_ID === $prev->ID ) {
-				return true;
+				) );
+		if ( empty( $prev->posts ) ) {
+			return true;
+		}
+		$prev = $prev->posts[ count( $prev->posts ) - 1 ];
+		$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+		if ( !empty( $get_tasks_by_user ) ) {
+			foreach ( $get_tasks_by_user as $task ) {
+				if ( $task->task_ID === $prev->ID ) {
+					return true;
+				}
 			}
 		}
+		return false;
 	}
-	return false;
+	return true;
 }
 
 function datask_get_id_image_term( $image_url ) {
@@ -646,4 +667,57 @@ function datask_get_id_image_term( $image_url ) {
 
 function datask_course_user() {
 	echo do_shortcode( '[datask-dots type="user"]' );
+}
+
+function datask_category_status( $slug, $percentage = false ) {
+	$done = new WP_Query( array(
+		'post_type' => 'task',
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'task-team',
+				'terms' => $slug,
+				'field' => 'slug',
+			),
+		),
+		'order' => 'ASC'
+			) );
+	$i = 0;
+	$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+	if ( !empty( $get_tasks_by_user ) ) {
+		foreach ( $done->posts as $task ) {
+			foreach ( $get_tasks_by_user as $task_user ) {
+				if ( $task_user->task_ID === $task->ID ) {
+					$i++;
+				}
+			}
+		}
+	}
+	if ( $percentage ) {
+		if ( $i !== 0 ) {
+			$i = ($i / count( $done->posts )) * 100;
+		}
+	}
+	return $i;
+}
+
+function datask_update_category_to_do( $user_id, $task_id ) {
+	$plugin = DaTask::get_instance();
+	$terms = get_the_terms( $task_id, 'task-team' );
+	if ( $terms && ! is_wp_error( $terms ) ) {
+		foreach ( $terms as $term ) {
+			$percentage = datask_category_status( $term->slug, true );
+			if ( $percentage === 100 ) {
+				$user_taxs = explode( ', ', get_user_meta( $user_id, $plugin->get_fields( 'category_to_do' ), true ) );
+				if ( is_array( $user_taxs ) ) {
+					foreach ( $user_taxs as $key => $user_tax ) {
+						if ( $user_tax === $term ) {
+							unset( $user_taxs[ $key ] );
+							break;
+						}
+					}
+				}
+				update_user_meta( $user_id, $plugin->get_fields( 'category_to_do' ), implode( ', ', $user_taxs ) );
+			}
+		}
+	}
 }

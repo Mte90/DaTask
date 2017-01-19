@@ -23,6 +23,7 @@ class DT_Tax_Mandatory {
 		add_action( 'wp_ajax_find_datask_tax', array( $this, 'wp_ajax_find_tax' ) );
 		add_action( 'wp_ajax_add_datask_tax', array( $this, 'wp_ajax_add_tax' ) );
 		add_action( 'admin_footer', array( $this, 'append_modal' ) );
+//		add_action( 'dt_set_completed_task', array( $this, 'update_category_to_do' ), 10, 2 );
 	}
 
 	/**
