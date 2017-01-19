@@ -126,13 +126,14 @@ class DT_Tax_Mandatory {
 	 * @since 3.1.0
 	 */
 	public function wp_ajax_find_tax() {
+		$plugin = DaTask::get_instance();
 		$taxs = get_terms( 'task-team', array(
 			'orderby' => 'count',
 			'hide_empty' => 0,
 			'name__like' => wp_unslash( $_POST[ 'ps' ] )
 				) );
-		$user_taxs = explode( ', ', get_user_meta( wp_unslash( $_POST[ 'user' ] ), 'datask_category_to_do', true ) );
-		
+		$user_taxs = explode( ', ', get_user_meta( wp_unslash( $_POST[ 'user' ] ), $plugin->get_fields( 'category_to_do' ), true ) );
+
 		if ( !$taxs ) {
 			wp_send_json_error( __( 'No items found.' ) );
 		}
@@ -162,9 +163,10 @@ class DT_Tax_Mandatory {
 	 * Add taxonomy to the user
 	 */
 	public function wp_ajax_add_tax() {
+		$plugin = DaTask::get_instance();
 		$user = wp_unslash( $_POST[ 'user' ] );
 		$taxs = wp_unslash( $_POST[ 'taxs' ] );
-		update_user_meta( $user, 'datask_category_to_do', $taxs );
+		update_user_meta( $user, $plugin->get_fields( 'category_to_do' ), $taxs );
 
 		wp_send_json_success();
 	}
