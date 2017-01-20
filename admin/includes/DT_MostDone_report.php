@@ -23,9 +23,9 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	public function __construct() {
 		parent::__construct( [
-		    'singular' => __( 'Task', DT_TEXTDOMAIN ),
-		    'plural' => __( 'Tasks', DT_TEXTDOMAIN ),
-		    'ajax' => false
+			'singular' => __( 'Task', DT_TEXTDOMAIN ),
+			'plural' => __( 'Tasks', DT_TEXTDOMAIN ),
+			'ajax' => false
 		] );
 		$this->maybe_download();
 	}
@@ -42,11 +42,11 @@ class DT_MostDone extends WP_List_Table {
 	public function get_tasks( $per_page = 5, $page_number = 1 ) {
 		global $wpdb;
 		$sql = 'SELECT SQL_CALC_FOUND_ROWS ' . $wpdb->posts . '.ID,' . $wpdb->posts . '.post_title as title, done_task.meta_value as done';
-		$sql .= " FROM wp_posts LEFT JOIN $wpdb->postmeta as done_task ON (" . $wpdb->posts . ".ID = done_task.post_id AND done_task.meta_key='_" . DT_TEXTDOMAIN . "_counter') WHERE 1=1";
+		$sql .= ' FROM ' . $wpdb->posts . ' LEFT JOIN ' . $wpdb->postmeta . ' as done_task ON (' . $wpdb->posts . ".ID = done_task.post_id AND done_task.meta_key='_" . DT_TEXTDOMAIN . "_counter') WHERE 1=1";
 		$sql .= ' AND ' . $wpdb->posts . ".post_type = 'task' AND (" . $wpdb->posts . ".post_status = 'publish' OR " . $wpdb->posts . ".post_status = 'private')";
 		if ( !empty( $_REQUEST[ 'orderby' ] ) ) {
 			$sql .= ' ORDER BY ' . esc_sql( $_REQUEST[ 'orderby' ] );
-			$sql .=!empty( $_REQUEST[ 'order' ] ) ? ' ' . esc_sql( $_REQUEST[ 'order' ] ) : ' ASC';
+			$sql .= !empty( $_REQUEST[ 'order' ] ) ? ' ' . esc_sql( $_REQUEST[ 'order' ] ) : ' ASC';
 		}
 		$sql .= ' LIMIT ' . $per_page . ' OFFSET ' . ( $page_number - 1 ) * $per_page;
 
@@ -61,7 +61,7 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	public function record_count() {
 		global $wpdb;
-		$sql = "SELECT COUNT(*) FROM $wpdb->posts WHERE 1=1 AND $wpdb->posts.post_type = 'task' AND ($wpdb->posts.post_status = 'publish' OR $wpdb->posts.post_status = 'private')";
+		$sql = 'SELECT COUNT(*) FROM ' . $wpdb->posts . ' WHERE 1=1 AND ' . $wpdb->posts . ".post_type = 'task' AND (" . $wpdb->posts . ".post_status = 'publish' OR " . $wpdb->posts . ".post_status = 'private')";
 		return $wpdb->get_var( $sql );
 	}
 
@@ -101,8 +101,8 @@ class DT_MostDone extends WP_List_Table {
 	function column_title( $item ) {
 		$title = '<strong>' . $item[ 'title' ] . '</strong>';
 		$actions = [
-		    'edit' => '<a href="post.php?post=' . $item[ 'ID' ] . '&action=edit">' . __( 'Edit' ) . '</a>',
-		    'show' => '<a href="' . get_permalink( $item[ 'ID' ] ) . '">' . __( 'Show' ) . '</a>'
+			'edit' => '<a href="post.php?post=' . $item[ 'ID' ] . '&action=edit">' . __( 'Edit' ) . '</a>',
+			'show' => '<a href="' . get_permalink( $item[ 'ID' ] ) . '">' . __( 'Show' ) . '</a>'
 		];
 		return $title . $this->row_actions( $actions );
 	}
@@ -114,8 +114,8 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	function get_columns() {
 		$columns = [
-		    'title' => __( 'Title', DT_TEXTDOMAIN ),
-		    'done' => __( 'Done', DT_TEXTDOMAIN ),
+			'title' => __( 'Title', DT_TEXTDOMAIN ),
+			'done' => __( 'Done', DT_TEXTDOMAIN ),
 		];
 		return $columns;
 	}
@@ -127,8 +127,8 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	public function get_sortable_columns() {
 		$sortable_columns = array(
-		    'title' => array( 'title', true ),
-		    'done' => array( 'done', false )
+			'title' => array( 'title', true ),
+			'done' => array( 'done', false )
 		);
 		return $sortable_columns;
 	}
@@ -138,13 +138,13 @@ class DT_MostDone extends WP_List_Table {
 	 */
 	public function prepare_items() {
 		$this->_column_headers = $this->get_column_info();
-		//Read the screen option value
+		// Read the screen option value
 		$per_page = $this->get_items_per_page( 'tasks_per_page', 5 );
 		$current_page = $this->get_pagenum();
 		$total_items = self::record_count();
 		$this->set_pagination_args( [
-		    'total_items' => $total_items,
-		    'per_page' => $per_page
+			'total_items' => $total_items,
+			'per_page' => $per_page
 		] );
 		$this->items = self::get_tasks( $per_page, $current_page );
 	}
@@ -172,11 +172,11 @@ class DT_MostDone extends WP_List_Table {
 		header( 'Content-Disposition: attachment; filename=' . $filename );
 		header( 'Content-Type: application/csv; charset=' . get_option( 'blog_charset' ), true );
 
-		//Load the tasks
+		// Load the tasks
 		$array = $this->get_tasks( 50 );
-		//Convert the array in csv using the php methods
+		// Convert the array in csv using the php methods
 		$temp_memory = fopen( 'php://memory', 'w' );
-		//First row
+		// First row
 		fputcsv( $temp_memory, array( __( 'Title' ), __( 'Done', DT_TEXTDOMAIN ) ), ',' );
 		foreach ( $array as $line ) {
 			//If there is no value add a defult value
