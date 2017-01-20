@@ -58,7 +58,7 @@ class DaTask_Admin {
 		/*
 		 * Dismissible notice
 		 */
-		//dnh_register_notice( 'my_demo_notice', 'updated', __( 'This is my dismissible notice', DT_TEXTDOMAIN ) );
+		dnh_register_notice( 'datask_sort_post', 'updated', __( 'Do you know that with the Sortable Posts plugin is possible to order the posts inside the Team category to block to do the next task before the previous?', DT_TEXTDOMAIN ) );
 
 		/*
 		 * Review Me notice
@@ -100,7 +100,7 @@ class DaTask_Admin {
 			'meta_key' => 'post_author'
 				)
 		);
-		
+
 		/*
 		 * All the extras functions
 		 */
@@ -115,7 +115,7 @@ class DaTask_Admin {
 			'plugin_name' => 'DaTask',
 			'hook' => 'dt_settings_header',
 			'wordpressorg' => true,
-			'glotpress_name' => 'Translating WordPress',
+			'glotpress_name' => 'Translating Datask',
 			'glotpress_logo' => true
 				)
 		);

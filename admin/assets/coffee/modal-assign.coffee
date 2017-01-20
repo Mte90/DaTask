@@ -1,5 +1,5 @@
 jQuery(document).ready ($) ->
-    SearchViewDaTaskUsers = window.Backbone.View.extend(
+  SearchViewDaTaskUsers = window.Backbone.View.extend(
       el: '#find-datask-tax',
       overlay: false,
       open: ->
@@ -89,7 +89,7 @@ jQuery(document).ready ($) ->
         @listenTo this, 'close', @close
     )
     
-    openModalAssign = (e) ->
+  openModalAssign = (e) ->
       window.dataskuserid = jQuery(this).data('user-id')
       searchdataskusers = new SearchViewDaTaskUsers()
       searchdataskusers.trigger 'open'

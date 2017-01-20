@@ -24,17 +24,24 @@ Demo site: [http://datask.mte90.net/](http://datask.mte90.net/)
 
 Ajax Search based on [Search & Filter via AJAX](https://github.com/qstudio/q-ajax-filter)
 
-* Bootstrap 3 & 4 class names in frontend
+* Bootstrap 4 class names in frontend
 * Template customizable (`datask` folder in your theme)
 * Frontend Login options
 * Ajax based
 * Widgets avalaible
 * New post type with 4 taxonomy: Team, Area, Difficulty and Estimated minute
-* Support for [WP REST API v1 & v2](https://github.com/Mte90/DaTask/wiki/API-Rest) in readonly
+* Support for WP REST API v2 in readonly
 * Support for badge with BadgeOS
+* Support for points with myCred
 * Report/Statistics system with CSV exporter
 * User RSS for activity
-* Integration with the plugins: BadgeOS, Archived Post Status
+* Integration with the plugins: Archived Post Status, Sortable Posts
+* Log system
+* Graphs about Task done, Task done for a month and daily
+* Manual check by the mentors with a dashboard
+* Enable task only after the previous (with Sortable Posts)
+* Mandatory Team category for users
+* Task with expiration
 
 Shortcodes:
 
@@ -101,6 +108,16 @@ Check the wiki: [https://github.com/Mte90/DaTask/wiki](https://github.com/Mte90/
 == 2.0.0 ==
 
 * [BugFix] Fix username profile with space in the name
+* Integration with the plugins: Archived Post Status, Sortable Posts
+* Support for points with myCred
+* Log system
+* Graphs about Task done, Task done for a month and daily
+* Manual check by the mentors with a dashboard
+* Enable task only after the previous
+* Mandatory Team category for users
+* Task with expiration
+* Code improvements
+* Bootstrap 4 support 
 
 = 1.1.1 =
 * [Add] Support for BrowserID signin
