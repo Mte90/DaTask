@@ -51,13 +51,13 @@ class DT_AJAX_Task {
 			if ( !is_the_prev_task_done( ( int ) $_GET[ 'ID' ] ) ) {
 				wp_send_json_error( 'You need to do the previous task' );
 			}
-			dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			$approval = datask_require_approval( ( int ) $_GET[ 'ID' ] );
 			if ( !empty( $approval ) && $approval !== 'none' ) {
 				DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ), array( 'Pending' ) );
 			} else {
 				DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ) );
 			}
+			dt_set_completed_task_for_user_id( get_current_user_id(), ( int ) $_GET[ 'ID' ] );
 			wp_send_json_success();
 		} else {
 			DT_Log::log_message( ( int ) $_GET[ 'ID' ], get_the_title( ( int ) $_GET[ 'ID' ] ), array( 'Error' ) );

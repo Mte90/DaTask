@@ -672,6 +672,7 @@ function datask_course_user() {
 function datask_category_status( $slug, $percentage = false ) {
 	$done = new WP_Query( array(
 		'post_type' => 'task',
+		'post_status' => 'publish',
 		'tax_query' => array(
 			array(
 				'taxonomy' => 'task-team',
@@ -700,23 +701,39 @@ function datask_category_status( $slug, $percentage = false ) {
 	return $i;
 }
 
+/**
+ * Remove the category in queue for the user
+ *
+ * @param integer $user_id The user ID.
+ * @param integer $task_id The task ID.
+ *
+ * @return void
+ */
 function datask_update_category_to_do( $user_id, $task_id ) {
+	global $wpdb;
 	$plugin = DaTask::get_instance();
-	$terms = get_the_terms( $task_id, 'task-team' );
-	if ( $terms && ! is_wp_error( $terms ) ) {
+	$terms = array();
+	$alltax = ( array ) $wpdb->get_col( $wpdb->prepare( "SELECT term_taxonomy_id FROM $wpdb->term_relationships WHERE object_id = %d", $task_id ) );
+	foreach ( $alltax as $taxid ) {
+		$term = get_term_by( 'id', $taxid, 'task-team' );
+		if ( !empty( $term ) ) {
+			$terms[] = $term;
+		}
+	}
+	if ( is_array( $terms ) ) {
 		foreach ( $terms as $term ) {
 			$percentage = datask_category_status( $term->slug, true );
 			if ( $percentage === 100 ) {
 				$user_taxs = explode( ', ', get_user_meta( $user_id, $plugin->get_fields( 'category_to_do' ), true ) );
 				if ( is_array( $user_taxs ) ) {
 					foreach ( $user_taxs as $key => $user_tax ) {
-						if ( $user_tax === $term ) {
+						if ( $user_tax === $term->slug ) {
 							unset( $user_taxs[ $key ] );
 							break;
 						}
 					}
+					update_user_meta( $user_id, $plugin->get_fields( 'category_to_do' ), implode( ', ', $user_taxs ) );
 				}
-				update_user_meta( $user_id, $plugin->get_fields( 'category_to_do' ), implode( ', ', $user_taxs ) );
 			}
 		}
 	}
