@@ -20,7 +20,7 @@ get_header();
 	  <div id="primary" class="col-md-8">
 		<h2 class="alert alert-info">
 		    <?php
-		    $user = get_user_by( 'id', get_user_of_profile( true ) );
+		    $user = get_user_by( 'id', dt_get_user_of_profile( true ) );
 		    printf( __( "%s's Profile", DT_TEXTDOMAIN ), $user->display_name );
 		    ?>
 		</h2>
@@ -49,7 +49,7 @@ get_header();
 			    <?php
 			  }
 			  $current_user = wp_get_current_user();
-			  if ( get_user_of_profile() === $current_user->user_login ) {
+			  if ( dt_get_user_of_profile() === $current_user->ID ) {
 			    ?>
   			  <p><a href="<?php echo home_url( '/profile/' ); ?>"><?php _e( 'Edit profile', DT_TEXTDOMAIN ); ?></a></p>
 			  <?php } ?>

@@ -13,9 +13,9 @@
 if ( !defined( 'ABSPATH' ) ) {
   exit; // Exit if accessed directly
 }
-$user_id = get_user_by( 'login', get_user_of_profile() );
+$user_id = get_user_by( 'login', dt_get_user_of_profile() );
 $user_id = $user_id->data->ID;
-$posts = get_tasks_by_user( $user_id );
+$posts = dt_get_tasks_by_user( $user_id );
 header( 'Content-Type: ' . feed_content_type( 'rss-http' ) . '; charset=' . get_option( 'blog_charset' ), true );
 echo '<?xml version="1.0" encoding="' . get_option( 'blog_charset' ) . '"?' . '>';
 ?>
@@ -28,7 +28,7 @@ echo '<?xml version="1.0" encoding="' . get_option( 'blog_charset' ) . '"?' . '>
      xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
      <?php do_action( 'rss2_ns' ); ?>>
     <channel>
-        <title><?php bloginfo_rss( 'name' ); ?> - <?php echo get_user_of_profile(); ?> Feed</title>
+        <title><?php bloginfo_rss( 'name' ); ?> - <?php echo dt_get_user_of_profile(); ?> Feed</title>
         <atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
         <link><?php bloginfo_rss( 'url' ) ?></link>
         <description><?php bloginfo_rss( 'description' ) ?></description>

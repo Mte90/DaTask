@@ -1,0 +1,18 @@
+parameters:
+    git_dir: .
+    bin_dir: vendor/bin
+    ignore_unstaged_changes: false
+    tasks: 
+        composer:
+            with_dependencies: false
+            strict: false
+        phpcs:
+            standard: PHPDoc
+            ignore_patterns: ['lib','composer']
+        grunt: ~
+        git_blacklist:
+            keywords:
+                - 'die('
+                - 'print_r('
+                - 'var_dump('
+            triggered_by: [php]

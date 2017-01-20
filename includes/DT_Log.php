@@ -129,7 +129,7 @@ class DT_Log {
   public function add_id_task( $post_object ) {
     foreach ( $post_object as $post ) {
 	if ( $post->post_type === 'datask-log' ) {
-	  $post->task_ID = ( int ) get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
+	  $post->task_id = ( int ) get_post_meta( $post->ID, DT_TEXTDOMAIN . '_id', true );
 	}
     }
     return $post_object;

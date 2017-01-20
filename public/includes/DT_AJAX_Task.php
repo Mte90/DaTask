@@ -148,9 +148,10 @@ class DT_AJAX_Task {
 				wp_die( -1 );
 			}
 		}
-		if ( is_user_logged_in() && !empty( esc_html( wp_unslash( $_POST[ 'content' ] ) ) ) ) {
+		$content = esc_html( wp_unslash( $_POST[ 'content' ] ) );
+		if ( is_user_logged_in() && !empty( $content ) ) {
 			// Receiver user
-			$user = get_user_by( 'login', esc_html( $_POST[ 'user_login' ] ) );
+			$user = get_user_by( 'id', esc_html( $_POST[ 'user_id' ] ) );
 			// Sender user
 			$current_user = wp_get_current_user();
 			if ( $current_user->user_login !== $user->user_login ) {
@@ -158,7 +159,7 @@ class DT_AJAX_Task {
 				$message = sprintf( __( 'Contact from %1$s by %2$s', DT_TEXTDOMAIN ), '<b>' . get_bloginfo( 'name' ) . '</b>', '<i>' . $current_user->user_login . '</i>' );
 				$message .= '<br>' . __( 'Profile', DT_TEXTDOMAIN );
 				$message .= ': ' . dt_profile_link( $current_user->user_login, home_url( '/author/' . trim( $current_user->display_name ) ? $current_user->display_name : $current_user->user_login ) );
-				$message .= wpautop( esc_html( $_POST[ 'content' ] ) );
+				$message .= wpautop( $content );
 				// Headers
 				$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: ' . $current_user->user_login . ' <' . $current_user->user_email . '>' );
 				// Send email

@@ -263,10 +263,10 @@ class DT_Task_Support {
 		return $content;
 	}
 
-	public function get_task_check( $get_tasks_by_user, $id ) {
-		if ( !empty( $get_tasks_by_user ) ) {
-			foreach ( $get_tasks_by_user as $task ) {
-				if ( $task->task_ID === $id ) {
+	public function get_task_check( $dt_get_tasks_by_user, $id ) {
+		if ( !empty( $dt_get_tasks_by_user ) ) {
+			foreach ( $dt_get_tasks_by_user as $task ) {
+				if ( $task->task_id === $id ) {
 					return ' <i class="fa fa-check"></i>';
 				}
 			}
@@ -276,13 +276,13 @@ class DT_Task_Support {
 
 	public function get_list_task( $ids ) {
 		if ( is_user_logged_in() ) {
-			$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+			$dt_get_tasks_by_user = dt_get_tasks_by_user( get_current_user_id() );
 		}
 		$html = '';
 		foreach ( $ids as $post ) {
 			$link = '<a href="' . get_permalink( $post->ID ) . '" target="_blank">' . $post->post_title . '</a>';
 			if ( is_user_logged_in() ) {
-				$html .= $this->get_task_check( $get_tasks_by_user, $post->ID ) . ' <i>' . $link . '</i>, ';
+				$html .= $this->get_task_check( $dt_get_tasks_by_user, $post->ID ) . ' <i>' . $link . '</i>, ';
 			}
 		}
 		return rtrim( $html, ', ' );

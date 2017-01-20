@@ -4,37 +4,32 @@
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
+ * @copyright 2015 GPL
  * @license   GPL-2.0+
  * @link      http://mte90.net
- * @copyright 2015 GPL
  */
 
 /**
  * Add the user id on the task post types and the task post types in the user meta
  *
- * @since     1.0.0
- * @param     integer $user_id ID of the user.
- * @param     integer $task_id ID of task post type.
- * @return    bool true
+ * @param integer $user_id ID of the user.
+ * @param integer $task_id ID of task post type.
+ *
+ * @since 1.0.0
+ *
+ * @return bool true
  */
 function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
-	$plugin = DaTask::get_instance();
-	$counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
-	if ( empty( $counter ) ) {
-		$counter = 1;
-	} else {
-		$counter = (( int ) $counter) + 1;
-	}
-	update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
+	// Increment the counter of task done used for the backend
+	dt_task_counter( $task_id, true );
 
-	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
-	if ( isset( $tasks_later_of_user[ $task_id ] ) ) {
-		unset( $tasks_later_of_user[ $task_id ] );
-		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
-	}
+	// Remove the task from the task to do if it;s one of them
+	dt_remove_task_later_for_user_id( $user_id, $task_id );
 
+	// Remove the category to do it if it is the last one
 	datask_update_category_to_do( $user_id, $task_id );
 
+	// Execute the BadgeOS hook if the plugin is available
 	if ( class_exists( 'BadgeOS' ) ) {
 		do_action( 'datask_badgeos_trigger' );
 	}
@@ -51,10 +46,12 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
 /**
  * Add in the profile the ids of the task for later
  *
- * @since     1.0.0
- * @param     integer $user_id ID of the user.
- * @param     integer $task_id ID of task post type.
- * @return    bool true
+ * @param integer $user_id ID of the user.
+ * @param integer $task_id ID of task post type.
+ *
+ * @since 1.0.0
+ *
+ * @return bool true
  */
 function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 	$plugin = DaTask::get_instance();
@@ -69,64 +66,112 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 	 *
 	 * @since 1.0.0
 	 */
-	do_action( 'dt_set_task_later' );
+	do_action( 'dt_set_task_later', $user_id, $task_id );
 	return true;
 }
 
 /**
- * Add the user id on the task post types and the task post types in the user meta
+ * Remove in the profile the ids of the task for later
  *
- * @since     1.0.0
- * @param     integer $user_id ID of the user.
- * @param     integer $task_id ID of task post type.
- * @return    bool true
+ * @param integer $user_id ID of the user.
+ * @param integer $task_id ID of task post type.
+ *
+ * @since 1.0.0
+ *
+ * @return bool true
+ */
+function dt_remove_task_later_for_user_id( $user_id, $task_id ) {
+	$plugin = DaTask::get_instance();
+	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
+	if ( isset( $tasks_later_of_user[ $task_id ] ) ) {
+		unset( $tasks_later_of_user[ $task_id ] );
+		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
+
+		/*
+		 * Fires before the end of function `dt_remove_task_later_for_user_id`
+		 *
+		 * @since 2.0.0
+		 */
+		do_action( 'dt_remove_task_later', $user_id, $task_id );
+		return true;
+	}
+	return false;
+}
+
+/**
+ * Remove the log message about the task done
+ *
+ * @param integer $user_id ID of the user.
+ * @param integer $task_id ID of task post type.
+ *
+ * @since 1.0.0
+ *
+ * @return bool true
  */
 function dt_remove_complete_task_for_user_id( $user_id, $task_id ) {
-	$old_task = get_tasks_by_user( $user_id );
+	// Remove the log post
+	$old_task = dt_get_tasks_by_user( $user_id );
 	foreach ( $old_task as $task ) {
-		if ( $task->task_ID === $task_id ) {
+		if ( $task->task_id === $task_id ) {
 			wp_delete_post( $task->ID );
+			break;
 		}
 	}
-	$plugin = DaTask::get_instance();
-	$counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
-	if ( empty( $counter ) ) {
-		$counter = 1;
-	} else {
-		$counter = ( int ) $counter - 1;
-	}
-	update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
+	// Decrease the task counter
+	dt_task_counter( $task_id, false );
 
 	/*
 	 * Fires before the end of function `dt_set_completed_task_for_user_id`
 	 *
 	 * @since 1.0.0
 	 */
-	do_action( 'dt_remove_complete_task' );
+	do_action( 'dt_remove_complete_task', $user_id, $task_id );
 	return true;
 }
 
 /**
- * Get the task done from the user with html
+ * Increase or decrease the task counter
+ * 
+ * @param integer $task_id The task ID.
+ * @param bool $increment True increment (default) and false decrement
+ * 
+ * @return bool
+ */
+function dt_task_counter( $task_id, $increment = true ) {
+	$plugin = DaTask::get_instance();
+	$counter = get_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), true );
+	if ( empty( $counter ) ) {
+		$counter = 1;
+	}
+	$counter = ( int ) $counter;
+	if ( $increment ) {
+		$counter++;
+	} else {
+		$counter--;
+	}
+	update_post_meta( $task_id, $plugin->get_fields( 'tasks_counter' ), $counter );
+	return true;
+}
+
+/**
+ * Get the task done from the user with a list
  *
- * @since     1.0.0
- * @return    @string html
+ * @since 1.0.0
+ *
+ * @return @string html
  */
 function dt_get_tasks_completed() {
 	$print = '';
-	$user_id = get_user_by( 'login', get_user_of_profile() );
-	if ( is_author() ) {
-		$user_id = get_user_by( 'id', get_user_of_profile( true ) );
-	}
+	$user_id = get_user_by( 'id', dt_get_user_of_profile() );
 	if ( !empty( $user_id ) ) {
 		$user_id = $user_id->data->ID;
-		$tasks_user = get_tasks_by_user( $user_id );
+		$tasks_user = dt_get_tasks_by_user( $user_id );
 		if ( !empty( $tasks_user ) ) {
-			$tasks_user = array_reverse( $tasks_user, true );
 			$print = '<h4 class="alert alert-success">' . sprintf( __( '%d Tasks Completed', DT_TEXTDOMAIN ), count( $tasks_user ) ) . '</h4>';
 			$print .= '<ul>';
+			$tasks_user = array_reverse( $tasks_user, true );
 			foreach ( $tasks_user as $task ) {
-				$print .= '<li><a href="' . get_permalink( $task->task_ID ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
+				$print .= '<li><a href="' . get_permalink( $task->task_id ) . '">' . $task->post_title . '</a> - ' . date_i18n( get_option( 'date_format' ), strtotime( $task->post_date ) ) . '</li>';
 			}
 			$print .= '</ul>';
 			wp_reset_postdata();
@@ -149,40 +194,38 @@ function dt_get_tasks_completed() {
 }
 
 /**
- * Print the task done from the user with html
+ * Print the task done from the user with list
  *
- * @since     1.0.0
+ * @since 1.0.0
  */
 function dt_tasks_completed() {
 	echo dt_get_tasks_completed();
 }
 
 /**
- * Get the task later from the user with html
+ * Get the task later for the user with html for the profile
  *
- * @since     1.0.0
- * @param     string $user ID of the user.
- * @return    string html
+ * @param string $user ID of the user.
+ *
+ * @since 1.0.0
+ *
+ * @return string html
  */
 function dt_get_tasks_later( $user = null ) {
-	$print = '';
+	$print = __( 'This profile not exist!', DT_TEXTDOMAIN );
 	if ( $user === null ) {
-		$user = get_user_by( 'login', get_user_of_profile() );
-		if ( is_author() ) {
-			$user = get_user_by( 'id', get_user_of_profile( true ) );
-		}
+		$user = get_user_by( 'id', dt_get_user_of_profile() );
 	}
 	if ( !empty( $user ) ) {
 		$current_user = wp_get_current_user();
+		// Check if the user is in his profile page
 		if ( $current_user->user_nicename === $user->user_nicename ) {
-			$user_id = $user->data->ID;
-			$tasks_later_user = get_tasks_later_by_user( $user_id );
+			$tasks_later_user = get_tasks_later_by_user( $user->data->ID );
 			if ( is_array( $tasks_later_user ) ) {
-				$tasks_later_user = array_reverse( $tasks_later_user, true );
-				$print .= '<h4 class="alert alert-info">' . __( 'Tasks in progress', DT_TEXTDOMAIN ) . '</h4>';
+				$print = '<h4 class="alert alert-info">' . __( 'Tasks in progress', DT_TEXTDOMAIN ) . '</h4>';
 				if ( !empty( $tasks_later_user ) ) {
-					$tasks_later_user = array_reverse( $tasks_later_user, true );
-					$task_implode = array_keys( $tasks_later_user );
+					$task_implode = array_keys( array_reverse( $tasks_later_user, true ) );
+					// Get the list
 					$tasks = new WP_Query( array(
 						'post_type' => 'task',
 						'post__in' => $task_implode,
@@ -195,7 +238,6 @@ function dt_get_tasks_later( $user = null ) {
 						$print .= '<li><a href="' . get_permalink( $task->ID ) . '">' . $task->post_title . '</a> - ' . $area[ 0 ]->name . ' - ' . $minute[ 0 ]->name . ' ' . __( 'minute estimated', DT_TEXTDOMAIN ) . '</li>';
 					}
 					$print .= '</ul>';
-					wp_reset_postdata();
 
 					/*
 					 * Filter the box with task later
@@ -210,66 +252,61 @@ function dt_get_tasks_later( $user = null ) {
 				}
 			}
 		}
-	} else {
-		$print = __( 'This profile not exist!', DT_TEXTDOMAIN );
 	}
 	return $print;
 }
 
 /**
- * Get the mentors of the task
- *
- * @since     1.0.0
- * @return    array html
- */
-function dt_get_mentors( $id = '' ) {
-	if ( empty( $id ) ) {
-		$id = get_the_ID();
-	}
-	$plugin = DaTask::get_instance();
-	$mentors = get_post_meta( $id, $plugin->get_fields( 'task_mentor' ), true );
-	if ( empty( $mentors ) ) {
-		return false;
-	}
-	$mentors = explode( ',', str_replace( ' ', '', $mentors ) );
-	return $mentors;
-}
-
-/**
  * Print the task later from the user with html
  *
- * @since     1.0.0
- * @param     string $user ID of the user.
+ * @since 1.0.0
+ * @param  string $user ID of the user.
  */
 function dt_tasks_later( $user = null ) {
 	echo dt_get_tasks_later( $user );
 }
 
 /**
- * Print the task later from the user with html
+ * Get the mentors ID of the task
  *
- * @since     1.0.0
- * @return    @string|null value Nick of the user
+ * @param integer $task_id The Task ID.
+ * @since 1.0.0
+ *
+ * @return array
  */
-function get_user_of_profile( $id = false ) {
+function dt_get_mentors( $task_id = '' ) {
+	if ( empty( $task_id ) ) {
+		$task_id = get_the_ID();
+	}
+	$plugin = DaTask::get_instance();
+	$mentors = get_post_meta( $task_id, $plugin->get_fields( 'task_mentor' ), true );
+	if ( empty( $mentors ) ) {
+		return false;
+	}
+	return explode( ',', str_replace( ' ', '', $mentors ) );
+}
+
+/**
+ * Get user ID
+ *
+ * @since 1.0.0
+ *
+ * @return integer
+ */
+function dt_get_user_of_profile() {
 	global $wp_query;
 	// Get nick from the url of the page
 	if ( is_author() ) {
-		$username = $wp_query->query_vars[ 'author_name' ];
-		if ( $id ) {
-			$user_id = $wp_query->query_vars[ 'author' ];
-			$user = get_userdata( $user_id );
-			if ( $user ) {
-				return $user_id;
-			}
-		}
-		if ( username_exists( $username ) ) {
-			return $username;
+		$user_id = $wp_query->query_vars[ 'author' ];
+		$user = get_userdata( $user_id );
+		if ( $user ) {
+			return $user_id;
 		}
 	} elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
 		$username = str_replace( '%20', ' ', $wp_query->query[ 'member-feed' ] );
 		if ( username_exists( $username ) ) {
-			return $username;
+			$user_id = get_user_by( 'login', $username );
+			return $user_id->ID;
 		}
 		// If the url don't have the nick get the actual
 	} else {
@@ -280,11 +317,13 @@ function get_user_of_profile( $id = false ) {
 /**
  * Return the task ids of the user
  *
- * @since     1.0.0
- * @param     integer $user_id ID of the user.
- * @return    array the ids
+ * @param integer $user_id ID of the user.
+ * 
+ * @since 1.0.0
+ * 
+ * @return array
  */
-function get_tasks_by_user( $user_id ) {
+function dt_get_tasks_by_user( $user_id ) {
 	if ( $user_id === 0 ) {
 		return false;
 	}
@@ -296,7 +335,7 @@ function get_tasks_by_user( $user_id ) {
 			array(
 				'taxonomy' => 'wds_log_type',
 				'field' => 'slug',
-				'terms' => array( 'error', 'remove' ),
+				'terms' => array( 'error' ),
 				'operator' => 'NOT',
 			),
 		)
@@ -311,9 +350,11 @@ function get_tasks_by_user( $user_id ) {
 /**
  * Return the task later ids of the user
  *
- * @since     1.0.0
- * @param     integer $user_id ID of the user.
- * @return    array the ids
+ * @param integer $user_id ID of the user.
+ *
+ * @since 1.0.0
+ *
+ * @return array
  */
 function get_tasks_later_by_user( $user_id ) {
 	$plugin = DaTask::get_instance();
@@ -323,9 +364,11 @@ function get_tasks_later_by_user( $user_id ) {
 /**
  * Return the user ids by task
  *
- * @since     1.0.0
- * @param     integer $task_id ID of the user.
- * @return    array the ids
+ * @param integer $task_id ID of the user.
+ *
+ * @since 1.0.0
+ *
+ * @return array
  */
 function get_users_by_task( $task_id ) {
 	$args = array(
@@ -337,7 +380,7 @@ function get_users_by_task( $task_id ) {
 			array(
 				'taxonomy' => 'wds_log_type',
 				'field' => 'slug',
-				'terms' => array( 'error', 'remove' ),
+				'terms' => array( 'error' ),
 				'operator' => 'NOT',
 			),
 		)
@@ -352,9 +395,10 @@ function get_users_by_task( $task_id ) {
 /**
  * Check if the user have done the task
  *
- * @since     1.0.0
- * @param     integer $task_id ID of the task.
- * @param     integer $user_id ID of the user.
+ * @param integer $task_id ID of the task.
+ * @param integer $user_id ID of the user.
+ * 
+ * @since 1.0.0
  *
  * @return    boolean
  */
@@ -362,10 +406,10 @@ function has_task( $task_id, $user_id = null ) {
 	if ( $user_id === null ) {
 		$user_id = get_current_user_id();
 	}
-	$tasks = get_tasks_by_user( $user_id );
+	$tasks = dt_get_tasks_by_user( $user_id );
 	if ( !empty( $tasks ) ) {
 		foreach ( $tasks as $task ) {
-			if ( $task->task_ID === $task_id ) {
+			if ( $task->task_id === $task_id ) {
 				return true;
 			}
 		}
@@ -376,9 +420,9 @@ function has_task( $task_id, $user_id = null ) {
 /**
  * Check if the user have the task later
  *
- * @since     1.0.0
- * @param     integer $task_id ID of the task.
- * @param     integer $user_id ID of the user.
+ * @since 1.0.0
+ * @param  integer $task_id ID of the task.
+ * @param  integer $user_id ID of the user.
  *
  * @return    boolean
  */
@@ -398,8 +442,8 @@ function has_later_task( $task_id, $user_id = null ) {
  * Get list of Badge of BadgeOS
  * Based on https://gist.github.com/tw2113/6c31366d094eee6d5151
  *
- * @since     1.1.0
- * @param     integer $user ID of the user.
+ * @since 1.1.0
+ * @param  integer $user ID of the user.
  */
 function datask_badgeos_user_achievements( $user ) {
 	if ( class_exists( 'BadgeOS' ) ) {
@@ -538,18 +582,19 @@ function datask_buttons() {
 /**
  * User contact form
  *
- * @since    1.0.0
+ * @since 1.0.0
  */
 function datask_user_form() {
 	if ( is_user_logged_in() ) {
-		$user = get_user_by( 'id', get_user_of_profile( true ) );
+		$user_id = dt_get_user_of_profile();
+		$user = get_user_by( 'id', $user_id );
 		$current_user = wp_get_current_user();
 		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
 			$content .= '<h4 class="alert alert-warning">' . __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name . '</h4>';
 			$content .= '<h5>' . __( 'If you are contacting him for a task don\'t forget to mention it!', DT_TEXTDOMAIN ) . '</h5>';
 			$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
 			$content .= wp_nonce_field( 'dt_contact_user', 'dt_user_nonce', true, false );
-			$content .= '<button type="submit" data-user="' . get_user_of_profile() . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
+			$content .= '<button type="submit" data-user="' . $user_id . '" class="button btn btn-warning"><i class="dashicons-email-alt"></i>' . __( 'Sent', DT_TEXTDOMAIN ) . '</button>';
 			echo $content;
 		}
 	}
@@ -646,10 +691,10 @@ function is_the_prev_task_done( $id = '' ) {
 			return true;
 		}
 		$prev = $prev->posts[ count( $prev->posts ) - 1 ];
-		$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-		if ( !empty( $get_tasks_by_user ) ) {
-			foreach ( $get_tasks_by_user as $task ) {
-				if ( $task->task_ID === $prev->ID ) {
+		$dt_get_tasks_by_user = dt_get_tasks_by_user( get_current_user_id() );
+		if ( !empty( $dt_get_tasks_by_user ) ) {
+			foreach ( $dt_get_tasks_by_user as $task ) {
+				if ( $task->task_id === $prev->ID ) {
 					return true;
 				}
 			}
@@ -683,11 +728,11 @@ function datask_category_status( $slug, $percentage = false ) {
 		'order' => 'ASC'
 			) );
 	$i = 0;
-	$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
-	if ( !empty( $get_tasks_by_user ) ) {
+	$dt_get_tasks_by_user = dt_get_tasks_by_user( get_current_user_id() );
+	if ( !empty( $dt_get_tasks_by_user ) ) {
 		foreach ( $done->posts as $task ) {
-			foreach ( $get_tasks_by_user as $task_user ) {
-				if ( $task_user->task_ID === $task->ID ) {
+			foreach ( $dt_get_tasks_by_user as $task_user ) {
+				if ( $task_user->task_id === $task->ID ) {
 					$i++;
 				}
 			}

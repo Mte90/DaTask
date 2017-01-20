@@ -141,7 +141,7 @@ class DT_Graphs {
 	public function generate_task_list( $query ) {
 		echo '<ul>';
 		foreach ( $query->posts as $post ) {
-			echo '<li><a href="' . get_permalink( $post->task_ID ) . '" target="_blank">' . get_the_title( $post->task_ID ) . '</a></li>';
+			echo '<li><a href="' . get_permalink( $post->task_id ) . '" target="_blank">' . get_the_title( $post->task_id ) . '</a></li>';
 		}
 		echo '</ul>';
 	}

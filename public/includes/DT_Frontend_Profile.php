@@ -64,7 +64,7 @@ class DT_Frontend_Profile {
     if ( is_author() ) {
 	return wpbp_get_template_part( DT_TEXTDOMAIN, 'user', 'profile' );
     } elseif ( array_key_exists( 'member-feed', $wp_query->query_vars ) ) {
-	if ( get_user_of_profile() !== null ) {
+	if ( dt_get_user_of_profile() !== null ) {
 	  return wpbp_get_template_part( DT_TEXTDOMAIN, 'user', 'feed' );
 	}
     }

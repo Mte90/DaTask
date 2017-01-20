@@ -60,15 +60,15 @@ class DT_Shortcode {
 		extract( shortcode_atts( array(
 			'type' => 'archive',
 						), $atts ) );
-		$get_tasks_by_user = get_tasks_by_user( get_current_user_id() );
+		$dt_get_tasks_by_user = dt_get_tasks_by_user( get_current_user_id() );
 
 		$terms = array();
 		if ( $type === 'archive' ) {
 			$terms = get_terms( 'task-team', array( 'hide_empty' => false ) );
 		} elseif ( $type === 'user' ) {
-			if ( !empty( $get_tasks_by_user ) ) {
-				foreach ( $get_tasks_by_user as $task_user ) {
-					$find_term = wp_get_post_terms( $task_user->task_ID, 'task-team' );
+			if ( !empty( $dt_get_tasks_by_user ) ) {
+				foreach ( $dt_get_tasks_by_user as $task_user ) {
+					$find_term = wp_get_post_terms( $task_user->task_id, 'task-team' );
 					$terms[ $find_term[ 0 ]->term_id ] = $find_term[ 0 ];
 				}
 			}

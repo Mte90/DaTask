@@ -92,7 +92,7 @@
           action: 'dt_contact_user',
           _wpnonce: jQuery('#user-contact-form #dt_user_nonce').val(),
           content: jQuery('textarea[name="datask-email-subject"]').val(),
-          user_login: jQuery('#user-contact-form button').data('user')
+          user_id: jQuery('#user-contact-form button').data('user')
         },
         url: dt_js_vars.ajaxurl,
         success: function(value) {

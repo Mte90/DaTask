@@ -84,5 +84,8 @@
       ".\/includes\/lib\/Wds-log-post\/wds-log-post.php",
       ".\/includes\/lib\/I18n-module\/i18n-module.php"
     ]
+  },
+  "require-dev": {
+    "phpro/grumphp": "^0.11.1"
   }
 }
