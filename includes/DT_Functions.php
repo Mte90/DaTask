@@ -55,7 +55,7 @@ function dt_set_completed_task_for_user_id( $user_id, $task_id ) {
  */
 function dt_set_task_later_for_user_id( $user_id, $task_id ) {
 	$plugin = DaTask::get_instance();
-	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
+	$tasks_later_of_user = dt_get_tasks_later_by_user( $user_id );
 	if ( !isset( $tasks_later_of_user[ $task_id ] ) ) {
 		$tasks_later_of_user[ $task_id ] = time();
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
@@ -82,7 +82,7 @@ function dt_set_task_later_for_user_id( $user_id, $task_id ) {
  */
 function dt_remove_task_later_for_user_id( $user_id, $task_id ) {
 	$plugin = DaTask::get_instance();
-	$tasks_later_of_user = get_tasks_later_by_user( $user_id );
+	$tasks_later_of_user = dt_get_tasks_later_by_user( $user_id );
 	if ( isset( $tasks_later_of_user[ $task_id ] ) ) {
 		unset( $tasks_later_of_user[ $task_id ] );
 		update_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), serialize( $tasks_later_of_user ) );
@@ -220,7 +220,7 @@ function dt_get_tasks_later( $user = null ) {
 		$current_user = wp_get_current_user();
 		// Check if the user is in his profile page
 		if ( $current_user->user_nicename === $user->user_nicename ) {
-			$tasks_later_user = get_tasks_later_by_user( $user->data->ID );
+			$tasks_later_user = dt_get_tasks_later_by_user( $user->data->ID );
 			if ( is_array( $tasks_later_user ) ) {
 				$print = '<h4 class="alert alert-info">' . __( 'Tasks in progress', DT_TEXTDOMAIN ) . '</h4>';
 				if ( !empty( $tasks_later_user ) ) {
@@ -356,7 +356,7 @@ function dt_get_tasks_by_user( $user_id ) {
  *
  * @return array
  */
-function get_tasks_later_by_user( $user_id ) {
+function dt_get_tasks_later_by_user( $user_id ) {
 	$plugin = DaTask::get_instance();
 	return unserialize( get_user_meta( $user_id, $plugin->get_fields( 'tasks_later_of_user' ), true ) );
 }
@@ -370,7 +370,7 @@ function get_tasks_later_by_user( $user_id ) {
  *
  * @return array
  */
-function get_users_by_task( $task_id ) {
+function dt_get_users_by_task( $task_id ) {
 	$args = array(
 		'post_type' => 'datask-log',
 		'posts_per_page' => -1,
@@ -397,10 +397,10 @@ function get_users_by_task( $task_id ) {
  *
  * @param integer $task_id ID of the task.
  * @param integer $user_id ID of the user.
- * 
+ *
  * @since 1.0.0
  *
- * @return    boolean
+ * @return boolean
  */
 function has_task( $task_id, $user_id = null ) {
 	if ( $user_id === null ) {
@@ -411,6 +411,7 @@ function has_task( $task_id, $user_id = null ) {
 		foreach ( $tasks as $task ) {
 			if ( $task->task_id === $task_id ) {
 				return true;
+				break;
 			}
 		}
 	}
@@ -430,22 +431,22 @@ function has_later_task( $task_id, $user_id = null ) {
 	if ( $user_id === null ) {
 		$user_id = get_current_user_id();
 	}
-	$tasks = get_tasks_later_by_user( $user_id );
+	$tasks = dt_get_tasks_later_by_user( $user_id );
 	if ( isset( $tasks[ $task_id ] ) ) {
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 }
 
 /**
  * Get list of Badge of BadgeOS
  * Based on https://gist.github.com/tw2113/6c31366d094eee6d5151
  *
+ * @param integer $user ID of the user.
+ * 
  * @since 1.1.0
- * @param  integer $user ID of the user.
  */
-function datask_badgeos_user_achievements( $user ) {
+function dt_badgeos_user_achievements( $user ) {
 	if ( class_exists( 'BadgeOS' ) ) {
 		$output = '';
 		$achievements = array_unique( badgeos_get_user_earned_achievement_ids( $user, '' ) );
@@ -465,57 +466,37 @@ function datask_badgeos_user_achievements( $user ) {
  * Echo the subtitle of the task
  *
  * @param    bool $echo Print or not to print.
- * @return   bool|string Echo or the value
+ *
  * @since    1.0.0
+ *
+ * @return   bool|string Echo or return the value
  */
 function the_task_subtitle( $echo = true ) {
 	$plugin = DaTask::get_instance();
-	if ( $echo ) {
-		echo get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
-	} else {
+	if ( !$echo ) {
 		return get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
 	}
+	echo get_post_meta( get_the_ID(), $plugin->get_fields( 'task_subtitle' ), true );
 }
 
 /**
  * Print Task button
  *
  * @since    1.0.0
+ *
+ * @return void
  */
 function datask_buttons() {
-	$plugin = DaTask::get_instance();
 	if ( get_post_status( get_the_ID() ) === 'archive' ) {
-		echo '<h4 class="alert alert-danger">';
-		_e( 'This task is archived, you can only read it.', DT_TEXTDOMAIN );
-		echo '</h4>';
+		echo '<h4 class="alert alert-danger">' . __( 'This task is archived, you can only read it.', DT_TEXTDOMAIN ) . '</h4>';
 		return;
 	}
 	if ( is_user_logged_in() ) {
-		$user_taxs = explode( ', ', get_user_meta( get_current_user_id(), $plugin->get_fields( 'category_to_do' ), true ) );
-		if ( is_array( $user_taxs ) ) {
-			$alert = '';
-			$terms = get_the_terms( get_the_ID(), 'task-team' );
-			foreach ( $user_taxs as $user_tax ) {
-				if ( empty( $user_tax ) ) {
-					break;
-				}
-				$alert .= ' <a href="' . esc_url( get_term_link( $user_tax, 'task-team' ) ) . '">' . ucfirst( $user_tax ) . '</a>,';
-				if ( is_array( $terms ) ) {
-					foreach ( $terms as $term ) {
-						if ( $term->slug === $user_tax ) {
-							$alert = '';
-							break 2;
-						}
-					}
-				}
-			}
-			if ( !empty( $alert ) ) {
-				echo '<h4 class="alert alert-danger">';
-				_e( 'This task can be unlocked when you finish to do the task of:', DT_TEXTDOMAIN );
-				echo $alert;
-				echo '</h4>';
-				return;
-			}
+		// Check if the user has mandatory category
+		$doit = dt_user_can_do_task();
+		if ( !empty( $doit ) ) {
+			echo $doit;
+			return;
 		}
 		?>
 		<div class="dt-buttons">
@@ -567,16 +548,50 @@ function datask_buttons() {
 			echo '<h4 class="alert alert-danger">';
 			if ( $approval === 'comment' ) {
 				_e( 'This task require a comment for the final approval!', DT_TEXTDOMAIN );
-			} else if ( $approval === 'email' ) {
+			} elseif ( $approval === 'email' ) {
 				_e( 'This task require to contact one of the mentors for the final approval!', DT_TEXTDOMAIN );
 			}
 			echo '</h4>';
 		}
 	} else {
-		echo '<h4 class="alert alert-danger">';
-		_e( 'Save your history of tasks done or in progress with a free account!', DT_TEXTDOMAIN );
-		echo '</h4>';
+		echo '<h4 class="alert alert-danger">' . __( 'Save your history of tasks done or in progress with a free account!', DT_TEXTDOMAIN ) . '</h4>';
 	}
+}
+
+/**
+ * If the user can do that task
+ *
+ * @return boolean
+ */
+function dt_user_can_do_task() {
+	$plugin = DaTask::get_instance();
+	$user_taxs = explode( ', ', get_user_meta( get_current_user_id(), $plugin->get_fields( 'category_to_do' ), true ) );
+	if ( is_array( $user_taxs ) ) {
+		$alert = '';
+		$terms = get_the_terms( get_the_ID(), 'task-team' );
+		foreach ( $user_taxs as $user_tax ) {
+			if ( empty( $user_tax ) ) {
+				break;
+			}
+			$alert .= ' <a href="' . esc_url( get_term_link( $user_tax, 'task-team' ) ) . '">' . ucfirst( $user_tax ) . '</a>,';
+			// Check if that task is in the category of the user
+			if ( is_array( $terms ) ) {
+				foreach ( $terms as $term ) {
+					if ( $term->slug === $user_tax ) {
+						$alert = '';
+						// We broke the parent foreach
+						break 2;
+					}
+				}
+			}
+		}
+		if ( !empty( $alert ) ) {
+			$html = '<h4 class="alert alert-danger">' . __( 'This task can be unlocked when you finish to do the task of:', DT_TEXTDOMAIN );
+			$html .= $alert . '</h4>';
+			return $html;
+		}
+	}
+	return '';
 }
 
 /**
@@ -589,7 +604,7 @@ function datask_user_form() {
 		$user_id = dt_get_user_of_profile();
 		$user = get_user_by( 'id', $user_id );
 		$current_user = wp_get_current_user();
-		if ( $user->roles[ 0 ] != 'subscriber' && $current_user->user_login !== $user->user_login ) {
+		if ( $user->roles[ 0 ] !== 'subscriber' && $current_user->user_login !== $user->user_login ) {
 			$content .= '<h4 class="alert alert-warning">' . __( 'Contact', DT_TEXTDOMAIN ) . ' ' . $user->display_name . '</h4>';
 			$content .= '<h5>' . __( 'If you are contacting him for a task don\'t forget to mention it!', DT_TEXTDOMAIN ) . '</h5>';
 			$content .= '<div class="form-group"><textarea class="form-control" name="datask-email-subject" cols="45" rows="8" aria-required="true" autocomplete="off"></textarea></div>';
@@ -602,8 +617,9 @@ function datask_user_form() {
 
 /**
  * Check if the task require a manual approval
- * 
+ *
  * @param integer $task_id The Task ID.
+ *
  * @return string
  */
 function datask_require_approval( $task_id = '' ) {
@@ -615,8 +631,9 @@ function datask_require_approval( $task_id = '' ) {
 
 /**
  * Return the task suggested before the task itself
- * 
+ *
  * @param integer $task_id The Task ID.
+ * 
  * @return string
  */
 function datask_task_before( $task_id = '' ) {
@@ -628,8 +645,7 @@ function datask_task_before( $task_id = '' ) {
 	if ( empty( $befores ) ) {
 		return false;
 	}
-	$befores = explode( ',', str_replace( ' ', '', $befores ) );
-	return $befores;
+	return explode( ',', str_replace( ' ', '', $befores ) );
 }
 
 /**
@@ -647,8 +663,7 @@ function datask_task_next( $task_id = '' ) {
 	if ( empty( $next ) ) {
 		return false;
 	}
-	$next = explode( ',', str_replace( ' ', '', $next ) );
-	return $next;
+	return explode( ',', str_replace( ' ', '', $next ) );
 }
 
 /**
@@ -662,11 +677,17 @@ function dt_profile_link( $username, $text ) {
 	return '<a href="' . home_url( '/author/' . $username ) . '" target="_blank">' . $text . '</a>';
 }
 
+/**
+ * The previous task is done?
+ *
+ * @param integer $id
+ *
+ * @return boolean
+ */
 function is_the_prev_task_done( $id = '' ) {
 	if ( !is_user_logged_in() ) {
 		return true;
 	}
-
 	if ( empty( $id ) ) {
 		$id = get_the_ID();
 	}
@@ -696,6 +717,7 @@ function is_the_prev_task_done( $id = '' ) {
 			foreach ( $dt_get_tasks_by_user as $task ) {
 				if ( $task->task_id === $prev->ID ) {
 					return true;
+					break;
 				}
 			}
 		}
@@ -704,16 +726,36 @@ function is_the_prev_task_done( $id = '' ) {
 	return true;
 }
 
+/**
+ * From url of an attachment get the id
+ *
+ * @param string $image_url The image url.
+ *
+ * @global object $wpdb
+ *
+ * @return integer
+ */
 function datask_get_id_image_term( $image_url ) {
 	global $wpdb;
 	$attachment = $wpdb->get_col( $wpdb->prepare( 'SELECT ID FROM ' . $wpdb->posts . " WHERE guid='%s';", esc_sql( $image_url ) ) );
 	return $attachment[ 0 ];
 }
 
+/**
+ * Print the dots with the status of the user
+ */
 function datask_course_user() {
 	echo do_shortcode( '[datask-dots type="user"]' );
 }
 
+/**
+ * Get the status of completion of the category
+ *
+ * @param string $slug The category slug.
+ * @param bool   $percentage The percentage.
+ *
+ * @return integer
+ */
 function datask_category_status( $slug, $percentage = false ) {
 	$done = new WP_Query( array(
 		'post_type' => 'task',

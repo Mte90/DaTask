@@ -241,7 +241,7 @@ class DT_Task_Support {
 				$content .= $this->users_as_list( $mentors, __( 'Mentor(s)', DT_TEXTDOMAIN ) );
 			}
 			// Log of users
-			$logs = get_users_by_task( get_the_ID() );
+			$logs = dt_get_users_by_task( get_the_ID() );
 			if ( is_array( $logs ) ) {
 				$content .= $this->users_as_list( $logs, __( 'List of users who completed this task', DT_TEXTDOMAIN ), true );
 			}
