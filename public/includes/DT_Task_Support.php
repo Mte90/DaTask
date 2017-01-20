@@ -5,9 +5,9 @@
  *
  * @package   DaTask
  * @author    Mte90 <mte90net@gmail.com>
+ * @copyright 2015 GPL
  * @license   GPL-2.0+
  * @link      http://mte90.net
- * @copyright 2015 GPL
  */
 class DT_Task_Support {
 
